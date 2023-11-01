@@ -1,0 +1,22 @@
+.header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-fixed);
+}
+.header_container,
+.header_begin {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.header_begin {
+  column-gap: 5rem;
+}
+
+/* header shadow */
+.scroll_header {
+  background-color: #000000;
+  box-shadow: 0 -1px 15px rgb(198, 184, 184);
+}

@@ -1,0 +1,18 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.App {
+  min-height: 100vh; /* Minimum height of the viewport */
+}
+body {
+  background: rgba(0, 0, 0, 0.901);
+  color: #ffffff;
+}
+.loading_screen {
+  display: flex;
+  align-items: flex-end;
+  min-height: 100vh;
+  justify-content: space-evenly;
+}
