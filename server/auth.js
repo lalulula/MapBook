@@ -1,9 +1,14 @@
 function login(id, pw) {
-    if(id === 'admin' && pw === 'testadmin' ){
-        return true
+    if(id !== 'admin'){
+        return 404
     }
     else{
-        return false
+        if(pw !== 'testadmin'){
+            return 401
+        }
+        else{
+            return 200
+        }
     }
 }
 

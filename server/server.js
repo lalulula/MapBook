@@ -9,6 +9,7 @@ import morgan from "morgan";
 // import path from "path";
 import { fileURLToPath } from "url";
 import * as auth from "./auth.js";
+import User from "./models/User.js"
 
 // CONFIGURATIONS
 
@@ -20,27 +21,33 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(cors());
 
-var listener = app.listen(8888, function(){
-    console.log('Listening on port ' + listener.address().port); //Listening on port 8888
-});
-
 
 app.get('/api/auth/login', function(req, res) {
-
-    if(auth.login(req.query.id, req.query.pw))
-    {
-        res.send("login successed");
-    }
-    else{
-        res.send("login failed");
-    }
-
+    // TODO: make response as json format
+    res.send("return code: " + auth.login(req.query.id, req.query.pw));
 });
 
 
-app.get('/api/auth/register', function(req, res) {
-    res.send("register called");
-});
+export const register = async (req, res) => {
+
+    try {
+        const {
+        username,
+        password,
+        } = req.body;
+        const newUser = new User({
+        username,
+        password,
+        });
+        const savedUser = await newUser.save();
+        res.status(201).json(savedUser);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+app.post("/api/auth/register", register);
+
 
 // MONGOOSE SET UP
 const PORT = process.env.PORT || 6001;
