@@ -2,7 +2,7 @@ name: Frontend tests
 run-name: ${{ github.actor }} is testing the frontend
 on: [push]
 jobs:
-  run-backend-tests:
+  run-frontend-tests:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -10,5 +10,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-      - run: npm install -f
-      - run: npx cypress open
+      - name: Cypress run
+        uses: cypress-io/github-action@v3
+        with:
+          project: ./site
+          browser: chrome
+          build: yarn build
+          start: yarn start
+          wait-on: "http://localhost:3001"
