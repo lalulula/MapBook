@@ -29,4 +29,4 @@ yarn-error.log*
 #Server
 server/node_modules
 server/Procfile
-client/node_modules/.cache/**
+
