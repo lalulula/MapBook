@@ -1,0 +1,37 @@
+.login {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login_form_top {
+    margin-bottom: 10px;
+}
+
+.login_form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 40%;
+    height: 70%;
+}
+
+.login_form_middle {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    margin-bottom: 10px;
+}
+
+.bottomLine {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 20px 0;
+}
+
+hr {
+    width: 50%;
+}
