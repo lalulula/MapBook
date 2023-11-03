@@ -25,3 +25,5 @@ yarn-debug.log*
 yarn-error.log*
 
 notes.txt
+node_modules
+node_modules
