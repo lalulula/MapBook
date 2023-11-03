@@ -10,5 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-      - run: npm ci
-      - run: npm run test
+      - run: cd client
+      - run: npm install
+      - run: npm test
