@@ -2,10 +2,13 @@ import React from "react";
 import Footer from "./Footer";
 import Lottie from "lottie-react";
 import landingData1 from "../../assets/Lottie/Landing1.json";
+import Intro1 from "./Intro1";
+import Intro2 from "./Intro2";
+import Intro3 from "./Intro3";
 import "./landingPage.css";
 const style = {
-  height: 200,
-  width: 200,
+  height: 500,
+  width: 500,
 };
 const LandingPage = () => {
   return (
@@ -19,8 +22,13 @@ const LandingPage = () => {
           <Lottie animationData={landingData1} style={style} />
         </div>
       </div>
+      <Intro1 />
+      <br />
+      <Intro2 />
+      <br />
+      <Intro3 />
 
-      <hr></hr>
+      <br />
       <Footer />
     </div>
   );
