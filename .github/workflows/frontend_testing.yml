@@ -15,6 +15,6 @@ jobs:
         with:
           project: ./site
           browser: chrome
-          build: yarn build
-          start: yarn start
+          build: npm build
+          start: npm start
           wait-on: "http://localhost:3001"
