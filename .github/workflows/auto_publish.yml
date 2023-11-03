@@ -20,9 +20,7 @@ jobs:
       - run: npm install -force
       - run: cd client && npm install -force
       - run: cd server && npm install -force
-
-      - run: echo "run both client and backend"
-      - run: npm run start:both 
+      - run: cd server && npm install nodemon
 
       - run: echo "Deploy to heroku"
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
