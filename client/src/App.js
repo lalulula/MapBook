@@ -32,6 +32,7 @@ function App() {
       <br></br>
       <LandingPage /> */}
       <Register />
+      {/* <Login /> */}
     </div>
   );
   // const user = useSelector(selectUser);
