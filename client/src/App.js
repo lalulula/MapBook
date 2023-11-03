@@ -1,13 +1,14 @@
 import { useSelector } from "react-redux";
 import { selectUser } from "./features/userSlice";
 import "./App.css";
-import Login from "./Components/Login";
+import Login from "./Components//login/Login";
 import MainPage from "./Components/MainPage";
 import LandingPage from "./Components/landing/LandingPage";
 import Header from "./Components/header/Header";
 import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import loadingMap from "./assets/Lottie/loadingMap.json";
+import Register from "./Components/register/Register";
 function App() {
   //Initial Loading Feature For Web
   const [loading, setLoading] = useState(false);
@@ -27,9 +28,10 @@ function App() {
   }
   return (
     <div className="App">
-      <Header />
+      {/* <Header />
       <br></br>
-      <LandingPage />
+      <LandingPage /> */}
+      <Register />
     </div>
   );
   // const user = useSelector(selectUser);
