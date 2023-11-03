@@ -18,10 +18,18 @@ jobs:
           node-version: 16
       - run: echo "install dependencies..."
       - run: npm install -force
-      - run: cd client && install -force
-      - run: cd server && install -force
+      - run: cd client && npm install -force
+      - run: cd server && npm install -force
 
       - run: echo "run both client and backend"
       - run: npm run start:both 
+
+      - name: deploy to heroku
+      - run: echo "Deploy to heroku"
+        uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "mapbook" #Must be unique in Heroku
+          heroku_email: "mapbook2023@gmail.com"
       
 
