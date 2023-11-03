@@ -30,3 +30,5 @@ yarn-error.log*
 server/node_modules
 server/Procfile
 
+# include .env file
+!/server/.env
