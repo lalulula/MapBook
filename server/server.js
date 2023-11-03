@@ -8,6 +8,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
+import * as auth from "./auth.js";
 
 // CONFIGURATIONS
 const __filename = fileURLToPath(import.meta.url);
@@ -30,7 +31,15 @@ var listener = app.listen(8888, function(){
 
 
 app.get('/api/auth/login', function(req, res) {
-    res.send("login called");
+
+    if(auth.login(req.query.id, req.query.pw))
+    {
+        res.send("login successed");
+    }
+    else{
+        res.send("login failed");
+    }
+
 });
 
 
