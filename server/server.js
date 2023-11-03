@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 import multer from "multer";
 import helmet from "helmet";
 import morgan from "morgan";
-import path from "path";
+// import path from "path";
 import { fileURLToPath } from "url";
 import * as auth from "./auth.js";
 
@@ -23,7 +23,6 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 app.use(cors());
 // app.use("/assets", express.static(path.json(__dirname, 'public/assets')));
-
 
 var listener = app.listen(8888, function(){
     console.log('Listening on port ' + listener.address().port); //Listening on port 8888
@@ -46,3 +45,19 @@ app.get('/api/auth/login', function(req, res) {
 app.get('/api/auth/register', function(req, res) {
     res.send("register called");
 });
+
+// MONGOOSE SET UP
+const PORT = process.env.PORT || 6001;
+mongoose
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+
+    /* ADD DATA ONE TIME */
+    // User.insertMany(users);
+    // Post.insertMany(posts);
+  })
+  .catch((error) => console.log(`${error} did not connect`));
