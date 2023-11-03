@@ -24,9 +24,8 @@ jobs:
       - run: echo "run both client and backend"
       - run: npm run start:both 
 
-      - name: deploy to heroku
       - run: echo "Deploy to heroku"
-        uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "mapbook" #Must be unique in Heroku
