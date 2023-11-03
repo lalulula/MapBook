@@ -1,0 +1,45 @@
+**React redux**
+app/store : is going to store all the redux data that is going to be used in the app
+src/features -->slices 
+                (slice represents a piece of a applications state => you can define the inital state and reducers for that specific part of the state)
+
+**ANIMATION(lottiefiles)**
+
+https://lottiefiles.com/platform?utm_source=iconscout&utm_medium=modalLearnLFPlatform
+
+
+**Github Actions**
+-def)
+    In a software development life cycle, based on a 
+    Pull Request, Push event, it allows automation.
+- Github actions help with Continuous Integration and Continuous Deployment, 
+which in simple terms mean that incremental code changes are made 
+frequently and reliably.
+- They also help with Testing, automated, based on success, PR is opened and closed
+- Components of Github Actions 
+    1) Workflow : 
+        group of automated command that allows adding to repository
+        consists of 1 or more jobs
+        Saved in .github/workflows directory as YAML file
+    2) Event :
+        Actions such as Push, Pull Request, Commit
+    3) Job :
+        Set of Steps that is running in the same Runner
+    4) Step :
+        Each task that can run each Step 
+            -> this can be a shell command, or a action 
+    5) Action :
+        smallest reusable workflow
+    6) Runner :
+        Application that is used to run the Job in Github Actions WorkFlow
+
+**Cypress**
+-> Cypress is an open source e2e(end to end) testing framework for web applications.
+It is designed to make it wasy to write and run test that simulate 
+user interactions with a web application to ensure that it works correctly.
+Used ny developers and Quality assurance teams
+-> It supports: 
+End to end testing: Evaluates the complete flow of a SW application from start to finish, 
+Integration testing:level of software testing that focuses on evaluating the interactions and interfaces between different component modules, or services within a sw system, 
+supports parallel test execution : running multiple test cases or test suites concurrently on mutiple execution environments or thest runners simultaneously, 
+Continuous Integration and continuous deployment
