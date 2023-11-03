@@ -5,22 +5,23 @@ name: Node.js Package
 run-name: ${{ github.actor }} is push the code... deploying it...
 
 on:
-  push: 
+  push:
     branches: [main]
 
 jobs:
-  build:
+  Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: install dependencies
+      - run: echo "install dependencies..."
       - run: npm install -force
       - run: cd client && install -force
       - run: cd server && install -force
 
-      - name: run both client and backend
+      - run: echo "run both client and backend"
       - run: npm run start:both 
+      
 
