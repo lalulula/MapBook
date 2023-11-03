@@ -28,11 +28,9 @@ function App() {
   }
   return (
     <div className="App">
-      {/* <Header />
+      <Header />
       <br></br>
-      <LandingPage /> */}
-      <Register />
-      {/* <Login /> */}
+      <LandingPage />
     </div>
   );
   // const user = useSelector(selectUser);
