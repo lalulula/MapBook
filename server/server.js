@@ -1,8 +1,3 @@
-function sum(a, b) {
-    return a + b;
-  }
-  module.exports = sum;
-
 import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
