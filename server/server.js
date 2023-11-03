@@ -22,3 +22,18 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 app.use(cors());
 // app.use("/assets", express.static(path.json(__dirname, 'public/assets')));
+
+
+var listener = app.listen(8888, function(){
+    console.log('Listening on port ' + listener.address().port); //Listening on port 8888
+});
+
+
+app.get('/api/auth/login', function(req, res) {
+    res.send("login called");
+});
+
+
+app.get('/api/auth/register', function(req, res) {
+    res.send("register called");
+});
