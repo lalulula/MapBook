@@ -8,7 +8,7 @@ jobs:
       run:
         working-directory: ./server
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-      - run: npm install
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: npm install -f
       - run: npm test
