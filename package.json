@@ -1,0 +1,13 @@
+{
+  "name": "mapbook",
+  "version": "1.0.0",
+  "scripts": {
+    "start:client": "cd client && npm start",
+    "start:server": "cd server && npm start",
+    "start:both": "concurrently \"npm run start:client\" \"npm run start:server\""
+    
+  },
+  "dependencies": {
+  
+  }
+}
