@@ -1,0 +1,14 @@
+name: Frontend tests
+run-name: ${{ github.actor }} is testing the frontend
+on: [push]
+jobs:
+  run-backend-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: npm install -f
+      - run: npx cypress open
