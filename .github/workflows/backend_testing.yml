@@ -1,5 +1,5 @@
 name: Backend tests
-run-name: ${{ github.actor }} is testing
+run-name: ${{ github.actor }} is testing the backend
 on: [push]
 jobs:
   run-backend-tests:
@@ -10,6 +10,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
-      - run: cd client
       - run: npm install
       - run: npm test
