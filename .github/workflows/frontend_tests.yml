@@ -18,4 +18,4 @@ jobs:
 
     - name: Run Cypress Tests
       run: |
-        npm run cypress:open  # Adjust the script name to your Cypress test script
+        npx cypress run  # Adjust the script name to your Cypress test script
