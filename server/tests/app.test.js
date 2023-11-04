@@ -2,6 +2,8 @@ const request = require("supertest");
 
 const app = require("../app");
 
+jest.useFakeTimers()
+
 describe("Test example", () => {
   test("POST /api/auth/register", async () => {
     request(app)
