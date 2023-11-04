@@ -1,5 +1,5 @@
 name: Frontend Tests
-run-name: ${{ github.actor }} is testing the backend
+run-name: ${{ github.actor }} is testing the front
 on: [push]
 
 jobs:
@@ -14,10 +14,8 @@ jobs:
       with:
         node-version: 14  # Use the desired Node.js version
     - run: |
-        cd client  # Change to the "client" directory
         npm install
 
     - name: Run Cypress Tests
       run: |
-        cd client  # Change to the "client" directory
         npm run cypress:open  # Adjust the script name to your Cypress test script
