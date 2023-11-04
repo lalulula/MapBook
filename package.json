@@ -4,11 +4,8 @@
   "scripts": {
     "start:client": "cd client && npm start",
     "start:server": "cd server && npm start",
-    "start:both": "concurrently \"cd client && npm start\" \"cd server && npm start\"",
-    "install-root": "npm install -force",
-    "install-client": "cd client && npm install -force",
-    "install-server": "cd server && npm install -force",
-    "install-all": "npm-run-all install-root install-client install-server"
+    "start:both": "concurrently \"cd client && npm install -force && npm start\" \"cd server && npm install -force && npm start\""
+
   },
   "dependencies": {
     "concurrently": "^8.2.2"
