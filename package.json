@@ -1,8 +1,4 @@
 {
-<<<<<<< HEAD
-  "dependencies": {
-    "cypress": "^13.4.0"
-=======
   "name": "mapbook",
   "version": "1.0.0",
   "scripts": {
@@ -19,6 +15,5 @@
   },
   "devDependencies": {
     "npm-run-all": "^4.1.5"
->>>>>>> main
   }
 }
