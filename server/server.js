@@ -15,16 +15,3 @@ mongoose
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
   })
   .catch((error) => console.log(`${error} did not connect`));
-
-// const start = (PORT) => {
-//   try {
-//     app.listen(PORT, () => {
-//       console.log(`Api running at http://localhost:${PORT}`);
-//     });
-//   } catch (err) {
-//     console.error(err);
-//     process.exit();
-//   }
-// };
-
-// start(PORT);
