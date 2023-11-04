@@ -3,14 +3,14 @@ const mongoose = require("mongoose");
 
 const app = require("../server");
 
-// const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 describe("Test example", () => {
 
   // Give time to any async operation to complete after each test
-  // afterEach(async () => {
-  //   await sleep(2000);
-  // });
+  afterEach(async () => {
+    await sleep(2000);
+  });
 
   // Also close any pending connection (or related) if any
   afterAll(() => { 
