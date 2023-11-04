@@ -10,6 +10,8 @@ jobs:
             working-directory: ./client
     steps:
     - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: npm install
     - name: Run Cypress Tests
       uses: cypress-io/github-action@v4
       with:
