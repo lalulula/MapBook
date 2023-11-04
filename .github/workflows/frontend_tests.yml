@@ -13,14 +13,16 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: 14  # Use the desired Node.js version
-    - run: |
+    - name: Instal dependencies
+      run: 
         npm install
 
+    - name: Start development server
+      run: npm start
+
     - name: Run Cypress Tests
-      uses: cypress-io/github-action@v6
-      with:
-        start: npm start
-        browser: chrome
-        command: npx cypress run  # Adjust the script name to your Cypress test script
+      run: |
+        npx cypress run  # Adjust the script name to your Cypress test script
+        
 
 
