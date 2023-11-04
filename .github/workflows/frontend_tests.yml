@@ -10,10 +10,16 @@ jobs:
             working-directory: ./client
     steps:
     - uses: actions/checkout@v2
-    - name: Install dependencies
-      run: npm install
-    - name: Run Cypress Tests
-      uses: cypress-io/github-action@v4
+    - uses: actions/setup-node@v2
       with:
-        command: npx cypress run
-        browser: chrome
+        node-version: 14  # Use the desired Node.js version
+    - name: Instal dependencies
+      run: 
+        npm install
+
+    - name: Run Cypress Tests
+      run: |
+        npx cypress run  # Adjust the script name to your Cypress test script
+        
+
+
