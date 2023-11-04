@@ -1,13 +1,27 @@
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const express = require("express");
+const cors = require("cors");
+const helmet = require("helmet");
+
+const auth = require("./controllers/auth")
+const authRoutes = require("./routes/auth")
+
+// EXPRESS APP SETUP
+const app = express();
+app.use(express.json());
+app.use(helmet());
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+app.use(cors());
 
 // CONFIGURATIONS
 dotenv.config();
 
+// ROUTES
+app.use("/api/auth", authRoutes);
+
+// MONGOOSE SETUP
 const PORT = process.env.PORT || 3001;
-
-const app = require("./app");
-
 mongoose
   .connect(process.env.MONGO_URL, {
   })
@@ -16,15 +30,4 @@ mongoose
   })
   .catch((error) => console.log(`${error} did not connect`));
 
-// const start = (PORT) => {
-//   try {
-//     app.listen(PORT, () => {
-//       console.log(`Api running at http://localhost:${PORT}`);
-//     });
-//   } catch (err) {
-//     console.error(err);
-//     process.exit();
-//   }
-// };
-
-// start(PORT);
+module.exports = app;
