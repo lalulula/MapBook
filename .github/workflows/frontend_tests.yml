@@ -15,9 +15,12 @@ jobs:
         node-version: 14  # Use the desired Node.js version
     - run: |
         npm install
-    - run: |
-        npm start
 
     - name: Run Cypress Tests
-      run: |
-        npx cypress run  # Adjust the script name to your Cypress test script
+      uses: cypress-io/github-action@v6
+      with:
+        start: npm start
+        browser: chrome
+        command: npx cypress run  # Adjust the script name to your Cypress test script
+
+
