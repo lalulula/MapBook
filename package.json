@@ -4,7 +4,10 @@
   "scripts": {
     "start:client": "cd client && npm start",
     "start:server": "cd server && npm start",
-    "start:both": "concurrently \"cd client && npm install -force && npm start\" \"cd server && npm install -force && npm start\""
+    "start:both": "concurrently \"cd client && npm start\" \"cd server && npm start\"",
+
+    "heroku:client": "cd client && npm install -force && npm start",
+    "heroku:server": "cd server && npm install -force && npm start"
 
   },
   "dependencies": {

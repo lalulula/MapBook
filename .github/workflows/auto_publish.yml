@@ -21,12 +21,20 @@ jobs:
       # - run: cd client && npm install -force
       # - run: cd server && npm install -force
 
-      - run: echo "Deploy to heroku"
+      - run: echo "Deploy to heroku frontend"
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "mapbook" #Must be unique in Heroku
           heroku_email: "mapbook2023@gmail.com"
-          procfile: "web: npm install -force && npm run start:both"
+          procfile: "web: npm install -force && npm run heroku:client"
+
+      - run: echo "Deploy to heroku backend"
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "mapbookbackend" #Must be unique in Heroku
+          heroku_email: "mapbook2023@gmail.com"
+          procfile: "web: npm install -force && npm run heroku:server"
       
 
