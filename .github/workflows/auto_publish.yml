@@ -27,6 +27,6 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "mapbook" #Must be unique in Heroku
           heroku_email: "mapbook2023@gmail.com"
-          procfile: "web: npm install npm-run-all --save-dev && npm run start:both"
+          procfile: "web: npm install -force && npm run install-all && npm run start:both"
       
 
