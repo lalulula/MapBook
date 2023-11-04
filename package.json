@@ -4,9 +4,16 @@
   "scripts": {
     "start:client": "cd client && npm start",
     "start:server": "cd server && npm start",
-    "start:both": "concurrently \"cd client && npm start\" \"cd server && npm start\""
+    "start:both": "concurrently \"cd client && npm start\" \"cd server && npm start\"",
+    "install-root": "npm install -force",
+    "install-client": "cd client && npm install -force",
+    "install-server": "cd server && npm install -force",
+    "install-all": "npm-run-all install-root install-client install-server"
   },
   "dependencies": {
     "concurrently": "^8.2.2"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
   }
 }

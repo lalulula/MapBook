@@ -20,7 +20,6 @@ jobs:
       - run: npm install -force
       - run: cd client && npm install -force
       - run: cd server && npm install -force
-      - run: cd server && npm install nodemon
 
       - run: echo "Deploy to heroku"
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
@@ -28,6 +27,6 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "mapbook" #Must be unique in Heroku
           heroku_email: "mapbook2023@gmail.com"
-          procfile: "web: npm run start:both"
+          procfile: "web: npm install npm-run-all --save-dev && npm run start:both"
       
 
