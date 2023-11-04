@@ -1,8 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+/node_modules
+
 # dependencies
-client/node_modules
-server/node_modules
+/client/node_modules
+
 /.pnp
 .pnp.js
 
@@ -26,4 +28,9 @@ yarn-error.log*
 
 # notes.txt
 
-client/node_modules/.cache/**
+#Server
+/server/node_modules
+/server/Procfile
+
+# include server/.env file
+!/server/.env
