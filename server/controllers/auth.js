@@ -3,12 +3,12 @@ const User = require("../models/User");
 const register = async (req, res) => {
   try {
     const {
-    username,
-    password,
+      username,
+      password,
     } = req.body;
     const newUser = new User({
-    username,
-    password,
+      username,
+      password,
     });
     const savedUser = await newUser.save();
     return res.status(201).json(savedUser);
