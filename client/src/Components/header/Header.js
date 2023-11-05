@@ -3,10 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "./header.css";
 import "intersection-observer";
-import LandingPage from "../landing/LandingPage";
-import Login from "../login/Login";
-import Register from "../register/Register";
-
 const Header = () => {
   const navigate = useNavigate();
 
@@ -19,11 +15,6 @@ const Header = () => {
 
   return (
     <>
-      <Routes>
-        <Route path="/" element={<LandingPage />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/register" element={<Register />}></Route>
-      </Routes>
       <div className="header">
         <div className="header_container">
           <div onClick={() => navigate("/")}>MapBook</div>
