@@ -2,6 +2,7 @@ const User = require("../models/User");
 
 // Create
 const register = async (req, res) => {
+  console.log("REGISTERING IN SERVER");
   try {
     const {
       username,
@@ -34,4 +35,4 @@ const editUser = async (req, res) => {
   }
 };
 
-module.exports = { register:register, editUser:editUser };
+module.exports = { register: register, editUser: editUser };
