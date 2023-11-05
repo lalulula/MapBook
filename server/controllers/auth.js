@@ -1,5 +1,6 @@
 const User = require("../models/User");
 
+// Create
 const register = async (req, res) => {
   try {
     const {
@@ -17,4 +18,20 @@ const register = async (req, res) => {
   }
 };
 
-module.exports = { register:register };
+// UPDATE
+const editUser = async (req, res) => {
+  try {
+    const { username, password, } = req.body;
+
+    const updatedUser = await User.findOneAndUpdate(
+      { username: username },
+      { password: password },
+    );
+
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
+module.exports = { register:register, editUser:editUser };
