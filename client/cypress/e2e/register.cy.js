@@ -15,6 +15,7 @@ describe("Register Porm", () => {
     // Ensure the registration was successful (you might need to assert the URL or page content)
     cy.url().should("eq", "https://mapbook-f381d1faf354.herokuapp.com/login");
   });
+
   //CASE2 : When User inputs invalid register information
   it("should show an error message if passwords don't match", () => {
     cy.visit("https://mapbook-f381d1faf354.herokuapp.com/register");

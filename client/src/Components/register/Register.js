@@ -89,7 +89,7 @@ const Register = () => {
             // value={email}
             onChange={(e) => setEmail(e.target.value)}
             {...register("email", {
-              required: true,
+              // required: true,
               pattern:
                 /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zAZ]{2,}))$/,
             })}
@@ -132,7 +132,11 @@ const Register = () => {
           )}
         </Form.Field>
         <a href="#/">Already a Member?</a>
-        <Button type="submit" className="register_btn">
+        <Button
+          type="submit"
+          className="register_btn"
+          onClick={() => handleRegister(username, password, confirmPwd)}
+        >
           Submit
         </Button>
       </Form>
