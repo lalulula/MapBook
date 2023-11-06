@@ -1,7 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 /node_modules
-
+.eslintcache
+.cache
+/packages/**/node_modules
+/tools/internal-rules/node_modules
+/.vscode
+.temp-eslintcache
 # dependencies
 /client/node_modules
 

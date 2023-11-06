@@ -1,6 +1,23 @@
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+
 const User = require("../models/User");
 
-// Create
+// LOGIN
+const login = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username: username });
+    if (!user) return res.status(400).json({ msg: "User does not exist. " });
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    res.status(200).json({ token, user });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Create or REGISTER
 const register = async (req, res) => {
   console.log("REGISTERING IN SERVER");
   try {
@@ -8,6 +25,12 @@ const register = async (req, res) => {
       username,
       password,
     } = req.body;
+
+    // check for duplicate username
+    const user = await User.findOne({ username: username });
+    if (!user) return res.status(400).json({ msg: "Username is already used. Choose a different username " });
+
+    // if not, continue
     const newUser = new User({
       username,
       password,
@@ -35,4 +58,4 @@ const editUser = async (req, res) => {
   }
 };
 
-module.exports = { register: register, editUser: editUser };
+module.exports = { register: register, editUser: editUser, login:login };
