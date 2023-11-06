@@ -9,7 +9,7 @@ const Intro = () => {
   };
   return (
     <div>
-      <div className="landing_intro">
+      <div className="landing_intro intro">
         <div className="landing_right">
           <h2>Explore the World, Your Way</h2>
           <h1>Map Book</h1>
