@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./register.css";
-import { createUserAPIMethod } from '../../api/client';
+import { createUserAPIMethod } from "../../api/client";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -13,17 +13,19 @@ const Register = () => {
 
   const handleRegister = (username, password) => {
     var admin = false;
-    if (name === "admin") {
-      admin = true;
-    }
+    // if (name === "admin") {
+    //   admin = true;
+    // }
 
     const user = { username, password };
-    createUserAPIMethod(user).then(() => setIsLoggedIn(true)).catch(err => {
-      console.log("invalid register");
-      setInvalidRegMsg("Invalid email and/or password"); //yunah wants to add special message here
-      setIsLoggedIn(false);
-    });
-  }
+    createUserAPIMethod(user)
+      .then(() => setIsLoggedIn(true))
+      .catch((err) => {
+        console.log("invalid register");
+        setInvalidRegMsg("Invalid email and/or password"); //yunah wants to add special message here
+        setIsLoggedIn(false);
+      });
+  };
 
   /* useEffect(() => {
     if (isLoggedIn) {
@@ -69,12 +71,13 @@ const Register = () => {
           onChange={(e) => setConfirmPwd(e.target.value)}
         /> */}
         <a href="#/">Already a Member?</a>
-        <button className="register_btn" onClick={() => handleRegister(username, password)}>
+        <button
+          className="register_btn"
+          onClick={() => handleRegister(username, password)}
+        >
           Sign Up
         </button>
       </div>
-
-
     </div>
   );
 };
