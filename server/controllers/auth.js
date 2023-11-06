@@ -28,7 +28,7 @@ const register = async (req, res) => {
 
     // check for duplicate username
     const user = await User.findOne({ username: username });
-    if (!user) return res.status(400).json({ msg: "Username is already used. Choose a different username " });
+    if (user) return res.status(400).json({ msg: "Username is already used. Choose a different username " });
 
     // if not, continue
     const newUser = new User({
@@ -70,4 +70,4 @@ const editUser = async (req, res) => {
   }
 };
 
-module.exports = { register: register, editUser: editUser, login:login, getUser:getUser };
+module.exports = { register: register, editUser: editUser, login: login, getUser: getUser };
