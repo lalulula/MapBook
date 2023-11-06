@@ -5,7 +5,7 @@ const defaultHeaders = {
 }
 
 export const createUserAPIMethod = (user) => {
-    const response = fetch(`http://localhost:3001/api/auth/register`, {
+    const response = fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/`, {
         ...defaultHeaders,
         method: 'POST',
         body: JSON.stringify(user),
