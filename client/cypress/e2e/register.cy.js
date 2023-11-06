@@ -17,7 +17,7 @@ describe("Register Form", () => {
   });
 
   //CASE2 : When User inputs invalid register information
-  /* it("should show an error message if passwords don't match", () => {
+  it("should show an error message if passwords don't match", () => {
     cy.visit("https://mapbook-f381d1faf354.herokuapp.com/register");
 
     // Fill out the registration form with passwords that don't match
@@ -35,5 +35,5 @@ describe("Register Form", () => {
       "contain",
       "Passwords must match"
     );
-  }); */
+  });
 });
