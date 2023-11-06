@@ -39,3 +39,6 @@ yarn-error.log*
 
 # include server/.env file
 !/server/.env
+
+# eslint cache
+.eslintcache
