@@ -9,7 +9,7 @@ const Intro1 = () => {
     width: 600,
   };
   return (
-    <div className="landing_intro_1">
+    <div className="landing_intro_1 intro">
       <h1>Design Your World</h1>
       <h4>
         Craft maps that tell your story, with endless possibilities for

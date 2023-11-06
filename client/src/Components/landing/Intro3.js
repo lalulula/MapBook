@@ -9,7 +9,7 @@ const Intro3 = () => {
     width: 600,
   };
   return (
-    <div className="landing_intro_3">
+    <div className="landing_intro_3 intro">
       <h1>Collaborate and Share</h1>
       <h4>
         Connect with fellow map enthusiasts, and share your maps for the world
