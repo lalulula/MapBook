@@ -3,9 +3,9 @@ describe("Register Form", () => {
   it("should successfully register a user", () => {
     cy.visit("https://mapbook-f381d1faf354.herokuapp.com/register");
     // Fill out the registration form
-    cy.get('input[placeholder="Name"]').type("Sam");
+    //cy.get('input[placeholder="Name"]').type("Sam");
     cy.get('input[placeholder="Username"]').type("Sammy");
-    cy.get('input[placeholder="Email"]').type("saaaaam@gmail.com");
+    //cy.get('input[placeholder="Email"]').type("saaaaam@gmail.com");
     cy.get('input[placeholder="Password"]').type("Password123!");
     cy.get('input[placeholder="Confirm Password"]').type("Password123!");
 
@@ -21,9 +21,9 @@ describe("Register Form", () => {
     cy.visit("https://mapbook-f381d1faf354.herokuapp.com/register");
 
     // Fill out the registration form with passwords that don't match
-    cy.get('input[placeholder="Name"]').type("Yolo");
+    //cy.get('input[placeholder="Name"]').type("Yolo");
     cy.get('input[placeholder="Username"]').type("yoolloo");
-    cy.get('input[placeholder="Email"]').type("yala@email.com");
+    //cy.get('input[placeholder="Email"]').type("yala@email.com");
     cy.get('input[placeholder="Password"]').type("Password123!");
     cy.get('input[placeholder="Confirm Password"]').type("Pass"); // Passwords don't match
 
