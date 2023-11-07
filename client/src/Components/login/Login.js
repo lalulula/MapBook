@@ -32,11 +32,12 @@ const Login = () => {
       setIsLoggedIn(false);
     });
   } */
+  const s = 0;
 
   const dispatch = useDispatch();
   const onSubmit = async (e) => {
     //e.preventDefault();
-    // console.log(user);
+    // console.log(user);,
 
     // dispatch(login({ username: e.username, password: e.password, }));
     // loginUserAPIMethod(user).then(() => setIsLoggedIn(true)).catch(err => {
