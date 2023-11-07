@@ -30,11 +30,12 @@ export const loginUserAPIMethod = (user) => {
     return response;
 }
 
-export const logoutUserAPIMethod = () => {
-    return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/logout`, {
+export const updateUserAPIMethod = (user) => {
+    return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/user`, {
         ...defaultHeaders,
-        method: 'POST',
-    });
+        method: 'PUT', // The method defaults to GET
+        body: JSON.stringify(user),
+    }).then(checkStatus);
 }
 
 export const getUserAPIMethod = (userId) => {
