@@ -4,7 +4,7 @@ describe("Register Form", () => {
     cy.visit("https://mapbook-f381d1faf354.herokuapp.com/register");
     // Fill out the registration form
     //cy.get('input[placeholder="Name"]').type("Sam");
-    cy.get('input[placeholder="Username"]').type("Sammy");
+    cy.get('input[placeholder="Username"]').type("TestUser");
     //cy.get('input[placeholder="Email"]').type("saaaaam@gmail.com");
     cy.get('input[placeholder="Password"]').type("Password123!");
     cy.get('input[placeholder="Confirm Password"]').type("Password123!");
