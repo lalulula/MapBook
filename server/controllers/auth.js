@@ -9,7 +9,6 @@ const login = async (req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username: username });
     if (!user) return res.status(400).json({ msg: "User does not exist. " });
-
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
     res.status(200).json({ token, user });
   } catch (err) {
@@ -19,7 +18,6 @@ const login = async (req, res) => {
 
 // Create or REGISTER
 const register = async (req, res) => {
-  console.log("REGISTERING IN SERVER");
   try {
     const {
       username,
