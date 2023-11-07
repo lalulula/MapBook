@@ -10,7 +10,7 @@ export const createUserAPIMethod = (user) => {
         method: 'POST',
         body: JSON.stringify(user),
     }); */
-    const response = fetch(`/api/auth/register`, {
+    const response = fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/register`, {
         ...defaultHeaders,
         method: 'POST',
         body: JSON.stringify(user),
@@ -20,7 +20,7 @@ export const createUserAPIMethod = (user) => {
 }
 
 export const loginUserAPIMethod = (user) => {
-    const response = fetch(`http://localhost:3001/api/auth/login`, {
+    const response = fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/login`, {
         ...defaultHeaders,
         method: 'POST',
         body: JSON.stringify(user),
@@ -31,14 +31,14 @@ export const loginUserAPIMethod = (user) => {
 }
 
 export const logoutUserAPIMethod = () => {
-    return fetch(`http://localhost:3001/api/logout`, {
+    return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/logout`, {
         ...defaultHeaders,
         method: 'POST',
     });
 }
 
 export const getUserAPIMethod = (userId) => {
-    return fetch(`http://localhost:3001/api/auth/user`, {
+    return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/user`, {
         ...defaultHeaders,
         method: 'GET'
     }).then(checkStatus);
