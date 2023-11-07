@@ -1,6 +1,6 @@
-// import { useSelector } from "react-redux";
-// import { selectUser } from "./features/userSlice";
-// import { BrowserRouter as Router } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectUser } from "./features/userSlice";
+//import { BrowserRouter as Router } from "react-router-dom";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 import "./App.css";
@@ -11,6 +11,7 @@ import Lottie from "lottie-react";
 import loadingMap from "./assets/Lottie/loadingMap.json";
 import Register from "./Components/register/Register";
 import Header from "./Components/header/Header";
+import MainPage from "./Components/mainpage/MainPage";
 
 function App() {
   //Initial Loading Feature For Web
@@ -21,6 +22,8 @@ function App() {
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
+
+  const user = useSelector(selectUser);
 
   if (loading) {
     return (
@@ -37,12 +40,13 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/mainpage" element={user ? <MainPage /> : <LandingPage />} />
         </Routes>
       </div>
     </Router>
   );
-  // const user = useSelector(selectUser);
-  // return <div className="App">{user ? <MainPage /> : <Login />}</div>;
+
+  return <div className="App">{user ? <MainPage /> : <Login />}</div>;
 }
 
 export default App;

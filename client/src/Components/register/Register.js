@@ -40,7 +40,7 @@ const Register = () => {
       .then(() => {
         console.log("Successfully registered");
         setIsLoggedIn(true);
-        navigate("/login");
+        navigate("/login"); //will navigate despite incorrect input
       })
       .catch((err) => {
         console.log("Invalid register");
@@ -57,7 +57,7 @@ const Register = () => {
       <Form onSubmit={handleSubmit(onSubmit)} className="login_form">
         <h1>Register</h1>
         <h6>You're almost there!</h6>
-        <Form.Field>
+        {/* <Form.Field>
           <input
             type="text"
             placeholder="Name"
@@ -68,7 +68,7 @@ const Register = () => {
           {errors.name && (
             <p className="ui negative mini message">Name is required</p>
           )}
-        </Form.Field>
+        </Form.Field> */}
         <Form.Field>
           <input
             type="text"
@@ -82,7 +82,7 @@ const Register = () => {
             <p className="ui negative mini message">Username is required</p>
           )}
         </Form.Field>
-        <Form.Field>
+        {/* <Form.Field>
           <input
             type="email"
             placeholder="Email"
@@ -99,7 +99,7 @@ const Register = () => {
               Enter a valid email address
             </p>
           )}
-        </Form.Field>
+        </Form.Field> */}
         <Form.Field>
           <input
             type="password"
@@ -114,7 +114,7 @@ const Register = () => {
           {errors.password && (
             <p className="ui negative mini message">
               Password must be between 6 and 15 characters in length with one
-              uppercase and one lowercase letter
+              uppercase, one lowercase letter, and one number
             </p>
           )}
         </Form.Field>

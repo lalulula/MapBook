@@ -5,7 +5,12 @@ const defaultHeaders = {
 }
 
 export const createUserAPIMethod = (user) => {
-    const response = fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/register`, {
+    /* const response = fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/register`, {
+        ...defaultHeaders,
+        method: 'POST',
+        body: JSON.stringify(user),
+    }); */
+    const response = fetch(`/api/auth/register`, {
         ...defaultHeaders,
         method: 'POST',
         body: JSON.stringify(user),
@@ -14,8 +19,33 @@ export const createUserAPIMethod = (user) => {
     return response;
 }
 
+export const loginUserAPIMethod = (user) => {
+    const response = fetch(`http://localhost:3001/api/auth/login`, {
+        ...defaultHeaders,
+        method: 'POST',
+        body: JSON.stringify(user),
+    }).then(checkStatus);
 
-/* function checkStatus(response) {
+
+    return response;
+}
+
+export const logoutUserAPIMethod = () => {
+    return fetch(`http://localhost:3001/api/logout`, {
+        ...defaultHeaders,
+        method: 'POST',
+    });
+}
+
+export const getUserAPIMethod = (userId) => {
+    return fetch(`http://localhost:3001/api/auth/user`, {
+        ...defaultHeaders,
+        method: 'GET'
+    }).then(checkStatus);
+}
+
+
+function checkStatus(response) {
     if (response.status >= 200 && response.status < 300) {
         return response;
     } else {
@@ -24,7 +54,7 @@ export const createUserAPIMethod = (user) => {
         error.response = response;
         throw error;
     }
-} */
+}
 
 function parseJSON(response) {
     return response.json();

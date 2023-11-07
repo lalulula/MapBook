@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, selectUser } from "../features/userSlice";
+import { logout, selectUser } from "../../features/userSlice";
+import { getUserAPIMethod } from "../../api/client";
 
 const MainPage = () => {
   const user = useSelector(selectUser);
@@ -8,9 +9,12 @@ const MainPage = () => {
   const handleLogout = () => {
     dispatch(logout());
   };
+
+
+
   return (
     <div>
-      MainPage <button onClick={handleLogout}>Logout, {user.email}</button>
+      {user.username} {/* <button onClick={handleLogout}>Logout, {user.email}</button> */}
     </div>
   );
 };
