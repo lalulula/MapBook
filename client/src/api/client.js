@@ -14,7 +14,7 @@ export const createUserAPIMethod = (user) => {
         ...defaultHeaders,
         method: 'POST',
         body: JSON.stringify(user),
-    });
+    }).then(checkStatus);
     /* const response_1 = checkStatus(response); */
     return response;
 }
