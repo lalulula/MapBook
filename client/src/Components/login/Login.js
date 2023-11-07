@@ -32,7 +32,6 @@ const Login = () => {
       setIsLoggedIn(false);
     });
   } */
-  const s = 0;
 
   const dispatch = useDispatch();
   const onSubmit = async (e) => {
