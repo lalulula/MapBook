@@ -13,8 +13,8 @@ const MainPage = () => {
 
 
   return (
-    <div>
-      {user.username} {/* <button onClick={handleLogout}>Logout, {user.email}</button> */}
+    <div className="main">
+      Hello, {user.username} {/* <button onClick={handleLogout}>Logout, {user.email}</button> */}
     </div>
   );
 };
