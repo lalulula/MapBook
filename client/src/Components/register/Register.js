@@ -54,8 +54,11 @@ const Register = () => {
   return (
     <div className="login">
       <Form onSubmit={handleSubmit(onSubmit)} className="login_form">
-        <h1>Register</h1>
-        <h6>You're almost there!</h6>
+        <div className="login_form_top">
+          <h1>Register</h1>
+          <h6>You're almost there!</h6>
+        </div>
+
         {/* <Form.Field>
           <input
             type="text"

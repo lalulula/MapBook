@@ -6,32 +6,27 @@
 }
 
 .login_form_top {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .login_form {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    width: 40%;
-    height: 70%;
+    width: 30%;
+    height: 100%;
 }
 
-.login_form_middle {
-    display: flex;
-    flex-direction: column;
+h6 {
+    margin-top: 5px;
 }
 
 input {
     margin-bottom: 10px;
+    padding: 10px;
+    width: 100%;
 }
 
-.bottomLine {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0 20px 0;
-}
-
-hr {
+.login_btn {
     width: 50%;
 }

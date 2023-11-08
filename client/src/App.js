@@ -15,6 +15,7 @@ import MainPage from "./Components/main/MainPage";
 import CreateMap from "./Components/createmap/CreateMap";
 import MyMap from "./Components/mymap/MyMap";
 import SocialPage from "./Components/social/SocialPage";
+import Profile from "./Components/profile/Profile";
 
 function App() {
   //Initial Loading Feature For Web
@@ -46,6 +47,7 @@ function App() {
           <Route path="/createmap" element={<CreateMap />} />
           <Route path="/socialpage" element={<SocialPage />} />
           <Route path="/mymap" element={<MyMap />} />
+          <Route path="profile" element={<Profile />} />
           <Route
             path="/mainpage"
             element={user ? <MainPage /> : <LandingPage />}

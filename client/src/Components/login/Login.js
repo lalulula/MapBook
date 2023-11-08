@@ -46,8 +46,11 @@ const Login = () => {
   return (
     <div className="login">
       <Form onSubmit={handleSubmit(onSubmit2)} className="login_form">
-        <h1>Login</h1>
-        <h6>Create and Share Your Maps</h6>
+        <div className="login_form_top">
+          <h1>Login</h1>
+          <h6>Create and Share Your Maps</h6>
+        </div>
+
         <Form.Field>
           <input
             type="text"
@@ -79,13 +82,15 @@ const Login = () => {
             <p className="ui negative mini message">Password is required</p>
           )}
         </Form.Field>
-        <Button
-          type="submit"
-          className="login_btn"
-        /* onClick={() => handleLogin(username, password)} */
-        >
-          Submit
-        </Button>
+        <div>
+          <Button
+            type="submit"
+            className="login_btn"
+          >
+            Submit
+          </Button>
+        </div>
+
       </Form>
     </div>
   );
