@@ -21,6 +21,9 @@ const Register = () => {
     setError,
   } = useForm();
 
+  const onSubmit = (data) => {
+    handleRegister(data.username, data.password, data.confirmPwd);
+  };
   const handleRegister = (username, password, confirmPwd) => {
     if (password !== confirmPwd) {
       setError("confirmPwd", {
@@ -46,10 +49,6 @@ const Register = () => {
         console.log("Invalid register");
         setIsLoggedIn(false);
       });
-  };
-
-  const onSubmit = (data) => {
-    handleRegister(data.username, data.password, data.confirmPwd);
   };
 
   return (
@@ -132,11 +131,7 @@ const Register = () => {
           )}
         </Form.Field>
         <a href="#/">Already a Member?</a>
-        <Button
-          type="submit"
-          className="register_btn"
-          onClick={() => handleRegister(username, password, confirmPwd)}
-        >
+        <Button type="submit" className="register_btn">
           Submit
         </Button>
       </Form>

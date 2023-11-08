@@ -36,3 +36,8 @@
   align-items: center;
   padding: 65px 0 65px 0;
 }
+.header_profile {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+}

@@ -3,6 +3,13 @@ app/store : is going to store all the redux data that is going to be used in the
 src/features -->slices 
                 (slice represents a piece of a applications state => you can define the inital state and reducers for that specific part of the state)
 
+
+*userSlice MemoCode*
+export const selectUser = (state) => state.user.user;
+// state.user //Prints the user Obj
+//  state.user.user //user field of user Obj
+// This is because I defined user like "user": {user: payload}
+
 **ANIMATION(lottiefiles)**
 
 https://lottiefiles.com/platform?utm_source=iconscout&utm_medium=modalLearnLFPlatform

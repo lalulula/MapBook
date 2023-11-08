@@ -5,6 +5,7 @@ import { selectUser } from "../../features/userSlice";
 import "./header.css";
 import "intersection-observer";
 import CustomModal from "./Modal";
+import defaultImg from "../../assets/img/defaultProfileImg.jpg";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -36,7 +37,14 @@ const Header = () => {
           <div className="header_begin">
             {user ? (
               <>
-                <div>Hello</div>
+                <div onClick={() => navigate("/createmap")}>AddMaps</div>
+                <div onClick={() => navigate("/social")}>Social</div>
+                <div onClick={() => navigate("/mymap")}>MyMaps</div>
+                <img
+                  src={defaultImg}
+                  alt="header_profile"
+                  className="header_profile"
+                />
               </>
             ) : (
               <>
