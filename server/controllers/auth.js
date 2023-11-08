@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 
 const User = require("../models/User");
@@ -9,7 +10,15 @@ const login = async (req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username: username });
     if (!user) return res.status(400).json({ msg: "User does not exist. " });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
+    
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+
+    // make sure the password not send back to the frontend
+    delete user.password
+
     res.status(200).json({ token, user });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -28,10 +37,14 @@ const register = async (req, res) => {
     const user = await User.findOne({ username: username });
     if (user) return res.status(400).json({ msg: "Username is already used. Choose a different username " });
 
+    // hash password
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(password, salt);
+
     // if not, continue
     const newUser = new User({
       username,
-      password,
+      password: passwordHash,
     });
     const savedUser = await newUser.save();
     return res.status(201).json(savedUser);
