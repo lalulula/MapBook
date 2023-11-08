@@ -3,13 +3,23 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 .App {
-  min-height: 100vh; /* Minimum height of the viewport */
+  min-height: 100vh;
+  /* Minimum height of the viewport */
 }
+
 body {
   background: rgba(0, 0, 0, 0.901);
   color: #ffffff;
+  /* padding: 70px 0 0 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0; */
 }
+
 .loading_screen {
   display: flex;
   min-height: 100vh;
