@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, selectUser } from "../../features/userSlice";
+import { logout, selectUser, getUser } from "../../features/userSlice";
 import { useNavigate } from "react-router-dom";
 
 import "./main.css";
@@ -8,31 +8,43 @@ import dumImg from "../../assets/img/dum.jpg";
 import dumMapJsonData from "./dum_data.json";
 
 const MainPage = () => {
-  useEffect(() => {
-    console.log(user.username);
-  });
-  const navigate = useNavigate();
-  const user = useSelector(selectUser);
+  const userInfo = useSelector(getUser);
   const dispatch = useDispatch();
+  useEffect(() => {
+    const user = userInfo;
+    console.log(user.payload.user);
+  }, [userInfo]);
+  const navigate = useNavigate();
+  // const user1 = useSelector(selectUser);
   const handleLogout = () => {
     dispatch(logout());
-    console.log(user);
+    // console.log(user);
     navigate("/");
   };
 
   return (
     <div className="main">
       {/* <div onClick={() => handleLogout()}>LOGOUT</div> */}
-      <div>Maps By {user.username}</div>
-      {dumMapJsonData.map((item, index) => {
-        <div>Map is going to be rendered {index}</div>;
-      })}
+      {dumMapJsonData.map((item, index) => (
+        <Card key={index} data={item} defaultImg={dumImg} />
+      ))}
     </div>
   );
 };
 
 export default MainPage;
 
+const Card = ({ data, defaultImg }) => {
+  return (
+    <div className="card">
+      <img src={data.map_img ? data.map_img : defaultImg} alt={data.map_name} />
+      <h3>{data.map_name}</h3>
+      <p>{data.topic}</p>
+      <p>Liked by {data.map_users_liked} users</p>
+      <p>{data.map_comment_count} comments</p>
+    </div>
+  );
+};
 // import React, { useEffect, useState } from "react";
 // import { useDispatch, useSelector } from "react-redux";
 // import { logout, selectUser } from "../../features/userSlice";

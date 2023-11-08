@@ -33,7 +33,7 @@ const Header = () => {
     <>
       <div className="header">
         <div className="header_container">
-          <div onClick={() => navigate("/")}>MapBook</div>
+          <div>MapBook</div>
           <div className="header_begin">
             {user ? (
               <>
