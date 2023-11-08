@@ -6,15 +6,18 @@ import "./main.css";
 import { updateUserAPIMethod } from "../../api/client";
 import { useForm } from "react-hook-form";
 import { Button, Form } from "semantic-ui-react";
-
+import { useNavigate } from "react-router-dom";
 
 const MainPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(logout());
+    console.log(user);
+    navigate("/");
   };
   const {
     handleSubmit,
@@ -24,25 +27,26 @@ const MainPage = () => {
 
   const onSubmit = async (e) => {
     console.log(e);
-    const loggedInResponse = await fetch('http://localhost:3001/api/auth/user', {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: 'PUT',
-      body: JSON.stringify({
-        username: username,
-        password: password
-      })
-    }).then((response) => {
+    const loggedInResponse = await fetch(
+      "http://localhost:3001/api/auth/user",
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "PUT",
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      }
+    ).then((response) => {
       console.log("Updated a username");
     });
   };
 
   return (
     <div className="main">
-      <div className="main_container">
-        Edit your password here:
-      </div>
+      <div className="main_container">Edit your password here:</div>
       <Form onSubmit={onSubmit} className="update_form">
         <Form.Field>
           <input
@@ -63,9 +67,12 @@ const MainPage = () => {
         <Button
           type="submit"
           className="login_btn"
-        /* onClick={() => handleLogin(username, password)} */
-        >update</Button>
+          /* onClick={() => handleLogin(username, password)} */
+        >
+          update
+        </Button>
       </Form>
+      <div onClick={() => handleLogout()}>LOGOUT</div>
     </div>
   );
 };

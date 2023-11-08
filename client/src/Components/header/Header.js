@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser } from "../../features/userSlice";
 import "./header.css";
 import "intersection-observer";
-import CustomModal from './Modal';
-
+import CustomModal from "./Modal";
 
 const Header = () => {
   const navigate = useNavigate();
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -31,12 +34,21 @@ const Header = () => {
         <div className="header_container">
           <div onClick={() => navigate("/")}>MapBook</div>
           <div className="header_begin">
-            <div className="modal_container">
-              <CustomModal isOpen={isModalOpen} closeModal={closeModal} />
-            </div>
-            <div onClick={openModal}>Get Started</div>
-            <div onClick={() => navigate("/login")}>Login</div>
-            <div onClick={() => navigate("/register")}>Register</div>
+            {user ? (
+              <>
+                <div>Hello</div>
+              </>
+            ) : (
+              <>
+                {" "}
+                <div className="modal_container">
+                  <CustomModal isOpen={isModalOpen} closeModal={closeModal} />
+                </div>
+                <div onClick={openModal}>Get Started</div>
+                <div onClick={() => navigate("/login")}>Login</div>
+                <div onClick={() => navigate("/register")}>Register</div>
+              </>
+            )}
           </div>
         </div>
       </div>
