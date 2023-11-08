@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { login, selectUser } from "../../features/userSlice";
 import Register from "../register/Register";
-import { loginUserAPIMethod } from '../../api/client';
+import { loginUserAPIMethod } from "../../api/client";
 import { useForm } from "react-hook-form";
 import { Button, Form } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from 'react-redux'
+import { useSelector } from "react-redux";
 
-import './login.css';
+import "./login.css";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -44,22 +44,27 @@ const Login = () => {
     //   setIsLoggedIn(false);
     // });
     //handleLogin(e.username, e.password);
-    const loggedInResponse = await fetch('http://localhost:3001/api/auth/login', {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        username: e.username,
-        password: e.password,
-      })
-    });
+    const loggedInResponse = await fetch(
+      "http://localhost:3001/api/auth/login",
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          username: e.username,
+          password: e.password,
+        }),
+      }
+    );
     const loggedIn = await loggedInResponse.json();
-    if (loggedIn['token'] !== undefined) {
-      dispatch(login({
-        user: loggedIn.user,
-        token: loggedIn.token
-      }));
+    if (loggedIn["token"] !== undefined) {
+      dispatch(
+        login({
+          user: loggedIn.user,
+          token: loggedIn.token,
+        })
+      );
       navigate("/mainpage");
     }
   };
@@ -101,15 +106,13 @@ const Login = () => {
             })}
           />
           {errors.password && (
-            <p className="ui negative mini message">
-              Password is required
-            </p>
+            <p className="ui negative mini message">Password is required</p>
           )}
         </Form.Field>
         <Button
           type="submit"
           className="login_btn"
-        /* onClick={() => handleLogin(username, password)} */
+          /* onClick={() => handleLogin(username, password)} */
         >
           Submit
         </Button>
