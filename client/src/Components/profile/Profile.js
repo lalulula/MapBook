@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
 import { getUserAPIMethod } from "../../api/client";
+import EditIcon from '@mui/icons-material/Edit';
 
 import "./profile.css";
 
 const Profile = () => {
     const [user, setUser] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [username, setUsername] = useState("");
+    const [name, setName] = useState("");
+
+    //add username and name usestates
     // getting current user
     /* useEffect(() => {
         getUserAPIMethod().then((u) => {
@@ -12,6 +18,15 @@ const Profile = () => {
             setUser(u);
         })
     }, []); */
+
+    const handleClickEditUser = () => {
+        setIsEditing(!isEditing);
+    }
+
+    const handleClickSave = () => {
+
+    }
+    // set username and name using useeffect. May not be able to use user.username and user.name
 
     return (
         <div className="profile">
@@ -25,27 +40,38 @@ const Profile = () => {
                     <div className="profile_right">
                         <div className="username_container">
                             <h5>Username</h5>
-                            <div className="username">{user && (
-                                <div>{user.username}</div>
-                            )}</div>
-                            <div className="username">{!user && (
-                                <div>No user</div>
-                            )}</div>
+                            {isEditing && (
+                                <input type="text" value="hi" onChange={() => setUsername(e.target.value)} />
+                            )}
+                            {!isEditing && (
+                                <div className="username">
+                                    <div>No user</div>
+                                </div>
+                            )}
                         </div>
                         <div className="name_container">
                             <h5>Name</h5>
-                            <div className="name">Name goes here</div>
+                            {isEditing && (
+                                <input type="text" value="hi" onChange={() => setName(e.target.value)} />
+                            )}
+                            {!isEditing && (
+                                <div className="name">Name goes here</div>
+                            )}
                         </div>
                         <div className="email_container">
                             <h5>email</h5>
-                            <div className="email">{user && (
-                                <div>{user.email}</div>
-                            )}</div>
-                            <div className="email">{!user && (
+                            <div className="email">
                                 <div>No user</div>
-                            )}</div>
+                            </div>
                         </div>
                     </div>
+                    {isEditing && (
+                        <button className="finish_edit_user_btn" onClick={handleClickEditUser}>save</button>
+                    )}
+                    {!isEditing && (
+                        <button className="edit_user_btn" onClick={handleClickEditUser}>Edit info</button>
+                    )}
+
                 </div>
                 <div className="profile_bottom">
                     <div className="logout">logout</div>
