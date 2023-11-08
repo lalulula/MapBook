@@ -24,50 +24,17 @@ const Login = () => {
     setError,
   } = useForm();
 
-  /* const handleLogin = (username, password) => {
-    const user = { username, password };
-    console.log("user: ", user);
-    loginUserAPIMethod(user).then(() => setIsLoggedIn(true)).catch(err => {
+  const dispatch = useDispatch();
+
+  const onSubmit2 = async (user) => {
+
+    loginUserAPIMethod(user).then(() => { console.log("logged in!"); setIsLoggedIn(true) }).catch(err => {
       console.log("Unsuccessful login");
       setIsLoggedIn(false);
+      setErrorMessage("Incorrect username or password");
     });
-  } */
-
-  const dispatch = useDispatch();
-  const onSubmit = async (e) => {
-    //e.preventDefault();
-    // console.log(user);,
-
-    // dispatch(login({ username: e.username, password: e.password, }));
-    // loginUserAPIMethod(user).then(() => setIsLoggedIn(true)).catch(err => {
-    //   console.log("Unsuccessful login");
-    //   setIsLoggedIn(false);
-    // });
-    //handleLogin(e.username, e.password);
-    const loggedInResponse = await fetch(
-      "http://localhost:3001/api/auth/login",
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify({
-          username: e.username,
-          password: e.password,
-        }),
-      }
-    );
-    const loggedIn = await loggedInResponse.json();
-    if (loggedIn["token"] !== undefined) {
-      dispatch(
-        login({
-          user: loggedIn.user,
-          token: loggedIn.token,
-        })
-      );
-      navigate("/mainpage");
-    }
   };
+
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -78,7 +45,7 @@ const Login = () => {
   }, [isLoggedIn]);
   return (
     <div className="login">
-      <Form onSubmit={handleSubmit(onSubmit)} className="login_form">
+      <Form onSubmit={handleSubmit(onSubmit2)} className="login_form">
         <h1>Login</h1>
         <h6>Create and Share Your Maps</h6>
         <Form.Field>
@@ -105,6 +72,9 @@ const Login = () => {
               //pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/,
             })}
           />
+          <div>
+            {errorMessage}
+          </div>
           {errors.password && (
             <p className="ui negative mini message">Password is required</p>
           )}
@@ -112,7 +82,7 @@ const Login = () => {
         <Button
           type="submit"
           className="login_btn"
-          /* onClick={() => handleLogin(username, password)} */
+        /* onClick={() => handleLogin(username, password)} */
         >
           Submit
         </Button>

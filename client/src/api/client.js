@@ -19,8 +19,8 @@ export const createUserAPIMethod = (user) => {
     return response;
 }
 
-export const loginUserAPIMethod = (user) => {
-    const response = fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/login`, {
+export const loginUserAPIMethod = async (user) => {
+    const response = await fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/login`, {
         ...defaultHeaders,
         method: 'POST',
         body: JSON.stringify(user),
