@@ -27,14 +27,18 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const onSubmit2 = async (user) => {
-
-    loginUserAPIMethod(user).then(() => { console.log("logged in!"); setIsLoggedIn(true) }).catch(err => {
-      console.log("Unsuccessful login");
-      setIsLoggedIn(false);
-      setErrorMessage("Incorrect username or password");
-    });
+    loginUserAPIMethod(user)
+      .then((userData) => {
+        console.log("logged in!");
+        dispatch(login(user));
+        setIsLoggedIn(true);
+      })
+      .catch((err) => {
+        console.log("Unsuccessful login");
+        setIsLoggedIn(false);
+        setErrorMessage("Incorrect username or password");
+      });
   };
-
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -75,22 +79,16 @@ const Login = () => {
               //pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/,
             })}
           />
-          <div>
-            {errorMessage}
-          </div>
+          <div>{errorMessage}</div>
           {errors.password && (
             <p className="ui negative mini message">Password is required</p>
           )}
         </Form.Field>
         <div>
-          <Button
-            type="submit"
-            className="login_btn"
-          >
+          <Button type="submit" className="login_btn">
             Submit
           </Button>
         </div>
-
       </Form>
     </div>
   );
