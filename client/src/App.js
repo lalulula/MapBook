@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { selectUser } from "./features/userSlice";
+// import { selectUser } from "./features/userSlice";
 //import { BrowserRouter as Router } from "react-router-dom";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -27,7 +27,7 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  const user = useSelector(selectUser);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
   if (loading) {
     return (
@@ -50,7 +50,7 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route
             path="/mainpage"
-            element={user ? <MainPage /> : <LandingPage />}
+            element={isAuthenticated ? <MainPage /> : <LandingPage />}
           />
         </Routes>
       </div>

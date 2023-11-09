@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { selectUser } from "../../features/userSlice";
+import { useSelector } from "react-redux";
 import "./header.css";
 import "intersection-observer";
 import CustomModal from "./Modal";
@@ -9,9 +8,11 @@ import defaultImg from "../../assets/img/defaultProfileImg.jpg";
 
 const Header = () => {
   const navigate = useNavigate();
-  const user = useSelector(selectUser);
-  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
+  useEffect(() => {
+    console.log(isAuthenticated);
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -33,18 +34,21 @@ const Header = () => {
     <>
       <div className="header">
         <div className="header_container">
-          <div>MapBook</div>
+          <div onClick={() => navigate("/mainpage")}>MapBook</div>
           <div className="header_begin">
-            {user ? (
+            {isAuthenticated ? (
               <>
                 <div onClick={() => navigate("/createmap")}>AddMaps</div>
-                <div onClick={() => navigate("/social")}>Social</div>
+                <div onClick={() => navigate("/socialpage")}>Social</div>
                 <div onClick={() => navigate("/mymap")}>MyMaps</div>
-                <img
-                  src={defaultImg}
-                  alt="header_profile"
-                  className="header_profile"
-                />
+                <div>
+                  {/* <div onClick={() => navigate("/profile")}> */}
+                  <img
+                    src={defaultImg}
+                    alt="header_profile"
+                    className="header_profile"
+                  />
+                </div>
               </>
             ) : (
               <>
