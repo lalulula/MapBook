@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { selectUser } from "./features/userSlice";
+// import { selectUser } from "./features/userSlice";
 //import { BrowserRouter as Router } from "react-router-dom";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -15,6 +15,7 @@ import MainPage from "./Components/main/MainPage";
 import CreateMap from "./Components/createmap/CreateMap";
 import MyMap from "./Components/mymap/MyMap";
 import SocialPage from "./Components/social/SocialPage";
+import Profile from "./Components/profile/Profile";
 
 function App() {
   //Initial Loading Feature For Web
@@ -26,7 +27,7 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  const user = useSelector(selectUser);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
   if (loading) {
     return (
@@ -45,10 +46,11 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/createmap" element={<CreateMap />} />
           <Route path="/socialpage" element={<SocialPage />} />
-          <Route path="/mymap" element={<MyMap />} />
+          <Route path="/mymap" element={<MyMap />} />{" "}
+          <Route path="/profile" element={<Profile />} />
           <Route
             path="/mainpage"
-            element={user ? <MainPage /> : <LandingPage />}
+            element={isAuthenticated ? <MainPage /> : <LandingPage />}
           />
         </Routes>
       </div>
