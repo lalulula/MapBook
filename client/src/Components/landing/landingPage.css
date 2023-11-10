@@ -6,7 +6,6 @@
 }
 
 .landing_intro {
-  background-color: rgb(111, 129, 146);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -24,7 +23,6 @@
 }
 
 .landing_intro_1 {
-  background-color: blueviolet;
   width: 100vw;
   height: 100vh;
   position: relative;
@@ -35,7 +33,6 @@
 }
 
 .landing_intro_2 {
-  background-color: rgba(144, 109, 92, 0.627);
   width: 100vw;
   position: relative;
   flex-direction: column;
@@ -44,7 +41,6 @@
 }
 
 .landing_intro_3 {
-  background-color: rgba(102, 92, 144, 0.962);
   width: 100vw;
   position: relative;
   flex-direction: column;
