@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import "./login.css";
+// const bcrypt = require("bcrypt");
 
 const Login = () => {
   const navigate = useNavigate();
@@ -28,9 +29,19 @@ const Login = () => {
 
   const onSubmit2 = async (user) => {
     loginUserAPIMethod(user)
-      .then((userData) => {
+      .then((res) => {
+        
         console.log("logged in!");
-        dispatch(login(user));
+
+        res.json().then((jsonResult) => {
+
+          // The result data which returned server
+          // console.log(jsonResult);
+
+          dispatch(login(jsonResult));
+        });
+        
+        
         setIsLoggedIn(true);
       })
       .catch((err) => {
@@ -38,6 +49,7 @@ const Login = () => {
         setIsLoggedIn(false);
         setErrorMessage("Incorrect username or password");
       });
+      // console.log(response);
   };
 
   useEffect(() => {
