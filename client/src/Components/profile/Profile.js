@@ -41,7 +41,7 @@ const Profile = () => {
                         <div className="username_container">
                             <h5>Username</h5>
                             {isEditing && (
-                                <input type="text" value="hi" onChange={() => setUsername(e.target.value)} />
+                                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
                             )}
                             {!isEditing && (
                                 <div className="username">
@@ -52,7 +52,7 @@ const Profile = () => {
                         <div className="name_container">
                             <h5>Name</h5>
                             {isEditing && (
-                                <input type="text" value="hi" onChange={() => setName(e.target.value)} />
+                                <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
                             )}
                             {!isEditing && (
                                 <div className="name">Name goes here</div>
