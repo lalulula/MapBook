@@ -14,6 +14,8 @@ import CreateMap from "./Components/createmap/CreateMap";
 import MyMap from "./Components/mymap/MyMap";
 import SocialPage from "./Components/social/SocialPage";
 import Profile from "./Components/profile/Profile";
+import Comments from "./Components/comments/Comments";
+import MapDetails from "./Components/mapdetails/MapDetails";
 
 function App() {
   //Initial Loading Feature For Web
@@ -48,6 +50,7 @@ function App() {
           <Route path="/socialpage" element={<SocialPage />} />
           <Route path="/mymap" element={<MyMap />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="mapdetails/:id" element={<MapDetails />} />
           <Route
             path="/mainpage"
             element={isAuthenticated ? <MainPage /> : <LandingPage />}
@@ -55,7 +58,9 @@ function App() {
         </Routes>
       </div>
     </Router>
+
   );
 }
 
 export default App;
+
