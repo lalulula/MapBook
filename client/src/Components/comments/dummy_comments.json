@@ -1,0 +1,27 @@
+[
+    {
+        "user": "bob",
+        "comment": "this is great",
+        "postId": "1"
+    },
+    {
+        "user": "bob",
+        "comment": "this is great",
+        "postId": "2"
+    },
+    {
+        "user": "bob",
+        "comment": "this is great",
+        "postId": "3"
+    },
+    {
+        "user": "bob",
+        "comment": "this is great",
+        "postId": "4"
+    },
+    {
+        "user": "bob",
+        "comment": "this is great",
+        "postId": "5"
+    }
+]
