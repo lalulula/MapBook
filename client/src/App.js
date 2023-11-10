@@ -40,29 +40,30 @@ function App() {
     );
   }
   return (
-    // <Router>
-    //   {/* {window.location.pathname !== "/createmap" && <Header />} */}
-    //   <Header />
-    //   <div className="App">
-    //     <Routes>
-    //       <Route path="/" element={<LandingPage />} />
-    //       <Route path="/login" element={<Login />} />
-    //       <Route path="/register" element={<Register />} />
-    //       <Route path="/createmap" element={<CreateMap />} />
-    //       <Route path="/socialpage" element={<SocialPage />} />
-    //       <Route path="/mymap" element={<MyMap />} />
-    //       <Route path="profile" element={<Profile />} />
-    //       <Route path="mapdetails/:id" element={<MapDetails />} />
-    //       <Route
-    //         path="/mainpage"
-    //         element={isAuthenticated ? <MainPage /> : <LandingPage />}
-    //       />
-    //     </Routes>
-    //   </div>
-    // </Router>
-    <>
-      <CreateMap />
-    </>
+    <Router>
+      {/* {window.location.pathname !== "/createmap" && <Header />} */}
+      <Header />
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/createmap" element={<CreateMap />} />
+          <Route path="/socialpage" element={<SocialPage />} />
+          <Route path="/mymap" element={<MyMap />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="mapdetails/:id" element={<MapDetails />} />
+          <Route
+            path="/mainpage"
+            element={isAuthenticated ? <MainPage /> : <LandingPage />}
+          />
+        </Routes>
+      </div>
+    </Router>
+    ////For TEst
+    // <>
+    //   <CreateMap />
+    // </>
   );
 }
 export default App;
