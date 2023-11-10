@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { getUserAPIMethod } from "../../api/client";
 import EditIcon from '@mui/icons-material/Edit';
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../features/userSlice";
+
+
 
 import "./profile.css";
 
@@ -9,6 +14,8 @@ const Profile = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [username, setUsername] = useState("");
     const [name, setName] = useState("");
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     //add username and name usestates
     // getting current user
@@ -26,6 +33,11 @@ const Profile = () => {
     const handleClickSave = () => {
 
     }
+
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate("/");
+    };
     // set username and name using useeffect. May not be able to use user.username and user.name
 
     return (
@@ -74,7 +86,7 @@ const Profile = () => {
 
                 </div>
                 <div className="profile_bottom">
-                    <div className="logout">logout</div>
+                    <div className="logout" onClick={handleLogout}>logout</div>
                     <div className="remove_account">remove account</div>
                 </div>
             </div>
