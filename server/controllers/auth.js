@@ -27,7 +27,7 @@ const login = async (req, res) => {
     res
       .cookie('access_token', token, { httpOnly: true, expires: expiryDate })
       .status(200)
-      .json({ user });
+      .json({ token, user });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
