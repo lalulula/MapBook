@@ -14,7 +14,6 @@ import CreateMap from "./Components/createmap/CreateMap";
 import MyMap from "./Components/mymap/MyMap";
 import SocialPage from "./Components/social/SocialPage";
 import Profile from "./Components/profile/Profile";
-import Comments from "./Components/comments/Comments";
 
 function App() {
   //Initial Loading Feature For Web
@@ -27,6 +26,8 @@ function App() {
   }, []);
 
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  // console.log(useSelector((state) => state.user));
+  // console.log(isAuthenticated);
 
   if (loading) {
     return (
@@ -36,16 +37,7 @@ function App() {
     );
   }
   return (
-    <div>
-      <Comments />
-    </div>
-
-  );
-}
-
-export default App;
-
-{/* <Router>
+    <Router>
       <Header />
       <div className="App">
         <Routes>
@@ -62,4 +54,8 @@ export default App;
           />
         </Routes>
       </div>
-    </Router> */}
+    </Router>
+  );
+}
+
+export default App;
