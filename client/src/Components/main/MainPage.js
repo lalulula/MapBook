@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { logout, getUser } from "../../features/userSlice";
+import { useDispatch } from "react-redux";
+import { logout } from "../../features/userSlice";
 import { useNavigate } from "react-router-dom";
-import dumImg from "../../assets/img/dum.jpg";
 import dumMapJsonData from "./dum_data.json";
 import "./main.css";
 import MapPreview from "../mappreview/MapPreview";
@@ -14,10 +13,11 @@ const MainPage = () => {
     dispatch(logout());
     navigate("/");
   };
+
   return (
-    <div className="main">
+    <div className="main_container container grid">
       {dumMapJsonData.map((item, index) => (
-        <MapPreview key={index} data={item} defaultImg={dumImg} />
+        <MapPreview key={index} data={item} />
       ))}
       <div onClick={() => handleLogout()}>LOGOUT</div>
     </div>
