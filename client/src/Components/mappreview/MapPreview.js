@@ -1,10 +1,11 @@
 import React from "react";
-
-const MapPreview = ({ data, defaultImg }) => {
+import "./mapPreview.css";
+import dumImg from "../../assets/img/dum.jpg";
+const MapPreview = ({ data }) => {
   return (
-    <div className="card">
-      <img src={data.map_img ? data.map_img : defaultImg} alt={data.map_name} />
+    <div className="map_preview_container">
       <h3>{data.map_name}</h3>
+      <img className="map_preview_img" src={dumImg} alt={data.map_name} />
       <p>{data.topic}</p>
       <p>Liked by {data.map_users_liked} users</p>
       <p>{data.map_comment_count} comments</p>

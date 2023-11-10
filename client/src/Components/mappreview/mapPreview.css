@@ -1,0 +1,29 @@
+.map_preview_container {
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  color: white;
+  position: relative;
+  background-color: var(--container-color);
+  padding: 2rem 0 2rem 2.5rem;
+}
+
+.map_preview_container:hover {
+  transform: scale(1.05);
+}
+
+.map_preview_container img {
+  width: 10%;
+  height: 10%;
+  object-fit: cover;
+}
+
+.map_preview_container h3 {
+  margin: 10px 0;
+}
+
+.map_preview_container p {
+  margin: 5px 0;
+}
