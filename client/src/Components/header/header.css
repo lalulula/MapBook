@@ -1,6 +1,6 @@
 .header {
   width: 100%;
-  /* position: fixed; */
+  /* position: absolute; */
   position: sticky;
   top: 0;
   left: 0;
@@ -37,6 +37,7 @@
   align-items: center;
   padding: 65px 0 65px 0;
 }
+
 .header_profile {
   height: 3rem;
   width: 3rem;

@@ -28,6 +28,7 @@ const Comments = () => {
                 ))}
                 <div>
                     <input
+                        id="map_comment"
                         type="text"
                         placeholder="Add a comment"
                         value={newComment}

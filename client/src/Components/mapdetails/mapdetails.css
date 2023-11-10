@@ -1,0 +1,46 @@
+.map_details {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 70px;
+}
+
+.map_details_container {
+    height: 80%;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.middle {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.title {}
+
+.left {
+
+    flex: 1;
+}
+
+.right {
+
+    flex: 0.5;
+}
+
+
+.toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
