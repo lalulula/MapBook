@@ -14,6 +14,7 @@ import CreateMap from "./Components/createmap/CreateMap";
 import MyMap from "./Components/mymap/MyMap";
 import SocialPage from "./Components/social/SocialPage";
 import Profile from "./Components/profile/Profile";
+import Comments from "./Components/comments/Comments";
 
 function App() {
   //Initial Loading Feature For Web
@@ -35,7 +36,16 @@ function App() {
     );
   }
   return (
-    <Router>
+    <div>
+      <Comments />
+    </div>
+
+  );
+}
+
+export default App;
+
+{/* <Router>
       <Header />
       <div className="App">
         <Routes>
@@ -52,8 +62,4 @@ function App() {
           />
         </Routes>
       </div>
-    </Router>
-  );
-}
-
-export default App;
+    </Router> */}

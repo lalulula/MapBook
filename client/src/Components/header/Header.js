@@ -47,6 +47,7 @@ const Header = () => {
                     src={defaultImg}
                     alt="header_profile"
                     className="header_profile"
+                    onClick={() => navigate("/profile")}
                   />
                 </div>
               </>

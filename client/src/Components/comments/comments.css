@@ -1,0 +1,10 @@
+.comments {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.comment {
+    padding-bottom: 10px;
+}

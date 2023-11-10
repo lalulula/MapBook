@@ -53,14 +53,19 @@
 
 .username {
     font-size: 30px;
+    margin-right: 15px;
+
 }
 
 .name {
     font-size: 30px;
+    margin-right: 15px;
 }
 
 .email {
     font-size: 30px;
+    margin-right: 15px;
+
 }
 
 .profile_img {
@@ -81,4 +86,17 @@
     font-size: 18px;
     margin-top: 10px;
     text-decoration: underline;
+}
+
+.username_line,
+.name_line,
+.email_line {
+    display: flex;
+    align-items: center;
+}
+
+.edit_user_btn,
+.finish_edit_user_btn {
+    right: 25%;
+    position: absolute;
 }
