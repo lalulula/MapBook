@@ -1,5 +1,5 @@
-import "./searchBar.css";
 import React from "react";
+import "./searchBar.css";
 
 const SearchBar = () => {
   return (
@@ -10,7 +10,7 @@ const SearchBar = () => {
         type="search"
         placeholder="Search Maps"
         onChange={(e) => {
-          console.log(e.target.value);
+          console.log(e.target);
         }}
       />
     </div>
