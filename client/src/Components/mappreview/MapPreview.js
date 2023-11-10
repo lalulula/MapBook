@@ -4,6 +4,7 @@ import dumImg from "../../assets/img/dum.jpg";
 const MapPreview = ({ data }) => {
   return (
     <div className="map_preview_container">
+      <h1>{data._id}</h1>
       <h3>{data.map_name}</h3>
       <img className="map_preview_img" src={dumImg} alt={data.map_name} />
       <p>{data.topic}</p>

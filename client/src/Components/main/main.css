@@ -1,8 +1,29 @@
 .main_container {
+  padding: 2rem;
+}
+.main_maps_container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   justify-content: center;
   row-gap: 2rem;
   column-gap: 2rem;
   padding-top: 1rem;
+}
+.search_bar_wrapper i {
+  position: absolute;
+}
+.search_bar_wrapper {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.search_icon {
+  padding: 10px;
+  min-width: 40px;
+  color: gray;
+}
+.search_bar {
+  width: 100%;
+  text-align: left;
+  padding-left: 40px;
 }
