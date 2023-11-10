@@ -26,7 +26,6 @@ export const loginUserAPIMethod = async (user) => {
         body: JSON.stringify(user),
     }).then(checkStatus);
 
-
     return response;
 }
 

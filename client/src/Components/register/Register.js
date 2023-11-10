@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { createUserAPIMethod } from "../../api/client";
 import { useForm } from "react-hook-form";
 import { Button, Form } from "semantic-ui-react";
+// const bcrypt = require("bcrypt");
 
 const Register = () => {
   const navigate = useNavigate();

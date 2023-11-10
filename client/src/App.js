@@ -21,6 +21,7 @@ function App() {
   //Initial Loading Feature For Web
   const [loading, setLoading] = useState(false);
   useEffect(() => {
+    console.log(window.location.pathname);
     const timer = setTimeout(() => {
       setLoading(false);
     }, 2000);
@@ -28,6 +29,8 @@ function App() {
   }, []);
 
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  // console.log(useSelector((state) => state.user));
+  // console.log(isAuthenticated);
 
   if (loading) {
     return (
@@ -38,6 +41,7 @@ function App() {
   }
   return (
     <Router>
+      {/* {window.location.pathname !== "/createmap" && <Header />} */}
       <Header />
       <div className="App">
         <Routes>
@@ -56,9 +60,6 @@ function App() {
         </Routes>
       </div>
     </Router>
-
   );
 }
-
 export default App;
-

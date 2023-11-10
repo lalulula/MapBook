@@ -7,19 +7,27 @@ const User = require("../models/User");
 // LOGIN
 const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username: username });
-    if (!user) return res.status(400).json({ msg: "User does not exist. " });
+    const { 
+      username, 
+      password, 
+    } = req.body;
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const validUser = await User.findOne({ username: username });
+    if (!validUser) return res.status(400).json({ msg: "User does not exist. " });
+
+    const isMatch = await bcrypt.compare(password, validUser.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
     
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
 
     // make sure the password not send back to the frontend
-    delete user.password
+    const { password: hashedPassword, ...user } = validUser._doc;
 
-    res.status(200).json({ token, user });
+    const expiryDate = new Date(Date.now() + 3600000); // 1 hour cookie
+    res
+      .cookie('access_token', token, { httpOnly: true, expires: expiryDate })
+      .status(200)
+      .json({ user });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -28,14 +36,18 @@ const login = async (req, res) => {
 // Create or REGISTER
 const register = async (req, res) => {
   try {
-    const {
-      username,
+    const { 
+      email,
+      username, 
       password,
+      is_admin,
+      profile_img,
+      maps_created 
     } = req.body;
 
     // check for duplicate username
-    const user = await User.findOne({ username: username });
-    if (user) return res.status(400).json({ msg: "Username is already used. Choose a different username " });
+    const validUser = await User.findOne({ username: username });
+    if (validUser) return res.status(400).json({ msg: "Username is already used." });
 
     // hash password
     const salt = await bcrypt.genSalt();
@@ -43,11 +55,16 @@ const register = async (req, res) => {
 
     // if not, continue
     const newUser = new User({
+      email,
       username,
       password: passwordHash,
+      is_admin,
+      profile_img,
+      maps_created
     });
     const savedUser = await newUser.save();
-    return res.status(201).json(savedUser);
+    const { password: hashedPassword, ...user } = savedUser._doc;
+    return res.status(201).json(user);
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
