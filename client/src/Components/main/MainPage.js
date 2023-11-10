@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import dumMapJsonData from "./dum_data.json";
 import "./main.css";
 import MapPreview from "../mappreview/MapPreview";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -15,11 +16,24 @@ const MainPage = () => {
   };
 
   return (
-    <div className="main_container container grid">
-      {dumMapJsonData.map((item, index) => (
-        <MapPreview key={index} data={item} />
-      ))}
-      <div onClick={() => handleLogout()}>LOGOUT</div>
+    <div className="main_container">
+      <div className="search_bar_wrapper">
+        <i className="search_icon bi bi-globe-americas" />
+        <input
+          className="search_bar"
+          type="search"
+          placeholder="Search Maps"
+          onChange={(e) => {
+            console.log(e.target.value);
+          }}
+        />
+      </div>
+      <div className="main_maps_container">
+        {dumMapJsonData.map((item, index) => (
+          <MapPreview key={index} data={item} />
+        ))}
+        <div onClick={() => handleLogout()}>LOGOUT</div>
+      </div>
     </div>
   );
 };
