@@ -1,5 +1,4 @@
 .comments {
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -7,4 +6,12 @@
 
 .comment {
     padding-bottom: 10px;
+}
+
+#map_comment {
+    width: 100%;
+}
+
+.toolbar {
+    border: solid 2px white;
 }
