@@ -18,16 +18,16 @@ const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, validUser.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
     
-    const access_token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
 
     // make sure the password not send back to the frontend
     const { password: hashedPassword, ...user } = validUser._doc;
 
     const expiryDate = new Date(Date.now() + 3600000); // 1 hour cookie
     res
-      .cookie('access_token', access_token, { httpOnly: true, expires: expiryDate })
+      .cookie('access_token', token, { httpOnly: true, expires: expiryDate })
       .status(200)
-      .json({ access_token, user });
+      .json({ token, user });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
