@@ -30,18 +30,15 @@ const Login = () => {
   const onSubmit2 = async (user) => {
     loginUserAPIMethod(user)
       .then((res) => {
-        
         console.log("logged in!");
 
         res.json().then((jsonResult) => {
-
           // The result data which returned server
           // console.log(jsonResult);
 
           dispatch(login(jsonResult));
         });
-        
-        
+
         setIsLoggedIn(true);
       })
       .catch((err) => {
@@ -49,7 +46,7 @@ const Login = () => {
         setIsLoggedIn(false);
         setErrorMessage("Incorrect username or password");
       });
-      // console.log(response);
+    // console.log(response);
   };
 
   useEffect(() => {
@@ -93,7 +90,9 @@ const Login = () => {
           />
           <div>{errorMessage}</div>
           {errors.password && (
-            <p className="ui negative mini message">Password is required</p>
+            <p className="pwd_err ui negative mini message">
+              Password is required
+            </p>
           )}
         </Form.Field>
         <div>
