@@ -18,6 +18,8 @@ https://lottiefiles.com/platform?utm_source=iconscout&utm_medium=modalLearnLFPla
 **ICON-BootStrap**
 https://icons.getbootstrap.com/
 
+
+
 **Github Actions**
 -def)
     In a software development life cycle, based on a 
@@ -53,3 +55,4 @@ End to end testing: Evaluates the complete flow of a SW application from start t
 Integration testing:level of software testing that focuses on evaluating the interactions and interfaces between different component modules, or services within a sw system, 
 supports parallel test execution : running multiple test cases or test suites concurrently on mutiple execution environments or thest runners simultaneously, 
 Continuous Integration and continuous deployment
+--> Cheat Sheet : https://cheatography.com/aiqbal/cheat-sheets/cypress-io/

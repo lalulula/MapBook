@@ -12,11 +12,9 @@ describe("Create Map Page", () => {
 
   it("should trigger the 'nextStep' function when 'Go To Step2' is clicked", () => {
     cy.visit("https://mapbook-f381d1faf354.herokuapp.com/createmap");
-
     cy.window().then((win) => {
       cy.stub(win, "nextStep");
     });
-
     cy.get(".custom-dropdown").contains("Select Topic").click();
     cy.get(".custom-dropdown-item").contains("Education").click();
     cy.get(".custom-dropdown").contains("Select Template").click();
