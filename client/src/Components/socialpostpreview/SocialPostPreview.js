@@ -2,7 +2,8 @@ import React from "react";
 import dumImg from "../../assets/img/dum.jpg";
 import { useNavigate } from "react-router-dom";
 import "./socialpostpreview.css";
-
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import CommentIcon from '@mui/icons-material/Comment';
 
 const SocialPostPreview = ({ data }) => {
     const navigate = useNavigate();
@@ -13,12 +14,25 @@ const SocialPostPreview = ({ data }) => {
 
     return (
         <div className="social_post_preview_container" onClick={() => handleEdit(data._id)}>
-            <h1>{data._id}</h1>
-            <h3>{data.map_name}</h3>
-            <img className="social_post_preview_img" src={dumImg} alt={data.map_name} />
-            <p>{data.topic}</p>
-            <p>Liked by {data.map_users_liked} users</p>
-            <p>{data.map_comment_count} comments</p>
+            <div className="social_post_preview_container_left">
+                <FavoriteBorderIcon />
+                {data.social_post_users_liked}
+            </div>
+            <div className="social_post_preview_container_middle">
+                <div className="owner_name">
+                    Posted by {data.user}
+                </div>
+                <div className="social_post_title">
+                    <h3>{data.social_post_name}</h3>
+                </div>
+                <div className="num_comments">
+                    <CommentIcon />
+                    View all {data.social_post_comment_count} replies
+                </div>
+            </div>
+            <div className="social_post_preview_container_right">
+                <img className="social_post_preview_img" src={data.map_img} />
+            </div>
         </div>
     );
 };

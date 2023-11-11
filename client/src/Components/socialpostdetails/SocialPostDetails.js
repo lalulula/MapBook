@@ -2,7 +2,7 @@ import React from "react";
 import "./socialpostdetails.css";
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
-import data from "../social/dummy_data_social.json";
+import data from "../social/sample_data_social.json";
 import Comments from "../comments/Comments";
 
 const SocialPostDetails = () => {
