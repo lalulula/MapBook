@@ -23,9 +23,9 @@ const Register = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    handleRegister(data.username, data.password, data.confirmPwd);
+    handleRegister(data.username, data.email, data.password, data.confirmPwd);
   };
-  const handleRegister = (username, password, confirmPwd) => {
+  const handleRegister = (username, email, password, confirmPwd) => {
     if (password !== confirmPwd) {
       setError("confirmPwd", {
         type: "manual",
@@ -39,7 +39,7 @@ const Register = () => {
       admin = true;
     }
 
-    const user = { username, password };
+    const user = { username, email, password };
     createUserAPIMethod(user)
       .then(() => {
         console.log("Successfully registered");
@@ -85,7 +85,7 @@ const Register = () => {
             <p className="ui negative mini message">Username is required</p>
           )}
         </Form.Field>
-        {/* <Form.Field>
+        <Form.Field>
           <input
             type="email"
             placeholder="Email"
@@ -102,7 +102,7 @@ const Register = () => {
               Enter a valid email address
             </p>
           )}
-        </Form.Field> */}
+        </Form.Field>
         <Form.Field>
           <input
             type="password"

@@ -7,9 +7,9 @@ const User = require("../models/User");
 // LOGIN
 const login = async (req, res) => {
   try {
-    const { 
-      username, 
-      password, 
+    const {
+      username,
+      password,
     } = req.body;
 
     const validUser = await User.findOne({ username: username });
@@ -17,7 +17,7 @@ const login = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, validUser.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
-    
+
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
 
     // make sure the password not send back to the frontend
@@ -36,15 +36,16 @@ const login = async (req, res) => {
 // Create or REGISTER
 const register = async (req, res) => {
   try {
-    const { 
+    const {
       email,
-      username, 
+      username,
       password,
       is_admin,
       profile_img,
-      maps_created 
+      maps_created
     } = req.body;
 
+    console.log("req.body: ", req.body); //why isn't this printing
     // check for duplicate username
     const validUser = await User.findOne({ username: username });
     if (validUser) return res.status(400).json({ msg: "Username is already used." });
