@@ -17,6 +17,7 @@ import Profile from "./Components/profile/Profile";
 import Comments from "./Components/comments/Comments";
 import MapDetails from "./Components/mapdetails/MapDetails";
 import SocialPostDetails from "./Components/socialpostdetails/SocialPostDetails";
+import ManageUsers from "./Components/manageusers/ManageUsers";
 
 function App() {
   //Initial Loading Feature For Web
@@ -55,6 +56,7 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="mapdetails/:id" element={<MapDetails />} />
           <Route path="socialpostdetails/:id" element={<SocialPostDetails />} />
+          <Route path="/manageusers" element={<ManageUsers />} />
           <Route
             path="/mainpage"
             element={isAuthenticated ? <MainPage /> : <LandingPage />}
