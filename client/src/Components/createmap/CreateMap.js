@@ -3,6 +3,7 @@ import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 import { useState } from "react";
+import "./createMap.css";
 const CreateMap = () => {
   const [step, setStep] = useState(1);
   const [options, setOptions] = useState({ topic: "", template: "" });
@@ -22,8 +23,10 @@ const CreateMap = () => {
   };
   return (
     <div className="create_map_container">
-      <div>Create Map</div>
-      {steps[step]}
+      <h2>Create Map</h2>
+      <div className="create_steps_container">
+        <div className="create_map_steps">{steps[step]}</div>
+      </div>
     </div>
   );
 };
