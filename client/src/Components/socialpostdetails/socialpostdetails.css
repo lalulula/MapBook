@@ -7,7 +7,7 @@
 
 .socialpostdetails_container {
     height: 80%;
-    width: 70%;
+    width: 90%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -38,4 +38,18 @@
 
 .socialpostdetails_top_left {
     display: flex;
+}
+
+.socialpostdetails_middle_left {
+    flex: 0.8;
+}
+
+.socialpostdetails_middle_right {
+    flex: 1;
+    padding: 10px;
+}
+
+#post_details_img {
+    width: 100%;
+    padding: 10px 0 0 10px;
 }

@@ -13,7 +13,7 @@ const MapDetails = () => {
 
     useEffect(() => {
         setCurrentMap(curr[0])
-    })
+    }, []);
 
     return (
         <div className="map_details">

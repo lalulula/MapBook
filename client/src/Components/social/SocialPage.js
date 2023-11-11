@@ -1,6 +1,6 @@
 import React from "react";
 import "./socialpage.css";
-import data from "./dummy_data_social.json";
+import data from "../main/dum_data.json";
 import SocialPostPreview from "../socialpostpreview/SocialPostPreview";
 
 const SocialPage = () => {
