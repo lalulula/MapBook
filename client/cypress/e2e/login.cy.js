@@ -3,8 +3,10 @@ describe("Login Page", () => {
   it("should login user successgfully with the correct data", () => {
     cy.visit("https://mapbook-f381d1faf354.herokuapp.com/login");
     // Fill out the login form
-    cy.get('input[placeholder="Username"]').type("Jasson");
-    cy.get('input[placeholder="Password"]').type("Jasson123");
+    /* cy.get('input[placeholder="Username"]').type("Jasson");
+    cy.get('input[placeholder="Password"]').type("Jasson123"); */
+    cy.get('input[placeholder="Username"]').type("sam");
+    cy.get('input[placeholder="Password"]').type("Password123");
     //  Submit the form
     cy.get(".login_btn").click();
 
@@ -23,9 +25,14 @@ describe("Login Page", () => {
     cy.get('input[placeholder="Password"]').type("Jasson");
     //  Submit the form
     cy.get(".login_btn").click();
-    cy.get(".ui.negative.mini.message").should(
+    /* cy.get(".ui.negative.mini.message").should(
+      "contain",
+      "Incorrect username or"
+    ); */
+    cy.get(".invalid_credentials_error_message").should(
       "contain",
       "Incorrect username or"
     );
+
   });
 });

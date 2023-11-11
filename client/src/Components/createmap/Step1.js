@@ -40,16 +40,15 @@ const Step1 = ({ nextStep, options, setOptions }) => {
       <div>
         <h3>Topic</h3>
         <Dropdown
+          data-testid="custom-dropdown"
           name="topic"
           label={options["topic"] || "Select Topic"}
           dismissOnClick={true}
-          className="custom-dropdown"
         >
           {topics.map((option, index) => (
             <Dropdown.Item
               key={index}
               onClick={() => handleTopicClick(option)}
-              className="custom-dropdown-item"
             >
               {option}
             </Dropdown.Item>
@@ -62,13 +61,12 @@ const Step1 = ({ nextStep, options, setOptions }) => {
           name="template"
           label={options["template"] || "Select Template"}
           dismissOnClick={true}
-          className="custom-dropdown"
+          data-testid="custom-dropdown"
         >
           {templates.map((option, index) => (
             <Dropdown.Item
               key={index}
               onClick={() => handleTemplateClick(option)}
-              className="custom-dropdown-item"
             >
               {option}
             </Dropdown.Item>
@@ -96,6 +94,7 @@ const Step1 = ({ nextStep, options, setOptions }) => {
       </div>
 
       <button
+        className="step1_btn"
         disabled={
           options["topic"] === "" || options["template"] === "" ? true : false
         }

@@ -119,7 +119,7 @@ describe("Register Form", () => {
     // Fill out the registration form with passwords that don't match
     //cy.get('input[placeholder="Name"]').type("Yolo");
     cy.get('input[placeholder="Username"]').type("yoolloo");
-    //cy.get('input[placeholder="Email"]').type("yala@email.com");
+    cy.get('input[placeholder="Email"]').type("yala@email.com");
     cy.get('input[placeholder="Password"]').type("Password123!");
     cy.get('input[placeholder="Confirm Password"]').type("Pass"); // Passwords don't match
 
