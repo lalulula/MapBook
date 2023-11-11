@@ -1,9 +1,16 @@
 import React from "react";
 import "./socialpage.css";
-import data from "../main/dum_data.json";
+import data from "../social/sample_data_social.json";
 import SocialPostPreview from "../socialpostpreview/SocialPostPreview";
+import SearchBar from "../searchbar/SearchBar";
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
+import { Button } from '@mui/material';
 
 const SocialPage = () => {
+  const options = [
+    'one', 'two', 'three'
+  ];
   return (
     <div className="socialpage">
       <div className="socialpage_container">
@@ -13,13 +20,13 @@ const SocialPage = () => {
           </div>
           <div className="socialpage_top_right">
             <div className="create_new_post">
-              create new post
+              <Button variant="outlined" style={{ borderColor: "white", color: 'white' }}>Create new map</Button>
             </div>
             <div className="searchbar">
-              search bar
+              <SearchBar />
             </div>
             <div className="sort_by">
-              sort by
+              <Dropdown options={options} placeholder="Sort by" className="social_page_dropdown" />
             </div>
           </div>
         </div>

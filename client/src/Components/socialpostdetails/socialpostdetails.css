@@ -12,21 +12,23 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    border: solid 2px white;
+    /* border: solid 2px white; */
 }
 
-.mapdetails_profile_img {
+.socialpostdetails_profile_img {
     left: 0;
     width: 60px;
     height: 60px;
     border-radius: 50%;
+    margin-right: 10px;
 }
 
 .socialpostdetails_top {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    border: solid 2px white;
+    align-items: center;
+    border-bottom: solid 1px white;
 }
 
 .socialpostdetails_middle {
@@ -34,10 +36,14 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    margin-top: 20px;
 }
 
 .socialpostdetails_top_left {
     display: flex;
+    align-items: center;
+    padding: 10px;
+    flex: 0.5;
 }
 
 .socialpostdetails_middle_left {
@@ -52,4 +58,21 @@
 #post_details_img {
     width: 100%;
     padding: 10px 0 0 10px;
+}
+
+.socialpostdetails_user {
+    font-size: 14px;
+    color: rgb(169, 169, 169);
+}
+
+.socialpostdetails_top_right {
+    margin: 10px 30px 10px;
+    padding: 10px;
+    background-color: rgb(176, 176, 0);
+    color: white;
+    border-radius: 50px;
+}
+
+.socialpostdetails_bottom {
+    height: 50px;
 }

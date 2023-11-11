@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import dummyComments from "./dummy_comments.json";
+import dummyComments from "./sample_data_comments.json";
 import "./comments.css";
 
 const Comments = () => {
