@@ -17,6 +17,7 @@ import Profile from "./Components/profile/Profile";
 import Comments from "./Components/comments/Comments";
 import MapDetails from "./Components/mapdetails/MapDetails";
 import SocialPostDetails from "./Components/socialpostdetails/SocialPostDetails";
+import EditMap from "./Components/editmap/EditMap";
 
 function App() {
   //Initial Loading Feature For Web
@@ -50,6 +51,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/createmap" element={<CreateMap />} />
+          <Route path="/editmap/:id" element={<EditMap />} />
           <Route path="/socialpage" element={<SocialPage />} />
           <Route path="/mymap" element={<MyMap />} />
           <Route path="profile" element={<Profile />} />
