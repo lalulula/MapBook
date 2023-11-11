@@ -21,11 +21,16 @@ const SocialPostDetails = () => {
             <div className="socialpostdetails_container">
                 <div className="socialpostdetails_top">
                     <div className="socialpostdetails_top_left">
-                        <img className="mapdetails_profile_img" src="https://us-tuna-sounds-images.voicemod.net/d347dbc8-e6b8-4f85-bb64-8dcb234f5730-1674067639225.jpg" />
-                        <h1>{currentPost.map_name}</h1>
+                        <img className="socialpostdetails_profile_img" src="https://us-tuna-sounds-images.voicemod.net/d347dbc8-e6b8-4f85-bb64-8dcb234f5730-1674067639225.jpg" />
+                        <div className="socialpostdetails_top_left_container">
+                            <h1>{currentPost.social_post_name}</h1>
+                            <div className="socialpostdetails_user">{currentPost.user}</div>
+                        </div>
                     </div>
 
-                    <div className="socialpostdetails_top_right">{currentPost.topic}</div>
+                    <div className="socialpostdetails_top_right">
+                        {currentPost.topic}
+                    </div>
                 </div>
                 <div className="socialpostdetails_middle">
                     <div className="socialpostdetails_middle_left">
