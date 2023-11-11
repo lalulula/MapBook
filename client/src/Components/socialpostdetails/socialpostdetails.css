@@ -1,0 +1,41 @@
+.socialpostdetails {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.socialpostdetails_container {
+    height: 80%;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border: solid 2px white;
+}
+
+.mapdetails_profile_img {
+    left: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.socialpostdetails_top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border: solid 2px white;
+}
+
+.socialpostdetails_middle {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.socialpostdetails_top_left {
+    display: flex;
+}

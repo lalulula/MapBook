@@ -1,0 +1,18 @@
+.social_post_preview_container {
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+    color: white;
+    background-color: var(--container-color);
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.social_post_preview_container:hover {
+    transform: scale(1.05);
+}
+
+.social_post_preview_img {
+    width: 10%;
+    height: 10%;
+}

@@ -12,14 +12,14 @@ const MapDetails = () => {
     return (
         <div className="map_details">
             <div className="map_details_container">
-                <div className="title">
+                <div className="mapdetails_title">
                     <h1>TITLE</h1>
                 </div>
-                <div className="middle">
-                    <div className="left">
+                <div className="mapdetails_middle">
+                    <div className="mapdetails_left">
                         <img src="/img/dum.jpg"></img>
                     </div>
-                    <div className="right">
+                    <div className="mapdetails_right">
                         <Comments />
                     </div>
                 </div>
