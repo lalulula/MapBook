@@ -28,7 +28,7 @@ describe("Login Page", () => {
     /* cy.get(".ui.negative.mini.message").should(
       "contain",
       "Incorrect username or"
-    ); */
+    ); *///
     cy.get(".invalid_credentials_error_message").should(
       "contain",
       "Incorrect username or"
