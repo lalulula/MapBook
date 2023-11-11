@@ -1,6 +1,6 @@
 import React from "react";
 import "./socialpage.css";
-import data from "./dummy_data_social.json";
+import data from "../main/dum_data.json";
 import SocialPostPreview from "../socialpostpreview/SocialPostPreview";
 
 const SocialPage = () => {
@@ -24,8 +24,8 @@ const SocialPage = () => {
           </div>
         </div>
         <div className="socialpage_middle">
-          {data.map((d) => (
-            <SocialPostPreview data={d} />
+          {data.map((item, index) => (
+            <SocialPostPreview key={index} data={item} />
           ))}
         </div>
       </div>

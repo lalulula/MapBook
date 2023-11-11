@@ -16,6 +16,7 @@ import SocialPage from "./Components/social/SocialPage";
 import Profile from "./Components/profile/Profile";
 import Comments from "./Components/comments/Comments";
 import MapDetails from "./Components/mapdetails/MapDetails";
+import SocialPostDetails from "./Components/socialpostdetails/SocialPostDetails";
 
 function App() {
   //Initial Loading Feature For Web
@@ -53,6 +54,7 @@ function App() {
           <Route path="/mymap" element={<MyMap />} />
           <Route path="profile" element={<Profile />} />
           <Route path="mapdetails/:id" element={<MapDetails />} />
+          <Route path="socialpostdetails/:id" element={<SocialPostDetails />} />
           <Route
             path="/mainpage"
             element={isAuthenticated ? <MainPage /> : <LandingPage />}
