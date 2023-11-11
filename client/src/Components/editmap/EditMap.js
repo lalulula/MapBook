@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import "./editmap.css";
 import MapTools from "../maptools/MapTools";
 import data from "../main/dum_data.json";
+import Header from "../header/Header";
 
 const EditMap = () => {
   const { id } = useParams();
