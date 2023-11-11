@@ -8,11 +8,11 @@ const SocialPostPreview = ({ data }) => {
     const navigate = useNavigate();
 
     const handleEdit = (id) => {
-        navigate(`/mapdetails/${id}`);
+        navigate(`/socialpostdetails/${id}`);
     }
 
     return (
-        <div className="social_post_preview_container" /* onClick={() => handleEdit(data._id)} */>
+        <div className="social_post_preview_container" onClick={() => handleEdit(data._id)}>
             <h1>{data._id}</h1>
             <h3>{data.map_name}</h3>
             <img className="social_post_preview_img" src={dumImg} alt={data.map_name} />

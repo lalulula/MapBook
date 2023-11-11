@@ -1,7 +1,12 @@
 import React from "react";
 import "./socialpostdetails.css";
+import { useState, useEffect } from "react";
+import { useParams } from 'react-router-dom';
 
 const SocialPostDetails = () => {
+    const [user, setUser] = useState(null);
+    const { id } = useParams();
+    //will make an api call to get the id of a social post
     return (
         <div className="socialpostdetails">
             <div className="socialpostdetails_container">

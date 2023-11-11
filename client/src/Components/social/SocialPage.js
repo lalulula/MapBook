@@ -24,8 +24,8 @@ const SocialPage = () => {
           </div>
         </div>
         <div className="socialpage_middle">
-          {data.map((d) => (
-            <SocialPostPreview data={d} />
+          {data.map((item, index) => (
+            <SocialPostPreview key={index} data={item} />
           ))}
         </div>
       </div>
