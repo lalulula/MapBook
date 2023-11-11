@@ -1,0 +1,24 @@
+.map_tools {
+  background-color: #36454F;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-evenly;
+  height: 40px;
+}
+
+.tool {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* padding: 50%; */
+}
+
+.tool_title {
+  color: whitesmoke;
+  margin-right: 10px;
+}
+
+.map_tools .tool img {
+  height: 30px;
+  width: 30px;
+}
