@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import data from "../main/dum_data.json";
 import "./mapdetails.css";
 import Comments from "../comments/Comments";
+import MapTools from "../maptools/MapTools";
 
 const MapDetails = () => {
     const [user, setUser] = useState(null);
@@ -29,13 +30,7 @@ const MapDetails = () => {
                         <Comments />
                     </div>
                 </div>
-                <div className="toolbar">
-                    <div className="likes">like</div>
-                    <div className="comments">comment</div>
-                    <div className="fork">fork</div>
-                    <div className="export">export</div>
-                    <div className="share">share</div>
-                </div>
+                <MapTools style={{width: "70%"}} isEdit={true}/>
             </div>
 
         </div>
