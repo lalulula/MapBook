@@ -11,6 +11,7 @@
     "@reduxjs/toolkit": "^1.9.7",
     "bootstrap": "^5.3.2",
     "bootstrap-icons": "^1.11.1",
+    "css-loader": "^6.8.1",
     "flowbite-react": "^0.6.4",
     "intersection-observer": "^0.12.2",
     "jszip": "^3.10.1",
@@ -31,7 +32,8 @@
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
     "semantic-ui-react": "^2.1.4",
-    "shapefile": "^0.6.6"
+    "shapefile": "^0.6.6",
+    "style-loader": "^3.3.3"
   },
   "scripts": {
     "start": "react-scripts start",
