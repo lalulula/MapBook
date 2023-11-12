@@ -9,8 +9,12 @@ const Step3 = ({ prevStep }) => {
     <>
       <div>
         <div>Step3</div>
-        <button onClick={prevStep}> Back To Step2</button>
-        <button onClick={handleAddMap}>Add Map</button>
+        <button onClick={prevStep} className="before_btn">
+          Back To Step2
+        </button>
+        <button className="next_btn" onClick={handleAddMap}>
+          Add Map
+        </button>
       </div>
     </>
   );

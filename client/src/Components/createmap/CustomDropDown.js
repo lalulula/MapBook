@@ -6,7 +6,7 @@ const CustomDropDown = ({ label, options, handleClick }) => {
   return (
     <div className="dropdown">
       <div className="dropdown_btn" onClick={() => setIsActive(!isActive)}>
-        {label} <div>X</div>
+        {label} <i className="bi bi-caret-down-fill"></i>
       </div>
       {isActive && (
         <div className="dropdown_content">

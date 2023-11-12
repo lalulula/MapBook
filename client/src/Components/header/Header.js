@@ -38,7 +38,7 @@ const Header = () => {
           <div className="header_begin">
             {isAuthenticated ? (
               <>
-                <div onClick={() => navigate("/createmap")}>AddMaps</div>
+                <div onClick={() => navigate("/createmap")}>CreateMaps</div>
                 <div onClick={() => navigate("/socialpage")}>Social</div>
                 <div onClick={() => navigate("/mymap")}>MyMaps</div>
                 <div>

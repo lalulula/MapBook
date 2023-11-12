@@ -79,7 +79,7 @@ const Step1 = ({ nextStep, options, setOptions }) => {
       </div>
 
       <button
-        className="step1_btn"
+        className="next_btn"
         disabled={
           options["topic"] === "" || options["template"] === "" ? true : false
         }

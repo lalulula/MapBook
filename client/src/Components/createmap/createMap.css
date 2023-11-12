@@ -3,6 +3,9 @@
   margin: 0 5rem 0 5rem;
   height: 100vh;
 }
+.create_map_container i {
+  cursor: pointer;
+}
 .create_map_container h2 {
   position: relative;
   padding: 2rem;
@@ -15,21 +18,39 @@
 .create_map_steps {
 }
 
+.before_btn {
+  position: absolute;
+  left: 10rem;
+  margin-top: 1rem;
+  /* text-align: left; */
+}
+.next_btn {
+  position: absolute;
+  right: 10rem;
+  margin-top: 1rem;
+  /* text-align: left; */
+}
+
 .step1_container input {
   width: 300px;
   height: 30px;
   margin: 0;
 }
-.step1_btn {
-  position: absolute;
-  right: 10rem;
-  margin-top: 1rem;
-  text-align: left;
+.step2_container input {
+  width: 200px;
+  height: 30px;
+  margin: 0;
 }
+.data_input_container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
 /* DROPDOWN CSS */
 .dropdown {
   user-select: none;
-  /* margin: 100px auto; */
   position: relative;
 }
 .dropdown .dropdown_btn {
@@ -56,7 +77,6 @@
   box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.06);
   font-weight: 500;
   color: black;
-  /* width: 95%; */
 }
 
 .dropdown .dropdown_content .dropdown_item {
