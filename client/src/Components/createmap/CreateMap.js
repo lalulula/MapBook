@@ -42,9 +42,7 @@ const CreateMap = () => {
   return (
     <div className="create_map_container">
       <h2>Create Map</h2>
-      <div className="create_steps_container">
-        <div className="create_map_steps">{steps[step]}</div>
-      </div>
+      <div className="create_map_steps">{steps[step]}</div>
     </div>
   );
 };
