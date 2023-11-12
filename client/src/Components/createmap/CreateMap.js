@@ -9,6 +9,8 @@ const CreateMap = () => {
   const [options, setOptions] = useState({ topic: "", template: "" });
   const [pieBarData, setPieBarData] = useState([""]);
   const [themeData, setThemeData] = useState([{ data: "", color: "#fff" }]);
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [heatRange, setHeatRange] = useState({ from: 0, to: 0, width: 0 });
   useEffect(() => {
     console.log(options);
   }, [options]);
@@ -29,6 +31,10 @@ const CreateMap = () => {
         setPieBarData={setPieBarData}
         themeData={themeData}
         setThemeData={setThemeData}
+        selectedColors={selectedColors}
+        setSelectedColors={setSelectedColors}
+        heatRange={heatRange}
+        setHeatRange={setHeatRange}
       />
     ),
     3: <Step3 prevStep={prevStep} options={options} />,

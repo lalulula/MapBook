@@ -47,6 +47,25 @@
   gap: 1rem;
   margin-bottom: 1rem;
 }
+.heat_container {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.heat_color_selector {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.heat_container td {
+  width: 25px;
+  height: 25px;
+}
+.heat_range_selector {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
 
 /* DROPDOWN CSS */
 .dropdown {

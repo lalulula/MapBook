@@ -1,11 +1,19 @@
 import React from "react";
 
-const PieBar = ({
-  pieBarData,
-  handlePieBarDataInput,
-  handleRemovePieBarData,
-  handleAddPieBarData,
-}) => {
+const PieBar = ({ pieBarData, setPieBarData }) => {
+  const handleAddPieBarData = () => {
+    setPieBarData([...pieBarData, ""]);
+  };
+  const handlePieBarDataInput = (index, newData) => {
+    const updatedData = [...pieBarData];
+    updatedData[index] = newData;
+    setPieBarData(updatedData);
+  };
+  const handleRemovePieBarData = (index, e) => {
+    const updatedData = [...pieBarData];
+    updatedData.splice(index, 1);
+    setPieBarData(updatedData);
+  };
   return (
     <>
       <h3>Enter Data Names</h3>
