@@ -38,6 +38,7 @@ const Step2 = ({
           />
         )}
       </div>
+
       <button className="before_btn" onClick={prevStep}>
         Back To Step1
       </button>

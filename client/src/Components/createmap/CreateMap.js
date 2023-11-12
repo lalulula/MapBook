@@ -6,7 +6,13 @@ import { useState } from "react";
 import "./createMap.css";
 const CreateMap = () => {
   const [step, setStep] = useState(1);
-  const [options, setOptions] = useState({ topic: "", template: "" });
+  const [options, setOptions] = useState({
+    name: "",
+    topic: "",
+    customTopic: "",
+    template: "",
+    isPrivate: false,
+  });
   const [pieBarData, setPieBarData] = useState([""]);
   const [themeData, setThemeData] = useState([{ data: "", color: "#fff" }]);
   const [selectedColors, setSelectedColors] = useState([]);

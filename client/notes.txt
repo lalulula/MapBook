@@ -56,3 +56,29 @@ Integration testing:level of software testing that focuses on evaluating the int
 supports parallel test execution : running multiple test cases or test suites concurrently on mutiple execution environments or thest runners simultaneously, 
 Continuous Integration and continuous deployment
 --> Cheat Sheet : https://cheatography.com/aiqbal/cheat-sheets/cypress-io/
+
+
+
+
+<br />
+<h1>OR</h1>
+h1::before,
+h1::after {
+  background-color: #000;
+  content: "";
+  display: inline-block;
+  height: 1px;
+  position: relative;
+  vertical-align: middle;
+  width: 50%;
+}
+
+h1::before {
+  right: 0.5em;
+  margin-left: -50%;
+}
+
+h1::after {
+  left: 0.5em;
+  margin-right: -50%;
+}

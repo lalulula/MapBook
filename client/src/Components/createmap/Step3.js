@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import ReactMapboxGL, { Source, Layer } from "react-map-gl";
 import * as shapefile from "shapefile"; // Import the shapefile library
 import JSZip from "jszip";
-
+import MapTool from "../maptools/MapTools";
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
 const DEFAULT_GEOJSON =
@@ -114,7 +114,7 @@ const Step3 = ({ prevStep }) => {
           accept=".json, .geojson, .kml, .zip"
         />
       </div>
-
+      <MapTool />
       <div className="mapbox">
         <ReactMapboxGL
           initialViewState={{

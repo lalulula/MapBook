@@ -1,16 +1,31 @@
 import Checkbox from "@mui/material/Checkbox";
 import { grey, blueGrey } from "@mui/material/colors";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import CustomDropDown from "./CustomDropDown";
-
+import Dropdown from "react-dropdown";
+import { useEffect } from "react";
 const Step1 = ({ nextStep, options, setOptions }) => {
+  const handleMapNameChange = (name) => {
+    console.log(name);
+    setOptions({ ...options, name });
+  };
   const handleTopicClick = (topic) => {
-    setOptions({ ...options, topic });
+    const newVal = topic.value;
+    setOptions({ ...options, topic: newVal });
+  };
+  const handleCustomTopic = (customTopic) => {
+    setOptions({ ...options, customTopic });
   };
 
   const handleTemplateClick = (template) => {
-    setOptions({ ...options, template });
+    const newVal = template.value;
+    setOptions({ ...options, template: newVal });
   };
+  const handlePrivacy = (e) => {
+    setOptions({ ...options, isPrivate: e.target.checked });
+  };
+  useEffect(() => {
+    console.log(options.topic.value);
+  }, [options]);
 
   const topics = [
     "Economy",
@@ -36,24 +51,37 @@ const Step1 = ({ nextStep, options, setOptions }) => {
       <div className="step1_container">
         <div>
           <h3>Map Name</h3>
-          <input name="map_name" />
-        </div>
-        <br />
-        <div>
-          <h3>Topic</h3>
-          <CustomDropDown
-            label={options["topic"] || "Select Topic"}
-            options={topics}
-            handleClick={handleTopicClick}
+          <input
+            value={options.name}
+            onChange={(e) => handleMapNameChange(e.target.value)}
+            name="map_name"
           />
         </div>
         <br />
         <div>
+          <h3>Topic</h3>
+          <Dropdown
+            options={topics}
+            placeholder="Select Topic"
+            className="create_map_dropdown"
+            onChange={handleTopicClick}
+          />
+          {options.topic === "Other" && (
+            <input
+              value={options.customTopic}
+              placeholder="Enter a custom Topic"
+              onChange={(e) => handleCustomTopic(e.target.value)}
+            />
+          )}
+        </div>
+        <br />
+        <div>
           <h3>Templates</h3>
-          <CustomDropDown
-            label={options["template"] || "Select Template"}
+          <Dropdown
             options={templates}
-            handleClick={handleTemplateClick}
+            placeholder="Select Template"
+            className="create_map_dropdown"
+            onChange={handleTemplateClick}
           />
         </div>
         <br />
@@ -63,6 +91,7 @@ const Step1 = ({ nextStep, options, setOptions }) => {
             value="private"
             control={
               <Checkbox
+                onChange={handlePrivacy}
                 sx={{
                   color: grey[800],
                   "&.Mui-checked": {

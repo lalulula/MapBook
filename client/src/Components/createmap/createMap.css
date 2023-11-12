@@ -15,11 +15,6 @@
   flex-direction: column;
   align-items: center;
 }
-/* .create_steps_container .create_map_steps {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-} */
 
 .before_btn {
   position: absolute;
@@ -33,17 +28,23 @@
   margin-top: 1rem;
   bottom: 1rem;
 }
-
+/* STEP1 */
 .step1_container input {
   width: 300px;
   height: 30px;
   margin: 0;
 }
+.create_map_dropdown {
+  width: 300px;
+}
+
+/* STEP 2 */
 .step2_container input {
   width: 200px;
   height: 30px;
   margin: 0;
 }
+
 .data_input_container {
   display: flex;
   align-items: center;
