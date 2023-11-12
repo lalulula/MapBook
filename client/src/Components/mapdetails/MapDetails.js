@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import data from "../main/dum_data.json";
+
 import "./mapdetails.css";
 import Comments from "../comments/Comments";
 import MapTools from "../maptools/MapTools";
@@ -30,7 +31,7 @@ const MapDetails = () => {
                         <Comments />
                     </div>
                 </div>
-                <MapTools style={{width: "70%"}} isEdit={true}/>
+                <MapTools style={{width: "70%"}} isEdit={false} currentMap={currentMap}/>
             </div>
 
         </div>

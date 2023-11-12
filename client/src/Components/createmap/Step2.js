@@ -1,13 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Step3 from "./Step3";
+import PieBar from "./template/PieBar";
+import Thematic from "./template/Thematic";
+import Heat from "./template/Heat";
 
-const Step2 = ({ nextStep, prevStep, options }) => {
+const Step2 = ({
+  nextStep,
+  prevStep,
+  options,
+  pieBarData,
+  setPieBarData,
+  themeData,
+  setThemeData,
+  selectedColors,
+  setSelectedColors,
+  heatRange,
+  setHeatRange,
+}) => {
+  const template = options["template"];
+
   return (
     <>
-      <div>Step2</div>
-      <div>{options["topic"]}</div>
-      <div>{options["template"]}</div>
-      <button className="back_to_step1_btn" onClick={prevStep}> Back To Step1</button>
-      <button onClick={nextStep}> Go To Step3</button>
+      <div className="step2_container">
+        {(template === "Pie Chart" || template === "Bar Chart") && (
+          <PieBar pieBarData={pieBarData} setPieBarData={setPieBarData} />
+        )}
+        {template === "Thematic Map" && (
+          <Thematic themeData={themeData} setThemeData={setThemeData} />
+        )}
+        {template === "Circle Map" && <Step3 />}
+        {template === "Heat Map" && (
+          <Heat
+            selectedColors={selectedColors}
+            setSelectedColors={setSelectedColors}
+            heatRange={heatRange}
+            setHeatRange={setHeatRange}
+          />
+        )}
+      </div>
+
+      <button className="before_btn" onClick={prevStep}>
+        Back To Step1
+      </button>
+      <button className="next_btn" onClick={nextStep}>
+        Go To Step3
+      </button>
     </>
   );
 };

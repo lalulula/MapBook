@@ -1,18 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { Dropdown } from "flowbite-react";
 import Checkbox from "@mui/material/Checkbox";
 import { grey, blueGrey } from "@mui/material/colors";
-
 import FormControlLabel from "@mui/material/FormControlLabel";
-
+import Dropdown from "react-dropdown";
+import { useEffect } from "react";
 const Step1 = ({ nextStep, options, setOptions }) => {
-  //   const [options, setOptions] = useState({ topic: "", template: "" });
+  const handleMapNameChange = (name) => {
+    console.log(name);
+    setOptions({ ...options, name });
+  };
   const handleTopicClick = (topic) => {
-    setOptions({ ...options, topic });
+    const newVal = topic.value;
+    setOptions({ ...options, topic: newVal });
   };
+  const handleCustomTopic = (customTopic) => {
+    setOptions({ ...options, customTopic });
+  };
+
   const handleTemplateClick = (template) => {
-    setOptions({ ...options, template });
+    const newVal = template.value;
+    setOptions({ ...options, template: newVal });
   };
+  const handlePrivacy = (e) => {
+    setOptions({ ...options, isPrivate: e.target.checked });
+  };
+  useEffect(() => {
+    console.log(options.topic.value);
+  }, [options]);
+
   const topics = [
     "Economy",
     "Education",
@@ -23,6 +37,7 @@ const Step1 = ({ nextStep, options, setOptions }) => {
     "Social",
     "Other",
   ];
+
   const templates = [
     "Bar Chart",
     "Circle Map",
@@ -30,71 +45,70 @@ const Step1 = ({ nextStep, options, setOptions }) => {
     "Pie Chart",
     "Thematic Map",
   ];
+
   return (
-    <div>
-      <div>Step1</div>
-      <div>
-        <h3>Map Name</h3>
-        <input />
-      </div>
-      <div>
-        <h3>Topic</h3>
-        <Dropdown
-          data-testid="custom-dropdown"
-          name="topic"
-          label={options["topic"] || "Select Topic"}
-          dismissOnClick={true}
-        >
-          {topics.map((option, index) => (
-            <Dropdown.Item
-              key={index}
-              onClick={() => handleTopicClick(option)}
-            >
-              {option}
-            </Dropdown.Item>
-          ))}
-        </Dropdown>
-      </div>
-      <div>
-        <h3>Templates</h3>
-        <Dropdown
-          name="template"
-          label={options["template"] || "Select Template"}
-          dismissOnClick={true}
-          data-testid="custom-dropdown"
-        >
-          {templates.map((option, index) => (
-            <Dropdown.Item
-              key={index}
-              onClick={() => handleTemplateClick(option)}
-            >
-              {option}
-            </Dropdown.Item>
-          ))}
-        </Dropdown>
-      </div>
-      <div>
-        <h3>Visibility</h3>
-        <FormControlLabel
-          value="private"
-          control={
-            <Checkbox
-              sx={{
-                color: grey[800],
-                "&.Mui-checked": {
-                  color: blueGrey[600],
-                },
-              }}
+    <>
+      <div className="step1_container">
+        <div>
+          <h3>Map Name</h3>
+          <input
+            value={options.name}
+            onChange={(e) => handleMapNameChange(e.target.value)}
+            name="map_name"
+          />
+        </div>
+        <br />
+        <div>
+          <h3>Topic</h3>
+          <Dropdown
+            options={topics}
+            placeholder="Select Topic"
+            className="create_map_dropdown"
+            onChange={handleTopicClick}
+          />
+          {options.topic === "Other" && (
+            <input
+              value={options.customTopic}
+              placeholder="Enter a custom Topic"
+              onChange={(e) => handleCustomTopic(e.target.value)}
             />
-          }
-          label="Private"
-          labelPlacement="end"
-          color="white"
-        />
+          )}
+        </div>
+        <br />
+        <div>
+          <h3>Templates</h3>
+          <Dropdown
+            options={templates}
+            placeholder="Select Template"
+            className="create_map_dropdown"
+            onChange={handleTemplateClick}
+          />
+        </div>
+        <br />
+        <div>
+          <h3>Visibility</h3>
+          <FormControlLabel
+            value="private"
+            control={
+              <Checkbox
+                onChange={handlePrivacy}
+                sx={{
+                  color: grey[800],
+                  "&.Mui-checked": {
+                    color: blueGrey[600],
+                  },
+                }}
+              />
+            }
+            label="Private"
+            labelPlacement="end"
+            color="white"
+          />
+        </div>
       </div>
 
       <button
-        className="step1_btn"
+        className="next_btn"
         disabled={
           options["topic"] === "" || options["template"] === "" ? true : false
         }
@@ -104,7 +118,7 @@ const Step1 = ({ nextStep, options, setOptions }) => {
       >
         Go To Step2
       </button>
-    </div>
+    </>
   );
 };
 

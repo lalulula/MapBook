@@ -3,14 +3,20 @@
   border-radius: 15px;
   display: flex;
   justify-content: space-evenly;
-  height: 40px;
+  height: 35px;
 }
 
 .tool {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* padding: 50%; */
+  cursor: pointer;
+}
+
+.tool .visibility {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .tool_title {

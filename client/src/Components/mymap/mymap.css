@@ -1,0 +1,11 @@
+.mymaps_main_container {
+  padding: 2rem;
+}
+.mymaps_container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: center;
+  row-gap: 2rem;
+  column-gap: 2rem;
+  padding-top: 1rem;
+}
