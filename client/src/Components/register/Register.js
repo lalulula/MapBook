@@ -39,6 +39,8 @@ const Register = () => {
       admin = true;
     }
 
+    // encrypt password
+
     const user = { username, email, password };
     createUserAPIMethod(user)
       .then(() => {

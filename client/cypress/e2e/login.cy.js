@@ -6,6 +6,8 @@ describe("Login Page", () => {
     /* cy.get('input[placeholder="Username"]').type("Jasson");
     cy.get('input[placeholder="Password"]').type("Jasson123"); */
     cy.get('input[placeholder="Username"]').type("sam");
+    cy.get('input[placeholder="Email"]').type("sam@gmail.com");
+
     cy.get('input[placeholder="Password"]').type("Password123");
     //  Submit the form
     cy.get(".login_btn").click();
@@ -22,6 +24,8 @@ describe("Login Page", () => {
     cy.visit("https://mapbook-f381d1faf354.herokuapp.com/login");
     // Fill out the login form
     cy.get('input[placeholder="Username"]').type("Jasson");
+    cy.get('input[placeholder="Email"]').type("Jasson@gmail.com");
+
     cy.get('input[placeholder="Password"]').type("Jasson");
     //  Submit the form
     cy.get(".login_btn").click();
