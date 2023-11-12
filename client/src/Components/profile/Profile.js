@@ -4,9 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../features/userSlice";
-
-
-
+import { useSelector } from "react-redux";
 import "./profile.css";
 
 const Profile = () => {
@@ -16,6 +14,11 @@ const Profile = () => {
     const [name, setName] = useState("");
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const currentUsername = useSelector((state) => state.user.username);
+    const isAuth = useSelector((state) => state.user.isAuthenticated);
+
+    console.log("current user' username: ", currentUsername);
+    console.log("is authenticated: ", isAuth);
 
     //add username and name usestates
     // getting current user
@@ -57,7 +60,12 @@ const Profile = () => {
                             )}
                             {!isEditing && (
                                 <div className="username">
-                                    <div>No user</div>
+                                    {currentUsername && (
+                                        <div>{currentUsername}</div>
+                                    )}
+                                    {!currentUsername && (
+                                        <div>Test123</div>
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -67,13 +75,13 @@ const Profile = () => {
                                 <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
                             )}
                             {!isEditing && (
-                                <div className="name">Name goes here</div>
+                                <div className="name">Test</div>
                             )}
                         </div>
                         <div className="email_container">
                             <h5>email</h5>
                             <div className="email">
-                                <div>No user</div>
+                                <div>test@test.com</div>
                             </div>
                         </div>
                     </div>
