@@ -66,10 +66,6 @@ function App() {
         </Routes>
       </div>
     </Router>
-    ////For TEst
-    // <>
-    //   <CreateMap />
-    // </>
   );
 }
 export default App;
