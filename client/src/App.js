@@ -58,6 +58,7 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="mapdetails/:id" element={<MapDetails />} />
           <Route path="socialpostdetails/:id" element={<SocialPostDetails />} />
+          {/* admin */}
           <Route path="/manageusers" element={<ManageUsers />} />
           <Route
             path="/mainpage"

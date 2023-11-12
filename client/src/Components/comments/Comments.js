@@ -19,13 +19,15 @@ const Comments = () => {
     return (
         <div className="comments">
             <div className="comments_container">
-                {console.log(dummyComments)}
-                {dummyComments.map((comment) => (
-                    <div className="comment">
-                        <div className="user">user: {comment.user}</div>
-                        <div className="comment_content">comment: {comment.comment}</div>
-                    </div>
-                ))}
+                <div>
+                    {dummyComments.map((comment) => (
+                        <div className="comment">
+                            <div className="user">user: {comment.user}</div>
+                            <div className="comment_content">comment: {comment.comment}</div>
+                        </div>
+                    ))}
+                </div>
+
                 <div>
                     <input
                         id="map_comment"
