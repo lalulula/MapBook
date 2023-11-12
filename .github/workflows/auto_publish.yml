@@ -24,10 +24,8 @@ jobs:
         npm install
 
     - name: Run Cypress Tests
-      uses: cypress-io/github-action@v6
-      with:
-        build: npm install
-        start: npm start  # Adjust the script name to your Cypress test script
+      run: |
+        npm start & npx wait-on http://localhost:3000  # Adjust the script name to your Cypress test script
         
   run-backend-tests:
     runs-on: ubuntu-latest
