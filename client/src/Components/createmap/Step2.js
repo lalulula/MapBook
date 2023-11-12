@@ -18,7 +18,6 @@ const Step2 = ({
   setHeatRange,
 }) => {
   const template = options["template"];
-
   return (
     <>
       <div className="step2_container">
@@ -28,7 +27,6 @@ const Step2 = ({
         {template === "Thematic Map" && (
           <Thematic themeData={themeData} setThemeData={setThemeData} />
         )}
-        {template === "Circle Map" && <Step3 />}
         {template === "Heat Map" && (
           <Heat
             selectedColors={selectedColors}
