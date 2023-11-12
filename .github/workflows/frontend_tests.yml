@@ -21,7 +21,7 @@ jobs:
 
     - name: Run Cypress Tests
       run: |
-        npx cypress run  # Adjust the script name to your Cypress test script
+        npm start & npx wait-on http://localhost:3000  # Adjust the script name to your Cypress test script
         
 
 
