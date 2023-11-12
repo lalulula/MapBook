@@ -2,7 +2,9 @@ import { nextStep } from '../../src/Components/createmap/CreateMap';
 
 describe("Create Map Page", () => {
   it("should select topics and templates from dropdowns", () => {
-    cy.visit("https://mapbook-f381d1faf354.herokuapp.com/createmap");
+    // cy.visit("https://mapbook-f381d1faf354.herokuapp.com/createmap");
+
+    cy.visit("https://localhost:3000/createmap");
 
     cy.get('[data-testid="custom-dropdown"]').should('be.visible');
     cy.get('[data-testid="custom-dropdown"]').contains('Select Topic').click();
@@ -13,7 +15,8 @@ describe("Create Map Page", () => {
   });
 
   it("should trigger the 'nextStep' function when 'Go To Step2' is clicked", () => {
-    cy.visit("https://mapbook-f381d1faf354.herokuapp.com/createmap");
+    // cy.visit("https://mapbook-f381d1faf354.herokuapp.com/createmap");
+    cy.visit("https://localhost:3000/createmap");
     /* cy.window().then((win) => {
       cy.stub(win, "nextStep");
     }); */
