@@ -36,7 +36,7 @@ const MyMap = () => {
   }, [isAuthenticated, dispatch, navigate, user]);
 
   return (
-    <div className="main_container">
+    <div className="mymaps_main_container">
       <h1>{userData}'s Maps</h1>
       <div className="mymaps_container">
         {dumMapJsonData.map((item, index) => (

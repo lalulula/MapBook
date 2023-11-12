@@ -1,4 +1,5 @@
 .map_preview_container {
+  position: relative;
   border: 2px solid #ddd;
   border-radius: 5px;
   overflow: hidden;
@@ -6,24 +7,64 @@
   transition: transform 0.3s ease;
   color: white;
   position: relative;
-  background-color: var(--container-color);
+  background-color: rgb(33, 33, 33);
   padding: 2rem 0 2rem 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "options"
+    "content"
+    "footer";
 }
 
-.map_preview_container:hover {
-  transform: scale(1.05);
+.map_options {
+  grid-area: options;
+  position: relative;
+  cursor: pointer;
+  left: 85%;
+  /* grid-area: options;
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer; */
 }
 
-.map_preview_container img {
-  width: 10%;
-  height: 10%;
+.map_options i {
+  font-size: 1.5rem;
+}
+
+.map_preview_img {
+  width: 20%;
+  height: 100%;
   object-fit: cover;
 }
 
-.map_preview_container h3 {
-  margin: 10px 0;
+.options_menu {
+  grid-area: footer;
+  background-color: rgb(57, 57, 57);
+  position: absolute;
+  top: -150%;
+  right: 0;
+  display: inline-block;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px;
+  z-index: 1;
 }
 
-.map_preview_container p {
-  margin: 5px 0;
+.options_menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.options_menu li {
+  cursor: pointer;
+  padding: 5px 10px;
+  transition: background-color 0.3s;
+}
+
+.options_menu li:hover {
+  background-color: #f0f0f0;
 }
