@@ -23,17 +23,15 @@ import EditMap from "./Components/editmap/EditMap";
 function App() {
   //Initial Loading Feature For Web
   const [loading, setLoading] = useState(false);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   useEffect(() => {
-    console.log(window.location.pathname);
+    // console.log(window.location.pathname);
+    console.log(isAuthenticated);
     const timer = setTimeout(() => {
       setLoading(false);
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
-
-  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-  // console.log(useSelector((state) => state.user));
-  // console.log(isAuthenticated);
 
   if (loading) {
     return (
@@ -58,12 +56,13 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="mapdetails/:id" element={<MapDetails />} />
           <Route path="socialpostdetails/:id" element={<SocialPostDetails />} />
+          <Route path="/mainpage" element={<MainPage />} />
           {/* admin */}
-          <Route path="/manageusers" element={<ManageUsers />} />
-          <Route
+          {/* <Route
             path="/mainpage"
             element={isAuthenticated ? <MainPage /> : <LandingPage />}
-          />
+          /> */}
+          <Route path="/manageusers" element={<ManageUsers />} />
         </Routes>
       </div>
     </Router>

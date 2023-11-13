@@ -21,10 +21,18 @@ const CreateMap = () => {
     console.log(options);
   }, [options]);
   const prevStep = () => {
-    setStep(step - 1);
+    if (options.template === "Circle Map") {
+      setStep(step - 2);
+    } else {
+      setStep(step - 1);
+    }
   };
   const nextStep = () => {
-    setStep(step + 1);
+    if (options.template === "Circle Map") {
+      setStep(step + 2);
+    } else {
+      setStep(step + 1);
+    }
   };
   const steps = {
     1: <Step1 nextStep={nextStep} options={options} setOptions={setOptions} />,

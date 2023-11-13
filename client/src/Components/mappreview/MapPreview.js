@@ -45,7 +45,7 @@
 
 // export default MapPreview;
 import React, { useState } from "react";
-import "./mappreview.css";
+import "./mapPreview.css";
 import dumImg from "../../assets/img/dum.jpg";
 import { useNavigate } from "react-router-dom";
 

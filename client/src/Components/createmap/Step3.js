@@ -3,12 +3,16 @@ import ReactMapboxGL, { Source, Layer } from "react-map-gl";
 import * as shapefile from "shapefile"; // Import the shapefile library
 import JSZip from "jszip";
 import MapTool from "../maptools/MapTools";
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
+import { useNavigate } from "react-router-dom";
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
 const DEFAULT_GEOJSON =
   "https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/us-income.geojson";
 
 const Step3 = ({ prevStep }) => {
+  // MAPBOX STATE-BEGIN
   const [viewport, setViewport] = useState({
     width: "100vw",
     height: "90vh",
@@ -97,9 +101,9 @@ const Step3 = ({ prevStep }) => {
     setHoverInfo(hoveredFeature && { feature: hoveredFeature, x, y });
   }, []);
 
-  const handleAddMap = () => {
-    console.log("Add Map");
-  };
+  // MAPBOX STATE-END
+  const [mapCreated, setMapCreated] = useState(true);
+  const navigate = useNavigate();
   return (
     <>
       <div>
@@ -165,10 +169,28 @@ const Step3 = ({ prevStep }) => {
         <button onClick={prevStep} className="before_btn">
           Back To Step2
         </button>
-
-        <button className="next_btn" onClick={handleAddMap}>
-          Add Map
-        </button>
+        <Popup
+          trigger={<button className="next_btn">Add Map</button>}
+          modal
+          nested
+        >
+          {(close) => (
+            <div className="create_map_modal">
+              {mapCreated ? (
+                <div className="create_map_modal_content">
+                  Map Successfully Created! Explore Other Maps
+                </div>
+              ) : (
+                <div>Error Creating Map</div>
+              )}
+              <div>
+                <button onClick={() => navigate("/mainpage")}>
+                  Go to MainPage
+                </button>
+              </div>
+            </div>
+          )}
+        </Popup>
       </div>
     </>
   );
