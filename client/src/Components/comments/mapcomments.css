@@ -14,8 +14,13 @@
 }
 
 
-.comment {
-    padding-bottom: 10px;
+.map_comment {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    background-color: rgb(37, 37, 37);
+    padding: 8px;
+    border-radius: 10px;
 }
 
 #map_comment {
@@ -24,4 +29,16 @@
 
 .toolbar {
     border: solid 2px white;
+}
+
+.map_comment_header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.map_comment_profile_img {
+    width: 40px;
+    border-radius: 100%;
+    margin-right: 15px;
 }

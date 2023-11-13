@@ -26,12 +26,12 @@ const MapDetails = () => {
                 <div className="mapdetails_middle">
                     <div className="mapdetails_left">
                         <img src={currentMap.map_img}></img>
+                        <MapTools style={{ width: "70%" }} isEdit={false} currentMap={currentMap} />
                     </div>
                     <div className="mapdetails_right">
                         <MapComments />
                     </div>
                 </div>
-                <MapTools style={{ width: "70%" }} isEdit={false} currentMap={currentMap} />
             </div>
 
         </div>

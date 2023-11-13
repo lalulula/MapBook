@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import dummyComments from "./sample_data_comments.json";
 import "./mapcomments.css";
+import defaultImg from "../../assets/img/defaultProfileImg.jpg";
+
 
 const MapComments = () => {
     const [user, setUser] = useState(null);
@@ -21,8 +23,11 @@ const MapComments = () => {
             <div className="comments_container">
                 <div>
                     {dummyComments.map((comment) => (
-                        <div className="comment">
-                            <div className="user">user: {comment.user}</div>
+                        <div className="map_comment">
+                            <div className="map_comment_header">
+                                <img className="map_comment_profile_img" src={defaultImg} />
+                                <div className="user">user: {comment.user}</div>
+                            </div>
                             <div className="comment_content">comment: {comment.comment}</div>
                         </div>
                     ))}
