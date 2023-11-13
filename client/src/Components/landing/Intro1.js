@@ -10,12 +10,17 @@ const Intro1 = () => {
   };
   return (
     <div className="landing_intro_1 intro">
-      <h1>Design Your World</h1>
-      <h4>
-        Craft maps that tell your story, with endless possibilities for
-        personalization.
-      </h4>
-      <Lottie animationData={landingAni1} style={style} />
+      <div className="landing_right">
+        <Lottie animationData={landingAni1} style={style} />
+      </div>
+      <div className="landing_left">
+        <h4>
+          Craft maps that tell your story, with endless possibilities for
+          personalization.
+        </h4>
+        <br />
+        <h1>Design Your World</h1>
+      </div>
     </div>
   );
 };

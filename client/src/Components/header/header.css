@@ -1,7 +1,6 @@
 .header {
   width: 100%;
-  /* position: absolute; */
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 100;
