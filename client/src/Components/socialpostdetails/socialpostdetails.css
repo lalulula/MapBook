@@ -8,7 +8,7 @@
 .socialpostdetails_container {
     height: 80%;
     width: 90%;
-    display: flex;
+    /* display: flex; */
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
@@ -32,11 +32,10 @@
 }
 
 .socialpostdetails_middle {
-    height: 100%;
+    height: 50%;
     width: 100%;
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
 }
 
 .socialpostdetails_top_left {
@@ -56,7 +55,8 @@
 }
 
 #post_details_img {
-    width: 100%;
+    height: 90%;
+    width: 70%;
     padding: 10px 0 0 10px;
 }
 
@@ -71,8 +71,4 @@
     background-color: rgb(176, 176, 0);
     color: white;
     border-radius: 50px;
-}
-
-.socialpostdetails_bottom {
-    height: 50px;
 }

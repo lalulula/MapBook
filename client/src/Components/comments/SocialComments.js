@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import dummyComments from "./sample_data_comments.json";
-import "./comments.css";
+import "./socialcomments.css";
+import defaultImg from "../../assets/img/defaultProfileImg.jpg";
 
-const Comments = () => {
+const SocialComments = () => {
     const [user, setUser] = useState(null);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
@@ -17,20 +18,25 @@ const Comments = () => {
     //will call get all comments api and then filter based on the mapId
 
     return (
-        <div className="comments">
-            <div className="comments_container">
+        <div className="social_comments">
+            <div className="social_comments_container">
                 <div>
+                    <h3>Comments</h3>
+                    <hr id="socialcommentsline"></hr>
                     {dummyComments.map((comment) => (
-                        <div className="comment">
-                            <div className="user">user: {comment.user}</div>
-                            <div className="comment_content">comment: {comment.comment}</div>
+                        <div className="social_comment">
+                            <div className="social_comment_header">
+                                <img className="social_comment_profile_img" src={defaultImg} />
+                                <div className="user">user: {comment.user}</div>
+                            </div>
+                            <div className="social_comment_content">comment: {comment.comment}</div>
                         </div>
                     ))}
                 </div>
 
                 <div>
                     <input
-                        id="map_comment"
+                        id="social_comment"
                         type="text"
                         placeholder="Add a comment"
                         value={newComment}
@@ -43,4 +49,4 @@ const Comments = () => {
     )
 }
 
-export default Comments;
+export default SocialComments;

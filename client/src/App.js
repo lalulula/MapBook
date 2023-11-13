@@ -14,7 +14,6 @@ import CreateMap from "./Components/createmap/CreateMap";
 import MyMap from "./Components/mymap/MyMap";
 import SocialPage from "./Components/social/SocialPage";
 import Profile from "./Components/profile/Profile";
-import Comments from "./Components/comments/Comments";
 import MapDetails from "./Components/mapdetails/MapDetails";
 import SocialPostDetails from "./Components/socialpostdetails/SocialPostDetails";
 import ManageUsers from "./Components/manageusers/ManageUsers";

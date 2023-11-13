@@ -1,27 +1,32 @@
 [
     {
         "user": "bob",
-        "comment": "this is great",
+        "user_img": "../../assets/img/defaultProfileImg.jpg",
+        "comment": "the quick brown fox jumps over the lazy brown dog",
         "postId": "1"
     },
     {
         "user": "bob",
-        "comment": "this is great",
+        "user_img": "../../assets/img/defaultProfileImg.jpg",
+        "comment": "the quick brown fox jumps over the lazy brown dog",
         "postId": "2"
     },
     {
         "user": "bob",
-        "comment": "this is great",
+        "user_img": "../../assets/img/defaultProfileImg.jpg",
+        "comment": "the quick brown fox jumps over the lazy brown dog",
         "postId": "3"
     },
     {
         "user": "bob",
-        "comment": "this is great",
+        "user_img": "../../assets/img/defaultProfileImg.jpg",
+        "comment": "the quick brown fox jumps over the lazy brown dog",
         "postId": "4"
     },
     {
         "user": "bob",
-        "comment": "this is great",
+        "user_img": "../../assets/img/defaultProfileImg.jpg",
+        "comment": "the quick brown fox jumps over the lazy brown dog",
         "postId": "5"
     }
 ]

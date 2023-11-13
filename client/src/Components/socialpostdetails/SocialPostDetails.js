@@ -3,7 +3,8 @@ import "./socialpostdetails.css";
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import data from "../social/sample_data_social.json";
-import Comments from "../comments/Comments";
+import Comments from "../comments/SocialComments";
+import SocialComments from "../comments/SocialComments";
 
 const SocialPostDetails = () => {
     const [user, setUser] = useState(null);
@@ -41,7 +42,7 @@ const SocialPostDetails = () => {
                     </div>
                 </div>
                 <div className="socialpostdetails_bottom">
-                    <Comments />
+                    <SocialComments />
                 </div>
             </div>
         </div>
