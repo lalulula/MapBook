@@ -44,7 +44,7 @@
   grid-area: footer;
   background-color: rgb(57, 57, 57);
   position: absolute;
-  top: -150%;
+  top: -100%;
   right: 0;
   display: inline-block;
   border: 1px solid #ddd;

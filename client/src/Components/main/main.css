@@ -1,17 +1,9 @@
-/* .main_container {
-  padding: 2rem;
-}
-.main_maps_container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  justify-content: center;
-  row-gap: 2rem;
-  column-gap: 2rem;
-  padding-top: 1rem;
-} */
 .main_container {
   padding: 2rem;
   margin-top: 5rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .main_maps_container {
