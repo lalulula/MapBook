@@ -49,7 +49,7 @@ export const getSocialPostAPIMethod = (socialPostId) => {
   ).then(checkStatus);
 };
 
-//get all social posts 
+//get all social posts
 export const getAllSocialPostsAPIMethod = () => {
   return fetch(
     `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialposts`,
@@ -117,11 +117,15 @@ export const getAllUsersAPIMethod = () => {
 
 //get admin
 export const getAdminAPIMethod = () => {
-  return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/users/admin`, {
-    ...defaultHeaders,
-  }).then(checkStatus)
+  return fetch(
+    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/users/admin`,
+    {
+      ...defaultHeaders,
+    }
+  )
+    .then(checkStatus)
     .then(parseJSON);
-}
+};
 
 //END OF GET
 
@@ -153,75 +157,76 @@ export const loginUserAPIMethod = async (user) => {
   return response;
 };
 
-//create a new map
-export const createMapAPIMethod = (map) => {
-  return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/map`, {
-    ...defaultHeaders,
-    method: 'POST', // The method defaults to GET
-    body: JSON.stringify(answer),
-  }).then(checkStatus)
-    .then(parseJSON);
-}
+// //create a new map
+// export const createMapAPIMethod = (map) => {
+//   return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/map`, {
+//     ...defaultHeaders,
+//     method: 'POST', // The method defaults to GET
+//     body: JSON.stringify(answer),
+//   }).then(checkStatus)
+//     .then(parseJSON);
+// }
 
-//create a new social post
-export const createSocialPostAPIMethod = (socialPost) => {
-  return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialpost`, {
-    ...defaultHeaders,
-    method: 'POST', // The method defaults to GET
-    body: JSON.stringify(answer),
-  }).then(checkStatus)
-    .then(parseJSON);
-}
+// //create a new social post
+// export const createSocialPostAPIMethod = (socialPost) => {
+//   return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialpost`, {
+//     ...defaultHeaders,
+//     method: 'POST', // The method defaults to GET
+//     body: JSON.stringify(answer),
+//   }).then(checkStatus)
+//     .then(parseJSON);
+// }
 
-//create a comment on map
-export const createMapCommentAPIMethod = (comment) => {
-  return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/mapcomment`, {
-    ...defaultHeaders,
-    method: 'POST', // The method defaults to GET
-    body: JSON.stringify(answer),
-  }).then(checkStatus)
-    .then(parseJSON);
-}
+// //create a comment on map
+// export const createMapCommentAPIMethod = (comment) => {
+//   return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/mapcomment`, {
+//     ...defaultHeaders,
+//     method: 'POST', // The method defaults to GET
+//     body: JSON.stringify(answer),
+//   }).then(checkStatus)
+//     .then(parseJSON);
+// }
 
-//create a comment on a social post
-export const createSocialCommentAPIMethod = (comment) => {
-  return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialcomment`, {
-    ...defaultHeaders,
-    method: 'POST', // The method defaults to GET
-    body: JSON.stringify(answer),
-  }).then(checkStatus)
-    .then(parseJSON);
-}
+// //create a comment on a social post
+// export const createSocialCommentAPIMethod = (comment) => {
+//   return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialcomment`, {
+//     ...defaultHeaders,
+//     method: 'POST', // The method defaults to GET
+//     body: JSON.stringify(answer),
+//   }).then(checkStatus)
+//     .then(parseJSON);
+// }
 
-//create a reply on map comment
-export const createMapCommentReplyAPIMethod = (comment) => {
-  return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/mapcommentreply`, {
-    ...defaultHeaders,
-    method: 'POST', // The method defaults to GET
-    body: JSON.stringify(answer),
-  }).then(checkStatus)
-    .then(parseJSON);
-}
+// //create a reply on map comment
+// export const createMapCommentReplyAPIMethod = (comment) => {
+//   return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/mapcommentreply`, {
+//     ...defaultHeaders,
+//     method: 'POST', // The method defaults to GET
+//     body: JSON.stringify(answer),
+//   }).then(checkStatus)
+//     .then(parseJSON);
+// }
 
-//create a reply on social post comment
-export const createSocialCommentReplyAPIMethod = (comment) => {
-  return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialcommentreply`, {
-    ...defaultHeaders,
-    method: 'POST', // The method defaults to GET
-    body: JSON.stringify(answer),
-  }).then(checkStatus)
-    .then(parseJSON);
-}
+// //create a reply on social post comment
+// export const createSocialCommentReplyAPIMethod = (comment) => {
+//   return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialcommentreply`, {
+//     ...defaultHeaders,
+//     method: 'POST', // The method defaults to GET
+//     body: JSON.stringify(answer),
+//   }).then(checkStatus)
+//     .then(parseJSON);
+// }
 
 //upload image (cloud platform is tentative)
 export const uploadImageToCloudinaryAPIMethod = (formData) => {
-  const cloudName = 'samuelhan'
+  const cloudName = "samuelhan";
   return fetch(`https://api.cloudinary.com/v1_1/${cloudName}/upload`, {
-    method: 'POST',
+    method: "POST",
     body: formData,
-  }).then(checkStatus)
+  })
+    .then(checkStatus)
     .then(parseJSON);
-}
+};
 
 //END OF POST
 
@@ -241,67 +246,94 @@ export const updateUserAPIMethod = (user) => {
 
 //DELETE
 export const deleteUserAPIMethod = (userId) => {
-  return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/users/${userId}`, {
-    ...defaultHeaders,
-    method: 'DELETE',
-  }).then(checkStatus)
+  return fetch(
+    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/users/${userId}`,
+    {
+      ...defaultHeaders,
+      method: "DELETE",
+    }
+  )
+    .then(checkStatus)
     .then(parseJSON);
-}
+};
 
 //delete a map
 export const deleteMapAPIMethod = (mapId) => {
-  return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/users/${mapId}`, {
-    ...defaultHeaders,
-    method: 'DELETE',
-  }).then(checkStatus)
+  return fetch(
+    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/users/${mapId}`,
+    {
+      ...defaultHeaders,
+      method: "DELETE",
+    }
+  )
+    .then(checkStatus)
     .then(parseJSON);
-}
+};
 
 //delete a social post
 export const deleteSocialPostAPIMethod = (socialPostId) => {
-  return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialpost/${socialPostId}`, {
-    ...defaultHeaders,
-    method: 'DELETE',
-  }).then(checkStatus)
+  return fetch(
+    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialpost/${socialPostId}`,
+    {
+      ...defaultHeaders,
+      method: "DELETE",
+    }
+  )
+    .then(checkStatus)
     .then(parseJSON);
-}
+};
 
 //delete a comment on a map
 export const deleteMapCommentAPIMethod = (commentId) => {
-  return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/mapcomment/${commentId}`, {
-    ...defaultHeaders,
-    method: 'DELETE',
-  }).then(checkStatus)
+  return fetch(
+    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/mapcomment/${commentId}`,
+    {
+      ...defaultHeaders,
+      method: "DELETE",
+    }
+  )
+    .then(checkStatus)
     .then(parseJSON);
-}
+};
 
 //delete a reply on a social post comment
 export const deleteSocialCommentReplyAPIMethod = (commentId) => {
-  return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialcomment/${commentId}`, {
-    ...defaultHeaders,
-    method: 'DELETE',
-  }).then(checkStatus)
+  return fetch(
+    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialcomment/${commentId}`,
+    {
+      ...defaultHeaders,
+      method: "DELETE",
+    }
+  )
+    .then(checkStatus)
     .then(parseJSON);
-}
+};
 
 //delete a reply on a map comment
 export const deleteMapCommentReplyAPIMethod = (commentId) => {
-  return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/mapcomment/${commentId}`, {
-    ...defaultHeaders,
-    method: 'DELETE',
-  }).then(checkStatus)
+  return fetch(
+    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/mapcomment/${commentId}`,
+    {
+      ...defaultHeaders,
+      method: "DELETE",
+    }
+  )
+    .then(checkStatus)
     .then(parseJSON);
-}
+};
 
 //delete a comment on a social post
 export const deleteSocialCommentAPIMethod = (commentId) => {
-  return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialcomment/${commentId}`, {
-    ...defaultHeaders,
-    method: 'DELETE',
-  }).then(checkStatus)
+  return fetch(
+    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialcomment/${commentId}`,
+    {
+      ...defaultHeaders,
+      method: "DELETE",
+    }
+  )
+    .then(checkStatus)
     .then(parseJSON);
-}
-
+};
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
