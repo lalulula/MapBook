@@ -9,7 +9,37 @@ on:
     branches: [main]
 
 jobs:
-  Explore-GitHub-Actions:
+  run-frontend-tests:
+    runs-on: ubuntu-latest
+    defaults:
+        run:
+            working-directory: ./client
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 14  # Use the desired Node.js version
+    - name: Instal dependencies
+      run: 
+        npm install
+
+    - name: Run Cypress Tests
+      run: |
+        npm start & npx wait-on http://localhost:3000  # Adjust the script name to your Cypress test script
+        
+  run-backend-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: npm install -f
+      - run: npm test
+
+  deploying-heroku:
+    needs: [run-frontend-tests, run-backend-tests]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

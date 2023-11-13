@@ -41,7 +41,7 @@
 // describe("Register Form", () => {
 //   //CASE1 : When User inputs valid register information
 //   it("should successfully register a user", () => {
-//     cy.visit("https://mapbook-f381d1faf354.herokuapp.com/register");
+//     cy.visit("https://localhost:3000/register");
 //     // Fill out the registration form
 //     //cy.get('input[placeholder="Name"]').type("Sam");
 //     cy.get('input[placeholder="Username"]').type("TestUser");
@@ -53,12 +53,12 @@
 //     cy.get(".register_btn").click();
 
 //     // Ensure the registration was successful (you might need to assert the URL or page content)
-//     cy.url().should("eq", "https://mapbook-f381d1faf354.herokuapp.com/login");
+//     cy.url().should("eq", "https://localhost:3000/login");
 //   });
 
 //   //CASE2 : When User inputs invalid register information
 //   it("should show an error message if passwords don't match", () => {
-//     cy.visit("https://mapbook-f381d1faf354.herokuapp.com/register");
+//     cy.visit("https://localhost:3000/register");
 
 //     // Fill out the registration form with passwords that don't match
 //     //cy.get('input[placeholder="Name"]').type("Yolo");
@@ -86,7 +86,7 @@ describe("Register Form", () => {
     const username = "Jasson";
     const password = "Jasson123";
 
-    cy.visit("https://mapbook-f381d1faf354.herokuapp.com/register");
+    cy.visit("http://localhost:3000/register");
 
     // Check if the user already exists
     cy.request("GET", `/api/checkUser/${username}`).then((response) => {
@@ -104,7 +104,7 @@ describe("Register Form", () => {
         // Check if the registration was successful (the user is redirected to the login page)
         cy.url().should(
           "eq",
-          "https://mapbook-f381d1faf354.herokuapp.com/login"
+          "http://localhost:3000/login"
         );
 
         // Perform actions after successful registration
@@ -114,7 +114,7 @@ describe("Register Form", () => {
 
   //CASE2 : When User inputs invalid register information
   it("should show an error message if passwords don't match", () => {
-    cy.visit("https://mapbook-f381d1faf354.herokuapp.com/register");
+    cy.visit("http://localhost:3000/register");
 
     // Fill out the registration form with passwords that don't match
     //cy.get('input[placeholder="Name"]').type("Yolo");
