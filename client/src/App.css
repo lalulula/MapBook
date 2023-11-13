@@ -10,8 +10,9 @@
 }
 
 body {
-  background: rgba(0, 0, 0, 0.901);
+  background-color: black;
   color: #ffffff;
+  /* background: rgba(0, 0, 0, 0.901); */
   /* padding: 70px 0 0 0;
   position: absolute;
   top: 0;

@@ -1,7 +1,13 @@
+.create_map_page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .create_map_container {
   background-color: rgb(47, 47, 47);
   margin: 0 5rem 0 5rem;
-  height: 100vh;
+  width: 80%;
 }
 .create_map_container i {
   cursor: pointer;

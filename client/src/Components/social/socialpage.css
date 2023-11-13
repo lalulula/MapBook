@@ -1,59 +1,57 @@
 .socialpage {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  margin-top: 5rem;
 }
 
 .socialpage_container {
-    height: 80%;
-    width: 70%;
-    display: flex;
-    flex-direction: column;
-    /* justify-content: space-between; */
-    align-items: center;
-
+  height: 80%;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .socialpage_top {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 30px;
-
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
 }
 
 .socialpostdetails_top_left {
-    flex: 0.2;
+  flex: 0.2;
 }
 
 .socialpage_top_right {
-    display: flex;
-    justify-content: space-between;
-    flex: 0.7;
+  display: flex;
+  justify-content: space-between;
+  flex: 0.7;
 }
 
 .socialpage_middle {
-    /* height: 80%;
+  /* height: 80%;
     width: 80%; */
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .socialpage_top_left {
-    display: flex;
+  display: flex;
 }
 
 .social_post {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .searchbar {
-    width: 50%;
+  width: 50%;
 }
 
 .social_page_dropdown {
-    width: 120px;
+  width: 120px;
 }
