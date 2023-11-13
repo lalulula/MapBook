@@ -54,9 +54,11 @@ const CreateMap = () => {
     3: <Step3 prevStep={prevStep} options={options} />,
   };
   return (
-    <div className="create_map_container">
-      <h2>Create Map</h2>
-      <div className="create_map_steps">{steps[step]}</div>
+    <div className="create_map_page">
+      <div className="create_map_container">
+        <h2>Create Map</h2>
+        <div className="create_map_steps">{steps[step]}</div>
+      </div>
     </div>
   );
 };

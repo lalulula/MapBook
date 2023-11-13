@@ -1,9 +1,22 @@
-.main_container {
+/* .main_container {
   padding: 2rem;
 }
 .main_maps_container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  row-gap: 2rem;
+  column-gap: 2rem;
+  padding-top: 1rem;
+} */
+.main_container {
+  padding: 2rem;
+  margin-top: 5rem;
+}
+
+.main_maps_container {
+  display: grid;
+  grid-template-columns: repeat(4, 2fr);
   justify-content: center;
   row-gap: 2rem;
   column-gap: 2rem;

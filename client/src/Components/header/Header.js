@@ -34,7 +34,13 @@ const Header = () => {
     <>
       <div className="header">
         <div className="header_container">
-          <div onClick={() => navigate("/mainpage")}>MapBook</div>
+          <div
+            onClick={() => {
+              isAuthenticated ? navigate("/mainpage") : navigate("/");
+            }}
+          >
+            MapBook
+          </div>
           <div className="header_begin">
             {isAuthenticated ? (
               <>
@@ -42,7 +48,6 @@ const Header = () => {
                 <div onClick={() => navigate("/socialpage")}>Social</div>
                 <div onClick={() => navigate("/mymap")}>MyMaps</div>
                 <div>
-                  {/* <div onClick={() => navigate("/profile")}> */}
                   <img
                     src={defaultImg}
                     alt="header_profile"
@@ -53,7 +58,6 @@ const Header = () => {
               </>
             ) : (
               <>
-                {" "}
                 <div className="modal_container">
                   <CustomModal isOpen={isModalOpen} closeModal={closeModal} />
                 </div>
