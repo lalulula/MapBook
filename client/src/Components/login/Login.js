@@ -9,7 +9,9 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import "./login.css";
-// const bcrypt = require("bcrypt");
+
+import { SHA256, enc } from 'crypto-js';
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -28,6 +30,8 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const onSubmit2 = async (user) => {
+    user.password = SHA256(user.password).toString(enc.Hex);
+    console.log(user);
     loginUserAPIMethod(user)
       .then((res) => {
         console.log("logged in!");

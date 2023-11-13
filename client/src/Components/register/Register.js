@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { createUserAPIMethod } from "../../api/client";
 import { useForm } from "react-hook-form";
 import { Button, Form } from "semantic-ui-react";
-// const bcrypt = require("bcrypt");
+
+import { SHA256, enc } from 'crypto-js';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const Register = () => {
     handleRegister(data.username, data.email, data.password, data.confirmPwd);
   };
   const handleRegister = (username, email, password, confirmPwd) => {
+
     if (password !== confirmPwd) {
       setError("confirmPwd", {
         type: "manual",
@@ -40,8 +42,9 @@ const Register = () => {
     }
 
     // encrypt password
-
+    password = SHA256(password).toString(enc.Hex);
     const user = { username, email, password };
+    console.log(user);
     createUserAPIMethod(user)
       .then(() => {
         console.log("Successfully registered");
