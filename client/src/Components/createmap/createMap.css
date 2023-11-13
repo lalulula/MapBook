@@ -3,37 +3,33 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 1rem;
 }
 .create_map_container {
   background-color: rgb(47, 47, 47);
   margin: 0 5rem 0 5rem;
   width: 80%;
+  height: 80%;
+  padding: 2rem 2rem 4rem 2rem;
+  border-radius: 10px;
 }
 .create_map_container i {
   cursor: pointer;
 }
 .create_map_container h2 {
   position: relative;
-  padding: 2rem;
+  padding: 0 0 2rem 0;
 }
 .create_map_steps {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+.btn_container {
+  display: flex;
+  justify-content: space-between;
+}
 
-.before_btn {
-  position: absolute;
-  left: 10rem;
-  margin-top: 1rem;
-  bottom: 1rem;
-}
-.next_btn {
-  position: absolute;
-  right: 10rem;
-  margin-top: 1rem;
-  bottom: 1rem;
-}
 /* STEP1 */
 .step1_container input {
   width: 300px;
@@ -84,6 +80,21 @@
 .mapboxgl-canvas {
   width: 50vw;
   height: 50vh;
+}
+/* MODAL */
+.popup-content {
+  border-radius: 10px;
+}
+.create_map_modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  color: black;
+  font-weight: 500;
+  height: 6rem;
+  padding: 1rem;
 }
 /* DROPDOWN CSS */
 .dropdown {

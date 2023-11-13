@@ -4,15 +4,14 @@ import * as shapefile from "shapefile"; // Import the shapefile library
 import JSZip from "jszip";
 import MapTool from "../maptools/MapTools";
 import Popup from "reactjs-popup";
-import "reactjs-popup/dist/index.css";
 import { useNavigate } from "react-router-dom";
+import "reactjs-popup/dist/index.css";
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
 const DEFAULT_GEOJSON =
   "https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/us-income.geojson";
 
 const Step3 = ({ prevStep }) => {
-  // MAPBOX STATE-BEGIN
   const [viewport, setViewport] = useState({
     width: "100vw",
     height: "90vh",
@@ -100,10 +99,12 @@ const Step3 = ({ prevStep }) => {
     const hoveredFeature = features && features[0];
     setHoverInfo(hoveredFeature && { feature: hoveredFeature, x, y });
   }, []);
-
   // MAPBOX STATE-END
   const [mapCreated, setMapCreated] = useState(true);
   const navigate = useNavigate();
+  const handleAddMap = () => {
+    console.log("Add Map");
+  };
   return (
     <>
       <div>
@@ -165,32 +166,35 @@ const Step3 = ({ prevStep }) => {
             </Source>
           )}
         </ReactMapboxGL>
-
-        <button onClick={prevStep} className="before_btn">
-          Back To Step2
-        </button>
-        <Popup
-          trigger={<button className="next_btn">Add Map</button>}
-          modal
-          nested
-        >
-          {(close) => (
-            <div className="create_map_modal">
-              {mapCreated ? (
-                <div className="create_map_modal_content">
-                  Map Successfully Created! Explore Other Maps
+        <div className="btn_container">
+          <button onClick={prevStep} className="before_btn">
+            Go Back
+          </button>
+          <Popup
+            trigger={<button className="next_btn">Add Map</button>}
+            modal
+            nested
+            closeOnDocumentClick={false}
+            closeOnEscape={false}
+          >
+            {(close) => (
+              <div className="create_map_modal">
+                {mapCreated ? (
+                  <div className="create_map_modal_content">
+                    Map Successfully Created! Explore Other Maps!
+                  </div>
+                ) : (
+                  <div>Error Creating Map</div>
+                )}
+                <div>
+                  <button onClick={() => navigate("/mainpage")}>
+                    Go to MainPage
+                  </button>
                 </div>
-              ) : (
-                <div>Error Creating Map</div>
-              )}
-              <div>
-                <button onClick={() => navigate("/mainpage")}>
-                  Go to MainPage
-                </button>
               </div>
-            </div>
-          )}
-        </Popup>
+            )}
+          </Popup>
+        </div>
       </div>
     </>
   );
