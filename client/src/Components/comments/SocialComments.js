@@ -34,7 +34,7 @@ const SocialComments = () => {
                     ))}
                 </div>
 
-                <div>
+                <div className="social_comment_bottom">
                     <input
                         id="social_comment"
                         type="text"
@@ -42,7 +42,7 @@ const SocialComments = () => {
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
                     />
-                    <button onClick={handleAddComment}>Add</button>
+                    <button className="social_comment_button" onClick={handleAddComment}>Post</button>
                 </div>
             </div>
         </div>

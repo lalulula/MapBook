@@ -42,3 +42,20 @@
     border-radius: 100%;
     margin-right: 15px;
 }
+
+.map_comment_button {
+    margin-left: 10px;
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s ease;
+    padding: 0 20px 0 20px;
+    height: 90%;
+}
+
+.map_comments_bottom {
+    display: flex;
+    align-items: flex-start;
+}

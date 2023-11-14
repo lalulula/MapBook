@@ -33,7 +33,7 @@ const MapComments = () => {
                     ))}
                 </div>
 
-                <div>
+                <div className="map_comments_bottom">
                     <input
                         id="map_comment"
                         type="text"
@@ -41,7 +41,7 @@ const MapComments = () => {
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
                     />
-                    <button onClick={handleAddComment}>Add</button>
+                    <button className="map_comment_button" onClick={handleAddComment}>Post</button>
                 </div>
             </div>
         </div>

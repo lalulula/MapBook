@@ -12,9 +12,9 @@
     align-items: center;
 }
 
-.social_post_preview_container:hover {
+/* .social_post_preview_container:hover {
     transform: scale(1.05);
-}
+} */
 
 .social_post_preview_img {
     width: 10%;
