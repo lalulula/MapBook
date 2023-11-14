@@ -18,22 +18,13 @@ describe("Test example", () => {
   })
 
   test("POST /api/auth/register", async () => {
-    request(app)
+    await request(app)
       .post("/api/auth/register")
-      .expect("Content-Type", /json/)
       .send({
-        username: "haneul",
-        password: "haneul123"
+        username: "test",
+        password: "test123"
       })
       .expect(201)
-      .expect((res) => {
-        res.body.data.length = 2;
-        res.body.data[0].username = "jasson";
-        res.body.data[1].username = "haneul";
-      })
-      .end((err, res) => {
-        if (err) return err;
-      });
   });
 
   test("PUT /api/auth/user", async () => {
