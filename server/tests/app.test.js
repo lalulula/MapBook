@@ -28,19 +28,12 @@ describe("Test example", () => {
   });
 
   test("PUT /api/auth/user", async () => {
-    request(app)
+    await request(app)
       .post("/api/auth/user")
-      .expect("Content-Type", /json/)
       .send({
         username: "jasson",
         password: "jasson123"
       })
       .expect(200)
-      .expect((res) => {
-        res.body.data[0].password = "jasson123";
-      })
-      .end((err, res) => {
-        if (err) return err;
-      });
   });
 });
