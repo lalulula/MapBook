@@ -46,7 +46,10 @@ function App() {
       <Header />
       <div className="App">
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route
+            path="/"
+            element={isAuthenticated ? <MainPage /> : <LandingPage />}
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/createmap" element={<CreateMap />} />
