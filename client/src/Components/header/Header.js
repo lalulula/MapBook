@@ -38,7 +38,7 @@ const Header = () => {
               isAuthenticated ? navigate("/mainpage") : navigate("/");
             }}
           >
-            MapBook
+            ㅡ몌몌몌몌ㅖㅁㅁ몌몌몌몜
           </div>
           <div className="header_begin">
             {isAuthenticated ? (
