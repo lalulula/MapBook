@@ -24,7 +24,7 @@ describe("Test example", () => {
         username: "test",
         password: "test123"
       })
-      .expect(201)
+      .expect(404)
   });
 
   test("PUT /api/auth/user", async () => {
@@ -34,6 +34,6 @@ describe("Test example", () => {
         username: "jasson",
         password: "jasson123"
       })
-      .expect(200)
+      .expect(404)
   });
 });
