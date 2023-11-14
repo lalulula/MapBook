@@ -26,7 +26,7 @@ function App() {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   useEffect(() => {
     // console.log(window.location.pathname);
-    console.log(isAuthenticated);
+    // console.log(isAuthenticated);
     const timer = setTimeout(() => {
       setLoading(false);
     }, 2000);

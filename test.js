@@ -11,10 +11,7 @@ const Header = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const route = window.location.pathname;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  useEffect(() => {
-    console.log(window.location.pathname);
-    console.log(isAuthenticated);
-  }, [route]);
+
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -58,7 +55,7 @@ const Header = () => {
               </>
             ) : route === "/" ? (
               <>
-                {/* Case 2) User not authenticated*/}
+                {/* Case 3)Landing Page  */}
                 <div className="modal_container">
                   <CustomModal isOpen={isModalOpen} closeModal={closeModal} />
                 </div>
@@ -66,13 +63,9 @@ const Header = () => {
                 <div onClick={() => navigate("/login")}>Login</div>
                 <div onClick={() => navigate("/register")}>Register</div>
               </>
-            ) : route === "/login" || route === "/register" ? (
-              <>
-                <div onClick={() => navigate("/login")}>Login</div>
-                <div onClick={() => navigate("/register")}>Register</div>
-              </>
             ) : (
               <>
+                {/* Case 2)When continuing as guest user  */}
                 <div
                   onClick={() =>
                     window.alert("You need to Register to continue!")
@@ -89,6 +82,14 @@ const Header = () => {
                   MyMaps
                 </div>
                 <div onClick={() => navigate("/register")}>Register</div>
+                {/* <div>
+                <img
+                  src={defaultImg}
+                  alt="header_profile"
+                  className="header_profile"
+                  onClick={() => navigate("/profile")}
+                />
+              </div> */}
               </>
             )}
           </div>

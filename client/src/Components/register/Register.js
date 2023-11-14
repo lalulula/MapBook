@@ -5,7 +5,7 @@ import { createUserAPIMethod } from "../../api/client";
 import { useForm } from "react-hook-form";
 import { Button, Form } from "semantic-ui-react";
 
-import { SHA256, enc } from 'crypto-js';
+import { SHA256, enc } from "crypto-js";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -27,7 +27,6 @@ const Register = () => {
     handleRegister(data.username, data.email, data.password, data.confirmPwd);
   };
   const handleRegister = (username, email, password, confirmPwd) => {
-
     if (password !== confirmPwd) {
       setError("confirmPwd", {
         type: "manual",
@@ -139,7 +138,7 @@ const Register = () => {
             </p>
           )}
         </Form.Field>
-        <a href="#/">Already a Member?</a>
+        <a href="/login">Already a Member?</a>
         <Button type="submit" className="register_btn">
           Submit
         </Button>

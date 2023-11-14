@@ -10,8 +10,7 @@ import { useSelector } from "react-redux";
 
 import "./login.css";
 
-import { SHA256, enc } from 'crypto-js';
-
+import { SHA256, enc } from "crypto-js";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -67,7 +66,6 @@ const Login = () => {
           <h1>Login</h1>
           <h6>Create and Share Your Maps</h6>
         </div>
-
         <Form.Field>
           <input
             type="text"
@@ -92,13 +90,16 @@ const Login = () => {
               //pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/,
             })}
           />
-          <div className="invalid_credentials_error_message">{errorMessage}</div>
+          <div className="invalid_credentials_error_message">
+            {errorMessage}
+          </div>
           {errors.password && (
             <p className="pwd_err ui negative mini message">
               Password is required
             </p>
           )}
         </Form.Field>
+        <a href="/register">Don't have an account?</a>
         <div>
           <Button type="submit" className="login_btn">
             Submit

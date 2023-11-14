@@ -12,7 +12,7 @@ const Intro3 = () => {
 
   useEffect(() => {
     if (inView) {
-      console.log("In Intro3 now");
+      // console.log("In Intro3 now");
       setAnimationPlayed(true);
     } else {
       setAnimationPlayed(false);
