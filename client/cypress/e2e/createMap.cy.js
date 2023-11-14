@@ -6,12 +6,11 @@ describe("Create Map Page", () => {
 
     cy.visit("http://localhost:3000/createmap");
 
-    cy.get('.Dropdown-control').should('be.visible');
-    cy.get('.Dropdown-control').contains('Select Topic').click();
-    cy.get('.Dropdown-menu').contains("Education").click();
-    // cy.get('.Dropdown-control').contains('Select Topic').click();
-    cy.get('.Dropdown-control').contains('Select Template').click();
-    cy.get('.Dropdown-menu').contains("Bar Chart").click();
+    cy.get(".Dropdown-control").should("be.visible");
+    cy.get(".Dropdown-control").contains("Select Topic").click();
+    cy.get(".Dropdown-menu").contains("Education").click();
+    cy.get(".Dropdown-control").contains("Select Template").click();
+    cy.get(".Dropdown-menu").contains("Bar Chart").click();
   });
 
   it("should trigger the 'nextStep' function when 'Go To Step2' is clicked", () => {
@@ -20,14 +19,11 @@ describe("Create Map Page", () => {
     /* cy.window().then((win) => {
       cy.stub(win, "nextStep");
     }); */
-    cy.get('.Dropdown-control').contains("Select Topic").click();
-    cy.get('.Dropdown-menu').contains("Education").click();
-    cy.get('.Dropdown-control').contains('Select Template').click();
-    cy.get('.Dropdown-menu').contains("Bar Chart").click();
+    cy.get(".Dropdown-control").contains("Select Topic").click();
+    cy.get(".Dropdown-menu").contains("Education").click();
+    cy.get(".Dropdown-control").contains("Select Template").click();
+    cy.get(".Dropdown-menu").contains("Bar Chart").click();
     cy.get(".next_btn").click();
-    cy.get('.before_btn').should("be.visible");
-
-
-
+    cy.get(".before_btn").should("be.visible");
   });
 });
