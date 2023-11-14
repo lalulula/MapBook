@@ -1,0 +1,206 @@
+.create_social_post_page {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.create_social_post_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgb(47, 47, 47);
+    margin: 0 5rem 0 5rem;
+    width: 80%;
+    height: 80%;
+    padding: 2rem 2rem 4rem 2rem;
+    border-radius: 10px;
+}
+
+.create_map_container i {
+    cursor: pointer;
+}
+
+.create_map_container h2 {
+    position: relative;
+    padding: 0 0 2rem 0;
+}
+
+.create_map_steps {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn_container {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* STEP1 */
+.step1_container input {
+    width: 300px;
+    height: 30px;
+    margin: 0;
+}
+
+.create_map_dropdown {
+    width: 300px;
+}
+
+/* STEP 2 */
+.step2_container input {
+    width: 200px;
+    height: 30px;
+    margin: 0;
+}
+
+.data_input_container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.heat_container {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.heat_color_selector {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.heat_container td {
+    width: 25px;
+    height: 25px;
+}
+
+.heat_range_selector {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+}
+
+/* MAPBOX */
+.mapboxgl-ctrl-bottom-right {
+    visibility: hidden;
+}
+
+.mapboxgl-canvas {
+    width: 50vw;
+    height: 50vh;
+}
+
+/* MODAL */
+.popup-content {
+    border-radius: 10px;
+}
+
+.create_map_modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    color: black;
+    font-weight: 500;
+    height: 6rem;
+    padding: 1rem;
+}
+
+/* DROPDOWN CSS */
+.dropdown {
+    user-select: none;
+    position: relative;
+}
+
+.dropdown .dropdown_btn {
+    width: 300px;
+    height: 20px;
+    padding: 15px 20px;
+    background: #fff;
+    box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.06);
+    font-weight: bold;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.dropdown .dropdown_content {
+    position: absolute;
+    z-index: 100;
+    top: 110%;
+    left: 0;
+    padding: 10px;
+    background: #fff;
+    box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.06);
+    font-weight: 500;
+    color: black;
+}
+
+.dropdown .dropdown_content .dropdown_item {
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.dropdown .dropdown_content .dropdown_item:hover {
+    background: #f4f4f4;
+}
+
+.social_post_description textarea {
+    height: 200px;
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    outline: none;
+    padding: 10px;
+}
+
+.social_post_button {
+    background-color: white;
+    padding: 5px 20px 5px 20px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+.create_social_post_container_inner {
+    width: 90%;
+}
+
+.social_post_bottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.social_post_img_upload {
+    padding: 10px;
+}
+
+.upload-label {
+    background-color: white;
+    color: black;
+    padding: 8px 13px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.upload-label:hover {
+    background-color: #656565;
+    color: white;
+}
+
+.upload-input {
+    display: none;
+}

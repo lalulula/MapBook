@@ -18,6 +18,7 @@ import MapDetails from "./Components/mapdetails/MapDetails";
 import SocialPostDetails from "./Components/socialpostdetails/SocialPostDetails";
 import ManageUsers from "./Components/manageusers/ManageUsers";
 import EditMap from "./Components/editmap/EditMap";
+import CreateSocialPost from "./Components/createsocialpost/CreateSocialPost";
 
 function App() {
   //Initial Loading Feature For Web
@@ -56,6 +57,7 @@ function App() {
           <Route path="mapdetails/:id" element={<MapDetails />} />
           <Route path="socialpostdetails/:id" element={<SocialPostDetails />} />
           <Route path="/mainpage" element={<MainPage />} />
+          <Route path="/createsocialpost" element={<CreateSocialPost />} />
           {/* admin */}
           {/* <Route
             path="/mainpage"
