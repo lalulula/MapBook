@@ -1,53 +1,84 @@
 .map_preview_container {
+  height: 100%;
   position: relative;
-  border: 2px solid #ddd;
   border-radius: 5px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgb(80, 80, 80);
   transition: transform 0.3s ease;
-  color: white;
   position: relative;
-  background-color: rgb(33, 33, 33);
-  padding: 2rem 0 2rem 2.5rem;
+  background-color: rgb(74, 74, 74);
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px;
   grid-template-areas:
     "options"
     "content"
     "footer";
+  transition: transform 0.3s ease-in-out;
 }
-
-.map_options {
-  grid-area: options;
-  position: relative;
-  cursor: pointer;
-  left: 85%;
-  /* grid-area: options;
-  position: absolute;
-  top: 0;
-  right: 0;
-  cursor: pointer; */
+.map_name_container {
+  display: flex;
 }
-
-.map_options i {
-  font-size: 1.5rem;
+.map_preview_container:hover {
+  transform: scale(1.05);
 }
 
 .map_preview_img {
-  width: 20%;
+  width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
+.content {
+  padding: 15px;
+}
+
+.map_name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #000000;
+}
+
+.map_topic {
+  font-size: 1rem;
+  font-weight: 300;
+  margin-bottom: 8px;
+  color: #000000;
+}
+.map_count_container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.map_like {
+  font-size: 0.8rem;
+  color: #000000;
+  margin-bottom: 8px;
+}
+
+.map_no_comment {
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: #000000;
+}
+
+.options_menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 .options_menu {
-  grid-area: footer;
+  grid-area: options;
   background-color: rgb(57, 57, 57);
   position: absolute;
-  top: -100%;
-  right: 0;
+  top: 250px;
+  right: 0px;
   display: inline-block;
-  border: 1px solid #ddd;
+  /* border: 1px solid #ddd; */
   border-radius: 5px;
   padding: 5px;
   z-index: 1;
@@ -63,8 +94,4 @@
   cursor: pointer;
   padding: 5px 10px;
   transition: background-color 0.3s;
-}
-
-.options_menu li:hover {
-  background-color: #f0f0f0;
 }
