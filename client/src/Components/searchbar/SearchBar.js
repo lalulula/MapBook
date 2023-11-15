@@ -1,7 +1,7 @@
 import React from "react";
 import "./searchBar.css";
 
-const SearchBar = () => {
+const SearchBar = ({ onSearchChange }) => {
   return (
     <div className="search_bar_wrapper">
       <i className="search_icon bi bi-globe-americas" />
