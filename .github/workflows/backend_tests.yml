@@ -3,6 +3,10 @@ run-name: ${{ github.actor }} is testing the backend
 on:
   push:
     branches-ignore: [main]
+  workflow_run:
+    workflows: [frontend_tests]
+    types:
+      - completed
 
 jobs:
   run-backend-tests:

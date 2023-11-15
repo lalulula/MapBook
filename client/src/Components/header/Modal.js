@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import { useNavigate } from "react-router-dom";
+import "./header.css";
 
 // Define the app root element for accessibility
 
@@ -34,10 +35,10 @@ const CustomModal = ({ isOpen, closeModal }) => {
         },
         content: {
           position: "absolute",
-          top: "250px",
-          left: "350px",
-          right: "350px",
-          bottom: "250px",
+          top: "30%",
+          left: "35%",
+          right: "35%",
+          bottom: "30%",
           border: "1px solid #ccc",
           background: "#fff",
           overflow: "auto",

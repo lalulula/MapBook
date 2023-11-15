@@ -42,3 +42,14 @@
   width: 3rem;
   border-radius: 50%;
 }
+
+@media all and (min-width: 601px) {}
+
+@media all and (max-width: 700px) {
+  .custom-modal {
+    left: 0px;
+    right: 0px;
+  }
+
+
+}

@@ -30,3 +30,11 @@ input {
 .login_btn {
   width: 50%;
 }
+
+@media all and (max-width: 700px) {
+  .login_form {
+    width: 70%;
+  }
+
+
+}
