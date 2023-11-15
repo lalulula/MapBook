@@ -10,6 +10,8 @@
 # dependencies
 /client/node_modules
 
+/client/build
+
 /.pnp
 .pnp.js
 

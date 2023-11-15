@@ -41,7 +41,8 @@
     "semantic-ui-react": "^2.1.4",
     "shapefile": "^0.6.6",
     "style-loader": "^3.3.3",
-    "typewriter-effect": "^2.21.0"
+    "typewriter-effect": "^2.21.0",
+    "xmldom": "^0.6.0"
   },
   "scripts": {
     "start": "react-scripts start",
