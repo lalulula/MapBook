@@ -36,11 +36,11 @@ const MapPreview = ({ data }) => {
   };
 
   return (
-    <div class="map_preview_container" onClick={() => handleEdit(data._id)}>
+    <div className="map_preview_container" onClick={() => handleEdit(data._id)}>
       <img className="map_preview_img" src={dumImg} alt={data.map_name} />
-      <div class="content">
+      <div className="content">
         <div className="map_name_container">
-          <div class="map_name">{data.map_name}</div>
+          <div className="map_name">{data.map_name}</div>
           <div className="map_options" onClick={toggleOptionsMenu}>
             <i
               className="bi bi-three-dots-vertical"
@@ -48,10 +48,12 @@ const MapPreview = ({ data }) => {
             ></i>
           </div>
         </div>
-        <div class="map_topic">{data.topic}</div>
+        <div className="map_topic">{data.topic}</div>
         <div className="map_count_container">
-          <div class="map_like">Liked by {data.map_users_liked} users</div>
-          <div class="map_no_comment">{data.map_comment_count} comments</div>
+          <div className="map_like">Liked by {data.map_users_liked} users</div>
+          <div className="map_no_comment">
+            {data.map_comment_count} comments
+          </div>
         </div>
 
         {optionsMenuVisible && (
