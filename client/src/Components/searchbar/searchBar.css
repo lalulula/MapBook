@@ -1,3 +1,7 @@
+.search_container {
+  display: flex;
+  justify-content: space-between;
+}
 .search_bar_wrapper i {
   position: absolute;
 }
