@@ -14,3 +14,11 @@
   column-gap: 2rem;
   padding-top: 1rem;
 }
+.search_filter_dropdown {
+  width: 120px;
+  font-size: 10px;
+}
+.search_container {
+  display: flex;
+  justify-content: space-around;
+}

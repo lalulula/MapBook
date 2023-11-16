@@ -10,7 +10,7 @@ const SearchBar = ({ onSearchChange }) => {
         type="search"
         placeholder="Search Maps"
         onChange={(e) => {
-          console.log(e.target);
+          onSearchChange(e.target.value);
         }}
       />
     </div>
