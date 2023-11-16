@@ -18,7 +18,6 @@
   column-gap: 2rem;
   padding-top: 1rem;
 }
-<<<<<<< HEAD
 
 @media all and (max-width: 1000px) {
   .main_maps_container {
@@ -33,13 +32,3 @@
     /* Single column layout on smaller screens */
   }
 }
-=======
-.search_filter_dropdown {
-  width: 120px;
-  font-size: 10px;
-}
-.search_container {
-  display: flex;
-  justify-content: space-around;
-}
->>>>>>> ya
