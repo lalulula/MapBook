@@ -34,15 +34,8 @@ const login = async (req, res) => {
 // Create or REGISTER
 const register = async (req, res) => {
   try {
-    const {
-      name,
-      email,
-      username,
-      password,
-      is_admin,
-      profile_img,
-      maps_created,
-    } = req.body;
+    const { email, username, password, is_admin, profile_img, maps_created } =
+      req.body;
 
     console.log("req.body: ", req.body); //why isn't this printing
     // check for duplicate username
@@ -56,7 +49,6 @@ const register = async (req, res) => {
 
     // if not, continue
     const newUser = new User({
-      name,
       email,
       username,
       password: passwordHash,

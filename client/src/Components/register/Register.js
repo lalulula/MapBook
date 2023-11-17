@@ -9,11 +9,10 @@ import { SHA256, enc } from "crypto-js";
 
 const Register = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [confirmPwd, setConfirmPwd] = useState("");
+  const [confirmPwd, setConfirmPwd] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const {
@@ -24,16 +23,9 @@ const Register = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
-    handleRegister(
-      data.name,
-      data.username,
-      data.email,
-      data.password,
-      data.confirmPwd
-    );
+    handleRegister(data.username, data.email, data.password, data.confirmPwd);
   };
-  const handleRegister = (name, username, email, password, confirmPwd) => {
+  const handleRegister = (username, email, password, confirmPwd) => {
     if (password !== confirmPwd) {
       setError("confirmPwd", {
         type: "manual",
@@ -49,16 +41,13 @@ const Register = () => {
 
     // encrypt password
     password = SHA256(password).toString(enc.Hex);
-
-    // Include the 'name' field in the user object
-    const user = { name, username, email, password };
+    const user = { username, email, password };
     console.log(user);
-
     createUserAPIMethod(user)
       .then(() => {
         console.log("Successfully registered");
         setIsLoggedIn(true);
-        // navigate("/login"); //will navigate despite incorrect input
+        navigate("/login"); //will navigate despite incorrect input
       })
       .catch((err) => {
         console.log("Invalid register");
@@ -73,22 +62,11 @@ const Register = () => {
           <h1>Register</h1>
           <h6>You're almost there!</h6>
         </div>
-
-        <Form.Field>
-          <input
-            type="text"
-            placeholder="Name"
-            onChange={(e) => setName(e.target.value)}
-            {...register("name", { required: true })}
-          />
-          {errors.name && (
-            <p className="ui negative mini message">Name is required</p>
-          )}
-        </Form.Field>
         <Form.Field>
           <input
             type="text"
             placeholder="Username"
+            // value={username}
             onChange={(e) => setUsername(e.target.value)}
             //include validation and error message
             {...register("username", { required: true })}
@@ -101,15 +79,13 @@ const Register = () => {
           <input
             type="email"
             placeholder="Email"
+            // value={email}
             onChange={(e) => setEmail(e.target.value)}
-            {...register(
-              "email",
-              { required: true },
-              {
-                pattern:
-                  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zAZ]{2,}))$/,
-              }
-            )}
+            {...register("email", {
+              // required: true,
+              pattern:
+                /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zAZ]{2,}))$/,
+            })}
           />
           {errors.email && (
             <p className="ui negative mini message">
@@ -121,6 +97,7 @@ const Register = () => {
           <input
             type="password"
             placeholder="Password"
+            // value={password}
             onChange={(e) => setPassword(e.target.value)}
             {...register("password", {
               required: true,
