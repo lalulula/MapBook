@@ -5,6 +5,7 @@ import Step3 from "./Step3";
 import { useState } from "react";
 import "./createMap.css";
 import { useNavigate } from "react-router-dom";
+import Popup from "reactjs-popup";
 
 const CreateMap = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const CreateMap = () => {
   const [themeData, setThemeData] = useState([{ data: "", color: "#fff" }]);
   const [selectedColors, setSelectedColors] = useState([]);
   const [heatRange, setHeatRange] = useState({ from: 0, to: 0, width: 0 });
+
   useEffect(() => {
     console.log(options);
   }, [options]);
@@ -37,6 +39,7 @@ const CreateMap = () => {
       setStep(step + 1);
     }
   };
+
   const steps = {
     1: <Step1 nextStep={nextStep} options={options} setOptions={setOptions} />,
     2: (
@@ -58,13 +61,37 @@ const CreateMap = () => {
   };
   return (
     <div className="create_map_page">
-      <span
-        className="back_btn_createmap"
-        onClick={() => navigate("/mainpage")}
+      <Popup
+        trigger={
+          <span className="back_btn_createmap">
+            <i className="bi bi-arrow-left" />
+            &nbsp;&nbsp;MainPage
+          </span>
+        }
+        modal
+        nested
+        closeOnDocumentClick={false}
+        closeOnEscape={false}
       >
-        <i className="bi bi-arrow-left" />
-        &nbsp;&nbsp;MainPage
-      </span>
+        {(close) => (
+          <div className="back2main_modal">
+            <div className="back2main_modal_content">
+              <h3>
+                Are you sure you want to go to the mainpage?
+                <br /> Your works will not be saved.
+              </h3>
+            </div>
+
+            <div className="modal_btn_container">
+              <button onClick={() => navigate("/mainpage")}>
+                Go to Main Page
+              </button>
+              <button onClick={() => close()}>Keep Me on This Page</button>
+            </div>
+          </div>
+        )}
+      </Popup>
+
       <span className="create_map_container">
         {/* {step !== 3 ? <h1>Create Map</h1> : <></>} */}
         <div className={step !== 3 ? "create_map_steps" : "create_map_steps3"}>

@@ -1,3 +1,4 @@
+/* CreateMap.js */
 .create_map_page {
   height: 100vh;
   display: flex;
@@ -22,41 +23,11 @@
 .create_map_container i {
   cursor: pointer;
 }
-
-.step1_container h1 {
-  position: sticky;
-  top: 150px;
-  text-align: center;
-  padding-bottom: 2rem;
-}
-.step2_container {
-  text-align: center;
-}
-.step2_container h3 {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  text-align: center;
-  padding: 1rem;
-}
-/* .create_map_container h1 { */
-/* position: fixed;
-  top: 200px; */
-/* position: relative;
-  top: 100px; */
-/* } */
-
 .create_map_steps {
   display: flex;
   flex-direction: column;
   align-items: center;
   /* margin-top: 160px; */
-}
-
-.create_map_steps3 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .btn_container {
@@ -77,10 +48,15 @@
 }
 
 /* STEP1 */
+
+.step1_container h1 {
+  position: sticky;
+  top: 150px;
+  text-align: center;
+  padding-bottom: 2rem;
+}
+
 .step1_container input {
-  /* width: 300px;
-  height: 30px;
-  margin: 0; */
   width: 100%;
   max-width: 300px;
   height: 30px;
@@ -112,6 +88,17 @@
 }
 
 /* STEP 2 */
+.step2_container {
+  text-align: center;
+}
+.step2_container h3 {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  text-align: center;
+  padding: 1rem;
+}
+
 .step2_container input {
   width: 100%;
   max-width: 200px;
@@ -150,6 +137,13 @@
   flex-direction: column;
 }
 
+/* Step3.js */
+.create_map_steps3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 /* MAPBOX */
 
 .mapboxgl-ctrl-bottom-right {
@@ -160,27 +154,70 @@
   width: 50vw;
   height: 50vh;
 }
-.mapboxgl-map {
-  height: inherit;
-  width: inherit;
-}
-/* MODAL */
+
+/* Modal-Return to main */
 .popup-content {
-  border-radius: 10px;
+  padding: 1rem;
+}
+.back2main_modal {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.create_map_modal {
+.back2main_modal_content {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
   color: black;
   font-weight: 500;
-  height: 6rem;
+  height: 5rem;
   padding: 1rem;
+  text-align: center;
+}
+.modal_btn_container {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+.modal_btn_container button {
+  color: black;
+  border: white;
+  padding: 8px 15px 8px 15px;
+  border-radius: 5px;
+}
+.modal_btn_container button:hover {
+  color: rgb(47, 85, 120);
+  background-color: rgba(47, 85, 120, 0.141);
 }
 
+/* MODAL- Add Map success */
+.popup-content {
+  border-radius: 10px;
+}
+.create_map_modal {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.create_map_modal_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+  font-weight: 500;
+  height: 5rem;
+  padding: 1rem;
+  text-align: center;
+}
+.create_map_modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 /* DROPDOWN CSS */
 .dropdown {
   user-select: none;
