@@ -184,7 +184,7 @@ const Step3 = ({ prevStep }) => {
               <div className="create_map_modal">
                 {mapCreated ? (
                   <div className="create_map_modal_content">
-                    Map Successfully Created! Explore Other Maps!
+                    <h3> Map Successfully Created! Explore Other Maps!</h3>
                   </div>
                 ) : (
                   <div>Error Creating Map</div>

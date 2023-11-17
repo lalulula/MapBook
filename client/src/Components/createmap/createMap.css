@@ -157,7 +157,8 @@
 
 /* Modal-Return to main */
 .popup-content {
-  padding: 1rem;
+  padding: 2rem;
+  border-radius: 10px;
 }
 .back2main_modal {
   display: flex;
@@ -193,9 +194,7 @@
 }
 
 /* MODAL- Add Map success */
-.popup-content {
-  border-radius: 10px;
-}
+
 .create_map_modal {
   display: flex;
   flex-direction: column;
@@ -210,13 +209,24 @@
   color: black;
   font-weight: 500;
   height: 5rem;
-  padding: 1rem;
   text-align: center;
 }
+
 .create_map_modal {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.create_map_modal button {
+  color: black;
+  border: white;
+  padding: 8px 15px 8px 15px;
+  border-radius: 5px;
+}
+.create_map_modal button:hover {
+  color: rgb(47, 85, 120);
+  background-color: rgba(47, 85, 120, 0.141);
 }
 /* DROPDOWN CSS */
 .dropdown {
@@ -281,5 +291,12 @@
   .step2_container input {
     width: 90%;
     max-width: none;
+  }
+  .popup-content {
+    width: 100%;
+  }
+
+  .create_map_modal button {
+    width: 90%;
   }
 }
