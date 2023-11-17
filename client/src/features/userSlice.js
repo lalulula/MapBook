@@ -1,31 +1,3 @@
-// import { createSlice } from "@reduxjs/toolkit";
-
-// export const userSlice = createSlice({
-//   name: "user",
-//   initialState: { user: null },
-//   isAuthenticated: false,
-//   reducers: {
-//     login: (state, action) => {
-//       state.user = action.payload.user;
-//       state.isAuthenticated = true;
-//       console.log(state)
-//     },
-//     logout: (state, action) => {
-//       state.user = null;
-//     },
-//     //To access in FE:
-//     // const userInfo = useSelector(getUser);
-//     // const user = userInfo;
-//     // user.payload.user;
-//     getUser: (state, action) => {
-//       return state.user;
-//     },
-//   },
-// });
-// export const { login, logout, getUser } = userSlice.actions;
-// export const selectUser = (state) => state.user.user;
-
-// export default userSlice.reducer;
 import { createSlice } from "@reduxjs/toolkit";
 
 export const userSlice = createSlice({
@@ -33,12 +5,15 @@ export const userSlice = createSlice({
   initialState: {
     isAuthenticated: false,
     user: {},
+    id: null,
   },
   reducers: {
     login: (state, { payload }) => {
-      // console.log(payload.username);
+      // console.log(payload.user);
+
       state.user = payload.user;
       state.isAuthenticated = payload.token;
+      state.id = payload.user._id;
     },
     logout: (state, action) => {
       state.user = {};
