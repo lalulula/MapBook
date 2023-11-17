@@ -1,12 +1,28 @@
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const multer = require("multer");
 
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
+const usersController = require("./controllers/users.js");
 const app = require("./app");
 
 // CONFIGURATIONS
 dotenv.config();
+
+// FILE STORAGE
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/assets");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage });
+
+// ROUTES WITH FILES
+app.put("/api/users/:id/image", upload.single("picture"), usersController.updatePic);
 
 // ROUTES
 app.use("/api/auth", authRoutes);
@@ -20,6 +36,7 @@ mongoose
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
   })
   .catch((error) => console.log(`${error} did not connect`));
+
 //TEST///////////////////////////
 // In-memory mock database (replace with your actual database)
 const users = [{ username: "Jasson" }];

@@ -13,7 +13,7 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
-// UPDATE
+// UPDATE USERNAME
 const editUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -31,4 +31,22 @@ const editUser = async (req, res) => {
   }
 };
 
-module.exports = { editUser: editUser, getCurrentUser: getCurrentUser };
+// UPDATE USER PROFILE PIC
+const updatePic = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!ObjectID.isValid(id))
+      return res.status(400).send("ID unknown : " + id);
+
+    const updatedUser = await User.findByIdAndUpdate(id, 
+      { profile_img: req.body.profile_img}, 
+      { new: true }
+    );
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
+module.exports = { editUser: editUser, getCurrentUser: getCurrentUser, updatePic: updatePic };
