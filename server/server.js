@@ -2,6 +2,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 
 const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/users");
 const app = require("./app");
 
 // CONFIGURATIONS
@@ -9,6 +10,7 @@ dotenv.config();
 
 // ROUTES
 app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
 // MONGOOSE SETUP
 const PORT = process.env.PORT || 3001;

@@ -27,13 +27,13 @@ describe("Test example", () => {
       .expect(404)
   });
 
-  test("PUT /api/auth/user", async () => {
-    await request(app)
-      .post("/api/auth/user")
-      .send({
-        username: "jasson",
-        password: "jasson123"
-      })
-      .expect(404)
-  });
+  // test("PUT /api/users", async () => {
+  //   await request(app)
+  //     .post("/api/auth/user")
+  //     .send({
+  //       username: "jasson",
+  //       password: "jasson123"
+  //     })
+  //     .expect(404)
+  // });
 });

@@ -71,32 +71,4 @@ const register = async (req, res) => {
   }
 };
 
-// GET CURRENT USER
-const getUser = async (req, res) => {
-  console.log(req)
-  try {
-    const { id } = req.params;
-    const user = await User.findById(id);
-    res.status(200).json(user);
-  } catch (err) {
-    res.status(404).json({ message: err.message });
-  }
-};
-
-// UPDATE
-const editUser = async (req, res) => {
-  try {
-    const { username, password, } = req.body;
-
-    const updatedUser = await User.findOneAndUpdate(
-      { username: username },
-      { password: password },
-    );
-
-    res.status(200).json(updatedUser);
-  } catch (err) {
-    res.status(404).json({ message: err.message });
-  }
-};
-
-module.exports = { register: register, editUser: editUser, login: login, getUser: getUser };
+module.exports = { register: register, login: login };
