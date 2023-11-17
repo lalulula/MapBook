@@ -1,76 +1,92 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import dumMapJsonData from "../main/dum_data.json";
-import "./mymap.css";
 import MapPreview from "../mappreview/MapPreview";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import SearchBar from "../searchbar/SearchBar";
-import { getUserAPIMethod } from "../../api/client";
-import Dropdown from 'react-dropdown';
-
+import Dropdown from "react-dropdown";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "./mymap.css";
+import Lottie from "lottie-react";
+import NoMapAni from "../../assets/Lottie/NoMaps.json";
+import dumMapJsonData from "../main/dum_data.json";
 
 const MyMap = () => {
-  const [userData, setUserData] = useState(null); // State to store user data
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-  const user = useSelector((state) => state.user.user);
+  const [userData, setUserData] = useState(null); // State to store user data
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated); //Token of user : when logged in
+  const user = useSelector((state) => state.user.user); // User Obj --> can extract data from this and use it
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchFilterOption, setSearchFilterOption] = useState("");
   const searchFilterOps = ["MapName", "Topics", "Description"];
+  const [myMaps, setMyMaps] = useState([]);
+
   const handleSeachFilter = (e) => {
     setSearchFilterOption(e.value);
   };
-  const filteredMaps = dumMapJsonData.filter((map) => {
+  const filteredMaps = myMaps.filter((map) => {
     return searchFilterOption === "MapName"
       ? map.map_name.toLowerCase().includes(searchTerm.toLowerCase())
       : searchFilterOption === "Topics"
-        ? map.topic.toLowerCase().includes(searchTerm.toLowerCase())
-        : map.description.toLowerCase().includes(searchTerm.toLowerCase());
+      ? map.topic.toLowerCase().includes(searchTerm.toLowerCase())
+      : map.description.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   useEffect(() => {
     if (isAuthenticated) {
       setUserData(user);
+      setMyMaps(user.maps_created);
       console.log("Authenticated user:", user);
     } else {
       console.log("User is not authenticated");
     }
-
-    // Use getUserAPIMethod to fetch???왜앙돼
-    getUserAPIMethod()
-      .then((response) => response.json())
-      .then((data) => {
-        setUserData(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching user data: ", error);
-      });
   }, [isAuthenticated, dispatch, navigate, user]);
 
   return (
     <div className="mymaps_main_container">
-      <h1>{userData}'s Maps</h1>
-      <div className="my_maps_top">
-        <div className="my_maps_searchbar">
-          <SearchBar onSearchChange={(term) => setSearchTerm(term)} />
-        </div>
-        <Dropdown
-          options={searchFilterOps}
-          value={searchFilterOption}
-          placeholder="Search By.."
-          className="search_filter_dropdown"
-          onChange={handleSeachFilter}
-        />      </div>
+      <h1>{user.username}'s Maps</h1>
+      {myMaps.length !== 0 && (
+        <div className="my_maps_top">
+          <div className="my_maps_searchbar">
+            <SearchBar onSearchChange={(term) => setSearchTerm(term)} />
+          </div>
 
-      <div className="mymaps_container">
-        {filteredMaps.map((item, index) => (
-          <MapPreview key={index} data={item} />
-        ))}
-      </div>
+          <Dropdown
+            options={searchFilterOps}
+            value={searchFilterOption}
+            placeholder="Search By.."
+            className="search_filter_dropdown"
+            onChange={handleSeachFilter}
+          />
+        </div>
+      )}
+      {myMaps.length === 0 ? (
+        <div className="nomaps_container">
+          <br />
+          <h1>
+            You don't have any maps yet! Click Create Map to Make your Maps!
+          </h1>
+          <Lottie
+            animationData={NoMapAni}
+            style={{
+              height: 300,
+              width: 300,
+            }}
+          />
+          <br />
+          <div className="nomap_txt_btn" onClick={() => navigate("/createmap")}>
+            Go to Create Map Page
+          </div>
+        </div>
+      ) : (
+        <div className="mymaps_container">
+          {filteredMaps.map((item, index) => (
+            <MapPreview key={index} data={item} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

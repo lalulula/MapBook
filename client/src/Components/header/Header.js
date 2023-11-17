@@ -11,10 +11,10 @@ const Header = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const route = window.location.pathname;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  useEffect(() => {
-    console.log(window.location.pathname);
-    console.log(isAuthenticated);
-  }, [route]);
+  // useEffect(() => {
+  //   console.log(window.location.pathname);
+  //   console.log(isAuthenticated);
+  // }, [route]);
   const openModal = () => {
     setIsModalOpen(true);
   };
