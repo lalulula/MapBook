@@ -36,15 +36,11 @@
 }
 
 .mapdetails_left {
-<<<<<<< HEAD
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex: 1;
-=======
   flex: 1;
->>>>>>> ya
 }
 
 .mapdetails_right {
