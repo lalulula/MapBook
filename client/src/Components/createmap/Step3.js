@@ -124,6 +124,7 @@ const Step3 = ({ prevStep }) => {
       </div>
       <div className="mapbox">
         <ReactMapboxGL
+          style={{ height: "inherit", width: "inherit" }}
           initialViewState={{
             longitude: -122.4,
             latitude: 37.8,

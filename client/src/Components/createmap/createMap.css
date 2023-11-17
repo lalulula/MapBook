@@ -60,6 +60,7 @@
 }
 
 .btn_container {
+  z-index: 1;
   display: flex;
   justify-content: space-between;
 }
@@ -159,7 +160,10 @@
   width: 50vw;
   height: 50vh;
 }
-
+.mapboxgl-map {
+  height: inherit;
+  width: inherit;
+}
 /* MODAL */
 .popup-content {
   border-radius: 10px;
