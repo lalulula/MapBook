@@ -37,7 +37,7 @@ const Login = () => {
 
         res.json().then((jsonResult) => {
           // The result data which returned server
-          // console.log(jsonResult);
+          console.log(jsonResult);
 
           dispatch(login(jsonResult));
         });

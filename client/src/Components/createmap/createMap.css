@@ -1,9 +1,11 @@
 .create_map_page {
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 1rem;
+  justify-content: space-evenly;
+  /* margin-top: 1rem; */
 }
 
 .create_map_container {
@@ -13,6 +15,18 @@
   height: 80%;
   padding: 2rem 2rem 4rem 2rem;
   border-radius: 10px;
+  /* margin-top: 2rem; */
+}
+.back_btn_createmap {
+  align-self: flex-start;
+  align-items: center;
+  cursor: pointer;
+  font-size: medium;
+  margin: 5rem 0 0 3rem;
+}
+.back_btn_createmap:hover {
+  cursor: pointer;
+  color: rgb(47, 47, 47);
 }
 
 .create_map_container i {
@@ -37,18 +51,25 @@
 
 /* STEP1 */
 .step1_container input {
-  width: 300px;
+  /* width: 300px;
+  height: 30px;
+  margin: 0; */
+  width: 100%;
+  max-width: 300px;
   height: 30px;
   margin: 0;
 }
 
 .create_map_dropdown {
-  width: 300px;
+  /* width: 300px; */
+  width: 100%;
+  max-width: 300px;
 }
 
 /* STEP 2 */
 .step2_container input {
-  width: 200px;
+  width: 100%;
+  max-width: 200px;
   height: 30px;
   margin: 0;
 }
@@ -151,4 +172,30 @@
 
 .dropdown .dropdown_content .dropdown_item:hover {
   background: #f4f4f4;
+}
+
+.next_btn {
+  font-weight: bold;
+  font-size: 2rem;
+  cursor: pointer;
+  border: none;
+  margin: 0.1em;
+}
+
+@media screen and (max-width: 768px) {
+  .create_map_container {
+    width: 90%; /* Later:Width for smaller screens */
+    margin: 0 2rem 0 2rem;
+  }
+
+  .back_btn_createmap {
+    margin: 3rem 0 0 1rem; /* Later:Margin for smaller screens */
+  }
+
+  .step1_container input,
+  .create_map_dropdown,
+  .step2_container input {
+    width: 100%;
+    max-width: none;
+  }
 }
