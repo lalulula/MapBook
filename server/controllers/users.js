@@ -1,5 +1,7 @@
 const User = require("../models/User");
 
+const ObjectID = require("mongoose").Types.ObjectId;
+
 // GET CURRENT USER
 const getCurrentUser = async (req, res) => {
   try {
@@ -14,13 +16,15 @@ const getCurrentUser = async (req, res) => {
 // UPDATE
 const editUser = async (req, res) => {
   try {
-    const { username, password, } = req.body;
+    const { id } = req.params;
 
-    const updatedUser = await User.findOneAndUpdate(
-      { username: username },
-      { password: password },
+    if (!ObjectID.isValid(id))
+      return res.status(400).send("ID unknown : " + id);
+
+    const updatedUser = await User.findByIdAndUpdate(id, 
+      { username: req.body.username}, 
+      { new: true }
     );
-
     res.status(200).json(updatedUser);
   } catch (err) {
     res.status(404).json({ message: err.message });
