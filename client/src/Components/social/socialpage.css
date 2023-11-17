@@ -18,17 +18,18 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 30px;
 }
 
-.socialpostdetails_top_left {
-  flex: 0.2;
+.socialpostdetails_top_left h1 {
+  width: 100%;
 }
 
 .socialpage_top_right {
   display: flex;
   justify-content: space-between;
-  flex: 0.7;
+  /* flex: 0.7; */
 }
 
 .socialpage_middle {
@@ -54,4 +55,8 @@
 
 .social_page_dropdown {
   width: 120px;
+}
+
+.sort_by {
+  font-size: 10px;
 }
