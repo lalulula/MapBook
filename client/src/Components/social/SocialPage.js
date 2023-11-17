@@ -42,8 +42,13 @@ const SocialPage = () => {
               <SearchBar onSearchChange={(term) => setSearchTerm(term)} />
             </div>
             <div className="sort_by">
-              <Dropdown options={options} placeholder="Sort by" className="social_page_dropdown" />
-            </div>
+              <Dropdown
+                options={searchFilterOps}
+                value={searchFilterOption}
+                placeholder="Search By.."
+                className="social_page_dropdown"
+                onChange={handleSeachFilter}
+              />            </div>
           </div>
         </div>
         <div className="socialpage_middle">
