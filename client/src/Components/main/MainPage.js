@@ -20,8 +20,8 @@ const MainPage = () => {
     return searchFilterOption === "MapName"
       ? map.map_name.toLowerCase().includes(searchTerm.toLowerCase())
       : searchFilterOption === "Topics"
-      ? map.topic.toLowerCase().includes(searchTerm.toLowerCase())
-      : map.description.toLowerCase().includes(searchTerm.toLowerCase());
+        ? map.topic.toLowerCase().includes(searchTerm.toLowerCase())
+        : map.description.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   return (

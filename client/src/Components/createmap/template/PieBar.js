@@ -15,24 +15,26 @@ const PieBar = ({ pieBarData, setPieBarData }) => {
     setPieBarData(updatedData);
   };
   return (
-    <>
-      <h3>Enter Data Names</h3>
+    <div>
+      {/* <h3>Enter Data Names</h3> */}
       <br />
       <div className="data_container">
-        {pieBarData.map((data, index) => (
-          <div className="data_input_container" key={index}>
-            <input
-              placeholder="Enter Data"
-              name={`data_name_${index}`}
-              value={data}
-              onChange={(e) => handlePieBarDataInput(index, e.target.value)}
-            />
-            <i
-              className="bi bi-x-circle"
-              onClick={(e) => handleRemovePieBarData(index, e)}
-            ></i>
-          </div>
-        ))}
+        <div style={{ maxHeight: "300px", overflowY: "auto" }}>
+          {pieBarData.map((data, index) => (
+            <div className="data_input_container" key={index}>
+              <input
+                placeholder="Enter Data"
+                name={`data_name_${index}`}
+                value={data}
+                onChange={(e) => handlePieBarDataInput(index, e.target.value)}
+              />
+              <i
+                className="bi bi-x-circle"
+                onClick={(e) => handleRemovePieBarData(index, e)}
+              ></i>
+            </div>
+          ))}
+        </div>
       </div>
       <div>
         <i
@@ -41,7 +43,7 @@ const PieBar = ({ pieBarData, setPieBarData }) => {
           onClick={handleAddPieBarData}
         ></i>
       </div>
-    </>
+    </div>
   );
 };
 

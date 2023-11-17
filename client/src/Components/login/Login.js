@@ -34,10 +34,9 @@ const Login = () => {
     loginUserAPIMethod(user)
       .then((res) => {
         console.log("logged in!");
-
         res.json().then((jsonResult) => {
           // The result data which returned server
-          console.log(jsonResult);
+          // console.log(jsonResult);
 
           dispatch(login(jsonResult));
         });

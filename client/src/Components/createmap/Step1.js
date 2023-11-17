@@ -3,7 +3,7 @@ import { grey, blueGrey } from "@mui/material/colors";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Dropdown from "react-dropdown";
 import { useEffect } from "react";
-import Button from "react-bootstrap/Button";
+import { Button } from "@mui/material";
 
 const Step1 = ({ nextStep, options, setOptions }) => {
   const handleMapNameChange = (name) => {
@@ -50,6 +50,7 @@ const Step1 = ({ nextStep, options, setOptions }) => {
 
   return (
     <div className="step1_container">
+      <h1>Create Map</h1>
       <div>
         <h3>Map Name</h3>
         <input

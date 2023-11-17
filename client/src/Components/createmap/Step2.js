@@ -19,6 +19,7 @@ const Step2 = ({
   const template = options["template"];
   return (
     <div className="step2_container">
+      <h3>Enter Data Names</h3>
       {(template === "Pie Chart" || template === "Bar Chart") && (
         <PieBar pieBarData={pieBarData} setPieBarData={setPieBarData} />
       )}
