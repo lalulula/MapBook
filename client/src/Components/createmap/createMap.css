@@ -13,18 +13,30 @@
   height: 80%;
   padding: 2rem 2rem 4rem 2rem;
   border-radius: 10px;
+  display: flex;
+  /*   justify-content: center;
+ */
+  align-items: center;
+  flex-direction: column;
 }
 
 .create_map_container i {
   cursor: pointer;
 }
 
-.create_map_container h2 {
+.create_map_container h1 {
   position: relative;
   padding: 0 0 2rem 0;
 }
 
 .create_map_steps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 160px;
+}
+
+.create_map_steps3 {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -42,6 +54,27 @@
   margin: 0;
 }
 
+.next_btn {
+  color: black;
+  border: white;
+  padding: 8px 15px 8px 15px;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.before_btn {
+  color: black;
+
+}
+
+.next_btn:disabled {
+  color: rgb(130, 130, 130);
+  border: white;
+  padding: 8px 15px 8px 15px;
+  border-radius: 5px;
+  background-color: #6a6a6a;
+}
+
 .create_map_dropdown {
   width: 300px;
 }
@@ -51,6 +84,7 @@
   width: 200px;
   height: 30px;
   margin: 0;
+  top: 0;
 }
 
 .data_input_container {
@@ -84,6 +118,8 @@
 }
 
 /* MAPBOX */
+
+
 .mapboxgl-ctrl-bottom-right {
   visibility: hidden;
 }
@@ -151,4 +187,13 @@
 
 .dropdown .dropdown_content .dropdown_item:hover {
   background: #f4f4f4;
+}
+
+.create_map_container h1 {
+  position: fixed;
+  top: 200px;
+}
+
+.step3_maptools {
+  margin-bottom: 10px;
 }

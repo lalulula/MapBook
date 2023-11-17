@@ -2,6 +2,7 @@
   padding: 2rem;
   margin-top: 5rem;
 }
+
 .mymaps_container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -9,4 +10,18 @@
   row-gap: 2rem;
   column-gap: 2rem;
   padding-top: 1rem;
+}
+
+@media all and (max-width: 1000px) {
+  .mymaps_container {
+    grid-template-columns: repeat(2, 1fr);
+    /* Single column layout on smaller screens */
+  }
+}
+
+@media all and (max-width: 600px) {
+  .mymaps_container {
+    grid-template-columns: repeat(1, 1fr);
+    /* Single column layout on smaller screens */
+  }
 }

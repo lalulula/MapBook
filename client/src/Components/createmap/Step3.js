@@ -119,7 +119,9 @@ const Step3 = ({ prevStep }) => {
           accept=".json, .geojson, .kml, .zip"
         />
       </div>
-      <MapTool />
+      <div className="step3_maptools">
+        <MapTool />
+      </div>
       <div className="mapbox">
         <ReactMapboxGL
           initialViewState={{
