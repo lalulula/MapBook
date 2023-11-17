@@ -65,10 +65,12 @@ const CreateMap = () => {
         <i className="bi bi-arrow-left" />
         &nbsp;&nbsp;MainPage
       </span>
-      <div className="create_map_container">
-        <h1>Create Map</h1>
-        <div className={step != 3 ? "create_map_steps" : "create_map_steps3"}>{steps[step]}</div>
-      </div>
+      <span className="create_map_container">
+        {/* {step !== 3 ? <h1>Create Map</h1> : <></>} */}
+        <div className={step !== 3 ? "create_map_steps" : "create_map_steps3"}>
+          {steps[step]}
+        </div>
+      </span>
     </div>
   );
 };

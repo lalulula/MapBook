@@ -5,49 +5,52 @@
   justify-content: center;
   align-items: center;
   justify-content: space-evenly;
-  /* margin-top: 1rem; */
 }
-
 .create_map_container {
   background-color: rgb(47, 47, 47);
   margin: 0 5rem 0 5rem;
   width: 80%;
   height: 80%;
-  padding: 2rem 2rem 4rem 2rem;
+  padding: 2rem 2rem 8rem 2rem;
   border-radius: 10px;
   display: flex;
-  /*   justify-content: center;
- */
+  justify-content: center;
   align-items: center;
   flex-direction: column;
-  /* margin-top: 2rem; */
-}
-.back_btn_createmap {
-  align-self: flex-start;
-  align-items: center;
-  cursor: pointer;
-  font-size: medium;
-  margin: 5rem 0 0 3rem;
-}
-.back_btn_createmap:hover {
-  cursor: pointer;
-  color: rgb(47, 47, 47);
 }
 
 .create_map_container i {
   cursor: pointer;
 }
 
-.create_map_container h1 {
-  position: relative;
-  padding: 0 0 2rem 0;
+.step1_container h1 {
+  position: sticky;
+  top: 150px;
+  text-align: center;
+  padding-bottom: 2rem;
 }
+.step2_container {
+  text-align: center;
+}
+.step2_container h3 {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  text-align: center;
+  padding: 1rem;
+}
+/* .create_map_container h1 { */
+/* position: fixed;
+  top: 200px; */
+/* position: relative;
+  top: 100px; */
+/* } */
 
 .create_map_steps {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 160px;
+  /* margin-top: 160px; */
 }
 
 .create_map_steps3 {
@@ -59,6 +62,17 @@
 .btn_container {
   display: flex;
   justify-content: space-between;
+}
+.back_btn_createmap {
+  align-self: flex-start;
+  align-items: center;
+  cursor: pointer;
+  font-size: medium;
+  margin: 3rem 0 0 3rem;
+}
+.back_btn_createmap:hover {
+  cursor: pointer;
+  color: rgb(47, 47, 47);
 }
 
 /* STEP1 */
@@ -93,9 +107,7 @@
 }
 
 .create_map_dropdown {
-  /* width: 300px; */
-  width: 100%;
-  max-width: 300px;
+  width: 300px;
 }
 
 /* STEP 2 */
@@ -206,4 +218,27 @@
 
 .dropdown .dropdown_content .dropdown_item:hover {
   background: #f4f4f4;
+}
+
+.step3_maptools {
+  margin-bottom: 10px;
+}
+
+/* Add a media query for smaller screens */
+@media screen and (max-width: 768px) {
+  .create_map_container {
+    width: 90%;
+    margin: 0 2rem 0 2rem;
+  }
+
+  .back_btn_createmap {
+    margin: 3rem 0 0 1rem;
+  }
+
+  .step1_container input,
+  .create_map_dropdown,
+  .step2_container input {
+    width: 90%;
+    max-width: none;
+  }
 }

@@ -50,6 +50,7 @@ const Step1 = ({ nextStep, options, setOptions }) => {
 
   return (
     <div className="step1_container">
+      <h1>Create Map</h1>
       <div>
         <h3>Map Name</h3>
         <input
