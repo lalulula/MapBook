@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getUserAPIMethod } from "../../api/client";
+// import { getUserAPIMethod } from "../../api/client";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -23,16 +23,33 @@ const Profile = () => {
   console.log("current user' username: ", currentUsername);
   console.log("is authenticated: ", isAuth);
 
-  //add username and name usestates : getting current user
-  useEffect(() => {
-    getUserAPIMethod(userId, isAuth).then((userData) => {
-      //   console.log("user set in profile.js", userData);
-      setUsername(userData.username);
-      setName(userData.name);
-      setUser(userData.user);
-      setEmail(userData.email);
+  const getUser = async () => {
+    const response = await fetch(`http://localhost:3001/api/users/${userId}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${isAuth }` },
     });
-  }, [user]);
+    const data = await response.json();
+    setUser(data);
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!user) return null;
+
+  console.log(user);
+
+  //add username and name usestates : getting current user
+  // useEffect(() => {
+  //   getUserAPIMethod(userId, isAuth).then((userData) => {
+  //     //   console.log("user set in profile.js", userData);
+  //     setUsername(userData.username);
+  //     setName(userData.name);
+  //     setUser(userData.user);
+  //     setEmail(userData.email);
+  //   });
+  // }, [user]);
 
   const handleClickEditUser = () => {
     setIsEditing(!isEditing);
@@ -76,7 +93,7 @@ const Profile = () => {
               {!isEditing && (
                 <div className="username">
                   {currentUsername && <div>{currentUsername}</div>}
-                  {!currentUsername && <div>{username}</div>}
+                  {!currentUsername && <div>{user.username}</div>}
                 </div>
               )}
             </div>
