@@ -18,6 +18,7 @@ mongoose
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
   })
   .catch((error) => console.log(`${error} did not connect`));
+
 //TEST///////////////////////////
 // In-memory mock database (replace with your actual database)
 const users = [{ username: "Jasson" }];
@@ -33,5 +34,6 @@ app.get("/api/checkUser/:username", (req, res) => {
     res.status(404).json({ userExists: false });
   }
 });
+
 //TEST-END////////////////////////////////
 module.exports = app;
