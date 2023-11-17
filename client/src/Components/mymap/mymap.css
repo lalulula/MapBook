@@ -11,7 +11,10 @@
   column-gap: 2rem;
   padding-top: 1rem;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> ya
 @media all and (max-width: 1000px) {
   .mymaps_container {
     grid-template-columns: repeat(2, 1fr);
@@ -24,4 +27,8 @@
     grid-template-columns: repeat(1, 1fr);
     /* Single column layout on smaller screens */
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ya

@@ -3,16 +3,14 @@ import "./socialpage.css";
 import data from "../social/sample_data_social.json";
 import SocialPostPreview from "../socialpostpreview/SocialPostPreview";
 import SearchBar from "../searchbar/SearchBar";
-import Dropdown from 'react-dropdown';
-import 'react-dropdown/style.css';
-import { Button } from '@mui/material';
+import Dropdown from "react-dropdown";
+import "react-dropdown/style.css";
+import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const SocialPage = () => {
   const navigate = useNavigate();
-  const options = [
-    'one', 'two', 'three'
-  ];
+  const options = ["one", "two", "three"];
   return (
     <div className="socialpage">
       <div className="socialpage_container">
@@ -22,13 +20,27 @@ const SocialPage = () => {
           </div>
           <div className="socialpage_top_right">
             <div className="create_new_post">
-              <Button onClick={() => navigate('/createsocialpost')} variant="outlined" style={{ borderColor: "white", color: 'white', marginRight: "10px" }}>Create new post</Button>
+              <Button
+                onClick={() => navigate("/createsocialpost")}
+                variant="outlined"
+                style={{
+                  borderColor: "white",
+                  color: "white",
+                  marginRight: "10px",
+                }}
+              >
+                Create new post
+              </Button>
             </div>
             <div className="searchbar">
               <SearchBar />
             </div>
             <div className="sort_by">
-              <Dropdown options={options} placeholder="Sort by" className="social_page_dropdown" />
+              <Dropdown
+                options={options}
+                placeholder="Sort by"
+                className="social_page_dropdown"
+              />
             </div>
           </div>
         </div>
@@ -39,7 +51,7 @@ const SocialPage = () => {
         </div>
       </div>
     </div>
-  )
+  );
 };
 
 export default SocialPage;

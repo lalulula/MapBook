@@ -4,7 +4,10 @@ import Step2 from "./Step2";
 import Step3 from "./Step3";
 import { useState } from "react";
 import "./createMap.css";
+import { useNavigate } from "react-router-dom";
+
 const CreateMap = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [options, setOptions] = useState({
     name: "",
@@ -55,6 +58,13 @@ const CreateMap = () => {
   };
   return (
     <div className="create_map_page">
+      <span
+        className="back_btn_createmap"
+        onClick={() => navigate("/mainpage")}
+      >
+        <i className="bi bi-arrow-left" />
+        &nbsp;&nbsp;MainPage
+      </span>
       <div className="create_map_container">
         <h1>Create Map</h1>
         <div className={step != 3 ? "create_map_steps" : "create_map_steps3"}>{steps[step]}</div>
