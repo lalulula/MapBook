@@ -22,7 +22,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // ROUTES WITH FILES
-app.put("/api/users/:id/image", upload.single("picture"), usersController.updatePic);
+app.put(
+  "/api/users/:id/image",
+  upload.single("picture"),
+  usersController.updatePic
+);
 
 // ROUTES
 app.use("/api/auth", authRoutes);

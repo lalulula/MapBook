@@ -25,7 +25,7 @@ const Profile = () => {
 
   //add username and name usestates : getting current user
   useEffect(() => {
-    getUserAPIMethod(userId).then((userData) => {
+    getUserAPIMethod(userId, isAuth).then((userData) => {
       //   console.log("user set in profile.js", userData);
       setUsername(userData.username);
       setName(userData.name);

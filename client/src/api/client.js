@@ -5,12 +5,11 @@ const defaultHeaders = {
   },
 };
 
-//GET
-//get a user
+//GET: userInfo
 export const getUserAPIMethod = (userId) => {
   return fetch(
-    // `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/user/${userId}`,
-    `/api/auth/user/${userId}`,
+    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/user/${userId}`,
+    // `http://localhost3001/api/users/${userId}`,
     {
       ...defaultHeaders,
       method: "GET",

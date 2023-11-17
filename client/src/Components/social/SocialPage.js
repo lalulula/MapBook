@@ -23,8 +23,8 @@ const SocialPage = () => {
     return searchFilterOption === "Title"
       ? post.social_post_name.toLowerCase().includes(searchTerm.toLowerCase())
       : searchFilterOption === "Topics"
-        ? post.topic.toLowerCase().includes(searchTerm.toLowerCase())
-        : post.post_text.toLowerCase().includes(searchTerm.toLowerCase());
+      ? post.topic.toLowerCase().includes(searchTerm.toLowerCase())
+      : post.post_text.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   return (
@@ -36,7 +36,17 @@ const SocialPage = () => {
           </div>
           <div className="socialpage_top_right">
             <div className="create_new_post">
-              <Button onClick={() => navigate('/createsocialpost')} variant="outlined" style={{ borderColor: "white", color: 'white', marginRight: "10px" }}>Create new post</Button>
+              <Button
+                onClick={() => navigate("/createsocialpost")}
+                variant="outlined"
+                style={{
+                  borderColor: "white",
+                  color: "white",
+                  marginRight: "10px",
+                }}
+              >
+                Create new post
+              </Button>
             </div>
             <div className="searchbar">
               <SearchBar onSearchChange={(term) => setSearchTerm(term)} />
@@ -48,7 +58,8 @@ const SocialPage = () => {
                 placeholder="Search By.."
                 className="social_page_dropdown"
                 onChange={handleSeachFilter}
-              />            </div>
+              />{" "}
+            </div>
           </div>
         </div>
         <div className="socialpage_middle">
