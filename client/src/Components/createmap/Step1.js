@@ -3,11 +3,7 @@ import { grey, blueGrey } from "@mui/material/colors";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Dropdown from "react-dropdown";
 import { useEffect } from "react";
-<<<<<<< HEAD
 import { Button } from "@mui/material";
-=======
-import Button from "react-bootstrap/Button";
->>>>>>> ya
 
 const Step1 = ({ nextStep, options, setOptions }) => {
   const handleMapNameChange = (name) => {
