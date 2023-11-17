@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const DiscussionPostSchema = new mongoose.Schema({
+const SocialPostSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -20,7 +20,7 @@ const DiscussionPostSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  discussion_users_liked: {
+  social_users_liked: {
     type: Map,
     of: Boolean,
   },
@@ -29,5 +29,5 @@ const DiscussionPostSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
-const DiscussionPost = mongoose.model("DiscussionPost", DiscussionPostSchema);
-module.exports = DiscussionPost;
+const SocialPost = mongoose.model("SocialPost", SocialPostSchema);
+module.exports = SocialPost;
