@@ -147,6 +147,7 @@ export const createUserAPIMethod = (user) => {
   //     body: JSON.stringify(user),
   //   }
   // ).then(checkStatus);
+  console.log("User Data:", user);
   const response = fetch(
     `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/register`,
     {
@@ -155,6 +156,7 @@ export const createUserAPIMethod = (user) => {
       body: JSON.stringify(user),
     }
   );
+  console.log("API Response:", response);
   return response;
 };
 
