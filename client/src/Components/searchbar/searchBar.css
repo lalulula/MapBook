@@ -2,12 +2,13 @@
   display: flex;
   justify-content: space-between;
 }
+
 .search_bar_wrapper i {
   position: absolute;
 }
+
 .search_bar_wrapper {
-  width: 50%;
-  margin-bottom: 10px;
+  margin: 0 10px 10px 0;
 }
 
 .search_icon {
@@ -15,6 +16,7 @@
   min-width: 40px;
   color: gray;
 }
+
 .search_bar {
   width: 100%;
   text-align: left;
