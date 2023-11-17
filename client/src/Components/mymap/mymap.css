@@ -11,6 +11,21 @@
   column-gap: 2rem;
   padding-top: 1rem;
 }
+
+.my_maps_searchbar {
+  width: 50%;
+}
+
+.my_maps_top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search_filter_dropdown {
+  margin-bottom: 20px;
+}
+
 @media all and (max-width: 1000px) {
   .mymaps_container {
     grid-template-columns: repeat(2, 1fr);
