@@ -4,9 +4,11 @@ import { useNavigate } from "react-router-dom";
 import "./createsocialpost.css";
 import Dropdown from "react-dropdown";
 import { createSocialPostAPIMethod } from "../../api/client";
-
+import { useSelector } from "react-redux";
 const CreateSocialPost = () => {
   const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
+  const userId = useSelector((state) => state.user.id);
   const topics = [
     "Economy",
     "Education",
@@ -25,6 +27,7 @@ const CreateSocialPost = () => {
     topic: "",
     customTopic: "",
     post_images: "",
+    post_owner: "",
   });
   const handleTitleChange = (title) => {
     setOptions({ ...options, title });
@@ -69,10 +72,20 @@ const CreateSocialPost = () => {
   };
   const handleSocialPostCreate = async () => {
     console.log(options);
-    // navigate("/socialpage");
-    // const res = createSocialPostAPIMethod(options);
-    // const responseMsg = await res.json();
-    // alert(responseMsg.message);
+    console.log(userId);
+
+    const newPost = { ...options, post_owner: userId };
+    const res = createSocialPostAPIMethod(newPost);
+    console.log(res);
+    // Check if the response was successful (status code 2xx)
+    if (res.ok) {
+      const responseMsg = await res.json();
+      alert(responseMsg.message);
+      navigate("/socialpage");
+    } else {
+      // If the response status is not successful, handle the error
+      alert(`Error: ${res.status} - ${res.statusText}`);
+    }
   };
 
   return (
