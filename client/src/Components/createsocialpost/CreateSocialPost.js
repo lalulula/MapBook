@@ -30,9 +30,9 @@ const CreateSocialPost = () => {
   const handleSocialPostCreate = async () => {
     console.log(options);
     // navigate("/socialpage");
-    const res = createSocialPostAPIMethod(options);
-    const responseMsg = await res.json();
-    alert(responseMsg.message);
+    // const res = createSocialPostAPIMethod(options);
+    // const responseMsg = await res.json();
+    // alert(responseMsg.message);
   };
 
   const handleImageUpload = (event) => {
