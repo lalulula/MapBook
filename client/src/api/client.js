@@ -185,6 +185,30 @@ export const loginUserAPIMethod = async (user) => {
   return response;
 };
 
+// UPDATE USER
+export const updateUserAPIMethod = async (username, selectedFile, userId, isAuth) => {
+  try {
+    const formData = new FormData();
+    formData.append('image', selectedFile);
+    formData.append('username', username);
+
+    const response = await fetch(`${API_BASE_URL}/api/users/${userId}`, {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${isAuth }` },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error updating user: ${response.statusText}`);
+    }
+
+    const responseData = await response.json();
+    console.log('User updated successfully:', responseData.message);
+  } catch (error) {
+  console.error('Error updating user:', error.message);
+  }
+};
+
 // //create a new map
 // export const createMapAPIMethod = (map) => {
 //   return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/map`, {

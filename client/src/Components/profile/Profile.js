@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../features/userSlice";
 import { useSelector } from "react-redux";
 import "./profile.css";
+import { updateUserAPIMethod } from "../../api/client";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -39,28 +40,38 @@ const Profile = () => {
   };
 
   const updateUser = async () => {
-    try {
-      const formData = new FormData();
-      formData.append('image', selectedFile);
-      formData.append('username', username);
-
-      const response = await fetch(`http://localhost:3001/api/users/${userId}`, {
-        method: 'PUT',
-        headers: { Authorization: `Bearer ${isAuth }` },
-        body: formData,
+    updateUserAPIMethod(username, selectedFile, userId, isAuth)
+      .then((res) => {
+        setIsEditing(!isEditing);
+      })
+      .catch((err) => {
+        console.error('Error updating user:', err.message);
       });
+  }
 
-      if (!response.ok) {
-        throw new Error(`Error updating user: ${response.statusText}`);
-      }
+  // const updateUser = async () => {
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append('image', selectedFile);
+  //     formData.append('username', username);
 
-      const responseData = await response.json();
-      console.log('User updated successfully:', responseData.message);
-      setIsEditing(!isEditing);
-    } catch (error) {
-    console.error('Error updating user:', error.message);
-    }
-  };
+  //     const response = await fetch(`http://localhost:3001/api/users/${userId}`, {
+  //       method: 'PUT',
+  //       headers: { Authorization: `Bearer ${isAuth }` },
+  //       body: formData,
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error(`Error updating user: ${response.statusText}`);
+  //     }
+
+  //     const responseData = await response.json();
+  //     console.log('User updated successfully:', responseData.message);
+  //     setIsEditing(!isEditing);
+  //   } catch (error) {
+  //   console.error('Error updating user:', error.message);
+  //   }
+  // };
 
   const handleClickEditUser = () => {
     setIsEditing(!isEditing);
