@@ -1,5 +1,8 @@
 import { useSelector } from "react-redux";
 
+export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
+export const HOME_URL = process.env.REACT_APP_HOME_URL;
+
 // const isAuth = useSelector((state) => state.user.isAuthenticated);
 
 const defaultHeaders = {
@@ -147,14 +150,16 @@ export const createUserAPIMethod = (user) => {
   //     body: JSON.stringify(user),
   //   }
   // ).then(checkStatus);
+  console.log("User Data:", user);
   const response = fetch(
-    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/register`,
+    `${API_BASE_URL}/api/auth/register`,
     {
       ...defaultHeaders,
       method: "POST",
       body: JSON.stringify(user),
     }
   );
+  console.log("API Response:", response);
   return response;
 };
 
@@ -169,7 +174,7 @@ export const loginUserAPIMethod = async (user) => {
   //   }
   // ).then(checkStatus);
   const response = await fetch(
-    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/login`,
+    `${API_BASE_URL}/api/auth/login`,
     {
       ...defaultHeaders,
       method: "POST",
@@ -191,14 +196,19 @@ export const loginUserAPIMethod = async (user) => {
 // }
 
 // //create a new social post
-// export const createSocialPostAPIMethod = (socialPost) => {
-//   return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialpost`, {
-//     ...defaultHeaders,
-//     method: 'POST', // The method defaults to GET
-//     body: JSON.stringify(answer),
-//   }).then(checkStatus)
-//     .then(parseJSON);
-// }
+export const createSocialPostAPIMethod = (socialPost) => {
+  console.log(socialPost);
+  return fetch(
+    `${API_BASE_URL}/api/auth/socialpost`,
+    {
+      ...defaultHeaders,
+      method: "POST", // The method defaults to GET
+      body: JSON.stringify(socialPost),
+    }
+  )
+    .then(checkStatus)
+    .then(parseJSON);
+};
 
 // //create a comment on map
 // export const createMapCommentAPIMethod = (comment) => {

@@ -7,13 +7,11 @@ const User = require("../models/User");
 // LOGIN
 const login = async (req, res) => {
   try {
-    const {
-      username,
-      password,
-    } = req.body;
+    const { username, password } = req.body;
 
     const validUser = await User.findOne({ username: username });
-    if (!validUser) return res.status(400).json({ msg: "User does not exist. " });
+    if (!validUser)
+      return res.status(400).json({ msg: "User does not exist. " });
 
     const isMatch = await bcrypt.compare(password, validUser.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
@@ -25,7 +23,7 @@ const login = async (req, res) => {
 
     const expiryDate = new Date(Date.now() + 3600000); // 1 hour cookie
     res
-      .cookie('access_token', token, { httpOnly: true, expires: expiryDate })
+      .cookie("access_token", token, { httpOnly: true, expires: expiryDate })
       .status(200)
       .json({ token, user });
   } catch (err) {
@@ -36,19 +34,14 @@ const login = async (req, res) => {
 // Create or REGISTER
 const register = async (req, res) => {
   try {
-    const {
-      email,
-      username,
-      password,
-      is_admin,
-      profile_img,
-      maps_created
-    } = req.body;
+    const { email, username, password, is_admin, profile_img, maps_created } =
+      req.body;
 
     console.log("req.body: ", req.body); //why isn't this printing
     // check for duplicate username
     const validUser = await User.findOne({ username: username });
-    if (validUser) return res.status(400).json({ msg: "Username is already used." });
+    if (validUser)
+      return res.status(400).json({ msg: "Username is already used." });
 
     // hash password
     const salt = await bcrypt.genSalt();
@@ -61,7 +54,7 @@ const register = async (req, res) => {
       password: passwordHash,
       is_admin,
       profile_img,
-      maps_created
+      maps_created,
     });
     const savedUser = await newUser.save();
     const { password: hashedPassword, ...user } = savedUser._doc;

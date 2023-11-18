@@ -1,36 +1,111 @@
 .login {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .login_form_top {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .login_form {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    width: 30%;
-    height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 30%;
+  height: 100%;
 }
 
-h6 {
-    margin-top: 5px;
+h5 {
+  margin-top: 5px;
 }
 
 hr {
-    width: 50%;
+  width: 50%;
 }
 
 input {
-    margin-bottom: 10px;
-    padding: 10px;
-    width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 100%;
 }
 
 .login_btn {
-    width: 50%;
+  width: 50%;
+}
+
+.google_divider {
+  align-self: center;
+  font-size: medium;
+  font-weight: bold;
+}
+.google_divider::before,
+.google_divider::after {
+  background-color: rgb(247, 247, 247);
+  content: "";
+  display: inline-block;
+  height: 1px;
+  position: relative;
+  vertical-align: middle;
+  width: 130px;
+}
+.google_divider::before {
+  right: 0.5em;
+}
+.google_divider::after {
+  left: 0.5em;
+}
+/* .google_register_btn {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+} */
+
+@media all and (max-width: 1000px) {
+  .google_divider {
+    align-self: center;
+    font-size: medium;
+    font-weight: bold;
+  }
+  .google_divider::before,
+  .google_divider::after {
+    background-color: rgb(247, 247, 247);
+    content: "";
+    display: inline-block;
+    height: 1px;
+    position: relative;
+    vertical-align: middle;
+    width: 90px;
+  }
+  .google_divider::before {
+    right: 0.5em;
+  }
+  .google_divider::after {
+    left: 0.5em;
+  }
+}
+
+@media all and (max-width: 600px) {
+  .google_divider {
+    align-self: center;
+    font-size: medium;
+    font-weight: bold;
+  }
+  .google_divider::before,
+  .google_divider::after {
+    background-color: rgb(247, 247, 247);
+    content: "";
+    display: inline-block;
+    height: 1px;
+    position: relative;
+    vertical-align: middle;
+  }
+  .google_divider::before {
+    right: 0.5em;
+  }
+  .google_divider::after {
+    left: 0.5em;
+  }
 }

@@ -14,7 +14,7 @@ const MainPage = () => {
     setSearchFilterOption(e.value);
   };
   useEffect(() => {
-    console.log(searchFilterOption);
+    // console.log(searchFilterOption);
   }, [searchFilterOption]);
   const filteredMaps = dumMapJsonData.filter((map) => {
     return searchFilterOption === "MapName"
