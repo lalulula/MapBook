@@ -193,14 +193,19 @@ export const loginUserAPIMethod = async (user) => {
 // }
 
 // //create a new social post
-// export const createSocialPostAPIMethod = (socialPost) => {
-//   return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialpost`, {
-//     ...defaultHeaders,
-//     method: 'POST', // The method defaults to GET
-//     body: JSON.stringify(answer),
-//   }).then(checkStatus)
-//     .then(parseJSON);
-// }
+export const createSocialPostAPIMethod = (socialPost) => {
+  console.log(socialPost);
+  return fetch(
+    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialpost`,
+    {
+      ...defaultHeaders,
+      method: "POST", // The method defaults to GET
+      body: JSON.stringify(socialPost),
+    }
+  )
+    .then(checkStatus)
+    .then(parseJSON);
+};
 
 // //create a comment on map
 // export const createMapCommentAPIMethod = (comment) => {

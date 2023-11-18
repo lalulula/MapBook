@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./createsocialpost.css";
 import Dropdown from "react-dropdown";
+import { createSocialPostAPIMethod } from "../../api/client";
 
 const CreateSocialPost = () => {
   const navigate = useNavigate();
@@ -25,9 +26,13 @@ const CreateSocialPost = () => {
   const handleCustomTopic = (customTopic) => {
     setOptions({ ...options, customTopic });
   };
-  const handleSocialPostCreate = () => {
+
+  const handleSocialPostCreate = async () => {
     console.log(options);
     // navigate("/socialpage");
+    const res = createSocialPostAPIMethod(options);
+    const responseMsg = await res.json();
+    alert(responseMsg.message);
   };
 
   const handleImageUpload = (event) => {
