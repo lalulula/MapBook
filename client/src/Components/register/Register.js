@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable no-unused-vars */
+import React, { useState } from "react";
 import "./register.css";
 import { useNavigate } from "react-router-dom";
 import { createUserAPIMethod } from "../../api/client";
@@ -14,6 +15,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPwd, setConfirmPwd] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const {
     register,
@@ -34,9 +36,8 @@ const Register = () => {
       return; // Exit early if passwords don't match
     }
 
-    var admin = false;
     if (username === "admin") {
-      admin = true;
+      setIsAdmin(true);
     }
 
     // encrypt password
@@ -60,13 +61,12 @@ const Register = () => {
       <Form onSubmit={handleSubmit(onSubmit)} className="login_form">
         <div className="login_form_top">
           <h1>Register</h1>
-          <h6>You're almost there!</h6>
+          <h5>You're almost there!</h5>
         </div>
         <Form.Field>
           <input
             type="text"
             placeholder="Username"
-            // value={username}
             onChange={(e) => setUsername(e.target.value)}
             //include validation and error message
             {...register("username", { required: true })}
@@ -79,13 +79,15 @@ const Register = () => {
           <input
             type="email"
             placeholder="Email"
-            // value={email}
             onChange={(e) => setEmail(e.target.value)}
-            {...register("email", {
-              // required: true,
-              pattern:
-                /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zAZ]{2,}))$/,
-            })}
+            {...register(
+              "email",
+              { required: true },
+              {
+                pattern:
+                  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zAZ]{2,}))$/,
+              }
+            )}
           />
           {errors.email && (
             <p className="ui negative mini message">
@@ -97,7 +99,6 @@ const Register = () => {
           <input
             type="password"
             placeholder="Password"
-            // value={password}
             onChange={(e) => setPassword(e.target.value)}
             {...register("password", {
               required: true,
@@ -124,9 +125,31 @@ const Register = () => {
             </p>
           )}
         </Form.Field>
-        <a href="/login">Already a Member?</a>
-        <Button type="submit" className="register_btn">
+        <a href="/login" style={{ marginBottom: "15px", alignSelf: "end" }}>
+          Already a Member?
+        </a>
+
+        <Button
+          type="submit"
+          className="register_btn"
+          style={{ marginBottom: "10px" }}
+        >
           Submit
+        </Button>
+
+        <div className="google_divider">OR</div>
+        <Button
+          type="submit"
+          className="google_register_btn"
+          style={{
+            marginTop: "10px",
+            display: "flex",
+            justifyContent: "center",
+            gap: "0.5rem",
+          }}
+        >
+          <i className="bi bi-google" />
+          Sign In With Google
         </Button>
       </Form>
     </div>
