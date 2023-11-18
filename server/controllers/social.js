@@ -50,15 +50,21 @@ const createPost = async (req, res) => {
 };
 
 // Update Post by post id
-// TODO
 const editPost = async (req, res) => {
     try {
-        const { username, password, } = req.body;
-    
-        const updatedPost = await SocialPost.findOneAndUpdate(
-            { username: username },
-            { password: password },
-        ).set();
+        const { sPostId } = req.params;
+
+        const { title, post_content, post_images, topic, customTopic } = req.body;    
+
+
+        const updatedPost = await SocialPost.findByIdAndUpdate(sPostId , {
+            title: title,
+            post_content: post_content,
+            post_images: post_images,
+            topic: topic,
+            customTopic: customTopic
+        },
+        { new: true });
     
         res.status(200).json(updatedPost);
     } catch (err) {
