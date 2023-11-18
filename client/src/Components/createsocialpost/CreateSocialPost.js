@@ -7,50 +7,6 @@ import { createSocialPostAPIMethod } from "../../api/client";
 
 const CreateSocialPost = () => {
   const navigate = useNavigate();
-  const [options, setOptions] = useState({
-    title: "",
-    text: "",
-    topic: "",
-    customTopic: "",
-  });
-  const handleTitleChange = (title) => {
-    setOptions({ ...options, title });
-  };
-  const handleTextChange = (text) => {
-    setOptions({ ...options, text });
-  };
-  const handleTopicClick = (topic) => {
-    const newVal = topic.value;
-    setOptions({ ...options, topic: newVal });
-  };
-  const handleCustomTopic = (customTopic) => {
-    setOptions({ ...options, customTopic });
-  };
-
-  const handleSocialPostCreate = async () => {
-    console.log(options);
-    // navigate("/socialpage");
-    // const res = createSocialPostAPIMethod(options);
-    // const responseMsg = await res.json();
-    // alert(responseMsg.message);
-  };
-
-  const handleImageUpload = (event) => {
-    /* const file = event.target.files[0]; // Get the first file from the selected files
-        if (file) {
-          const reader = new FileReader();
-    
-          reader.onload = (e) => {
-            // Pass the uploaded image data to the parent component
-            onImageUpload(e.target.result);
-          };
-    
-          reader.readAsDataURL(file);
-        } */
-  };
-
-  useEffect(() => {}, []);
-
   const topics = [
     "Economy",
     "Education",
@@ -61,6 +17,64 @@ const CreateSocialPost = () => {
     "Social",
     "Other",
   ];
+
+  const [uploadedImages, setUploadedImages] = useState([]);
+  const [options, setOptions] = useState({
+    title: "",
+    post_content: "",
+    topic: "",
+    customTopic: "",
+    post_images: "",
+  });
+  const handleTitleChange = (title) => {
+    setOptions({ ...options, title });
+  };
+  const handlePostContentChange = (post_content) => {
+    setOptions({ ...options, post_content });
+  };
+  const handleTopicClick = (topic) => {
+    const newVal = topic.value;
+    setOptions({ ...options, topic: newVal });
+  };
+  const handleCustomTopic = (customTopic) => {
+    setOptions({ ...options, customTopic });
+  };
+
+  const handleImageUpload = (event) => {
+    // post_images
+    // const file = event.target.files[0]; // Get the first file from the selected files
+    // if (file) {
+    //   const reader = new FileReader();
+    //   reader.onload = (e) => {
+    //     // Pass the uploaded image data to the parent component
+    //     setOptions({ ...options, post_images: e.target.result });
+    //     setUploadedImage(e.target.result);
+    //   };
+    //   reader.readAsDataURL(file);
+    // }
+    const files = event.target.files; // Get the first file from the selected files
+    if (files.length > 0) {
+      const newImages = Array.from(files).map((file) => ({
+        data: URL.createObjectURL(file),
+        file,
+      }));
+
+      setOptions({
+        ...options,
+        post_images: newImages.map((img) => img.data),
+      });
+
+      setUploadedImages([...uploadedImages, ...newImages]);
+    }
+  };
+  const handleSocialPostCreate = async () => {
+    console.log(options);
+    // navigate("/socialpage");
+    // const res = createSocialPostAPIMethod(options);
+    // const responseMsg = await res.json();
+    // alert(responseMsg.message);
+  };
+
   return (
     <div className="create_social_post_page">
       <div className="create_social_post_container">
@@ -72,7 +86,7 @@ const CreateSocialPost = () => {
             <h3>Title</h3>
             <input
               placeholder="Enter title here"
-              value={options.name}
+              value={options.title}
               onChange={(e) => handleTitleChange(e.target.value)}
               name="title"
             />
@@ -82,9 +96,9 @@ const CreateSocialPost = () => {
           <div className="social_post_description">
             <textarea
               placeholder="Enter discussion here"
-              value={options.text}
-              onChange={(e) => handleTextChange(e.target.value)}
-              name="text"
+              value={options.post_content}
+              onChange={(e) => handlePostContentChange(e.target.value)}
+              name="post_content"
             />
           </div>
           <br />
@@ -95,10 +109,19 @@ const CreateSocialPost = () => {
             <input
               type="file"
               id="imageUpload"
-              accept="image/*" // Specify that only image files are allowed
+              accept="image/*" // Only image files are allowed
               onChange={handleImageUpload}
               className="upload-input"
             />
+            {uploadedImages.map((img, index) => (
+              <img
+                key={index}
+                src={img.data}
+                alt={`Uploaded ${index}`}
+                className="uploaded-image"
+                style={{ width: "100px", height: "100px" }}
+              />
+            ))}
           </div>
           <br></br>
           <div className="social_post_bottom">

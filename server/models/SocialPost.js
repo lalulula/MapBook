@@ -10,8 +10,10 @@ const SocialPostSchema = new mongoose.Schema({
     required: true,
   },
   post_images: {
-    type: String,
+    type: [String],
   },
+  topic: { type: String },
+  customTopic: { type: String },
   post_owner: {
     type: ObjectId,
     required: true,

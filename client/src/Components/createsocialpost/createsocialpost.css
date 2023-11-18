@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* margin-top: 1rem; */
+  margin-top: 6rem;
 }
 
 .create_social_post_container {
@@ -14,7 +14,7 @@
   background-color: rgb(47, 47, 47);
   margin: 0 5rem 0 5rem;
   width: 80%;
-  height: 80%;
+  /* height: 80%; */
   padding: 2rem 2rem 4rem 2rem;
   border-radius: 10px;
 }
