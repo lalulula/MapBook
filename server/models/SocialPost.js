@@ -15,7 +15,7 @@ const SocialPostSchema = new mongoose.Schema({
   topic: { type: String },
   customTopic: { type: String },
   post_owner: {
-    type: ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
   view_count: {

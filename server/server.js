@@ -4,6 +4,8 @@ const multer = require("multer");
 
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
+const socialRoutes = require("./routes/social");
+
 const usersController = require("./controllers/users.js");
 const app = require("./app");
 
@@ -31,6 +33,8 @@ app.put(
 // ROUTES
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/social", socialRoutes);
+
 
 // MONGOOSE SETUP
 const PORT = process.env.PORT || 3001;
