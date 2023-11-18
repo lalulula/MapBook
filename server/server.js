@@ -1,32 +1,35 @@
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const multer = require("multer");
+const cloudinary = require('cloudinary').v2;
 
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
-const usersController = require("./controllers/users.js");
+const userController = require("./controllers/users");
+const auth = require("./middleware/auth.js");
 const app = require("./app");
 
 // CONFIGURATIONS
 dotenv.config();
 
+// CLOUDINARY CONFIG
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 // FILE STORAGE
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/assets");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
+  filename: function (req,file,cb) {
+    cb(null, file.originalname)
+  }
 });
-const upload = multer({ storage });
+
+const upload = multer({storage: storage});
 
 // ROUTES WITH FILES
-app.put(
-  "/api/users/:id/image",
-  upload.single("picture"),
-  usersController.updatePic
-);
+app.put('/api/users/:id', upload.single('image'), auth.verifyToken, userController.updateUser);
 
 // ROUTES
 app.use("/api/auth", authRoutes);

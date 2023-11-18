@@ -1,6 +1,7 @@
-const User = require("../models/User");
+// const cloudinary = require("../server")
+const cloudinary = require('cloudinary').v2;
 
-const ObjectID = require("mongoose").Types.ObjectId;
+const User = require("../models/User");
 
 // GET CURRENT USER
 const getCurrentUser = async (req, res) => {
@@ -13,40 +14,33 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
-// UPDATE USERNAME
-const editUser = async (req, res) => {
+// UPDATE USER
+const updateUser = (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!ObjectID.isValid(id))
-      return res.status(400).send("ID unknown : " + id);
+    cloudinary.uploader.upload(req.file.path, async function (err, result) {
+      if(err) {
+        console.log(err);
+        return res.status(500).json({
+          success: false,
+          message: "Error"
+        })
+      }
+      
+      const updatedUser = await User.findByIdAndUpdate(id, 
+        { 
+          username: req.body.username,
+          profile_img: result.secure_url,
+        }, 
+        { new: true }
+      );
 
-    const updatedUser = await User.findByIdAndUpdate(id, 
-      { username: req.body.username}, 
-      { new: true }
-    );
-    res.status(200).json(updatedUser);
+      res.status(200).json(updatedUser);
+    })
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
 };
 
-// UPDATE USER PROFILE PIC
-const updatePic = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    if (!ObjectID.isValid(id))
-      return res.status(400).send("ID unknown : " + id);
-
-    const updatedUser = await User.findByIdAndUpdate(id, 
-      { profile_img: req.body.profile_img}, 
-      { new: true }
-    );
-    res.status(200).json(updatedUser);
-  } catch (err) {
-    res.status(404).json({ message: err.message });
-  }
-};
-
-module.exports = { editUser: editUser, getCurrentUser: getCurrentUser, updatePic: updatePic };
+module.exports = { getCurrentUser: getCurrentUser, updateUser: updateUser };
