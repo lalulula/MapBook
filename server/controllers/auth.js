@@ -8,7 +8,7 @@ const User = require("../models/User");
 const login = async (req, res) => {
   try {
     const { username, password } = req.body;
-    console.log(password)
+
     const validUser = await User.findOne({ username: username });
     if (!validUser)
       return res.status(400).json({ msg: "User does not exist. " });
