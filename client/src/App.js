@@ -24,6 +24,15 @@ function App() {
   //Initial Loading Feature For Web
   const [loading, setLoading] = useState(false);
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  
+  // TODO:
+  // get current user 
+  // check the token is expired or not
+  // if it is expired,
+  // delete state
+  // if not,
+  // update the expiration date
+
   useEffect(() => {
     // console.log(window.location.pathname);
     // console.log(isAuthenticated);

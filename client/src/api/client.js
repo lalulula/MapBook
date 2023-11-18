@@ -1,5 +1,8 @@
 import { useSelector } from "react-redux";
 
+export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
+export const HOME_URL = process.env.REACT_APP_HOME_URL;
+
 // const isAuth = useSelector((state) => state.user.isAuthenticated);
 
 const defaultHeaders = {
@@ -149,7 +152,7 @@ export const createUserAPIMethod = (user) => {
   // ).then(checkStatus);
   console.log("User Data:", user);
   const response = fetch(
-    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/register`,
+    `${API_BASE_URL}/api/auth/register`,
     {
       ...defaultHeaders,
       method: "POST",
@@ -171,7 +174,7 @@ export const loginUserAPIMethod = async (user) => {
   //   }
   // ).then(checkStatus);
   const response = await fetch(
-    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/login`,
+    `${API_BASE_URL}/api/auth/login`,
     {
       ...defaultHeaders,
       method: "POST",
@@ -196,7 +199,7 @@ export const loginUserAPIMethod = async (user) => {
 export const createSocialPostAPIMethod = (socialPost) => {
   console.log(socialPost);
   return fetch(
-    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialpost`,
+    `${API_BASE_URL}/api/auth/socialpost`,
     {
       ...defaultHeaders,
       method: "POST", // The method defaults to GET
