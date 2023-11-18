@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-// import { getUserAPIMethod } from "../../api/client";
-import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../features/userSlice";
@@ -10,18 +8,12 @@ import "./profile.css";
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const currentUsername = useSelector((state) => state.user.username);
-  const currentName = useSelector((state) => state.user.name);
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const userId = useSelector((state) => state.user.id);
-
-  console.log("current user' username: ", currentUsername);
-  console.log("is authenticated: ", isAuth);
 
   const getUser = async () => {
     const response = await fetch(`http://localhost:3001/api/users/${userId}`, {
@@ -34,30 +26,43 @@ const Profile = () => {
 
   useEffect(() => {
     getUser();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [user]);
 
   if (!user) return null;
 
-  console.log(user);
-
-  //add username and name usestates : getting current user
-  // useEffect(() => {
-  //   getUserAPIMethod(userId, isAuth).then((userData) => {
-  //     //   console.log("user set in profile.js", userData);
-  //     setUsername(userData.username);
-  //     setName(userData.name);
-  //     setUser(userData.user);
-  //     setEmail(userData.email);
-  //   });
-  // }, [user]);
-
-  const handleClickEditUser = () => {
-    setIsEditing(!isEditing);
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value);
   };
 
-  const handleClickSave = () => {
-    console.log(username, name); // data that has to be updated
-    console.log("Editing and saving data in DB");
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const updateUser = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+      formData.append('username', username);
+
+      const response = await fetch(`http://localhost:3001/api/users/${userId}`, {
+        method: 'PUT',
+        headers: { Authorization: `Bearer ${isAuth }` },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error updating user: ${response.statusText}`);
+      }
+
+      const responseData = await response.json();
+      console.log('User updated successfully:', responseData.message);
+      setIsEditing(!isEditing);
+    } catch (error) {
+    console.error('Error updating user:', error.message);
+    }
+  };
+
+  const handleClickEditUser = () => {
     setIsEditing(!isEditing);
   };
 
@@ -65,7 +70,6 @@ const Profile = () => {
     dispatch(logout());
     navigate("/");
   };
-  // set username and name using useeffect. May not be able to use user.username and user.name
 
   return (
     <div className="profile">
@@ -75,65 +79,108 @@ const Profile = () => {
             <img
               alt=""
               className="profile_img"
-              src="https://us-tuna-sounds-images.voicemod.net/d347dbc8-e6b8-4f85-bb64-8dcb234f5730-1674067639225.jpg"
+              src={user.profile_img}
             ></img>
-            <div className="editImg">Upload/Change</div>
           </div>
 
           <div className="profile_right">
             <div className="username_container">
               <h5>Username</h5>
               {isEditing && (
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
+                <div>
+                  <div>
+                    <label>Username: </label>
+                    <input type="text" onChange={handleUsernameChange} />
+                  </div>
+                  <div>
+                    <label>Choose Profile Image: </label>
+                    <input type="file" onChange={handleFileChange} />
+                  </div>
+                  <button onClick={updateUser}>Update User</button>
+                </div>
+                // <Formik
+                //   onSubmit={updateUser}
+                //   initialValues={initialValuesUpdate}
+                // >
+                //   {({
+                //     values,
+                //     handleBlur,
+                //     handleChange,
+                //     handleSubmit,
+                //     setFieldValue,
+                //   }) => (
+                //     <form onSubmit={handleSubmit}>
+                //       <Box sx={{ backgroundColor: "lightblue" }}>
+                //         <TextField
+                //           label="Username"
+                //           onBlur={handleBlur}
+                //           value={values.username}
+                //           onChange={handleChange}
+                //           name="username"
+                //         />
+                //       </Box>
+
+                //       <Box
+                //         gridColumn="span 4"
+                //         borderRadius="5px"
+                //         p="1rem"
+                //       >
+                //         <Dropzone
+                //           acceptedFiles=".jpg,.jpeg,.png"
+                //           multiple={false}
+                //           onDrop={(acceptedFiles) =>
+                //             setFieldValue("profile_img", acceptedFiles[0])
+                //           }
+                //         >
+                //           {({ getRootProps, getInputProps }) => (
+                //             <Box
+                //               {...getRootProps()}
+                //               p="1rem"
+                //               sx={{ "&:hover": { cursor: "pointer" } }}
+                //             >
+                //               <input {...getInputProps()} />
+                //               {!values.profile_img ? (
+                //                 <p>Add Picture Here</p>
+                //               ) : (
+                //                 <Typography>{values.profile_img.name}</Typography>
+                //               )}
+                //             </Box>
+                //           )}
+                //         </Dropzone>
+                //       </Box>
+            
+                //       {/* BUTTONS */}
+                //       <Box>
+                //         <Button
+                //           type="submit"
+                //         >
+                //           Update User
+                //         </Button>
+                //       </Box>
+                //     </form>
+                //   )}
+                // </Formik>
               )}
               {!isEditing && (
                 <div className="username">
-                  {currentUsername && <div>{currentUsername}</div>}
-                  {!currentUsername && <div>{user.username}</div>}
+                  {user.username}
                 </div>
               )}
             </div>
-            <div className="name_container">
-              <h5>Name</h5>
-              {isEditing && (
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              )}
-              {!isEditing && (
-                <div className="name">
-                  {currentName && <div>{currentName}</div>}
-                  {!currentName && <div>{name}</div>}
-                </div>
-              )}
-            </div>
-            {/* <div className="name_container">
-              <h5>Name</h5>
-              {isEditing && (
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              )}
-              {!isEditing && <div className="name">{name}</div>}
-            </div> */}
             <div className="email_container">
-              <h5>Email</h5>
-              <div className="email">
-                <div>{email}</div>
-              </div>
+              {!isEditing && (
+                <>
+                  <h5>Email</h5>
+                  <div className="email">
+                    {user.email}
+                  </div>
+                  </>
+              )}
             </div>
           </div>
           {isEditing && (
-            <button className="finish_edit_user_btn" onClick={handleClickSave}>
-              save
+            <button className="finish_edit_user_btn" >
+              Update User
             </button>
           )}
           {!isEditing && (
