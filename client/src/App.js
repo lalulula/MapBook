@@ -19,14 +19,15 @@ import SocialPostDetails from "./Components/socialpostdetails/SocialPostDetails"
 import ManageUsers from "./Components/manageusers/ManageUsers";
 import EditMap from "./Components/editmap/EditMap";
 import CreateSocialPost from "./Components/createsocialpost/CreateSocialPost";
+import EditSocialPost from "./Components/socialpostdetails/EditSocialPost";
 
 function App() {
   //Initial Loading Feature For Web
   const [loading, setLoading] = useState(false);
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-  
+
   // TODO:
-  // get current user 
+  // get current user
   // check the token is expired or not
   // if it is expired,
   // delete state
@@ -70,6 +71,7 @@ function App() {
           <Route path="socialpostdetails/:id" element={<SocialPostDetails />} />
           <Route path="/mainpage" element={<MainPage />} />
           <Route path="/createsocialpost" element={<CreateSocialPost />} />
+          <Route path="/editsocialpost/:id" element={<EditSocialPost />} />
           {/* admin */}
           {/* <Route
             path="/mainpage"
