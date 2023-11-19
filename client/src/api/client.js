@@ -294,6 +294,31 @@ export const createSocialPostAPIMethod = async (socialPost) => {
 //     }
 //   ).then(checkStatus);
 // };
+
+//editPost
+// update a socialpost
+// export const editSocialPostAPIMethod = (socialpost) => {
+export const editSocialPostAPIMethod = async (socialpost, userId) => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/api/social/editPost/${userId}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(socialpost),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error updating user: ${response.statusText}`);
+    }
+
+    const responseData = await response.json();
+    console.log("User updated successfully:", responseData.message);
+  } catch (error) {
+    console.error("Error updating user:", error.message);
+  }
+};
+
 //END OF PUT
 
 //DELETE

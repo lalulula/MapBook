@@ -48,6 +48,7 @@ const SocialPostDetails = () => {
       console.error("Error handling delete operation:", error);
     }
   };
+  const handleEditSocialPost = async () => {};
 
   return (
     <div className="socialpostdetails">
@@ -61,7 +62,13 @@ const SocialPostDetails = () => {
             <div className="socialpostdetails_top_left_container">
               <h1>{currentPost.title}</h1>
               {isOwner && (
-                <button onClick={() => handleDeleteSocialPost()}>delete</button>
+                <>
+                  {" "}
+                  <button onClick={() => handleDeleteSocialPost()}>
+                    delete
+                  </button>
+                  <button onClick={() => handleEditSocialPost()}>edit</button>
+                </>
               )}
               <div className="socialpostdetails_user">{currentPost.user}</div>
             </div>
