@@ -28,13 +28,85 @@ input {
 }
 
 .login_btn {
-  width: 50%;
+  width: auto;
 }
 
+.google_divider {
+  align-self: center;
+  font-size: medium;
+  font-weight: bold;
+}
+.google_divider::before,
+.google_divider::after {
+  background-color: rgb(247, 247, 247);
+  content: "";
+  display: inline-block;
+  height: 1px;
+  position: relative;
+  vertical-align: middle;
+  width: 130px;
+}
+.google_divider::before {
+  right: 0.5em;
+}
+.google_divider::after {
+  left: 0.5em;
+}
+/* .google_register_btn {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+} */
+
+@media all and (max-width: 1000px) {
+  .google_divider {
+    align-self: center;
+    font-size: medium;
+    font-weight: bold;
+  }
+  .google_divider::before,
+  .google_divider::after {
+    background-color: rgb(247, 247, 247);
+    content: "";
+    display: inline-block;
+    height: 1px;
+    position: relative;
+    vertical-align: middle;
+    width: 90px;
+  }
+  .google_divider::before {
+    right: 0.5em;
+  }
+  .google_divider::after {
+    left: 0.5em;
+  }
+}
 @media all and (max-width: 700px) {
   .login_form {
     width: 70%;
   }
+}
 
-
+@media all and (max-width: 600px) {
+  .google_divider {
+    align-self: center;
+    font-size: medium;
+    font-weight: bold;
+  }
+  .google_divider::before,
+  .google_divider::after {
+    background-color: rgb(247, 247, 247);
+    content: "";
+    display: inline-block;
+    height: 1px;
+    position: relative;
+    vertical-align: middle;
+  }
+  .google_divider::before {
+    right: 0.5em;
+  }
+  .google_divider::after {
+    left: 0.5em;
+  }
 }

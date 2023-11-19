@@ -104,12 +104,32 @@ const Login = () => {
             </p>
           )}
         </Form.Field>
-        <a href="/register">Don't have an account?</a>
-        <div>
-          <Button type="submit" className="login_btn">
-            Submit
-          </Button>
-        </div>
+        <a href="/register" style={{ marginBottom: "15px", alignSelf: "end" }}>
+          Don't have an account?
+        </a>
+
+        <Button
+          type="submit"
+          style={{ marginBottom: "10px" }}
+          className="login_btn"
+        >
+          Login
+        </Button>
+
+        <div className="google_divider">OR</div>
+        <Button
+          type="submit"
+          className="google_register_btn"
+          style={{
+            marginTop: "10px",
+            display: "flex",
+            justifyContent: "center",
+            gap: "0.5rem",
+          }}
+        >
+          <i className="bi bi-google" />
+          Sign In With Google
+        </Button>
       </Form>
     </div>
   );
