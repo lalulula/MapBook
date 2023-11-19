@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import dummyComments from "./sample_data_comments.json";
 import "./socialcomments.css";
 import defaultImg from "../../assets/img/defaultProfileImg.jpg";
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 const SocialComments = () => {
     const [user, setUser] = useState(null);
@@ -27,21 +28,32 @@ const SocialComments = () => {
                         <div className="social_comment">
                             <div className="social_comment_header">
                                 <img className="social_comment_profile_img" src={defaultImg} />
-                                <div className="user">user: {comment.user}</div>
+                                <div className="user">{comment.user}</div>
                             </div>
-                            <div className="social_comment_content">comment: {comment.comment}</div>
+                            <div className="social_comment_content"> {comment.comment}</div>
+                            <div className="social_comment_bottom">
+                                <ChatBubbleOutlineIcon />
+                                <p>Reply</p>
+                            </div>
                         </div>
                     ))}
                 </div>
 
-                <div className="social_comment_bottom">
-                    <input
+                <div className="social_comments_bottom">
+                    {/* <input
                         id="social_comment"
                         type="text"
                         placeholder="Add a comment"
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
-                    />
+                    /> */}
+                    <textarea
+                        id="social_comment"
+                        type="text"
+                        placeholder="Add a comment"
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}>
+                    </textarea>
                     <button className="social_comment_button" onClick={handleAddComment}>Post</button>
                 </div>
             </div>
