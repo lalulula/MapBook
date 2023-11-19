@@ -25,7 +25,7 @@ const UserSchema = new mongoose.Schema({
   },
   profile_img: {
     type: String,
-    default: "",
+    default: "https://res.cloudinary.com/dkzqcfizf/image/upload/v1700360538/odw6r4pxcwwjm3h8oyxa.png",
   },
   maps_created: {
     type: Array,

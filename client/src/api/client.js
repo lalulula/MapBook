@@ -208,6 +208,18 @@ export const updateUserAPIMethod = async (
   }
 };
 
+// REMOVE A USER
+export const removeUserAPIMethod = async (userId, isAuth) => {
+  try {
+    await fetch(`${API_BASE_URL}/api/users/${userId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${isAuth}` },
+    })
+  } catch (error) {
+    console.error("Error removing a user account:", error.message);
+  }
+}
+
 // //create a new map
 // export const createMapAPIMethod = (map) => {
 //   return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/map`, {

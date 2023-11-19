@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../features/userSlice";
 import { useSelector } from "react-redux";
 import "./profile.css";
-import { updateUserAPIMethod } from "../../api/client";
+import { updateUserAPIMethod, removeUserAPIMethod } from "../../api/client";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -40,38 +40,17 @@ const Profile = () => {
   };
 
   const updateUser = async () => {
-    updateUserAPIMethod(username, selectedFile, userId, isAuth)
-      .then((res) => {
-        setIsEditing(!isEditing);
-      })
-      .catch((err) => {
-        console.error('Error updating user:', err.message);
-      });
+    updateUserAPIMethod(username, selectedFile, userId, isAuth).catch((err) => {
+      console.error('Error updating user:', err.message);
+    });
+    setIsEditing(!isEditing);
+  };
+
+  const handleRemoveUser = async () => {
+    removeUserAPIMethod(userId, isAuth)
+      .then(() => {handleLogout()})
+      .catch((err) => {console.error("Error removing user:", err.message)});
   }
-
-  // const updateUser = async () => {
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append('image', selectedFile);
-  //     formData.append('username', username);
-
-  //     const response = await fetch(`http://localhost:3001/api/users/${userId}`, {
-  //       method: 'PUT',
-  //       headers: { Authorization: `Bearer ${isAuth }` },
-  //       body: formData,
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error(`Error updating user: ${response.statusText}`);
-  //     }
-
-  //     const responseData = await response.json();
-  //     console.log('User updated successfully:', responseData.message);
-  //     setIsEditing(!isEditing);
-  //   } catch (error) {
-  //   console.error('Error updating user:', error.message);
-  //   }
-  // };
 
   const handleClickEditUser = () => {
     setIsEditing(!isEditing);
@@ -96,7 +75,6 @@ const Profile = () => {
 
           <div className="profile_right">
             <div className="username_container">
-              <h5>Username</h5>
               {isEditing && (
                 <div>
                   <div>
@@ -109,73 +87,14 @@ const Profile = () => {
                   </div>
                   <button onClick={updateUser}>Update User</button>
                 </div>
-                // <Formik
-                //   onSubmit={updateUser}
-                //   initialValues={initialValuesUpdate}
-                // >
-                //   {({
-                //     values,
-                //     handleBlur,
-                //     handleChange,
-                //     handleSubmit,
-                //     setFieldValue,
-                //   }) => (
-                //     <form onSubmit={handleSubmit}>
-                //       <Box sx={{ backgroundColor: "lightblue" }}>
-                //         <TextField
-                //           label="Username"
-                //           onBlur={handleBlur}
-                //           value={values.username}
-                //           onChange={handleChange}
-                //           name="username"
-                //         />
-                //       </Box>
-
-                //       <Box
-                //         gridColumn="span 4"
-                //         borderRadius="5px"
-                //         p="1rem"
-                //       >
-                //         <Dropzone
-                //           acceptedFiles=".jpg,.jpeg,.png"
-                //           multiple={false}
-                //           onDrop={(acceptedFiles) =>
-                //             setFieldValue("profile_img", acceptedFiles[0])
-                //           }
-                //         >
-                //           {({ getRootProps, getInputProps }) => (
-                //             <Box
-                //               {...getRootProps()}
-                //               p="1rem"
-                //               sx={{ "&:hover": { cursor: "pointer" } }}
-                //             >
-                //               <input {...getInputProps()} />
-                //               {!values.profile_img ? (
-                //                 <p>Add Picture Here</p>
-                //               ) : (
-                //                 <Typography>{values.profile_img.name}</Typography>
-                //               )}
-                //             </Box>
-                //           )}
-                //         </Dropzone>
-                //       </Box>
-            
-                //       {/* BUTTONS */}
-                //       <Box>
-                //         <Button
-                //           type="submit"
-                //         >
-                //           Update User
-                //         </Button>
-                //       </Box>
-                //     </form>
-                //   )}
-                // </Formik>
               )}
               {!isEditing && (
-                <div className="username">
-                  {user.username}
-                </div>
+                <>
+                  <h5>Username</h5>
+                  <div className="username">
+                    {user.username}
+                  </div>
+                </>
               )}
             </div>
             <div className="email_container">
@@ -204,7 +123,7 @@ const Profile = () => {
           <div className="logout" onClick={handleLogout}>
             logout
           </div>
-          <div className="remove_account">remove account</div>
+          <div className="remove_account" onClick={handleRemoveUser}>remove account</div>
         </div>
       </div>
     </div>
