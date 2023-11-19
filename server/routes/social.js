@@ -6,8 +6,11 @@ const router = express.Router();
 // Get all social post
 router.get("/socialPosts", social.getAllPost);
 
+// Get social post with postid
+router.get("/socialPost/:sPostId", social.getPostDetails);
+
 // Get social post id
-router.get("/socialPost/:sPostId", social.getPost);
+router.get("/mySocialPost/:userId", social.getMySocialPosts);
 
 // Create Post
 router.post("/createSocialPost", social.createPost);

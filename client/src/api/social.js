@@ -28,6 +28,20 @@ export const getSocialPostAPIMethod = (socialPostId) => {
     .then(parseJSON);
   return res;
 };
+// Get MySocial Post by UserId(For MySocialPosts)
+export const getMySocialPostAPIMethod = (currentUserId) => {
+  const res = fetch(
+    `${API_BASE_URL}/api/social/mySocialPost/${currentUserId}`,
+    {
+      ...defaultHeaders,
+      method: "GET",
+    }
+  )
+    .then(checkStatus)
+    .then(parseJSON);
+  console.log(res);
+  return res;
+};
 // Create Social Post
 export const createSocialPostAPIMethod = async (socialPost) => {
   console.log(socialPost);

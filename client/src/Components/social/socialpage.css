@@ -44,7 +44,11 @@
 .socialpage_top_left {
   display: flex;
 }
-
+.create_new_post {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 .social_post {
   margin-bottom: 20px;
 }

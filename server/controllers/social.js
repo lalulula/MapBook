@@ -13,8 +13,8 @@ const getAllPost = async (req, res) => {
   }
 };
 
-// Get social post with id
-const getPost = async (req, res) => {
+// Get social post with PostId
+const getPostDetails = async (req, res) => {
   // console.log(req);
   try {
     const { sPostId } = req.params;
@@ -24,7 +24,16 @@ const getPost = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
-
+// Get all social post with specific userId
+const getMySocialPosts = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const socialPosts = await SocialPost.find({ post_owner: userId });
+    res.status(200).json(socialPosts);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
 // Create Post
 const createPost = async (req, res) => {
   try {
@@ -89,8 +98,9 @@ const deletePost = async (req, res) => {
 };
 module.exports = {
   getAllPost: getAllPost,
-  getPost: getPost,
+  getPostDetails: getPostDetails,
   createPost: createPost,
   editPost: editPost,
   deletePost: deletePost,
+  getMySocialPosts: getMySocialPosts,
 };

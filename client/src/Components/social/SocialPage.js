@@ -6,30 +6,44 @@ import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { getAllSocialPostsAPIMethod } from "../../api/social";
+import {
+  getAllSocialPostsAPIMethod,
+  getMySocialPostAPIMethod,
+} from "../../api/social";
+import Checkbox from "@mui/material/Checkbox";
+import { grey, blueGrey } from "@mui/material/colors";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { useSelector } from "react-redux";
 
 const SocialPage = () => {
   const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchFilterOption, setSearchFilterOption] = useState("");
+  const [displayMyPosts, setDisplayMyPosts] = useState(false);
   const [socialPosts, setSocialPosts] = useState([]);
   const searchFilterOps = ["Title", "Topics", "Description"];
   const handleSeachFilter = (e) => {
     setSearchFilterOption(e.value);
   };
+  const currentUserId = useSelector((state) => state.user.id);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const allPosts = await getAllSocialPostsAPIMethod();
-        setSocialPosts(allPosts);
+        const posts = displayMyPosts
+          ? await getMySocialPostAPIMethod(currentUserId)
+          : await getAllSocialPostsAPIMethod();
+
+        setSocialPosts(posts);
       } catch (error) {
-        console.error("Error fetching social posts:", error); //TODO: Add error handling when error happens fetching.(Render screen)
+        console.error("Error fetching social posts:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [displayMyPosts, currentUserId]);
+
   const filteredPosts = socialPosts.filter((post) => {
     return searchFilterOption === "Title"
       ? post.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -37,6 +51,10 @@ const SocialPage = () => {
       ? post.topic.toLowerCase().includes(searchTerm.toLowerCase())
       : post.post_content.toLowerCase().includes(searchTerm.toLowerCase());
   });
+
+  const handleShowMySocialPosts = async () => {
+    setDisplayMyPosts(!displayMyPosts);
+  };
 
   return (
     <div className="socialpage">
@@ -58,6 +76,24 @@ const SocialPage = () => {
               >
                 Create new post
               </Button>
+
+              <FormControlLabel
+                value="showMySocial"
+                control={
+                  <Checkbox
+                    onChange={handleShowMySocialPosts}
+                    sx={{
+                      color: grey[800],
+                      "&.Mui-checked": {
+                        color: blueGrey[600],
+                      },
+                    }}
+                  />
+                }
+                label="My Posts"
+                labelPlacement="end"
+                color="white"
+              />
             </div>
             <div className="searchbar">
               <SearchBar onSearchChange={(term) => setSearchTerm(term)} />
