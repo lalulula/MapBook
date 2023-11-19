@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./createsocialpost.css";
 import Dropdown from "react-dropdown";
-import { createSocialPostAPIMethod } from "../../api/client";
+import { createSocialPostAPIMethod } from "../../api/social";
 import { useSelector } from "react-redux";
 const CreateSocialPost = () => {
   const navigate = useNavigate();

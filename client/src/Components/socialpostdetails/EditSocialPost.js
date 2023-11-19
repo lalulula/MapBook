@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   getSocialPostAPIMethod,
   editSocialPostAPIMethod,
-} from "../../api/client";
+} from "../../api/social";
 
 const EditSocialPost = () => {
   const { id } = useParams();

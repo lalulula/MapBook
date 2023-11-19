@@ -1,8 +1,6 @@
-import { useSelector } from "react-redux";
-
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
-
+// import { useSelector } from "react-redux";
 // const isAuth = useSelector((state) => state.user.isAuthenticated);
 
 const defaultHeaders = {
@@ -47,28 +45,6 @@ const defaultHeaders = {
 //     }
 //   ).then(checkStatus);
 // };
-
-// get a social post - done
-export const getSocialPostAPIMethod = (socialPostId) => {
-  const res = fetch(`${API_BASE_URL}/api/social/socialPost/${socialPostId}`, {
-    ...defaultHeaders,
-    method: "GET",
-  })
-    .then(checkStatus)
-    .then(parseJSON);
-  return res;
-};
-
-// get all social posts -done
-export const getAllSocialPostsAPIMethod = () => {
-  const res = fetch(`${API_BASE_URL}/api/social/socialPosts`, {
-    ...defaultHeaders,
-    method: "GET",
-  })
-    .then(checkStatus)
-    .then(parseJSON);
-  return res;
-};
 
 //get all comments on maps
 // export const getAllMapCommentsAPIMethod = () => {
@@ -230,17 +206,6 @@ export const removeUserAPIMethod = async (userId, isAuth) => {
 //     .then(parseJSON);
 // }
 
-//create a new social post - done
-export const createSocialPostAPIMethod = async (socialPost) => {
-  console.log(socialPost);
-  const response = await fetch(`${API_BASE_URL}/api/social/createSocialPost`, {
-    ...defaultHeaders,
-    method: "POST", // The method defaults to GET
-    body: JSON.stringify(socialPost),
-  });
-  return response;
-};
-
 // //create a comment on map
 // export const createMapCommentAPIMethod = (comment) => {
 //   return fetch(`https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/mapcomment`, {
@@ -307,33 +272,6 @@ export const createSocialPostAPIMethod = async (socialPost) => {
 //   ).then(checkStatus);
 // };
 
-//editPost
-// update a socialpost
-export const editSocialPostAPIMethod = async (sPostId, socialpost) => {
-  console.log("POSt", socialpost, sPostId);
-  try {
-    const response = await fetch(
-      `${API_BASE_URL}/api/social/editSocialPost/${sPostId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(socialpost),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`Error updating user: ${response.statusText}`);
-    }
-
-    const responseData = await response.json();
-    console.log("User updated successfully:", responseData.message);
-  } catch (error) {
-    console.error("Error updating user:", error.message);
-  }
-};
-
 //END OF PUT
 
 //DELETE
@@ -361,30 +299,6 @@ export const editSocialPostAPIMethod = async (sPostId, socialpost) => {
 //     .then(checkStatus)
 //     .then(parseJSON);
 // };
-
-// delete a social post
-
-export const deleteSocialPostAPIMethod = async (socialPostId) => {
-  try {
-    const response = await fetch(
-      `${API_BASE_URL}/api/social/deleteSocialPost/${socialPostId}`,
-      {
-        ...defaultHeaders,
-        method: "DELETE",
-      }
-    ).then(checkStatus);
-
-    // Check if the delete operation was successful
-    if (response) {
-      return true; // Indicates success
-    } else {
-      return false; // Indicates failure
-    }
-  } catch (error) {
-    console.error("Error deleting social post:", error);
-    return false; // Indicates failure
-  }
-};
 
 //delete a comment on a map
 // export const deleteMapCommentAPIMethod = (commentId) => {

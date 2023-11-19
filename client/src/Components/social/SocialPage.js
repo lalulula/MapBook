@@ -6,7 +6,7 @@ import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { getAllSocialPostsAPIMethod } from "../../api/client";
+import { getAllSocialPostsAPIMethod } from "../../api/social";
 
 const SocialPage = () => {
   const navigate = useNavigate();

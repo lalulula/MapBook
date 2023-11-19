@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import data from "../social/sample_data_social.json";
 import SocialComments from "../comments/SocialComments";
-import { getSocialPostAPIMethod } from "../../api/client";
 import { useSelector } from "react-redux";
-import { deleteSocialPostAPIMethod } from "../../api/client";
+import {
+  deleteSocialPostAPIMethod,
+  getSocialPostAPIMethod,
+} from "../../api/social";
 
 const SocialPostDetails = () => {
   //   const [user, setUser] = useState(null);
