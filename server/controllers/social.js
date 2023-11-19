@@ -55,9 +55,8 @@ const editPost = async (req, res) => {
   console.log("1", req.params);
   try {
     const { sPostId } = req.params;
-    const { title, post_content, post_images, topic, customTopic } =
-    req.body;
-    
+    const { title, post_content, post_images, topic, customTopic } = req.body;
+
     console.log("2", req.body);
     const updatedPost = await SocialPost.findByIdAndUpdate(
       sPostId,
