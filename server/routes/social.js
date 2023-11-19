@@ -13,7 +13,7 @@ router.get("/socialPost/:sPostId", social.getPost);
 router.post("/createSocialPost", social.createPost);
 
 // UpdatePost
-router.put("/updateSocialPost/:sPostId", social.editPost);
+router.put("/editSocialPost/:sPostId", social.editPost);
 
 // Delete Post
 router.delete("/deleteSocialPost/:sPostId", social.deletePost);

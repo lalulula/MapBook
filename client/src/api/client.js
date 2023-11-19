@@ -297,13 +297,16 @@ export const createSocialPostAPIMethod = async (socialPost) => {
 
 //editPost
 // update a socialpost
-// export const editSocialPostAPIMethod = (socialpost) => {
-export const editSocialPostAPIMethod = async (socialpost, userId) => {
+export const editSocialPostAPIMethod = async (sPostId, socialpost) => {
+  console.log("POSt", socialpost, sPostId);
   try {
     const response = await fetch(
-      `${API_BASE_URL}/api/social/editPost/${userId}`,
+      `${API_BASE_URL}/api/social/editSocialPost/${sPostId}`,
       {
         method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(socialpost),
       }
     );

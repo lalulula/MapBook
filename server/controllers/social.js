@@ -52,11 +52,10 @@ const createPost = async (req, res) => {
 
 // Update Post by post id
 const editPost = async (req, res) => {
+  console.log("1", req.params);
   try {
     const { sPostId } = req.params;
-
-    const { title, post_content, post_images, topic, customTopic } = req.body;
-
+    console.log("2", req.body);
     const updatedPost = await SocialPost.findByIdAndUpdate(
       sPostId,
       {
@@ -68,7 +67,7 @@ const editPost = async (req, res) => {
       },
       { new: true }
     );
-
+    console.log("3", updatedPost);
     res.status(200).json(updatedPost);
   } catch (err) {
     res.status(404).json({ message: err.message });

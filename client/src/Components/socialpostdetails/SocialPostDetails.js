@@ -23,15 +23,14 @@ const SocialPostDetails = () => {
       try {
         const currentPost = await getSocialPostAPIMethod(id);
         setCurrentPost(currentPost);
+        if (currentPost.post_owner === user.id) {
+          setIsOwner(true);
+        }
       } catch (error) {
         console.error("Error fetching social posts:", error); //TODO: Add error handling when error happens fetching.(Render screen)
       }
     };
     fetchData();
-    console.log(currentPost.post_owner, user.id);
-    if (currentPost.post_owner === user.id) {
-      setIsOwner(true);
-    }
   }, []);
   const handleDeleteSocialPost = async () => {
     try {
@@ -48,7 +47,10 @@ const SocialPostDetails = () => {
       console.error("Error handling delete operation:", error);
     }
   };
-  const handleEditSocialPost = async () => {};
+  const handleEditSocialPost = async () => {
+    console.log("Editing Social Posdt Data");
+    navigate(`/editsocialpost/${currentPost._id}`);
+  };
 
   return (
     <div className="socialpostdetails">
