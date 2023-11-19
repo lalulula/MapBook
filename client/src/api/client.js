@@ -180,15 +180,20 @@ export const loginUserAPIMethod = async (user) => {
 };
 
 // UPDATE USER
-export const updateUserAPIMethod = async (username, selectedFile, userId, isAuth) => {
+export const updateUserAPIMethod = async (
+  username,
+  selectedFile,
+  userId,
+  isAuth
+) => {
   try {
     const formData = new FormData();
-    formData.append('image', selectedFile);
-    formData.append('username', username);
+    formData.append("image", selectedFile);
+    formData.append("username", username);
 
     const response = await fetch(`${API_BASE_URL}/api/users/${userId}`, {
-      method: 'PUT',
-      headers: { Authorization: `Bearer ${isAuth }` },
+      method: "PUT",
+      headers: { Authorization: `Bearer ${isAuth}` },
       body: formData,
     });
 
@@ -197,9 +202,9 @@ export const updateUserAPIMethod = async (username, selectedFile, userId, isAuth
     }
 
     const responseData = await response.json();
-    console.log('User updated successfully:', responseData.message);
+    console.log("User updated successfully:", responseData.message);
   } catch (error) {
-  console.error('Error updating user:', error.message);
+    console.error("Error updating user:", error.message);
   }
 };
 
@@ -317,18 +322,29 @@ export const createSocialPostAPIMethod = async (socialPost) => {
 //     .then(parseJSON);
 // };
 
-//delete a social post
-// export const deleteSocialPostAPIMethod = (socialPostId) => {
-//   return fetch(
-//     `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialpost/${socialPostId}`,
-//     {
-//       ...defaultHeaders,
-//       method: "DELETE",
-//     }
-//   )
-//     .then(checkStatus)
-//     .then(parseJSON);
-// };
+// delete a social post
+
+export const deleteSocialPostAPIMethod = async (socialPostId) => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/api/social/deleteSocialPost/${socialPostId}`,
+      {
+        ...defaultHeaders,
+        method: "DELETE",
+      }
+    ).then(checkStatus);
+
+    // Check if the delete operation was successful
+    if (response.success) {
+      return true; // Indicates success
+    } else {
+      return false; // Indicates failure
+    }
+  } catch (error) {
+    console.error("Error deleting social post:", error);
+    return false; // Indicates failure
+  }
+};
 
 //delete a comment on a map
 // export const deleteMapCommentAPIMethod = (commentId) => {

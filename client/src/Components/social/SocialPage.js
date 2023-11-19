@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./socialpage.css";
-import data from "../social/sample_data_social.json";
 import SocialPostPreview from "../socialpostpreview/SocialPostPreview";
 import SearchBar from "../searchbar/SearchBar";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import samplePostData from "./sample_data_social.json";
 import { getAllSocialPostsAPIMethod } from "../../api/client";
 
 const SocialPage = () => {

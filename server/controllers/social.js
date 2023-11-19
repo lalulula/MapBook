@@ -82,7 +82,7 @@ const deletePost = async (req, res) => {
     const { sPostId } = req.params;
 
     const socialPost = await SocialPost.findByIdAndDelete(sPostId);
-    res.status(200).json(socialPost);
+    return res.status(200).json(socialPost);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }

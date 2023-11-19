@@ -1,17 +1,22 @@
 import React from "react";
 import "./socialpostdetails.css";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 // import data from "../social/sample_data_social.json";
 import SocialComments from "../comments/SocialComments";
 import { getSocialPostAPIMethod } from "../../api/client";
+import { useSelector } from "react-redux";
+import { deleteSocialPostAPIMethod } from "../../api/client";
 
 const SocialPostDetails = () => {
-  const [user, setUser] = useState(null);
+  //   const [user, setUser] = useState(null);
   const { id } = useParams();
   const [currentPost, setCurrentPost] = useState({});
+  const user = useSelector((state) => state.user);
   //   //will make an api call to get the id of a social post
   //   const curr = data.filter((obj) => obj._id === id);
+  const [isOwner, setIsOwner] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,7 +28,26 @@ const SocialPostDetails = () => {
       }
     };
     fetchData();
+    console.log(currentPost.post_owner, user.id);
+    if (currentPost.post_owner === user.id) {
+      setIsOwner(true);
+    }
   }, []);
+  const handleDeleteSocialPost = async () => {
+    try {
+      console.log("removing social post");
+      const deleteSuccess = await deleteSocialPostAPIMethod(currentPost._id);
+
+      if (deleteSuccess) {
+        navigate("/socialpage");
+      } else {
+        // The delete operation failed
+        console.log("Delete operation failed");
+      }
+    } catch (error) {
+      console.error("Error handling delete operation:", error);
+    }
+  };
 
   return (
     <div className="socialpostdetails">
@@ -36,6 +60,9 @@ const SocialPostDetails = () => {
             />
             <div className="socialpostdetails_top_left_container">
               <h1>{currentPost.title}</h1>
+              {isOwner && (
+                <button onClick={() => handleDeleteSocialPost()}>delete</button>
+              )}
               <div className="socialpostdetails_user">{currentPost.user}</div>
             </div>
           </div>

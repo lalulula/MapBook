@@ -1,5 +1,4 @@
 import React from "react";
-import dumImg from "../../assets/img/dum.jpg";
 import { useNavigate } from "react-router-dom";
 import "./socialpostpreview.css";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";

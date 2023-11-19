@@ -1,10 +1,10 @@
 const express = require("express");
-const social = require("../controllers/social.js")
+const social = require("../controllers/social.js");
 
 const router = express.Router();
 
 // Get all social post
-router.get("/socialPosts", social.getAllPost)
+router.get("/socialPosts", social.getAllPost);
 
 // Get social post id
 router.get("/socialPost/:sPostId", social.getPost);
@@ -13,11 +13,9 @@ router.get("/socialPost/:sPostId", social.getPost);
 router.post("/createSocialPost", social.createPost);
 
 // UpdatePost
-router.put("/updateSocialPost/:sPostId", social.editPost)
+router.put("/updateSocialPost/:sPostId", social.editPost);
 
 // Delete Post
 router.delete("/deleteSocialPost/:sPostId", social.deletePost);
 
-
-
-module.exports = router
+module.exports = router;
