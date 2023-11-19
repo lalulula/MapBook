@@ -48,27 +48,27 @@ const defaultHeaders = {
 //   ).then(checkStatus);
 // };
 
-//get a social post
-// export const getSocialPostAPIMethod = (socialPostId) => {
-//   return fetch(
-//     `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialpost/${socialPostId}`,
-//     {
-//       ...defaultHeaders,
-//       method: "GET",
-//     }
-//   ).then(checkStatus);
-// };
+// get a social post - done
+export const getSocialPostAPIMethod = (socialPostId) => {
+  const res = fetch(`${API_BASE_URL}/api/social/socialPost/${socialPostId}`, {
+    ...defaultHeaders,
+    method: "GET",
+  })
+    .then(checkStatus)
+    .then(parseJSON);
+  return res;
+};
 
-//get all social posts
-// export const getAllSocialPostsAPIMethod = () => {
-//   return fetch(
-//     `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialposts`,
-//     {
-//       ...defaultHeaders,
-//       method: "GET",
-//     }
-//   ).then(checkStatus);
-// };
+// get all social posts -done
+export const getAllSocialPostsAPIMethod = () => {
+  const res = fetch(`${API_BASE_URL}/api/social/socialPosts`, {
+    ...defaultHeaders,
+    method: "GET",
+  })
+    .then(checkStatus)
+    .then(parseJSON);
+  return res;
+};
 
 //get all comments on maps
 // export const getAllMapCommentsAPIMethod = () => {
@@ -151,14 +151,11 @@ export const createUserAPIMethod = (user) => {
   //   }
   // ).then(checkStatus);
   console.log("User Data:", user);
-  const response = fetch(
-    `${API_BASE_URL}/api/auth/register`,
-    {
-      ...defaultHeaders,
-      method: "POST",
-      body: JSON.stringify(user),
-    }
-  );
+  const response = fetch(`${API_BASE_URL}/api/auth/register`, {
+    ...defaultHeaders,
+    method: "POST",
+    body: JSON.stringify(user),
+  });
   console.log("API Response:", response);
   return response;
 };
@@ -173,14 +170,11 @@ export const loginUserAPIMethod = async (user) => {
   //     body: JSON.stringify(user),
   //   }
   // ).then(checkStatus);
-  const response = await fetch(
-    `${API_BASE_URL}/api/auth/login`,
-    {
-      ...defaultHeaders,
-      method: "POST",
-      body: JSON.stringify(user),
-    }
-  );
+  const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+    ...defaultHeaders,
+    method: "POST",
+    body: JSON.stringify(user),
+  });
 
   return response;
 };
@@ -219,19 +213,15 @@ export const updateUserAPIMethod = async (username, selectedFile, userId, isAuth
 //     .then(parseJSON);
 // }
 
-// //create a new social post
-export const createSocialPostAPIMethod = (socialPost) => {
+//create a new social post - done
+export const createSocialPostAPIMethod = async (socialPost) => {
   console.log(socialPost);
-  return fetch(
-    `${API_BASE_URL}/api/auth/socialpost`,
-    {
-      ...defaultHeaders,
-      method: "POST", // The method defaults to GET
-      body: JSON.stringify(socialPost),
-    }
-  )
-    .then(checkStatus)
-    .then(parseJSON);
+  const response = await fetch(`${API_BASE_URL}/api/social/createSocialPost`, {
+    ...defaultHeaders,
+    method: "POST", // The method defaults to GET
+    body: JSON.stringify(socialPost),
+  });
+  return response;
 };
 
 // //create a comment on map
