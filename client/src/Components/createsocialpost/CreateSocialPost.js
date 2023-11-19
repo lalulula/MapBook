@@ -75,12 +75,12 @@ const CreateSocialPost = () => {
     console.log(userId);
 
     const newPost = { ...options, post_owner: userId };
-    const res = createSocialPostAPIMethod(newPost);
+    const res = await createSocialPostAPIMethod(newPost);
     console.log(res);
     // Check if the response was successful (status code 2xx)
     if (res.ok) {
-      const responseMsg = await res.json();
-      alert(responseMsg.message);
+      const responseMsg = await res.json;
+      console.log(responseMsg.message);
       navigate("/socialpage");
     } else {
       // If the response status is not successful, handle the error

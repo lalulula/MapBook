@@ -76,19 +76,17 @@ const editPost = async (req, res) => {
   }
 };
 
-// Delete Post by post id
 const deletePost = async (req, res) => {
   console.log(req.params);
   try {
     const { sPostId } = req.params;
-
-    const socialPost = await SocialPost.findByIdAndDelete(sPostId);
-    return res.status(200).json(socialPost);
+    await SocialPost.findByIdAndDelete(sPostId);
+    // return res.status(200).json(socialPost);
+    return res.status(200).json({ success: true });
   } catch (err) {
-    res.status(404).json({ message: err.message });
+    res.status(404).json({ success: false, message: err.message });
   }
 };
-
 module.exports = {
   getAllPost: getAllPost,
   getPost: getPost,

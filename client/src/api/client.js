@@ -212,13 +212,13 @@ export const updateUserAPIMethod = async (
 export const removeUserAPIMethod = async (userId, isAuth) => {
   try {
     await fetch(`${API_BASE_URL}/api/users/${userId}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: { Authorization: `Bearer ${isAuth}` },
-    })
+    });
   } catch (error) {
     console.error("Error removing a user account:", error.message);
   }
-}
+};
 
 // //create a new map
 // export const createMapAPIMethod = (map) => {
@@ -375,7 +375,7 @@ export const deleteSocialPostAPIMethod = async (socialPostId) => {
     ).then(checkStatus);
 
     // Check if the delete operation was successful
-    if (response.success) {
+    if (response) {
       return true; // Indicates success
     } else {
       return false; // Indicates failure
