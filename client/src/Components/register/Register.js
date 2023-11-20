@@ -49,7 +49,15 @@ const Register = () => {
 
     // encrypt password
     password = SHA256(password).toString(enc.Hex);
-    const user = { username, email, password, isAdmin };
+    const user = {
+      username,
+      email,
+      password,
+      isAdmin,
+      // Setting user default img
+      profile_img:
+        "https://res.cloudinary.com/dkzqcfizf/image/upload/v1700363108/laj5ucybdhzoa2wtkvkm.jpg",
+    };
 
     createUserAPIMethod(user)
       .then((response) => {

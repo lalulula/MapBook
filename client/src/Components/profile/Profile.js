@@ -19,7 +19,7 @@ const Profile = () => {
   const getUser = async () => {
     const response = await fetch(`http://localhost:3001/api/users/${userId}`, {
       method: "GET",
-      headers: { Authorization: `Bearer ${isAuth }` },
+      headers: { Authorization: `Bearer ${isAuth}` },
     });
     const data = await response.json();
     setUser(data);
@@ -27,6 +27,10 @@ const Profile = () => {
 
   useEffect(() => {
     getUser();
+    console.log(user);
+  }, []);
+  useEffect(() => {
+    console.log(user);
   }, [user]);
 
   if (!user) return null;
@@ -41,16 +45,20 @@ const Profile = () => {
 
   const updateUser = async () => {
     updateUserAPIMethod(username, selectedFile, userId, isAuth).catch((err) => {
-      console.error('Error updating user:', err.message);
+      console.error("Error updating user:", err.message);
     });
     setIsEditing(!isEditing);
   };
 
   const handleRemoveUser = async () => {
     removeUserAPIMethod(userId, isAuth)
-      .then(() => {handleLogout()})
-      .catch((err) => {console.error("Error removing user:", err.message)});
-  }
+      .then(() => {
+        handleLogout();
+      })
+      .catch((err) => {
+        console.error("Error removing user:", err.message);
+      });
+  };
 
   const handleClickEditUser = () => {
     setIsEditing(!isEditing);
@@ -66,11 +74,7 @@ const Profile = () => {
       <div className="profile_container">
         <div className="profile_top">
           <div className="profile_left">
-            <img
-              alt=""
-              className="profile_img"
-              src={user.profile_img}
-            ></img>
+            <img alt="" className="profile_img" src={user.profile_img}></img>
           </div>
 
           <div className="profile_right">
@@ -91,9 +95,7 @@ const Profile = () => {
               {!isEditing && (
                 <>
                   <h5>Username</h5>
-                  <div className="username">
-                    {user.username}
-                  </div>
+                  <div className="username">{user.username}</div>
                 </>
               )}
             </div>
@@ -101,17 +103,13 @@ const Profile = () => {
               {!isEditing && (
                 <>
                   <h5>Email</h5>
-                  <div className="email">
-                    {user.email}
-                  </div>
-                  </>
+                  <div className="email">{user.email}</div>
+                </>
               )}
             </div>
           </div>
           {isEditing && (
-            <button className="finish_edit_user_btn" >
-              Update User
-            </button>
+            <button className="finish_edit_user_btn">Update User</button>
           )}
           {!isEditing && (
             <button className="edit_user_btn" onClick={handleClickEditUser}>
@@ -123,7 +121,9 @@ const Profile = () => {
           <div className="logout" onClick={handleLogout}>
             logout
           </div>
-          <div className="remove_account" onClick={handleRemoveUser}>remove account</div>
+          <div className="remove_account" onClick={handleRemoveUser}>
+            remove account
+          </div>
         </div>
       </div>
     </div>
