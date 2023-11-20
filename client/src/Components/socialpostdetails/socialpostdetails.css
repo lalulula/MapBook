@@ -1,74 +1,83 @@
 .socialpostdetails {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .socialpostdetails_container {
-    height: 80%;
-    width: 90%;
-    /* display: flex; */
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    /* border: solid 2px white; */
+  height: 80%;
+  width: 90%;
+  /* display: flex; */
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  /* border: solid 2px white; */
+}
+.back_btn_socialdetail {
+  align-items: center;
+  cursor: pointer;
+  font-size: medium;
+}
+.back_btn_socialdetail:hover {
+  cursor: pointer;
+  color: rgb(47, 47, 47);
 }
 
 .socialpostdetails_profile_img {
-    left: 0;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    margin-right: 10px;
+  left: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 
 .socialpostdetails_top {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: solid 1px white;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: solid 1px white;
 }
 
 .socialpostdetails_middle {
-    height: 50%;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+  height: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .socialpostdetails_top_left {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    flex: 0.5;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  flex: 0.5;
 }
 
 .socialpostdetails_middle_left {
-    flex: 0.8;
+  flex: 0.8;
 }
 
 .socialpostdetails_middle_right {
-    flex: 1;
-    padding: 10px;
+  flex: 1;
+  padding: 10px;
 }
 
 #post_details_img {
-    height: 90%;
-    width: 70%;
-    padding: 10px 0 0 10px;
+  height: 90%;
+  width: 70%;
+  padding: 10px 0 0 10px;
 }
 
 .socialpostdetails_user {
-    font-size: 14px;
-    color: rgb(169, 169, 169);
+  font-size: 14px;
+  color: rgb(169, 169, 169);
 }
 
 .socialpostdetails_top_right {
-    margin: 10px 30px 10px;
-    padding: 10px;
-    background-color: rgb(176, 176, 0);
-    color: white;
-    border-radius: 50px;
+  margin: 10px 30px 10px;
+  padding: 10px;
+  background-color: rgb(176, 176, 0);
+  color: white;
+  border-radius: 50px;
 }

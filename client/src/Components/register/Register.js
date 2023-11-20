@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import "./register.css";
 import { useNavigate } from "react-router-dom";
-import { createUserAPIMethod } from "../../api/client";
+import { createUserAPIMethod } from "../../api/auth";
 import { useForm } from "react-hook-form";
 import { Button, Form } from "semantic-ui-react";
 
@@ -14,8 +14,9 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPwd, setConfirmPwd] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   const {
     register,
@@ -42,17 +43,20 @@ const Register = () => {
 
     // encrypt password
     password = SHA256(password).toString(enc.Hex);
-    const user = { username, email, password };
+    const user = { username, email, password, isAdmin };
     console.log(user);
     createUserAPIMethod(user)
-      .then(() => {
-        console.log("Successfully registered");
-        setIsLoggedIn(true);
-        navigate("/login"); //will navigate despite incorrect input
+      .then((response) => {
+        if (response.ok) {
+          console.log("Successfully registered");
+          navigate("/login");
+        } else {
+          console.log("Invalid register");
+          setFailed(true);
+        }
       })
       .catch((err) => {
-        console.log("Invalid register");
-        setIsLoggedIn(false);
+        console.error("Error registering user:", err);
       });
   };
 
@@ -151,6 +155,12 @@ const Register = () => {
           <i className="bi bi-google" />
           Sign In With Google
         </Button>
+        {failed && (
+          <p className="ui negative mini message">
+            Registration failed. Please check your information or enter a
+            different username.
+          </p>
+        )}
       </Form>
     </div>
   );

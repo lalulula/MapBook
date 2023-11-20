@@ -10,6 +10,7 @@ const SocialPostPreview = ({ data }) => {
   const handleToSocialDetails = (id) => {
     navigate(`/socialpostdetails/${id}`);
   };
+  console.log(data);
 
   return (
     <div

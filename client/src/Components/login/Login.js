@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { login, selectUser } from "../../features/userSlice";
 import Register from "../register/Register";
-import { loginUserAPIMethod } from "../../api/client";
+import { loginUserAPIMethod } from "../../api/auth";
 import { useForm } from "react-hook-form";
 import { Button, Form } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";

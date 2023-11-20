@@ -57,6 +57,13 @@ const SocialPostDetails = () => {
   return (
     <div className="socialpostdetails">
       <div className="socialpostdetails_container">
+        <span
+          className="back_btn_socialdetail"
+          onClick={() => navigate("/socialpage")}
+        >
+          <i className="bi bi-arrow-left" />
+          &nbsp;&nbsp;Return to Social
+        </span>
         <div className="socialpostdetails_top">
           <div className="socialpostdetails_top_left">
             <img
