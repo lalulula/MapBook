@@ -26,7 +26,7 @@ const CreateSocialPost = () => {
     post_content: "",
     topic: "",
     customTopic: "",
-    post_images: "",
+    // post_images: "",
     post_owner: "",
   });
   const handleTitleChange = (title) => {
@@ -44,17 +44,6 @@ const CreateSocialPost = () => {
   };
 
   const handleImageUpload = (event) => {
-    // post_images
-    // const file = event.target.files[0]; // Get the first file from the selected files
-    // if (file) {
-    //   const reader = new FileReader();
-    //   reader.onload = (e) => {
-    //     // Pass the uploaded image data to the parent component
-    //     setOptions({ ...options, post_images: e.target.result });
-    //     setUploadedImage(e.target.result);
-    //   };
-    //   reader.readAsDataURL(file);
-    // }
     const files = event.target.files; // Get the first file from the selected files
     if (files.length > 0) {
       const newImages = Array.from(files).map((file) => ({

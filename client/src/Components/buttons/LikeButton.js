@@ -11,12 +11,12 @@ function LikeButton() {
   };
 
   return (
-    <div className="like-button-container">
+    <div>
       <button
         className={`like-button ${liked ? "liked" : ""}`}
         onClick={handleLikeClick}
       >
-        {likes} Like{likes !== 1 ? "s" : ""}
+        {likes} Likes
       </button>
     </div>
   );
