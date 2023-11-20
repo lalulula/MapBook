@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
 import "./register.css";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserAPIMethod } from "../../api/auth";
 import { useForm } from "react-hook-form";
 import { Button, Form } from "semantic-ui-react";
-
 import { SHA256, enc } from "crypto-js";
+import Lottie from "lottie-react";
+import landingData1 from "../../assets/Lottie/processIndic.json";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -14,10 +15,12 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPwd, setConfirmPwd] = useState("");
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [isAdmin, setIsAdmin] = useState(false);
   const [failed, setFailed] = useState(false);
-
+  const [registerLoading, setRegisterIsLoading] = useState(false);
+  const style = {
+    height: 50,
+    width: 50,
+  };
   const {
     register,
     handleSubmit,
@@ -35,17 +38,19 @@ const Register = () => {
         type: "manual",
         message: "Passwords must match",
       });
-      return; // Exit early if passwords don't match
+      return;
     }
 
-    if (username.toLowerCase() === "admin") {
+    if (username === "admin") {
       isAdmin = true;
     }
+
+    setRegisterIsLoading(true); // Set loading to true when starting the registration
 
     // encrypt password
     password = SHA256(password).toString(enc.Hex);
     const user = { username, email, password, isAdmin };
-    console.log(user.isAdmin);
+
     createUserAPIMethod(user)
       .then((response) => {
         if (response.ok) {
@@ -58,6 +63,9 @@ const Register = () => {
       })
       .catch((err) => {
         console.error("Error registering user:", err);
+      })
+      .finally(() => {
+        setRegisterIsLoading(false);
       });
   };
 
@@ -134,13 +142,24 @@ const Register = () => {
           Already a Member?
         </a>
 
-        <Button
-          type="submit"
-          className="register_btn"
-          style={{ marginBottom: "10px" }}
-        >
-          Submit
-        </Button>
+        {registerLoading ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+            }}
+          >
+            <Lottie animationData={landingData1} style={style} />
+          </div>
+        ) : (
+          <Button
+            type="submit"
+            className="register_btn"
+            style={{ marginBottom: "10px" }}
+          >
+            Sign Up
+          </Button>
+        )}
 
         <div className="google_divider">OR</div>
         <Button

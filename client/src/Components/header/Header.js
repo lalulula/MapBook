@@ -38,15 +38,21 @@ const Header = () => {
               isAuthenticated ? navigate("/mainpage") : navigate("/");
             }}
           >
-            MapBook
+            <h3>MapBook</h3>
           </div>
           <div className="header_begin">
             {isAuthenticated ? (
               <>
                 {/* Case 1)When user is logged in  */}
-                <div onClick={() => navigate("/createmap")}>CreateMaps</div>
-                <div onClick={() => navigate("/socialpage")}>Social</div>
-                <div onClick={() => navigate("/mymap")}>MyMaps</div>
+                <div onClick={() => navigate("/createmap")}>
+                  <h4>CreateMaps</h4>
+                </div>
+                <div onClick={() => navigate("/socialpage")}>
+                  <h4>Social</h4>
+                </div>
+                <div onClick={() => navigate("/mymap")}>
+                  <h4>MyMaps</h4>
+                </div>
                 <div>
                   <img
                     src={defaultImg}
@@ -62,14 +68,24 @@ const Header = () => {
                 <div className="modal_container">
                   <CustomModal isOpen={isModalOpen} closeModal={closeModal} />
                 </div>
-                <div onClick={openModal}>Get Started</div>
-                <div onClick={() => navigate("/login")}>Login</div>
-                <div onClick={() => navigate("/register")}>Register</div>
+                <div onClick={openModal}>
+                  <h4>Get Started</h4>
+                </div>
+                <div onClick={() => navigate("/login")}>
+                  <h4>Login</h4>
+                </div>
+                <div onClick={() => navigate("/register")}>
+                  <h4>Register</h4>
+                </div>
               </>
             ) : route === "/login" || route === "/register" ? (
               <>
-                <div onClick={() => navigate("/login")}>Login</div>
-                <div onClick={() => navigate("/register")}>Register</div>
+                <div onClick={() => navigate("/login")}>
+                  <h4>Login</h4>
+                </div>
+                <div onClick={() => navigate("/register")}>
+                  <h4>Register</h4>
+                </div>
               </>
             ) : (
               <>
@@ -78,17 +94,21 @@ const Header = () => {
                     window.alert("You need to Register to continue!")
                   }
                 >
-                  CreateMaps
+                  <h4>CreateMaps</h4>
                 </div>
-                <div onClick={() => navigate("/socialpage")}>Social</div>
+                <div onClick={() => navigate("/socialpage")}>
+                  <h4>Social</h4>
+                </div>
                 <div
                   onClick={() =>
                     window.alert("You need to Register to continue!")
                   }
                 >
-                  MyMaps
+                  <h4>MyMaps</h4>
                 </div>
-                <div onClick={() => navigate("/register")}>Register</div>
+                <div onClick={() => navigate("/register")}>
+                  <h4>Register</h4>
+                </div>
               </>
             )}
           </div>

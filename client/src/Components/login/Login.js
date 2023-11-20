@@ -1,3 +1,4 @@
+import "./login.css";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { login, selectUser } from "../../features/userSlice";
@@ -8,8 +9,8 @@ import { Button, Form } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-
-import "./login.css";
+import Lottie from "lottie-react";
+import landingData1 from "../../assets/Lottie/processIndic.json";
 
 import { SHA256, enc } from "crypto-js";
 
@@ -21,7 +22,11 @@ const Login = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const clientId =
     "274154138703-j3eqfrs1bhlrndduc85b5dgk2ps9dtg4.apps.googleusercontent.com";
-
+  const [loginLoading, setLoginIsLoading] = useState(false);
+  const style = {
+    height: 50,
+    width: 50,
+  };
   const {
     register,
     handleSubmit,
@@ -35,6 +40,7 @@ const Login = () => {
   };
 
   const onSubmit2 = async (user) => {
+    setLoginIsLoading(true);
     user.password = SHA256(user.password).toString(enc.Hex);
     console.log(user);
     loginUserAPIMethod(user)
@@ -52,6 +58,7 @@ const Login = () => {
       .catch((err) => {
         console.log("Unsuccessful login");
         setIsLoggedIn(false);
+        setLoginIsLoading(false);
         setErrorMessage("Incorrect username or password");
       });
     // console.log(response);
@@ -108,13 +115,24 @@ const Login = () => {
           Don't have an account?
         </a>
 
-        <Button
-          type="submit"
-          style={{ marginBottom: "10px" }}
-          className="login_btn"
-        >
-          Login
-        </Button>
+        {loginLoading ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+            }}
+          >
+            <Lottie animationData={landingData1} style={style} />
+          </div>
+        ) : (
+          <Button
+            type="submit"
+            style={{ marginBottom: "10px" }}
+            className="login_btn"
+          >
+            Login
+          </Button>
+        )}
 
         <div className="google_divider">OR</div>
         <Button
