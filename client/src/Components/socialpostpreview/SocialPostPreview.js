@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./socialpostpreview.css";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -11,7 +11,9 @@ const SocialPostPreview = ({ data }) => {
     navigate(`/socialpostdetails/${id}`);
   };
   console.log(data);
-
+  useEffect(() => {
+    console.log(data.post_images);
+  }, [data]);
   return (
     <div
       className="social_post_preview_container"
@@ -19,7 +21,7 @@ const SocialPostPreview = ({ data }) => {
     >
       <div className="social_post_preview_container_left">
         <FavoriteBorderIcon />
-        {data.social_users_liked}
+        {data.social_users_liked.length}
       </div>
       <div className="social_post_preview_container_middle">
         <div className="owner_name">Posted by {data.user}</div>
@@ -28,11 +30,15 @@ const SocialPostPreview = ({ data }) => {
         </div>
         <div className="num_comments">
           <CommentIcon />
-          View all {data.social_post_comment_count} replies
+          &nbsp;&nbsp;{data.social_comments.length} comments
         </div>
       </div>
       <div className="social_post_preview_container_right">
-        <img className="social_post_preview_img" src={data.post_images[0]} />
+        <img
+          className="social_post_preview_img"
+          alt=""
+          src={data.post_images[0]}
+        />
       </div>
     </div>
   );
