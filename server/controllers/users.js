@@ -14,6 +14,18 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
+
+// GET CURRENT USER
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
 // UPDATE USER
 const updateUser = (req, res) => {
   try {
@@ -59,4 +71,4 @@ const removeUser = async (req, res) => {
   }
 }
 
-module.exports = { getCurrentUser: getCurrentUser, updateUser: updateUser, removeUser: removeUser };
+module.exports = { getCurrentUser: getCurrentUser, updateUser: updateUser, removeUser: removeUser, getUserById: getUserById };
