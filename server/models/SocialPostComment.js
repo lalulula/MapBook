@@ -7,11 +7,11 @@ const SocialPostCommentSchema = new mongoose.Schema({
     max: 50,
   },
   social_comment_owner: {
-    type: ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
   social_post_id: {
-    type: ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
 });

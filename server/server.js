@@ -8,6 +8,8 @@ const userRoutes = require("./routes/users");
 const userController = require("./controllers/users");
 const auth = require("./middleware/auth.js");
 const socialRoutes = require("./routes/social");
+const socialCommentRoutes = require("./routes/socialComment");
+
 const app = require("./app");
 
 // CONFIGURATIONS
@@ -36,6 +38,7 @@ app.put('/api/users/:id', upload.single('image'), auth.verifyToken, userControll
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/social", socialRoutes);
+app.use("/api/socialComment", socialCommentRoutes);
 
 
 // MONGOOSE SETUP

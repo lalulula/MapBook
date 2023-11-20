@@ -1,6 +1,3 @@
-const bcrypt = require("bcrypt");
-const dotenv = require("dotenv");
-
 const SocialPost = require("../models/SocialPost");
 
 // Get all social post
