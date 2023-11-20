@@ -25,7 +25,6 @@ const SocialPostDetails = () => {
         if (currentPost.post_owner === user._id) {
           setIsOwner(true);
         }
-        console.log(currentPost.post_images.length);
       } catch (error) {
         console.error("Error fetching social posts:", error); //TODO: Add error handling when error happens fetching.(Render screen)
       }
