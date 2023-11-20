@@ -15,7 +15,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPwd, setConfirmPwd] = useState("");
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  // const [isAdmin, setIsAdmin] = useState(false);
   const [failed, setFailed] = useState(false);
 
   const {
@@ -29,6 +29,7 @@ const Register = () => {
     handleRegister(data.username, data.email, data.password, data.confirmPwd);
   };
   const handleRegister = (username, email, password, confirmPwd) => {
+    let isAdmin = false;
     if (password !== confirmPwd) {
       setError("confirmPwd", {
         type: "manual",
@@ -37,14 +38,14 @@ const Register = () => {
       return; // Exit early if passwords don't match
     }
 
-    if (username === "admin") {
-      setIsAdmin(true);
+    if (username.toLowerCase() === "admin") {
+      isAdmin = true;
     }
 
     // encrypt password
     password = SHA256(password).toString(enc.Hex);
     const user = { username, email, password, isAdmin };
-    console.log(user);
+    console.log(user.isAdmin);
     createUserAPIMethod(user)
       .then((response) => {
         if (response.ok) {
