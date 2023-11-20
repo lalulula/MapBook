@@ -90,7 +90,7 @@ const SocialPostDetails = () => {
                 </div>
               </div>
               <div className="socialpostdetails_user">
-                post by {user.username}
+                post by {currentPost.post_owner}
               </div>
               <div
                 style={{

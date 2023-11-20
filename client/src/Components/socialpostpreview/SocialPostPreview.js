@@ -45,7 +45,7 @@
 // };
 
 // export default SocialPostPreview;
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./socialpostpreview.css";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -57,9 +57,9 @@ const SocialPostPreview = ({ data }) => {
   const handleToSocialDetails = (id) => {
     navigate(`/socialpostdetails/${id}`);
   };
-  console.log(data);
+
   useEffect(() => {
-    console.log(data.post_images);
+    console.log(data);
   }, [data]);
   return (
     <div
