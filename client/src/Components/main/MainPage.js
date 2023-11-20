@@ -53,16 +53,16 @@ const MainPage = () => {
               <h1>
                 No search results for '{searchTerm}'
               </h1>
-              <Lottie
-                animationData={NoMapAni}
-                style={{
-                  height: 300,
-                  width: 300,
-                }}
-              />
               <br />
             </div>
-
+            <Lottie
+              animationData={NoMapAni}
+              style={{
+                height: 300,
+                width: 300,
+                position: "absolute"
+              }}
+            />
           </div>
         )}
       </div>

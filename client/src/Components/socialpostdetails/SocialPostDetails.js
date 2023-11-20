@@ -89,7 +89,7 @@ const SocialPostDetails = () => {
           </div>
         </div>
         <div className="socialpostdetails_bottom">
-          <SocialComments />
+          <SocialComments id={id} />
         </div>
       </div>
     </div>

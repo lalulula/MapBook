@@ -11,10 +11,18 @@ const SocialComments = () => {
 
     const handleAddComment = () => {
         if (newComment.trim() !== '') {
+            //createSocialCommentAPI() and id is the current comment id
             setComments([...comments, newComment]);
             setNewComment('');
         }
     };
+
+    /* useEffect(() => {
+        getSocialCommentsAPI(id).then((c) => { //get comments that have social_post_id == id
+            setComments(c);
+        })
+    }, []); */
+
 
     //will call get all comments api and then filter based on the mapId
 
