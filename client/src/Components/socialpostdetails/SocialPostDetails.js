@@ -2,21 +2,18 @@ import React from "react";
 import "./socialpostdetails.css";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-// import data from "../social/sample_data_social.json";
 import SocialComments from "../comments/SocialComments";
 import { useSelector } from "react-redux";
 import {
   deleteSocialPostAPIMethod,
   getSocialPostAPIMethod,
 } from "../../api/social";
+import LikeButton from "../buttons/LikeButton";
 
 const SocialPostDetails = () => {
-  //   const [user, setUser] = useState(null);
   const { id } = useParams();
   const [currentPost, setCurrentPost] = useState({});
   const user = useSelector((state) => state.user);
-  //   //will make an api call to get the id of a social post
-  //   const curr = data.filter((obj) => obj._id === id);
   const [isOwner, setIsOwner] = useState(false);
   const navigate = useNavigate();
 
@@ -85,17 +82,32 @@ const SocialPostDetails = () => {
             </div>
           </div>
 
-          <div className="socialpostdetails_top_right">{currentPost.topic}</div>
+          {currentPost.topic === "Other" ? (
+            <div className="socialpostdetails_top_right">
+              {currentPost.topic} - {currentPost.customTopic}
+            </div>
+          ) : (
+            <div className="socialpostdetails_top_right">
+              {currentPost.topic}
+            </div>
+          )}
         </div>
         <div className="socialpostdetails_middle">
           <div className="socialpostdetails_middle_left">
-            <img id="post_details_img" src={currentPost.post_images} />
+            {/* NOTE) loop through currentPost.social_users_liked (will contain ID) */}
+            <img id="post_details_img" src={currentPost.post_images} alt="" />
           </div>
           <div className="socialpostdetails_middle_right">
             {currentPost.post_content}
           </div>
         </div>
+        <div className="social_like_btn"> Like Btn Here</div>
+        <LikeButton />
+        <div className="social_view_count">
+          Viewed By {currentPost.view_count} Users
+        </div>
         <div className="socialpostdetails_bottom">
+          {/* NOTE) loop through currentPost.social_comments (will contain ID) */}
           <SocialComments id={id} />
         </div>
       </div>

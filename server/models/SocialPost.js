@@ -23,8 +23,14 @@ const SocialPostSchema = new mongoose.Schema({
     default: 0,
   },
   social_users_liked: {
-    type: Map,
-    of: Boolean,
+    // type: Map,
+    // of: Boolean,
+    type: [mongoose.Schema.Types.ObjectId],
+  },
+  social_comments: {
+    // type: Map,
+    // of: Boolean,
+    type: [mongoose.Schema.Types.ObjectId],
   },
   created_at: {
     type: Date,
