@@ -61,12 +61,10 @@ const createPost = async (req, res) => {
 
 // Update Post by post id
 const editPost = async (req, res) => {
-  console.log("1", req.params);
   try {
     const { sPostId } = req.params;
     const { title, post_content, post_images, topic, customTopic } = req.body;
 
-    console.log("2", req.body);
     const updatedPost = await SocialPost.findByIdAndUpdate(
       sPostId,
       {
@@ -78,7 +76,6 @@ const editPost = async (req, res) => {
       },
       { new: true }
     );
-    console.log("3", updatedPost);
     res.status(200).json(updatedPost);
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -96,6 +93,35 @@ const deletePost = async (req, res) => {
     res.status(404).json({ success: false, message: err.message });
   }
 };
+
+// Update Post by post id
+const likePost = async (req, res) => {
+  try {
+    const { sPostId } = req.params;
+    const { userId } = req.body;
+    const socialPost = await SocialPost.findById(sPostId);
+    const likedUsers = socialPost["social_users_liked"];
+
+    const index = likedUsers.indexOf(userId);
+    if(index == -1){
+      likedUsers.push(userId);
+    }
+    else{
+      likedUsers.splice(index, 1);
+    }
+    const updatedPost = await SocialPost.findByIdAndUpdate(
+      sPostId,
+      {
+        social_users_liked: likedUsers,
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
 module.exports = {
   getAllPost: getAllPost,
   getPostDetails: getPostDetails,
@@ -103,4 +129,5 @@ module.exports = {
   editPost: editPost,
   deletePost: deletePost,
   getMySocialPosts: getMySocialPosts,
+  likePost: likePost,
 };
