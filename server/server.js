@@ -46,7 +46,9 @@ const PORT = process.env.PORT || 3001;
 mongoose
   .connect(process.env.MONGO_URL, {})
   .then(() => {
-    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+    if (process.env.NODE_ENV !== 'test') {
+      app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+    }
   })
   .catch((error) => console.log(`${error} did not connect`));
 

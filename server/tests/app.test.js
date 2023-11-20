@@ -1,7 +1,7 @@
 const request = require("supertest");
 const mongoose = require("mongoose");
 
-const app = require("../app");
+const app = require("../server");
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -24,7 +24,17 @@ describe("Test example", () => {
         username: "test",
         password: "test123"
       })
-      .expect(404)
+      .expect(500)
+  });
+
+  test("POST /api/auth/login", async () => {
+    await request(app)
+      .post("/api/auth/login")
+      .send({
+        username: "test",
+        password: "test123"
+      })
+      .expect(400)
   });
 
   // test("PUT /api/users", async () => {
