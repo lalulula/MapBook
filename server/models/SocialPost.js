@@ -32,6 +32,10 @@ const SocialPostSchema = new mongoose.Schema({
     // of: Boolean,
     type: [mongoose.Schema.Types.ObjectId],
   },
+  /* social_comments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'SocialPostComment',
+  }], */
   created_at: {
     type: Date,
     default: Date.now,

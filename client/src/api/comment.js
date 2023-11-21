@@ -59,6 +59,17 @@ export const createSocialCommentAPIMethod = (comment) => {
   }).then(parseJSON);
 }
 
+export const updateSocialCommentAPIMethod = (id, newComment) => {
+  return fetch(
+    `${API_BASE_URL}/api/socialComment/editSocialComment/${id}`,
+    {
+      ...defaultHeaders,
+      method: "PUT", // The method defaults to GET
+      body: JSON.stringify(newComment),
+    }
+  );
+};
+
 
 //map comments
 export const getAllSocialCommentsReplyAPIMethod = () => {
