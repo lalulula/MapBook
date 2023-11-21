@@ -17,6 +17,8 @@ const SocialPostPreview = ({ data }) => {
     const fetchData = async () => {
       try {
         const currentOwner = await getUserById(data.post_owner);
+        // console.log("fetchData");
+        // console.log(currentOwner);
         setPostOwner(currentOwner);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -35,7 +37,8 @@ const SocialPostPreview = ({ data }) => {
         {data.social_users_liked.length}
       </div>
       <div className="social_post_preview_container_middle">
-        <div className="owner_name">Posted by {data.post_owner}</div>
+        <div className="owner_name">Posted by {postOwner != null ? postOwner['username'] : 'abc'}</div>
+        {/* {console.log(postOwner['username'])} */}
         <div className="social_post_title">
           <h3>{data.title}</h3>
         </div>

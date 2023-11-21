@@ -8,6 +8,8 @@ const userRoutes = require("./routes/users");
 const userController = require("./controllers/users");
 const auth = require("./middleware/auth.js");
 const socialRoutes = require("./routes/social");
+const socialController = require("./controllers/social");
+
 const socialCommentRoutes = require("./routes/socialComment");
 
 const app = require("./app");
@@ -33,6 +35,8 @@ const upload = multer({storage: storage});
 
 // ROUTES WITH FILES
 app.put('/api/users/:id', upload.single('image'), auth.verifyToken, userController.updateUser);
+// Create Post
+app.put("/api/social/createSocialPost", upload.single('post_images'), socialController.createPost);
 
 // ROUTES
 app.use("/api/auth", authRoutes);

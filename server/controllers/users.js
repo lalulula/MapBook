@@ -19,7 +19,7 @@ const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(id);
-    console.log(user);
+    // console.log(user);
     res.status(200).json(user);
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -30,8 +30,8 @@ const getUserById = async (req, res) => {
 const updateUser = (req, res) => {
   try {
     const { id } = req.params;
-
     cloudinary.uploader.upload(req.file.path, async function (err, result) {
+      // console.log(req.file)
       if (err) {
         console.log(err);
         return res.status(500).json({
@@ -39,17 +39,32 @@ const updateUser = (req, res) => {
           message: "Error",
         });
       }
+      if(req.body.username === ""){
 
-      const updatedUser = await User.findByIdAndUpdate(
-        id,
-        {
-          username: req.body.username,
-          profile_img: result.secure_url,
-        },
-        { new: true }
-      );
+        const updatedUser = await User.findByIdAndUpdate(
+          id,
+          {
+            profile_img: result.secure_url,
+          },
+          { new: true }
+        );
+        res.status(200).json(updatedUser);
 
-      res.status(200).json(updatedUser);
+      }
+      else{
+        const updatedUser = await User.findByIdAndUpdate(
+          id,
+          {
+            username: req.body.username,
+            profile_img: result.secure_url,
+          },
+          { new: true }
+        );
+        res.status(200).json(updatedUser);
+
+      }
+      
+
     });
   } catch (err) {
     res.status(404).json({ message: err.message });

@@ -27,10 +27,10 @@ const Profile = () => {
 
   useEffect(() => {
     getUser();
-    console.log(user);
-  }, []);
+    // console.log(user);
+  }, [user]);
   useEffect(() => {
-    console.log(user);
+    // console.log(user);
   }, [user]);
 
   if (!user) return null;
@@ -40,6 +40,7 @@ const Profile = () => {
   };
 
   const handleFileChange = (event) => {
+    console.log(event.target.files[0])
     setSelectedFile(event.target.files[0]);
   };
 

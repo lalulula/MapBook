@@ -11,6 +11,7 @@ const Header = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const route = window.location.pathname;
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const profileImgPath = useSelector((state) => state.user.user.profile_img)
   // useEffect(() => {
   //   console.log(window.location.pathname);
   //   console.log(isAuthenticated);
@@ -55,7 +56,7 @@ const Header = () => {
                 </div>
                 <div>
                   <img
-                    src={defaultImg}
+                    src={profileImgPath == '' ? defaultImg : profileImgPath}
                     alt="header_profile"
                     className="header_profile"
                     onClick={() => navigate("/profile")}
