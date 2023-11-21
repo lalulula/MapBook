@@ -32,19 +32,19 @@ const updateUser = (req, res) => {
     const { id } = req.params;
 
     cloudinary.uploader.upload(req.file.path, async function (err, result) {
-      if(err) {
+      if (err) {
         console.log(err);
         return res.status(500).json({
           success: false,
           message: "Error"
         })
       }
-      
-      const updatedUser = await User.findByIdAndUpdate(id, 
-        { 
+
+      const updatedUser = await User.findByIdAndUpdate(id,
+        {
           username: req.body.username,
           profile_img: result.secure_url,
-        }, 
+        },
         { new: true }
       );
 

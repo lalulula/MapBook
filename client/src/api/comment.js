@@ -19,6 +19,57 @@ function checkStatus(response) {
   }
 }
 
+export const getAllMapCommentsAPIMethod = () => {
+  return fetch(
+    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/mapcomments`,
+    {
+      ...defaultHeaders,
+      method: "GET",
+    }
+  ).then(checkStatus);
+};
+
+export const getAllSocialCommentsAPI = (id) => {
+  console.log(`${API_BASE_URL}/api/socialComment/socialComments/${id}`);
+  return fetch(`${API_BASE_URL}/api/socialComment/socialComments/${id}`,
+    {
+      ...defaultHeaders,
+      method: "GET",
+    }
+  ).then(parseJSON);
+};
+
+export const getAllExistingSocialCommentsAPI = () => {
+  console.log(`${API_BASE_URL}/api/socialComment/existingSocialComments`);
+  return fetch(`${API_BASE_URL}/api/socialComment/existingSocialComments`,
+    //await fetch(`${API_BASE_URL}/api/users/${userId}`, {
+    {
+      ...defaultHeaders,
+      method: "GET",
+    }
+  ).then(parseJSON);
+};
+
+export const getAllSocialCommentsReplyAPIMethod = () => {
+  return fetch(
+    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialcommentsreply`,
+    {
+      ...defaultHeaders,
+      method: "GET",
+    }
+  ).then(checkStatus);
+};
+
+export const getAllMapCommentsReplyAPIMethod = () => {
+  return fetch(
+    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/mapcommentsreply`,
+    {
+      ...defaultHeaders,
+      method: "GET",
+    }
+  ).then(checkStatus);
+};
+
 function parseJSON(response) {
   return response.json();
 }

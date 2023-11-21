@@ -9,13 +9,23 @@ const getAllSocialComments = async (req, res) => {
     const { sPostId } = req.params;
     const socialPost = await SocialPost.findById(sPostId);
     const socialPostComments = socialPost["social_comments"];
-    
+    console.log("socialpostcomments backend: ", socialPostComments);
+    console.log("socialpost: ", socialPost);
 
     res.status(200).json(socialPostComments);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
 };
+
+const getAllExistingSocialComments = async (req, res) => {
+  try {
+    const socialPost = await SocialComment.find();
+    res.status(200).json(socialPost);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+}
 
 // Get social post comment with CommentId
 const getSocialComment = async (req, res) => {
@@ -39,9 +49,9 @@ const createSocialComment = async (req, res) => {
 
     // if not, continue
     const newComment = new SocialComment({
-        social_comment_content,
-        social_comment_owner,
-        social_post_id,
+      social_comment_content,
+      social_comment_owner,
+      social_post_id,
     });
     const savedComment = await newComment.save();
     console.log("social comment created successfully");
@@ -51,13 +61,13 @@ const createSocialComment = async (req, res) => {
     const commentList = socialPost["social_comments"]
     commentList.push(savedComment["_id"])
     await SocialPost.findByIdAndUpdate(
-        social_post_id,
-        {
-            social_comments: commentList,
-        },
-        { new: true }
+      social_post_id,
+      {
+        social_comments: commentList,
+      },
+      { new: true }
     );
-    
+
     return res.status(201).json(savedComment);
   } catch (err) {
     return res.status(500).json({ error: err.message });
@@ -71,7 +81,7 @@ const editSocialComment = async (req, res) => {
     const { social_comment_content } = req.body;
 
     const updatedComment = await SocialComment.findByIdAndUpdate(
-        sCommentId,
+      sCommentId,
       {
         social_comment_content: social_comment_content,
       },
@@ -94,15 +104,15 @@ const deleteSocialComment = async (req, res) => {
     const socialComment = await SocialComment.findById(sCommentId);
     const socialPost = await SocialPost.findById(socialComment["social_post_id"]);
     const commentList = socialPost["social_comments"]
-    
+
     const index = commentList.indexOf(sCommentId);
     commentList.splice(index, 1);
     await SocialPost.findByIdAndUpdate(
-        socialComment["social_post_id"],
-        {
-            social_comments: commentList,
-        },
-        { new: true }
+      socialComment["social_post_id"],
+      {
+        social_comments: commentList,
+      },
+      { new: true }
     );
 
 
@@ -116,9 +126,10 @@ const deleteSocialComment = async (req, res) => {
 
 
 module.exports = {
-    getAllSocialComments: getAllSocialComments,
-    getSocialComment: getSocialComment,
-    createSocialComment: createSocialComment,
-    editSocialComment: editSocialComment,
-    deleteSocialComment: deleteSocialComment,
+  getAllSocialComments: getAllSocialComments,
+  getSocialComment: getSocialComment,
+  createSocialComment: createSocialComment,
+  editSocialComment: editSocialComment,
+  deleteSocialComment: deleteSocialComment,
+  getAllExistingSocialComments: getAllExistingSocialComments
 };

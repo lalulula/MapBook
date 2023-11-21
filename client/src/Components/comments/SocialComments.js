@@ -5,19 +5,24 @@ import defaultImg from "../../assets/img/defaultProfileImg.jpg";
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { useParams } from "react-router-dom";
+import { getAllExistingSocialCommentsAPI, getAllSocialCommentsAPI } from "../../api/comment";
+
 
 const SocialComments = () => {
     const [user, setUser] = useState(null);
     const [comments, setComments] = useState([]);
+    const [postComments, setPostComments] = useState([]);
+    const [finalComments, setFinalComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [isEditingComment, setIsEditingComment] = useState(false);
     const [commentText, setCommentText] = useState('');
     const [editingCommentId, setEditingCommentId] = useState(null);
     const [isReplying, setIsReplying] = useState(false);
     const [replyingCommentId, setReplyingCommentId] = useState(null);
-    const [replyText, setReplyText] = useState(null);
+    const [replyText, setReplyText] = useState('');
     const [newReply, setNewReply] = useState('');
-
+    const { id } = useParams();
 
     const [sampleComments, setSampleComments] = useState([
         { _id: 1, user: 'bobby', comment: 'This is the first comment' },
@@ -87,17 +92,24 @@ const SocialComments = () => {
         //createCommentAPI(newCommentObject)
     }
 
-    /* useEffect(() => {
-        getSocialCommentsAPI(id).then((c) => { //get comments that have social_post_id == id
+    useEffect(() => {
+        getAllExistingSocialCommentsAPI().then((c) => { //get comments that have social_post_id == id
             setComments(c);
         })
-    }, []); */
+
+        getAllSocialCommentsAPI(id).then((c) => {
+            setPostComments(comments.filter((x) => c.includes(x._id)));
+        })
+    }, []);
 
 
     //will call get all comments api and then filter based on the mapId
 
     return (
         <div className="social_comments">
+            {console.log("ALL comments: ", comments)}
+            {console.log("post specific comments: ", postComments)}
+            {console.log("FINAL: ", finalComments)}
             <div className="social_comments_container">
                 <div>
                     <h3>Comments</h3>
