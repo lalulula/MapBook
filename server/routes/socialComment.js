@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/socialComments/:sPostId", socialComment.getAllSocialComments);
 
 // Get social comment with comment ID
-router.get("/socialComment/:sCommentId", socialComment.getSocialComment);
+router.get("/:sCommentId", socialComment.getSocialComment);
 
 // Create comment
 router.post("/createSocialComment", socialComment.createSocialComment);
