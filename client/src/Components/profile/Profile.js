@@ -106,9 +106,7 @@ const Profile = () => {
               )}
             </div>
           </div>
-          {isEditing && (
-            <button className="finish_edit_user_btn">Update User</button>
-          )}
+          
           {!isEditing && (
             <button className="edit_user_btn" onClick={handleClickEditUser}>
               Edit info
