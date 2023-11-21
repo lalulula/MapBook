@@ -29,6 +29,7 @@
 .socialpage_top_right {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
   /* flex: 0.7; */
 }
 

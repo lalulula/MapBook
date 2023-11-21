@@ -9,6 +9,10 @@
 
 .search_bar_wrapper {
   margin: 0 10px 10px 0;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 100pxs;
 }
 
 .search_icon {
