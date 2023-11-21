@@ -126,7 +126,7 @@ export const updateUserAPIMethod = async (
     const formData = new FormData();
     formData.append("image", selectedFile);
     formData.append("username", username);
-
+    console.log(formData)
     const response = await fetch(`${API_BASE_URL}/api/users/${userId}`, {
       method: "PUT",
       headers: { Authorization: `Bearer ${isAuth}` },

@@ -8,6 +8,17 @@ const defaultHeaders = {
     "Content-Type": "application/json; charset=UTF-8",
   },
 };
+
+//get a user by ID
+export const getUserById = (userId) => {
+  const response = fetch(`${API_BASE_URL}/api/users/getUser/${userId}`, {
+    ...defaultHeaders,
+  })
+    .then(checkStatus)
+    .then(parseJSON);
+  return response;
+};
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;

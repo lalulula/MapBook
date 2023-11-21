@@ -44,6 +44,20 @@ const CreateSocialPost = () => {
   };
 
   const handleImageUpload = (event) => {
+    // const images = []
+    // if(options["post_images"] != null){
+    //   for(var i = 0; i < options["post_images"].length; i ++){
+    //     images.push(options["post_images"])
+    //   }
+    // }
+
+    // images.push(event.target.files[0])
+
+    setOptions({
+      ...options,
+      post_images: event.target.files[0],
+    });
+
     const files = event.target.files; // Get the first file from the selected files
     if (files.length > 0) {
       const newImages = Array.from(files).map((file) => ({
@@ -51,13 +65,10 @@ const CreateSocialPost = () => {
         file,
       }));
 
-      setOptions({
-        ...options,
-        post_images: newImages.map((img) => img.data),
-      });
-
       setUploadedImages([...uploadedImages, ...newImages]);
     }
+
+    console.log(options);
   };
   const handleSocialPostCreate = async () => {
     console.log(options);

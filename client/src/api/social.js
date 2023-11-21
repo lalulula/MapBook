@@ -8,6 +8,7 @@ const defaultHeaders = {
     "Content-Type": "application/json; charset=UTF-8",
   },
 };
+
 // Get All Social Post (For SocialPage)
 export const getAllSocialPostsAPIMethod = () => {
   const res = fetch(`${API_BASE_URL}/api/social/socialPosts`, {
@@ -44,14 +45,40 @@ export const getMySocialPostAPIMethod = (currentUserId) => {
 };
 // Create Social Post
 export const createSocialPostAPIMethod = async (socialPost) => {
-  console.log(socialPost);
+  console.log("create social post");
+
+  var keys = Object.keys(socialPost);
+  const formData = new FormData();
+
+  for (var i = 0; i < keys.length; i++) {
+    console.log(typeof keys[i]);
+    formData.append(keys[i], socialPost[keys[i]]);
+  }
+  // formData.append("image", selectedFile);
+  // formData.append("username", username);
+  console.log(formData);
+
   const response = await fetch(`${API_BASE_URL}/api/social/createSocialPost`, {
-    ...defaultHeaders,
-    method: "POST",
-    body: JSON.stringify(socialPost),
+    // ...defaultHeaders,
+    method: "PUT",
+    body: formData,
   });
   return response;
 };
+
+// // Create Social Post
+// export const createSocialPostAPIMethod = async (socialPost) => {
+//   console.log(socialPost);
+//   const response = await fetch(`${API_BASE_URL}/api/social/createSocialPost`, {
+//     ...defaultHeaders,
+//     method: "PUT",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(socialPost),
+//   });
+//   return response;
+// };
 
 // Delete Social Post by PostID
 export const deleteSocialPostAPIMethod = async (socialPostId) => {

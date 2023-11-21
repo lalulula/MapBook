@@ -8,6 +8,7 @@ import {
   deleteSocialPostAPIMethod,
   getSocialPostAPIMethod,
 } from "../../api/social";
+import { getUserById } from "../../api/user";
 import LikeButton from "../buttons/LikeButton";
 
 const SocialPostDetails = () => {
@@ -16,21 +17,41 @@ const SocialPostDetails = () => {
   const user = useSelector((state) => state.user.user);
   const [isOwner, setIsOwner] = useState(false);
   const navigate = useNavigate();
+  const [postOwner, setPostOwner] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const currentPost = await getSocialPostAPIMethod(id);
+        const post_owner_data = await getUserById(currentPost.post_owner);
         setCurrentPost(currentPost);
+        setPostOwner(post_owner_data);
+        console.log("USER INFO")
+        console.log(user._id == null)
         if (currentPost.post_owner === user._id) {
           setIsOwner(true);
         }
       } catch (error) {
-        console.error("Error fetching social posts:", error); //TODO: Add error handling when error happens fetching.(Render screen)
+        console.error("Error fetching social posts:", error);
       }
     };
     fetchData();
-  }, [isOwner]);
+  }, [id, user._id]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const currentPost = await getSocialPostAPIMethod(id);
+  //       setCurrentPost(currentPost);
+  //       if (currentPost.post_owner === user._id) {
+  //         setIsOwner(true);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching social posts:", error); //TODO: Add error handling when error happens fetching.(Render screen)
+  //     }
+  //   };
+  //   fetchData();
+  // }, [isOwner]);
   const handleDeleteSocialPost = async () => {
     try {
       console.log("removing social post");
@@ -77,7 +98,7 @@ const SocialPostDetails = () => {
             <img
               alt=""
               className="socialpostdetails_profile_img"
-              src="https://us-tuna-sounds-images.voicemod.net/d347dbc8-e6b8-4f85-bb64-8dcb234f5730-1674067639225.jpg"
+              src= {postOwner != null ? postOwner['profile_img'] : "https://us-tuna-sounds-images.voicemod.net/d347dbc8-e6b8-4f85-bb64-8dcb234f5730-1674067639225.jpg"}
             />
             <div className="socialpostdetails_top_left_container">
               <div className="socialpostdetails_top_left_title_container">
@@ -89,7 +110,7 @@ const SocialPostDetails = () => {
                 </div>
               </div>
               <div className="socialpostdetails_user">
-                post by {currentPost.post_owner}
+                post by {postOwner != null ? postOwner['username'] : 'abc' }
               </div>
               <div
                 style={{

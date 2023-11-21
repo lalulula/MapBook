@@ -1,5 +1,5 @@
 // const cloudinary = require("../server")
-const cloudinary = require('cloudinary').v2;
+const cloudinary = require("cloudinary").v2;
 
 const User = require("../models/User");
 
@@ -14,12 +14,12 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
-
-// GET CURRENT USER
+// GET CURRENT USER by ID
 const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(id);
+    // console.log(user);
     res.status(200).json(user);
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -30,8 +30,8 @@ const getUserById = async (req, res) => {
 const updateUser = (req, res) => {
   try {
     const { id } = req.params;
-
     cloudinary.uploader.upload(req.file.path, async function (err, result) {
+      // console.log(req.file)
       if (err) {
         console.log(err);
         return res.status(500).json({
@@ -69,6 +69,11 @@ const removeUser = async (req, res) => {
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
-}
+};
 
-module.exports = { getCurrentUser: getCurrentUser, updateUser: updateUser, removeUser: removeUser, getUserById: getUserById };
+module.exports = {
+  getCurrentUser: getCurrentUser,
+  updateUser: updateUser,
+  removeUser: removeUser,
+  getUserById: getUserById,
+};
