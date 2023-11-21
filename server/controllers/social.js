@@ -38,7 +38,8 @@ const createPost = async (req, res) => {
   try {
     // console.log("create Post")
 
-    const { title, post_content, post_images, topic, customTopic, post_owner } = req.body;
+    const { title, post_content, post_images, topic, customTopic, post_owner } =
+      req.body;
 
     // console.log(req.file)
     cloudinary.uploader.upload(req.file.path, async function (err, result) {
@@ -49,13 +50,10 @@ const createPost = async (req, res) => {
           message: "Error",
         });
       }
-      const imagesUrl = []
+      const imagesUrl = [];
 
       imagesUrl.push(result.secure_url);
       // const imageUrl = result.secure_url;
-   
-
-
 
       // if not, continue
       const newPost = new SocialPost({
@@ -67,17 +65,15 @@ const createPost = async (req, res) => {
         post_owner,
       });
 
-      console.log(newPost)
+      console.log(newPost);
 
       const savedPost = await newPost.save();
       console.log("post created successfully");
       return res.status(201).json(savedPost);
     });
-   
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
-
 };
 
 // Update Post by post id
@@ -124,10 +120,9 @@ const likePost = async (req, res) => {
     const likedUsers = socialPost["social_users_liked"];
 
     const index = likedUsers.indexOf(userId);
-    if(index == -1){
+    if (index == -1) {
       likedUsers.push(userId);
-    }
-    else{
+    } else {
       likedUsers.splice(index, 1);
     }
     const updatedPost = await SocialPost.findByIdAndUpdate(

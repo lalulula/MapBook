@@ -13,7 +13,7 @@ router.get("/socialPost/:sPostId", social.getPostDetails);
 router.get("/mySocialPost/:userId", social.getMySocialPosts);
 
 // // Create Post
-// router.post("/createSocialPost", social.createPost);
+router.post("/createSocialPost", social.createPost);
 
 // UpdatePost
 router.put("/editSocialPost/:sPostId", social.editPost);
@@ -23,6 +23,5 @@ router.delete("/deleteSocialPost/:sPostId", social.deletePost);
 
 // like and dislike Psot
 router.put("/likePost/:sPostId", social.likePost);
-
 
 module.exports = router;

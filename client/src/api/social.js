@@ -9,7 +9,6 @@ const defaultHeaders = {
   },
 };
 
-
 // Get All Social Post (For SocialPage)
 export const getAllSocialPostsAPIMethod = () => {
   const res = fetch(`${API_BASE_URL}/api/social/socialPosts`, {
@@ -46,19 +45,19 @@ export const getMySocialPostAPIMethod = (currentUserId) => {
 };
 // Create Social Post
 export const createSocialPostAPIMethod = async (socialPost) => {
-  console.log("create social post")
+  console.log("create social post");
 
-  var keys = Object.keys(socialPost)
+  var keys = Object.keys(socialPost);
   const formData = new FormData();
 
   for (var i = 0; i < keys.length; i++) {
-    console.log(typeof(keys[i]))
+    console.log(typeof keys[i]);
     formData.append(keys[i], socialPost[keys[i]]);
   }
   // formData.append("image", selectedFile);
   // formData.append("username", username);
-  console.log(formData)
-  
+  console.log(formData);
+
   const response = await fetch(`${API_BASE_URL}/api/social/createSocialPost`, {
     // ...defaultHeaders,
     method: "PUT",
@@ -80,7 +79,6 @@ export const createSocialPostAPIMethod = async (socialPost) => {
 //   });
 //   return response;
 // };
-
 
 // Delete Social Post by PostID
 export const deleteSocialPostAPIMethod = async (socialPostId) => {
