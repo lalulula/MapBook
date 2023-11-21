@@ -6,6 +6,9 @@ import { useSelector } from "react-redux";
 import "./profile.css";
 import { updateUserAPIMethod, removeUserAPIMethod } from "../../api/client";
 
+export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
+export const HOME_URL = process.env.REACT_APP_HOME_URL;
+
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
@@ -17,7 +20,7 @@ const Profile = () => {
   const userId = useSelector((state) => state.user.id);
 
   const getUser = async () => {
-    const response = await fetch(`http://localhost:3001/api/users/${userId}`, {
+    const response = await fetch(`${API_BASE_URL}/api/users/${userId}`, {
       method: "GET",
       headers: { Authorization: `Bearer ${isAuth}` },
     });
@@ -27,7 +30,6 @@ const Profile = () => {
 
   useEffect(() => {
     getUser();
-    // console.log(user);
   }, [user]);
 
   if (!user) return null;
