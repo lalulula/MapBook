@@ -8,6 +8,7 @@ import {
   deleteSocialPostAPIMethod,
   getSocialPostAPIMethod,
 } from "../../api/social";
+import { getUserById } from "../../api/user";
 import LikeButton from "../buttons/LikeButton";
 
 const SocialPostDetails = () => {
@@ -16,21 +17,38 @@ const SocialPostDetails = () => {
   const user = useSelector((state) => state.user.user);
   const [isOwner, setIsOwner] = useState(false);
   const navigate = useNavigate();
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const currentPost = await getSocialPostAPIMethod(id);
+        const post_owner_data = await getUserById(currentPost.post_owner);
         setCurrentPost(currentPost);
+
+        console.log(post_owner_data);
         if (currentPost.post_owner === user._id) {
           setIsOwner(true);
         }
       } catch (error) {
-        console.error("Error fetching social posts:", error); //TODO: Add error handling when error happens fetching.(Render screen)
+        console.error("Error fetching social posts:", error);
       }
     };
     fetchData();
-  }, [isOwner]);
+  }, [id, user._id]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const currentPost = await getSocialPostAPIMethod(id);
+  //       setCurrentPost(currentPost);
+  //       if (currentPost.post_owner === user._id) {
+  //         setIsOwner(true);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching social posts:", error); //TODO: Add error handling when error happens fetching.(Render screen)
+  //     }
+  //   };
+  //   fetchData();
+  // }, [isOwner]);
   const handleDeleteSocialPost = async () => {
     try {
       console.log("removing social post");

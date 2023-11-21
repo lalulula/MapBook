@@ -3,13 +3,28 @@ import { useNavigate } from "react-router-dom";
 import "./socialpostpreview.css";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import CommentIcon from "@mui/icons-material/Comment";
-import { useSelector } from "react-redux";
+import { getUserById } from "../../api/user";
+
 const SocialPostPreview = ({ data }) => {
   const navigate = useNavigate();
+  const [postOwner, setPostOwner] = useState(null);
+
   const handleToSocialDetails = (id) => {
     navigate(`/socialpostdetails/${id}`);
   };
-  console.log(data.post_owner);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const currentOwner = await getUserById(data.post_owner);
+        setPostOwner(currentOwner);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [data.post_owner]);
   return (
     <div
       className="social_post_preview_container"
