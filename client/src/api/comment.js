@@ -19,6 +19,79 @@ function checkStatus(response) {
   }
 }
 
+export const getAllSocialCommentsAPI = (id) => {
+  console.log(`${API_BASE_URL}/api/socialComment/socialComments/${id}`);
+  return fetch(`${API_BASE_URL}/api/socialComment/socialComments/${id}`,
+    {
+      ...defaultHeaders,
+      method: "GET",
+    }
+  ).then(parseJSON);
+};
+
+export const getAllExistingSocialCommentsAPI = () => {
+  console.log(`${API_BASE_URL}/api/socialComment/existingSocialComments`);
+  return fetch(`${API_BASE_URL}/api/socialComment/existingSocialComments`,
+    //await fetch(`${API_BASE_URL}/api/users/${userId}`, {
+    {
+      ...defaultHeaders,
+      method: "GET",
+    }
+  ).then(parseJSON);
+};
+
+export const deleteSocialCommentAPIMethod = (commentId) => {
+  return fetch(
+    `${API_BASE_URL}/api/socialComment/deleteSocialComment/${commentId}`,
+    {
+      ...defaultHeaders,
+      method: "DELETE",
+    }
+  ).then(parseJSON);
+};
+
+
+export const createSocialCommentAPIMethod = (comment) => {
+  return fetch(`${API_BASE_URL}/api/socialComment/createSocialComment`, {
+    ...defaultHeaders,
+    method: 'POST',
+    body: JSON.stringify(comment),
+  }).then(parseJSON);
+}
+
+export const updateSocialCommentAPIMethod = (id, newComment) => {
+  return fetch(
+    `${API_BASE_URL}/api/socialComment/editSocialComment/${id}`,
+    {
+      ...defaultHeaders,
+      method: "PUT", // The method defaults to GET
+      body: JSON.stringify(newComment),
+    }
+  );
+};
+
+
+//map comments
+export const getAllSocialCommentsReplyAPIMethod = () => {
+  return fetch(
+    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialcommentsreply`,
+    {
+      ...defaultHeaders,
+      method: "GET",
+    }
+  ).then(checkStatus);
+};
+
+export const getAllMapCommentsReplyAPIMethod = () => {
+  return fetch(
+    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/mapcommentsreply`,
+    {
+      ...defaultHeaders,
+      method: "GET",
+    }
+  ).then(checkStatus);
+};
+
 function parseJSON(response) {
   return response.json();
 }

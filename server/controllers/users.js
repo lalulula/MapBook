@@ -39,7 +39,7 @@ const updateUser = (req, res) => {
           message: "Error",
         });
       }
-      if(req.body.username === ""){
+      if (req.body.username === "") {
 
         const updatedUser = await User.findByIdAndUpdate(
           id,
@@ -51,7 +51,7 @@ const updateUser = (req, res) => {
         res.status(200).json(updatedUser);
 
       }
-      else{
+      else {
         const updatedUser = await User.findByIdAndUpdate(
           id,
           {
@@ -63,7 +63,7 @@ const updateUser = (req, res) => {
         res.status(200).json(updatedUser);
 
       }
-      
+
 
     });
   } catch (err) {
