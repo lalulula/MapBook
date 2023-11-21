@@ -36,20 +36,36 @@ const updateUser = (req, res) => {
         console.log(err);
         return res.status(500).json({
           success: false,
-          message: "Error"
-        })
+          message: "Error",
+        });
+      }
+      if (req.body.username === "") {
+
+        const updatedUser = await User.findByIdAndUpdate(
+          id,
+          {
+            profile_img: result.secure_url,
+          },
+          { new: true }
+        );
+        res.status(200).json(updatedUser);
+
+      }
+      else {
+        const updatedUser = await User.findByIdAndUpdate(
+          id,
+          {
+            username: req.body.username,
+            profile_img: result.secure_url,
+          },
+          { new: true }
+        );
+        res.status(200).json(updatedUser);
+
       }
 
-      const updatedUser = await User.findByIdAndUpdate(id,
-        {
-          username: req.body.username,
-          profile_img: result.secure_url,
-        },
-        { new: true }
-      );
 
-      res.status(200).json(updatedUser);
-    })
+    });
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
