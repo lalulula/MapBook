@@ -19,16 +19,6 @@ function checkStatus(response) {
   }
 }
 
-export const getAllMapCommentsAPIMethod = () => {
-  return fetch(
-    `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/mapcomments`,
-    {
-      ...defaultHeaders,
-      method: "GET",
-    }
-  ).then(checkStatus);
-};
-
 export const getAllSocialCommentsAPI = (id) => {
   console.log(`${API_BASE_URL}/api/socialComment/socialComments/${id}`);
   return fetch(`${API_BASE_URL}/api/socialComment/socialComments/${id}`,
@@ -50,6 +40,27 @@ export const getAllExistingSocialCommentsAPI = () => {
   ).then(parseJSON);
 };
 
+export const deleteSocialCommentAPIMethod = (commentId) => {
+  return fetch(
+    `${API_BASE_URL}/api/socialComment/deleteSocialComment/${commentId}`,
+    {
+      ...defaultHeaders,
+      method: "DELETE",
+    }
+  ).then(parseJSON);
+};
+
+
+export const createSocialCommentAPIMethod = (comment) => {
+  return fetch(`${API_BASE_URL}/api/socialComment/createSocialComment`, {
+    ...defaultHeaders,
+    method: 'POST',
+    body: JSON.stringify(comment),
+  }).then(parseJSON);
+}
+
+
+//map comments
 export const getAllSocialCommentsReplyAPIMethod = () => {
   return fetch(
     `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialcommentsreply`,
