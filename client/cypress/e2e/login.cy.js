@@ -7,17 +7,14 @@ describe("Login Page", () => {
     // Fill out the login form
     /* cy.get('input[placeholder="Username"]').type("Jasson");
     cy.get('input[placeholder="Password"]').type("Jasson123"); */
-    cy.get('input[placeholder="Username"]').type("sam");
+    cy.get('input[placeholder="Username"]').type("ya");
 
     cy.get('input[placeholder="Password"]').type("Password123");
     //  Submit the form
     cy.get(".login_btn").click();
 
     // Ensure the registration was successful (you might need to assert the URL or page content)
-    cy.url().should(
-      "eq",
-      "http://localhost:3000/mainpage"
-    );
+    cy.url().should("eq", "http://localhost:3000/mainpage");
   });
 
   //CASE2 : When User inputs invalid password
@@ -32,11 +29,10 @@ describe("Login Page", () => {
     /* cy.get(".ui.negative.mini.message").should(
       "contain",
       "Incorrect username or"
-    ); *///
+    ); */ //
     cy.get(".invalid_credentials_error_message").should(
       "contain",
       "Incorrect username or"
     );
-
   });
 });
