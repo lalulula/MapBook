@@ -21,15 +21,12 @@ describe("Login Page", () => {
   it("should show an error message if password is wrong", () => {
     cy.visit("http://localhost:3000/login");
     // Fill out the login form
-    cy.get('input[placeholder="Username"]').type("Jasson");
+    cy.get('input[placeholder="Username"]').type("ya");
 
-    cy.get('input[placeholder="Password"]').type("Jasson");
+    cy.get('input[placeholder="Password"]').type("dsd");
     //  Submit the form
     cy.get(".login_btn").click();
-    /* cy.get(".ui.negative.mini.message").should(
-      "contain",
-      "Incorrect username or"
-    ); */ //
+
     cy.get(".invalid_credentials_error_message").should(
       "contain",
       "Incorrect username or"
