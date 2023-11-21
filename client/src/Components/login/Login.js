@@ -106,9 +106,7 @@ const Login = () => {
               //pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/,
             })}
           />
-          <div className="invalid_credentials_error_message">
-            {errorMessage}
-          </div>
+          <div className="pwd_err ui negative mini message">{errorMessage}</div>
           {errors.password && (
             <p className="pwd_err ui negative mini message">
               Password is required
