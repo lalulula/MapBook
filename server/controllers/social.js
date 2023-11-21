@@ -40,26 +40,11 @@ const createPost = async (req, res) => {
 
     const { title, post_content, post_images, topic, customTopic, post_owner } =
       req.body;
-
-    // console.log(req.file)
-    cloudinary.uploader.upload(req.file.path, async function (err, result) {
-      if (err) {
-        console.log(err);
-        return res.status(500).json({
-          success: false,
-          message: "Error",
-        });
-      }
-      const imagesUrl = [];
-
-      imagesUrl.push(result.secure_url);
-      // const imageUrl = result.secure_url;
-
+    if(req.file == null){
       // if not, continue
       const newPost = new SocialPost({
         title,
         post_content,
-        post_images: imagesUrl,
         topic,
         customTopic,
         post_owner,
@@ -70,7 +55,40 @@ const createPost = async (req, res) => {
       const savedPost = await newPost.save();
       console.log("post created successfully");
       return res.status(201).json(savedPost);
-    });
+    }
+    else{
+      // console.log(req.file)
+      cloudinary.uploader.upload(req.file.path, async function (err, result) {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({
+            success: false,
+            message: "Error",
+          });
+        }
+        const imagesUrl = [];
+
+        imagesUrl.push(result.secure_url);
+        // const imageUrl = result.secure_url;
+
+        // if not, continue
+        const newPost = new SocialPost({
+          title,
+          post_content,
+          post_images: imagesUrl,
+          topic,
+          customTopic,
+          post_owner,
+        });
+
+        console.log(newPost);
+
+        const savedPost = await newPost.save();
+        console.log("post created successfully");
+        return res.status(201).json(savedPost);
+      });
+    }
+    
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }

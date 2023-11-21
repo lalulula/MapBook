@@ -26,8 +26,8 @@ const SocialPostDetails = () => {
         const post_owner_data = await getUserById(currentPost.post_owner);
         setCurrentPost(currentPost);
         setPostOwner(post_owner_data);
-        console.log("USER INFO")
-        console.log(user._id == null)
+        // console.log("USER INFO")
+        // console.log(user._id == null)
         if (currentPost.post_owner === user._id) {
           setIsOwner(true);
         }
