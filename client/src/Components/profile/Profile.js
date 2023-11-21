@@ -29,9 +29,6 @@ const Profile = () => {
     getUser();
     // console.log(user);
   }, [user]);
-  useEffect(() => {
-    // console.log(user);
-  }, [user]);
 
   if (!user) return null;
 
@@ -40,7 +37,7 @@ const Profile = () => {
   };
 
   const handleFileChange = (event) => {
-    console.log(event.target.files[0])
+    console.log(event.target.files[0]);
     setSelectedFile(event.target.files[0]);
   };
 
