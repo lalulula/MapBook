@@ -66,6 +66,18 @@ export const createSocialPostAPIMethod = async (socialPost) => {
   return response;
 };
 
+export const likeSocialPostAPIMethod = (postId, userId) => {
+  return fetch(
+    `${API_BASE_URL}/api/social/likePost/${postId}`,
+    {
+      ...defaultHeaders,
+      method: "PUT", // The method defaults to GET
+      body: JSON.stringify(userId),
+    }
+  );
+  //return response;
+};
+
 // // Create Social Post
 // export const createSocialPostAPIMethod = async (socialPost) => {
 //   console.log(socialPost);

@@ -4,14 +4,33 @@ import "./socialpostpreview.css";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import CommentIcon from "@mui/icons-material/Comment";
 import { getUserById } from "../../api/user";
+import { likeSocialPostAPIMethod } from "../../api/social";
+import { useSelector } from "react-redux";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const SocialPostPreview = ({ data }) => {
   const navigate = useNavigate();
   const [postOwner, setPostOwner] = useState(null);
+  const currentUserId = useSelector((state) => state.user.id);
+  const [liked, setLiked] = useState(data.social_users_liked.includes(currentUserId));
+  var [numLikes, setNumLikes] = useState(data.social_users_liked.length);
 
   const handleToSocialDetails = (id) => {
     navigate(`/socialpostdetails/${id}`);
   };
+
+  const handleLikeSocialPost = (postId) => {
+    if (!liked) {
+      setNumLikes(numLikes + 1);
+    } else if (liked) {
+      setNumLikes(numLikes - 1);
+    }
+    setLiked(!liked);
+    const userIdJson = { userId: currentUserId }
+    likeSocialPostAPIMethod(postId, userIdJson).then(
+      console.log("post liked!")
+    );
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,13 +49,18 @@ const SocialPostPreview = ({ data }) => {
   return (
     <div
       className="social_post_preview_container"
-      onClick={() => handleToSocialDetails(data._id)}
     >
       <div className="social_post_preview_container_left">
-        <FavoriteBorderIcon />
-        {data.social_users_liked.length}
+        {liked ? (
+          <FavoriteIcon onClick={() => handleLikeSocialPost(data._id)} style={{ color: "red" }} />
+
+        ) : (
+          <FavoriteBorderIcon onClick={() => handleLikeSocialPost(data._id)} />
+
+        )}
+        {numLikes}
       </div>
-      <div className="social_post_preview_container_middle">
+      <div className="social_post_preview_container_middle" onClick={() => handleToSocialDetails(data._id)}>
         <div className="owner_name">Posted by {postOwner != null ? postOwner['username'] : 'abc'}</div>
         {/* {console.log(postOwner['username'])} */}
         <div className="social_post_title">
