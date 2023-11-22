@@ -59,7 +59,7 @@ const Header = () => {
                 isAuthenticated ? navigate("/mainpage") : navigate("/");
               }}
             >
-              <h3>Mckenna</h3>
+              <h3>MapBook</h3>
             </div>
             <div className="header_begin">
               {isAuthenticated ? (
