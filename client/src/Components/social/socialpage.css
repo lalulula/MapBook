@@ -18,7 +18,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
 }
 
 .socialpostdetails_top_left h1 {
@@ -29,7 +28,6 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  /* flex: 0.7; */
 }
 
 .socialpage_middle {
@@ -38,6 +36,10 @@
   justify-content: center;
   flex-direction: column;
   padding: 0 4rem;
+}
+.create_post_btn:hover {
+  transform: scale(1.05);
+  background-color: rgba(119, 119, 119, 0.284) important!;
 }
 
 .socialpage_top_left {
