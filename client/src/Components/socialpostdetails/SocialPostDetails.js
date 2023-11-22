@@ -138,9 +138,10 @@ const SocialPostDetails = () => {
                 >
                   delete
                 </button>
-                <LikeButton id={id} currentPost={currentPost} />
+                {/* <LikeButton id={id} currentPost={currentPost} /> */}
               </>
             )}
+            <LikeButton id={id} currentPost={currentPost} />
           </div>
         </div>
         <div className="socialpostdetails_middle">
