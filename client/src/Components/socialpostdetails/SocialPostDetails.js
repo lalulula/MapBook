@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import {
   deleteSocialPostAPIMethod,
   getSocialPostAPIMethod,
+  editSocialPostAPIMethod,
 } from "../../api/social";
 import { getUserById } from "../../api/user";
 import LikeButton from "../buttons/LikeButton";
@@ -27,6 +28,10 @@ const SocialPostDetails = () => {
         const post_owner_data = await getUserById(currentPost.post_owner);
         setCurrentPost(currentPost);
         setPostOwner(post_owner_data);
+        const updatedViewCount = currentPost.view_count + 1;
+        const updatedPost = { ...currentPost, view_count: updatedViewCount };
+
+        await editSocialPostAPIMethod(currentPost._id, updatedPost);
         if (currentPost.post_owner === user._id) {
           setIsOwner(true);
         }
@@ -112,7 +117,7 @@ const SocialPostDetails = () => {
                 <h6>{formatDate(currentPost.created_at)}</h6>
                 <div>
                   <i className="bi bi-eye" /> &nbsp;
-                  {currentPost.view_count}
+                  {currentPost.view_count + 1}
                 </div>
               </div>
             </div>

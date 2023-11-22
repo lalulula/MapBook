@@ -27,6 +27,7 @@ const CreateSocialPost = () => {
     customTopic: "",
     // post_images: "",
     post_owner: "",
+    view_count: 1,
   });
   const handleTitleChange = (title) => {
     setOptions({ ...options, title });

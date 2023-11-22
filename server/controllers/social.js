@@ -40,7 +40,7 @@ const createPost = async (req, res) => {
 
     const { title, post_content, post_images, topic, customTopic, post_owner } =
       req.body;
-    if(req.file == null){
+    if (req.file == null) {
       // if not, continue
       const newPost = new SocialPost({
         title,
@@ -55,8 +55,7 @@ const createPost = async (req, res) => {
       const savedPost = await newPost.save();
       console.log("post created successfully");
       return res.status(201).json(savedPost);
-    }
-    else{
+    } else {
       // console.log(req.file)
       cloudinary.uploader.upload(req.file.path, async function (err, result) {
         if (err) {
@@ -88,7 +87,6 @@ const createPost = async (req, res) => {
         return res.status(201).json(savedPost);
       });
     }
-    
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
@@ -98,7 +96,8 @@ const createPost = async (req, res) => {
 const editPost = async (req, res) => {
   try {
     const { sPostId } = req.params;
-    const { title, post_content, post_images, topic, customTopic } = req.body;
+    const { title, post_content, post_images, topic, customTopic, view_count } =
+      req.body;
 
     const updatedPost = await SocialPost.findByIdAndUpdate(
       sPostId,
@@ -108,6 +107,7 @@ const editPost = async (req, res) => {
         post_images: post_images,
         topic: topic,
         customTopic: customTopic,
+        view_count: view_count,
       },
       { new: true }
     );
