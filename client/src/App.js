@@ -25,6 +25,7 @@ function App() {
   //Initial Loading Feature For Web
   const [loading, setLoading] = useState(false);
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  console.log(isAuthenticated);
 
   // TODO:
   // get current user
@@ -62,7 +63,7 @@ function App() {
           />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/createmap" element={<CreateMap />} />
+          <Route path="/createmap" element={isAuthenticated ? <CreateMap /> : <LandingPage />} />
           <Route path="/editmap/:id" element={<EditMap />} />
           <Route path="/socialpage" element={<SocialPage />} />
           <Route path="/mymap" element={<MyMap />} />
