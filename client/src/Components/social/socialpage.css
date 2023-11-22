@@ -2,8 +2,7 @@
   height: 100vh;
   display: flex;
   justify-content: center;
-  /* align-items: center; */
-  margin-top: 5rem;
+  margin-top: 6rem;
 }
 
 .socialpage_container {
@@ -34,12 +33,11 @@
 }
 
 .socialpage_middle {
-  /* height: 80%;
-    width: 80%; */
   width: 100%;
   display: flex;
   justify-content: center;
   flex-direction: column;
+  padding: 0 4rem;
 }
 
 .socialpage_top_left {

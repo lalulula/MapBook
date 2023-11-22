@@ -17,16 +17,15 @@ import { useSelector } from "react-redux";
 
 const SocialPage = () => {
   const navigate = useNavigate();
-
   const [searchTerm, setSearchTerm] = useState("");
   const [searchFilterOption, setSearchFilterOption] = useState("");
   const [displayMyPosts, setDisplayMyPosts] = useState(false);
   const [socialPosts, setSocialPosts] = useState([]);
   const searchFilterOps = ["Title", "Topics", "Description"];
+  const currentUserId = useSelector((state) => state.user.id);
   const handleSeachFilter = (e) => {
     setSearchFilterOption(e.value);
   };
-  const currentUserId = useSelector((state) => state.user.id);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,10 +36,9 @@ const SocialPage = () => {
 
         setSocialPosts(posts);
       } catch (error) {
-        console.error("Error fetching social posts:", error);
+        alert("Error fetching social posts:", error);
       }
     };
-
     fetchData();
   }, [displayMyPosts, currentUserId]);
 
