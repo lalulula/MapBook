@@ -7,7 +7,6 @@ import { createSocialPostAPIMethod } from "../../api/social";
 import { useSelector } from "react-redux";
 const CreateSocialPost = () => {
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
   const userId = useSelector((state) => state.user.id);
   const topics = [
     "Economy",
@@ -28,6 +27,7 @@ const CreateSocialPost = () => {
     customTopic: "",
     // post_images: "",
     post_owner: "",
+    view_count: 1,
   });
   const handleTitleChange = (title) => {
     setOptions({ ...options, title });
@@ -67,23 +67,14 @@ const CreateSocialPost = () => {
 
       setUploadedImages([...uploadedImages, ...newImages]);
     }
-
-    console.log(options);
   };
   const handleSocialPostCreate = async () => {
-    console.log(options);
-    console.log(userId);
-
     const newPost = { ...options, post_owner: userId };
     const res = await createSocialPostAPIMethod(newPost);
-    console.log(res);
-    // Check if the response was successful (status code 2xx)
     if (res.ok) {
-      const responseMsg = await res.json;
-      console.log(responseMsg.message);
+      // const responseMsg = await res.json;
       navigate("/socialpage");
     } else {
-      // If the response status is not successful, handle the error
       alert(`Error: ${res.status} - ${res.statusText}`);
     }
   };

@@ -7,9 +7,11 @@ import { useSelector } from "react-redux";
 import {
   deleteSocialPostAPIMethod,
   getSocialPostAPIMethod,
+  editSocialPostAPIMethod,
 } from "../../api/social";
 import { getUserById } from "../../api/user";
 import LikeButton from "../buttons/LikeButton";
+import defaultUserImg from "../../assets/img/user.png";
 
 const SocialPostDetails = () => {
   const { id } = useParams();
@@ -26,8 +28,10 @@ const SocialPostDetails = () => {
         const post_owner_data = await getUserById(currentPost.post_owner);
         setCurrentPost(currentPost);
         setPostOwner(post_owner_data);
-        // console.log("USER INFO")
-        // console.log(user._id == null)
+        const updatedViewCount = currentPost.view_count + 1;
+        const updatedPost = { ...currentPost, view_count: updatedViewCount };
+
+        await editSocialPostAPIMethod(currentPost._id, updatedPost);
         if (currentPost.post_owner === user._id) {
           setIsOwner(true);
         }
@@ -38,20 +42,6 @@ const SocialPostDetails = () => {
     fetchData();
   }, [id, user._id]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const currentPost = await getSocialPostAPIMethod(id);
-  //       setCurrentPost(currentPost);
-  //       if (currentPost.post_owner === user._id) {
-  //         setIsOwner(true);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching social posts:", error); //TODO: Add error handling when error happens fetching.(Render screen)
-  //     }
-  //   };
-  //   fetchData();
-  // }, [isOwner]);
   const handleDeleteSocialPost = async () => {
     try {
       console.log("removing social post");
@@ -60,21 +50,19 @@ const SocialPostDetails = () => {
       if (deleteSuccess) {
         navigate("/socialpage");
       } else {
-        // The delete operation failed
-        console.log("Delete operation failed");
+        alert("Error deleting post");
       }
     } catch (error) {
       console.error("Error handling delete operation:", error);
     }
   };
   const handleEditSocialPost = async () => {
-    console.log("Editing Social Posdt Data");
     navigate(`/editsocialpost/${currentPost._id}`);
   };
   const formatDate = (createdAt) => {
     const date = new Date(createdAt);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
@@ -98,19 +86,26 @@ const SocialPostDetails = () => {
             <img
               alt=""
               className="socialpostdetails_profile_img"
-              src= {postOwner != null ? postOwner['profile_img'] : "https://us-tuna-sounds-images.voicemod.net/d347dbc8-e6b8-4f85-bb64-8dcb234f5730-1674067639225.jpg"}
+              src={
+                postOwner != null ? postOwner["profile_img"] : defaultUserImg
+              }
             />
             <div className="socialpostdetails_top_left_container">
               <div className="socialpostdetails_top_left_title_container">
                 <h1>{currentPost.title}</h1>
-                <div className="socialpostdetails_topic">
-                  {currentPost.topic === "Other"
-                    ? `${currentPost.topic} - ${currentPost.customTopic}`
-                    : `${currentPost.topic}`}
-                </div>
+                {currentPost.topic === "" ? (
+                  <></>
+                ) : (
+                  <div className="socialpostdetails_topic">
+                    {currentPost.topic === "Other"
+                      ? `${currentPost.topic} - ${currentPost.customTopic}`
+                      : `${currentPost.topic}`}
+                  </div>
+                )}
               </div>
               <div className="socialpostdetails_user">
-                post by {postOwner != null ? postOwner['username'] : 'abc' }
+                post by{" "}
+                {postOwner != null ? postOwner["username"] : "Unknown User"}
               </div>
               <div
                 style={{
@@ -122,7 +117,7 @@ const SocialPostDetails = () => {
                 <h6>{formatDate(currentPost.created_at)}</h6>
                 <div>
                   <i className="bi bi-eye" /> &nbsp;
-                  {currentPost.view_count}
+                  {currentPost.view_count + 1}
                 </div>
               </div>
             </div>

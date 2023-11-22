@@ -36,8 +36,6 @@ const SocialPostPreview = ({ data }) => {
     const fetchData = async () => {
       try {
         const currentOwner = await getUserById(data.post_owner);
-        // console.log("fetchData");
-        // console.log(currentOwner);
         setPostOwner(currentOwner);
       } catch (error) {
         console.error("Error fetching data:", error);
