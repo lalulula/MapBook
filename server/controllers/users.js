@@ -27,20 +27,31 @@ const getUserById = async (req, res) => {
 };
 
 // UPDATE USER
-const updateUser = (req, res) => {
+const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    
-    cloudinary.uploader.upload(req.file.path, async function (err, result) {
-      if (err) {
-        console.log(err);
-        return res.status(500).json({
-          success: false,
-          message: "Error",
-        });
-      }
-      if (req.body.username === "") {
 
+    if (!req.file && !req.body.username) {
+      res.status(404).json({ message: "Both fields can't be empty" });
+    } else if (!req.file) {
+      const updatedUser = await User.findByIdAndUpdate(
+        id,
+        {
+          username: req.body.username,
+        },
+        { new: true }
+      );
+      res.status(200).json(updatedUser);
+    } else if (!req.body.username) {
+      cloudinary.uploader.upload(req.file.path, async function (err, result) {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({
+            success: false,
+            message: "Error",
+          });
+        }
+        
         const updatedUser = await User.findByIdAndUpdate(
           id,
           {
@@ -49,9 +60,17 @@ const updateUser = (req, res) => {
           { new: true }
         );
         res.status(200).json(updatedUser);
-
-      }
-      else {
+      }); 
+    } else {
+      cloudinary.uploader.upload(req.file.path, async function (err, result) {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({
+            success: false,
+            message: "Error",
+          });
+        }
+        
         const updatedUser = await User.findByIdAndUpdate(
           id,
           {
@@ -61,11 +80,8 @@ const updateUser = (req, res) => {
           { new: true }
         );
         res.status(200).json(updatedUser);
-
-      }
-
-
-    });
+      }); 
+    }
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
