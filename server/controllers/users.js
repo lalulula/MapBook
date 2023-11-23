@@ -30,8 +30,8 @@ const getUserById = async (req, res) => {
 const updateUser = (req, res) => {
   try {
     const { id } = req.params;
+    
     cloudinary.uploader.upload(req.file.path, async function (err, result) {
-      // console.log(req.file)
       if (err) {
         console.log(err);
         return res.status(500).json({

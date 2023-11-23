@@ -31,7 +31,9 @@ const Header = () => {
   };
 
   useEffect(() => {
-    getUser();
+    if (isAuthenticated) {
+      getUser();
+    }
   }, [user]);
 
   const openModal = () => {
