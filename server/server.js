@@ -11,6 +11,7 @@ const socialRoutes = require("./routes/social");
 const socialController = require("./controllers/social");
 
 const socialCommentRoutes = require("./routes/socialComment");
+const socialCommentReplyRoutes = require("./routes/socialPostReply.js");
 
 const app = require("./app");
 
@@ -43,6 +44,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/social", socialRoutes);
 app.use("/api/socialComment", socialCommentRoutes);
+app.use("/api/socialCommentReply", socialCommentReplyRoutes);
 
 
 // MONGOOSE SETUP
