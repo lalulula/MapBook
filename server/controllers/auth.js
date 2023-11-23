@@ -37,7 +37,6 @@ const register = async (req, res) => {
     const { email, username, password, is_admin, profile_img, maps_created } =
       req.body;
 
-    console.log("req.body: ", req.body); //why isn't this printing
     // check for duplicate username
     const validUser = await User.findOne({ username: username });
     if (validUser)

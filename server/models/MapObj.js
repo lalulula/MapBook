@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const MapSchema = new mongoose.Schema({
+const MapObjSchema = new mongoose.Schema({
   map_name: {
     type: String,
     required: true,
@@ -31,20 +31,21 @@ const MapSchema = new mongoose.Schema({
     required: true,
   },
   colors: {
-    type: Array,
+    type: String,
     required: true,
   },
   data_names: {
     type: Array,
-    required: true,
+    // required: true,
   },
   data_values: {
     type: Map,
-    required: true,
+    of: Number,
+    // required: true,
   },
   heat_range: {
     type: Array,
-    default: [0, 0, 0, 0],
+    default: [0, 0, 0, 0, 0],
   },
   map_users_liked: {
     tpye: Map,
@@ -56,5 +57,5 @@ const MapSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
-const Map = mongoose.model("Map", MapSchema);
-module.exports = Map;
+const MapObj = mongoose.model("MapObj", MapObjSchema);
+module.exports = MapObj;
