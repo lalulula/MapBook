@@ -115,46 +115,7 @@ const defaultHeaders = {
 
 //END OF GET
 
-// UPDATE USER
-export const updateUserAPIMethod = async (
-  username,
-  selectedFile,
-  userId,
-  isAuth
-) => {
-  try {
-    const formData = new FormData();
-    formData.append("image", selectedFile);
-    formData.append("username", username);
-    console.log(formData)
-    const response = await fetch(`${API_BASE_URL}/api/users/${userId}`, {
-      method: "PUT",
-      headers: { Authorization: `Bearer ${isAuth}` },
-      body: formData,
-    });
 
-    if (!response.ok) {
-      throw new Error(`Error updating user: ${response.statusText}`);
-    }
-
-    const responseData = await response.json();
-    console.log("User updated successfully:", responseData.message);
-  } catch (error) {
-    console.error("Error updating user:", error.message);
-  }
-};
-
-// REMOVE A USER
-export const removeUserAPIMethod = async (userId, isAuth) => {
-  try {
-    await fetch(`${API_BASE_URL}/api/users/${userId}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${isAuth}` },
-    });
-  } catch (error) {
-    console.error("Error removing a user account:", error.message);
-  }
-};
 
 // //create a new map
 // export const createMapAPIMethod = (map) => {

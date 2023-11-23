@@ -1,7 +1,5 @@
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
-// import { useSelector } from "react-redux";
-// const isAuth = useSelector((state) => state.user.isAuthenticated);
 
 const defaultHeaders = {
   headers: {
@@ -17,6 +15,47 @@ export const getUserById = (userId) => {
     .then(checkStatus)
     .then(parseJSON);
   return response;
+};
+
+// UPDATE USER
+export const updateUserAPIMethod = async (
+  username,
+  selectedFile,
+  userId,
+  isAuth
+) => {
+  try {
+    const formData = new FormData();
+    formData.append("image", selectedFile);
+    formData.append("username", username);
+    console.log(formData)
+    const response = await fetch(`${API_BASE_URL}/api/users/${userId}`, {
+      method: "PUT",
+      headers: { Authorization: `Bearer ${isAuth}` },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error updating user: ${response.statusText}`);
+    }
+
+    const responseData = await response.json();
+    console.log("User updated successfully:", responseData.message);
+  } catch (error) {
+    console.error("Error updating user:", error.message);
+  }
+};
+
+// REMOVE A USER
+export const removeUserAPIMethod = async (userId, isAuth) => {
+  try {
+    await fetch(`${API_BASE_URL}/api/users/${userId}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${isAuth}` },
+    });
+  } catch (error) {
+    console.error("Error removing a user account:", error.message);
+  }
 };
 
 function checkStatus(response) {

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../features/userSlice";
 import { useSelector } from "react-redux";
 import "./profile.css";
-import { updateUserAPIMethod, removeUserAPIMethod } from "../../api/client";
+import { updateUserAPIMethod, removeUserAPIMethod } from "../../api/user";
 
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
