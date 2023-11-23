@@ -7,11 +7,11 @@ const SocialPostReplySchema = new mongoose.Schema({
     max: 50,
   },
   social_reply_owner: {
-    type: ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
   social_comment_id: {
-    type: ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
 });
