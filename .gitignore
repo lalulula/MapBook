@@ -46,4 +46,4 @@ yarn-error.log*
 .eslintcache
 
 # firebase creds
-/server/mapbook-firebase.json
+# /server/mapbook-firebase.json
