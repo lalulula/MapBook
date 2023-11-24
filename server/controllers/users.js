@@ -26,6 +26,18 @@ const getUserById = async (req, res) => {
   }
 };
 
+// GET All USERs
+const getAllUsers = async (req, res) => {
+  try {
+    console.log("get All User called")
+
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+}
+
 // UPDATE USER
 const updateUser = async (req, res) => {
   try {
@@ -105,6 +117,7 @@ const removeUser = async (req, res) => {
 
 module.exports = {
   getCurrentUser: getCurrentUser,
+  getAllUsers: getAllUsers,
   updateUser: updateUser,
   removeUser: removeUser,
   getUserById: getUserById,
