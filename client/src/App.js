@@ -21,7 +21,7 @@ import EditMap from "./Components/editmap/EditMap";
 import CreateSocialPost from "./Components/createsocialpost/CreateSocialPost";
 import EditSocialPost from "./Components/socialpostdetails/EditSocialPost";
 import ManageUsers from "./Components/manage/ManageUsers";
-import ManageSocial from "./Components/manage/ManageSocial";
+import ManageSocials from "./Components/manage/ManageSocials";
 import ManageMaps from "./Components/manage/ManageMaps";
 
 function App() {
@@ -80,7 +80,7 @@ function App() {
           <Route path="/createsocialpost" element={<CreateSocialPost />} />
           <Route path="/editsocialpost/:id" element={<EditSocialPost />} />
           <Route path="/manageusers" element={<ManageUsers />} />{" "}
-          <Route path="/managesocials" element={<ManageSocial />} />
+          <Route path="/managesocials" element={<ManageSocials />} />
           <Route path="/managemaps" element={<ManageMaps />} />
           {/* admin */}
           {/* <Route

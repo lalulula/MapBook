@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./manage.css";
-import data from "../manageusers/sample_data_users.json";
+
 import SearchBar from "../searchbar/SearchBar";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { getAllUsersAPIMethod } from "../../api/user";
 
 const ManageUsers = () => {
   const options = ["Date joined", "Name", "Username"];
+  const [allUsers, setAllUsers] = useState([]);
+  useEffect(() => {
+    // const fetchData = async () => {
+    //   const users = await getAllUsersAPIMethod();
+    //   setAllUsers(users);
+    //   try {
+    //   } catch (error) {
+    //     alert("Error fetching user data:", error);
+    //   }
+    // };
+    // fetchData();
+  }, []);
   return (
     <div className="manage_users">
       <div className="manage_users_container">
@@ -29,19 +42,20 @@ const ManageUsers = () => {
           </div>
         </div>
         <div className="manage_users_middle">
-          {data.map((user, index) => (
-            <div className="manage_users_user">
-              <div className="manage_users_name">{user.name}</div>
-              <div className="manage_users_username">{user.username}</div>
-              <div className="manage_users_user_email">{user.user_email}</div>
-              <div className="manage_users_date_created">
-                Joined on {user.date_created}
+          {allUsers &&
+            allUsers.map((user, index) => (
+              <div className="manage_users_user">
+                <div className="manage_users_name">{user.name}</div>
+                <div className="manage_users_username">{user.username}</div>
+                <div className="manage_users_user_email">{user.user_email}</div>
+                <div className="manage_users_date_created">
+                  Joined on {user.date_created}
+                </div>
+                <div className="user_delete">
+                  <DeleteIcon />
+                </div>
               </div>
-              <div className="user_delete">
-                <DeleteIcon />
-              </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </div>

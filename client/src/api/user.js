@@ -6,7 +6,16 @@ const defaultHeaders = {
     "Content-Type": "application/json; charset=UTF-8",
   },
 };
-
+// Get All Users (For ManageUsers)
+export const getAllUsersAPIMethod = () => {
+  const res = fetch(`${API_BASE_URL}/api/users/getAllUsers`, {
+    ...defaultHeaders,
+    method: "GET",
+  })
+    .then(checkStatus)
+    .then(parseJSON);
+  return res;
+};
 //get a user by ID
 export const getUserById = (userId) => {
   const response = fetch(`${API_BASE_URL}/api/users/getUser/${userId}`, {
@@ -28,7 +37,7 @@ export const updateUserAPIMethod = async (
     const formData = new FormData();
     formData.append("image", selectedFile);
     formData.append("username", username);
-    console.log(formData)
+    console.log(formData);
     const response = await fetch(`${API_BASE_URL}/api/users/${userId}`, {
       method: "PUT",
       headers: { Authorization: `Bearer ${isAuth}` },
