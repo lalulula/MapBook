@@ -1,4 +1,38 @@
 const MapObj = require("../models/MapObj");
+const serviceAccount = require('../mapbook-firebase.json');
+
+const admin = require("firebase-admin");
+const dotenv = require("dotenv");
+dotenv.config();
+
+// INITIALIZE FIREBASE
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket: process.env.STORAGE_BUCKET,
+});
+const bucket = admin.storage().bucket();
+
+// GET ALL MAPS CREATED BY A USER
+const getMaps = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const map = await MapObj.find({ user_id: userId });
+    res.status(200).json(map);
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}
+
+// GET A MAP BY A MAP ID
+const getMap = async (req, res) => {
+  try {
+    const { mapId } = req.params;
+    const map = await MapObj.find({ _id: mapId });
+    res.status(200).json(map);
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}
 
 // Create map
 const createMap = async (req, res) => {
@@ -52,5 +86,7 @@ const createMap = async (req, res) => {
 };
 
 module.exports = {
+  getMaps: getMaps,
+  getMap: getMap,
   createMap: createMap
 };

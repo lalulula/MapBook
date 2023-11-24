@@ -15,6 +15,7 @@ const userRoutes = require("./routes/users");
 const socialRoutes = require("./routes/social");
 const socialCommentRoutes = require("./routes/socialComment");
 const socialCommentReplyRoutes = require("./routes/socialPostReply.js");
+const mapRoutes = require("./routes/map.js");
 
 // IMPORTED CONTROLLERS
 const userController = require("./controllers/users");
@@ -42,70 +43,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage: storage});
 
-// INITIALIZE FIREBASE
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: process.env.STORAGE_BUCKET,
-});
-const bucket = admin.storage().bucket();
-
 const fileUpload = multer({ storage: multer.memoryStorage() });
-
 
 // ROUTES WITH FILES
 app.put('/api/users/:id', upload.single('image'), auth.verifyToken, userController.updateUser);
 // Create Post
 app.put("/api/social/createSocialPost", upload.single('post_images'), socialController.createPost);
 // CREATE MAP
-app.post("/api/maps", fileUpload.single('file'), async (req, res) => {
-  try {
-    const { 
-      map_name, 
-      topic, 
-      user_id, 
-      is_visible, 
-      template, 
-      colors, 
-      data_names, 
-      data_values, 
-      heat_range, 
-      map_users_liked, 
-      created_at 
-    } = req.body;
-
-    const fileBuffer = req.file.buffer;
-    const fileName = req.file.originalname;
-    const storageRef = bucket.file(fileName);
-    await storageRef.createWriteStream().end(fileBuffer);
-
-    const [fileUrl] = await storageRef.getSignedUrl({
-      action: 'read',
-      expires: '03-09-2025', // Replace with an expiration date
-    });
-
-    const newMap = new MapObj({
-      map_name, 
-      topic, 
-      user_id, 
-      is_visible, 
-      template,
-      file_path: fileUrl, 
-      colors, 
-      data_names, 
-      data_values, 
-      heat_range, 
-      map_users_liked, 
-      created_at
-    });
-    const savedMap = await newMap.save();
-
-    // Respond with success message
-    res.json({ success: true, message: 'Map created successfully!' });
-  } catch (error) {
-    console.error('Error creating map:', error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
+app.post("/api/maps", fileUpload.single('file'), auth.verifyToken, mapController.createMap);
 
 // ROUTES
 app.use("/api/auth", authRoutes);
@@ -113,6 +58,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/social", socialRoutes);
 app.use("/api/socialComment", socialCommentRoutes);
 app.use("/api/socialCommentReply", socialCommentReplyRoutes);
+app.use("/api/maps", mapRoutes);
+app.use("/api/maps", mapRoutes);
 
 
 // MONGOOSE SETUP
