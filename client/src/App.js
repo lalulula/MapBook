@@ -16,10 +16,13 @@ import SocialPage from "./Components/social/SocialPage";
 import Profile from "./Components/profile/Profile";
 import MapDetails from "./Components/mapdetails/MapDetails";
 import SocialPostDetails from "./Components/socialpostdetails/SocialPostDetails";
-import ManageUsers from "./Components/manageusers/ManageUsers";
+// import ManageUsers from "./Components/manage/ManageUsers";
 import EditMap from "./Components/editmap/EditMap";
 import CreateSocialPost from "./Components/createsocialpost/CreateSocialPost";
 import EditSocialPost from "./Components/socialpostdetails/EditSocialPost";
+import ManageUsers from "./Components/manage/ManageUsers";
+import ManageSocial from "./Components/manage/ManageSocial";
+import ManageMaps from "./Components/manage/ManageMaps";
 
 function App() {
   //Initial Loading Feature For Web
@@ -63,16 +66,22 @@ function App() {
           />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/createmap" element={isAuthenticated ? <CreateMap /> : <LandingPage />} />
+          <Route
+            path="/createmap"
+            element={isAuthenticated ? <CreateMap /> : <LandingPage />}
+          />
           <Route path="/editmap/:id" element={<EditMap />} />
           <Route path="/socialpage" element={<SocialPage />} />
           <Route path="/mymap" element={<MyMap />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="mapdetails/:id" element={<MapDetails />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/mapdetails/:id" element={<MapDetails />} />
           <Route path="socialpostdetails/:id" element={<SocialPostDetails />} />
           <Route path="/mainpage" element={<MainPage />} />
           <Route path="/createsocialpost" element={<CreateSocialPost />} />
           <Route path="/editsocialpost/:id" element={<EditSocialPost />} />
+          <Route path="/manageusers" element={<ManageUsers />} />{" "}
+          <Route path="/managesocials" element={<ManageSocial />} />
+          <Route path="/managemaps" element={<ManageMaps />} />
           {/* admin */}
           {/* <Route
             path="/mainpage"

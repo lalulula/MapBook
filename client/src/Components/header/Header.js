@@ -4,17 +4,18 @@ import { useSelector } from "react-redux";
 import "./header.css";
 import "intersection-observer";
 import CustomModal from "./Modal";
-import defaultProfileImg from "../../assets/img/defaultProfileImg.jpg"
+import defaultProfileImg from "../../assets/img/defaultProfileImg.jpg";
 
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
 
 const Header = () => {
+  const [admin, setAdmin] = useState(false);
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const route = window.location.pathname;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const profileImgPath = useSelector((state) => state.user.user.profile_img)
+  const profileImgPath = useSelector((state) => state.user.user.profile_img);
 
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const userId = useSelector((state) => state.user.id);
@@ -34,6 +35,9 @@ const Header = () => {
     if (isAuthenticated) {
       getUser();
     }
+    if (user && user.is_admin) {
+      setAdmin(true);
+    }
   }, [user]);
 
   const openModal = () => {
@@ -46,11 +50,9 @@ const Header = () => {
 
   window.addEventListener("scroll", function () {
     const header = document.querySelector(".header");
-
     if (this.scrollY >= 50) header.classList.add("scroll_header");
     else header.classList.remove("scroll_header");
   });
-
   if (!user) {
     return (
       <>
@@ -76,6 +78,15 @@ const Header = () => {
                   <div onClick={() => navigate("/mymap")}>
                     <h4>MyMaps</h4>
                   </div>
+                  {admin && (
+                    <div class="dropdown-content">
+                      <div onClick={() => navigate("/managemaps")}>Maps</div>
+                      <div onClick={() => navigate("/managesocials")}>
+                        Social Posts
+                      </div>
+                      <div onClick={() => navigate("/manageusers")}>Users</div>
+                    </div>
+                  )}
                   <div>
                     <img
                       src={profileImgPath ? profileImgPath : defaultProfileImg}
@@ -164,6 +175,20 @@ const Header = () => {
                   <div onClick={() => navigate("/mymap")}>
                     <h4>MyMaps</h4>
                   </div>
+                  {admin && (
+                    <div class="dropdown">
+                      <h4 class="dropbtn">Manage</h4>
+                      <div class="dropdown-content">
+                        <div onClick={() => navigate("/managemaps")}>Maps</div>
+                        <div onClick={() => navigate("/managesocials")}>
+                          Social Posts
+                        </div>
+                        <div onClick={() => navigate("/manageusers")}>
+                          Users
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   <div>
                     <img
                       src={user.profile_img}
@@ -226,7 +251,7 @@ const Header = () => {
           </div>
         </div>
       </>
-    )
+    );
   }
 };
 export default Header;

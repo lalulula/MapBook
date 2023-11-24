@@ -41,7 +41,7 @@ const Register = () => {
       return;
     }
 
-    if (username === "admin") {
+    if (username.toLowerCase() === "admin") {
       isAdmin = true;
     }
 
@@ -53,12 +53,11 @@ const Register = () => {
       username,
       email,
       password,
-      isAdmin,
+      is_admin: isAdmin,
       // Setting user default img
       profile_img:
         "https://res.cloudinary.com/dkzqcfizf/image/upload/v1700363108/laj5ucybdhzoa2wtkvkm.jpg",
     };
-
     createUserAPIMethod(user)
       .then((response) => {
         if (response.ok) {
