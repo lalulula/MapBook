@@ -29,8 +29,6 @@ const getUserById = async (req, res) => {
 // GET All USERs
 const getAllUsers = async (req, res) => {
   try {
-    console.log("get All User called")
-
     const users = await User.find();
     res.status(200).json(users);
   } catch (err) {

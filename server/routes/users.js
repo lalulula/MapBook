@@ -9,7 +9,7 @@ router.get("/:id", auth.verifyToken, users.getCurrentUser);
 
 
 // GET All UserInfo
-router.get("/getAllUsers/:id", users.getAllUsers);
+router.get("", users.getAllUsers);
 
 // GET UserInfo by Id
 router.get("/getUser/:id", users.getUserById);
