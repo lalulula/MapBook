@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Get all social post Replys of postID
 //router.get("/socialComments/:sPostId", socialComment.getAllSocialComments);
-router.get("/socialComments/:sCommentId", socialPostReply.getAllSocialPostReplys);
+router.get("/socialPostReplys/:sCommentId", socialPostReply.getAllSocialPostReplys);
 
 router.get("/existingSocialPostReplys", socialPostReply.getAllExistingSocialPostReplys);
 
@@ -17,9 +17,9 @@ router.get("/:sPostReplyId", socialPostReply.getSocialPostReply);
 router.post("/createSocialPostReply", socialPostReply.createSocialPostReply);
 
 // Update Reply
-router.put("/editSocialPostReply/:sCommentReplyId", socialPostReply.editSocialPostReply);
+router.put("/editSocialPostReply/:sPostReplyId", socialPostReply.editSocialPostReply);
 
 // Delete reply
-router.delete("/deleteSocialPostReply/:sCommentReplyId", socialPostReply.deleteSocialPostReply);
+router.delete("/deleteSocialPostReply/:sPostReplyId", socialPostReply.deleteSocialPostReply);
 
 module.exports = router;
