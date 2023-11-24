@@ -2,6 +2,8 @@ const MapObj = require("../models/MapObj");
 const serviceAccount = require('../mapbook-firebase.json');
 
 const admin = require("firebase-admin");
+const { URL } = require('url');
+const path = require('path');
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -85,8 +87,39 @@ const createMap = async (req, res) => {
   }
 };
 
+// REMOVE A MAP
+const removeMap = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const map = await MapObj.findByIdAndDelete(id);
+
+    if (!map) {
+      return res.status(400).json("Map not found");
+    }
+
+    // DELETE STORED FILE ON FIREBASE
+    const url = map.file_path
+    const urlParts = new URL(url);
+    const filename = path.basename(urlParts.pathname);
+    const file = bucket.file(filename);
+
+    file.delete()
+      .then(() => {
+        console.log(`File ${filename} deleted successfully.`);
+      })
+      .catch((error) => {
+        console.error(`Error deleting file ${filename}:`, error);
+      });
+
+    res.status(200).json("Map deleted successfully");
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
 module.exports = {
   getMaps: getMaps,
   getMap: getMap,
-  createMap: createMap
+  createMap: createMap,
+  removeMap: removeMap
 };

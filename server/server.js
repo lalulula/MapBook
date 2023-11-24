@@ -59,7 +59,6 @@ app.use("/api/social", socialRoutes);
 app.use("/api/socialComment", socialCommentRoutes);
 app.use("/api/socialCommentReply", socialCommentReplyRoutes);
 app.use("/api/maps", mapRoutes);
-app.use("/api/maps", mapRoutes);
 
 
 // MONGOOSE SETUP
