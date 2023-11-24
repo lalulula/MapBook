@@ -170,9 +170,9 @@ const Step3 = ({ prevStep }) => {
           )}
         </ReactMapboxGL>
         <div className="btn_container">
-          <button onClick={prevStep} className="before_btn">
+          {/* <button onClick={prevStep} className="before_btn">
             Go Back
-          </button>
+          </button> */}
           <Popup
             trigger={<button className="next_btn">Add Map</button>}
             modal
