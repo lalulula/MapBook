@@ -6,13 +6,15 @@ import CommentIcon from "@mui/icons-material/Comment";
 import { getUserById } from "../../api/user";
 import { likeSocialPostAPIMethod } from "../../api/social";
 import { useSelector } from "react-redux";
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const SocialPostPreview = ({ data }) => {
   const navigate = useNavigate();
   const [postOwner, setPostOwner] = useState(null);
   const currentUserId = useSelector((state) => state.user.id);
-  const [liked, setLiked] = useState(data.social_users_liked.includes(currentUserId));
+  const [liked, setLiked] = useState(
+    data.social_users_liked.includes(currentUserId)
+  );
   var [numLikes, setNumLikes] = useState(data.social_users_liked.length);
 
   const handleToSocialDetails = (id) => {
@@ -26,11 +28,11 @@ const SocialPostPreview = ({ data }) => {
       setNumLikes(numLikes - 1);
     }
     setLiked(!liked);
-    const userIdJson = { userId: currentUserId }
+    const userIdJson = { userId: currentUserId };
     likeSocialPostAPIMethod(postId, userIdJson).then(
       console.log("post liked!")
     );
-  }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,21 +47,25 @@ const SocialPostPreview = ({ data }) => {
     fetchData();
   }, [data.post_owner]);
   return (
-    <div
-      className="social_post_preview_container"
-    >
+    <div className="social_post_preview_container">
       <div className="social_post_preview_container_left">
         {liked ? (
-          <FavoriteIcon onClick={() => handleLikeSocialPost(data._id)} style={{ color: "red" }} />
-
+          <FavoriteIcon
+            onClick={() => handleLikeSocialPost(data._id)}
+            style={{ color: "red" }}
+          />
         ) : (
           <FavoriteBorderIcon onClick={() => handleLikeSocialPost(data._id)} />
-
         )}
         {numLikes}
       </div>
-      <div className="social_post_preview_container_middle" onClick={() => handleToSocialDetails(data._id)}>
-        <div className="owner_name">Posted by {postOwner != null ? postOwner['username'] : 'abc'}</div>
+      <div
+        className="social_post_preview_container_middle"
+        onClick={() => handleToSocialDetails(data._id)}
+      >
+        <div className="owner_name">
+          Posted by {postOwner != null ? postOwner["username"] : "Unknown User"}
+        </div>
         {/* {console.log(postOwner['username'])} */}
         <div className="social_post_title">
           <h3>{data.title}</h3>
