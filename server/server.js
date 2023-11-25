@@ -48,7 +48,7 @@ const fileUpload = multer({ storage: multer.memoryStorage() });
 // ROUTES WITH FILES
 app.put('/api/users/:id', upload.single('image'), auth.verifyToken, userController.updateUser);
 // Create Post
-app.put("/api/social/createSocialPost", upload.single('post_images'), socialController.createPost);
+app.put("/api/social/createSocialPost", upload.array('post_images'), socialController.createPost);
 // CREATE MAP
 app.post("/api/maps", fileUpload.single('file'), auth.verifyToken, mapController.createMap);
 

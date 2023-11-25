@@ -46,13 +46,21 @@ export const getMySocialPostAPIMethod = (currentUserId) => {
 // Create Social Post
 export const createSocialPostAPIMethod = async (socialPost) => {
   console.log("create social post");
-
+  // console.log(socialPost)
   var keys = Object.keys(socialPost);
   const formData = new FormData();
 
   for (var i = 0; i < keys.length; i++) {
     console.log(typeof keys[i]);
-    formData.append(keys[i], socialPost[keys[i]]);
+    if(keys[i] == "post_images"){
+      for(var j = 0; j < socialPost[keys[i]].length; j++){
+        formData.append(keys[i], socialPost[keys[i]][j]);
+      }
+    }
+    else{
+      formData.append(keys[i], socialPost[keys[i]]);
+    }
+
   }
   // formData.append("image", selectedFile);
   // formData.append("username", username);

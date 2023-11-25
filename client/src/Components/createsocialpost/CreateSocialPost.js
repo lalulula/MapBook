@@ -20,6 +20,10 @@ const CreateSocialPost = () => {
   ];
 
   const [uploadedImages, setUploadedImages] = useState([]);
+  const [uploadedFileObj, setUploadedFileObj] = useState([]);
+
+  // const uploadedFileObj = [];
+
   const [options, setOptions] = useState({
     title: "",
     post_content: "",
@@ -43,19 +47,15 @@ const CreateSocialPost = () => {
     setOptions({ ...options, customTopic });
   };
 
-  const handleImageUpload = (event) => {
-    // const images = []
-    // if(options["post_images"] != null){
-    //   for(var i = 0; i < options["post_images"].length; i ++){
-    //     images.push(options["post_images"])
-    //   }
-    // }
+  const handleImageUpload =  (event) => {
 
-    // images.push(event.target.files[0])
+    let tempFileArray = uploadedFileObj;
+    tempFileArray.push(event.target.files[0])
+    setUploadedFileObj(tempFileArray);
 
     setOptions({
       ...options,
-      post_images: event.target.files[0],
+      post_images: uploadedFileObj,
     });
 
     const files = event.target.files; // Get the first file from the selected files
@@ -68,8 +68,11 @@ const CreateSocialPost = () => {
       setUploadedImages([...uploadedImages, ...newImages]);
     }
   };
+
+
   const handleSocialPostCreate = async () => {
     const newPost = { ...options, post_owner: userId };
+    // console.log(newPost)
     const res = await createSocialPostAPIMethod(newPost);
     if (res.ok) {
       // const responseMsg = await res.json;

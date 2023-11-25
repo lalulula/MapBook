@@ -70,6 +70,19 @@ const SocialPostDetails = () => {
 
     return formattedDateTime;
   };
+  function renderImages(images) {
+    let arr = [];
+    for (let i = 0; i < images.length; i++) {
+      arr.push(
+        <img
+          id="post_details_img"
+          src={images[i]}
+          alt=""
+        />
+      )
+    }
+    return arr;
+  }
 
   return (
     <div className="socialpostdetails">
@@ -153,11 +166,7 @@ const SocialPostDetails = () => {
             }
           >
             {currentPost.post_images && currentPost.post_images.length > 0 ? (
-              <img
-                id="post_details_img"
-                src={currentPost.post_images[0]}
-                alt=""
-              />
+              renderImages(currentPost.post_images)
             ) : (
               <div></div>
             )}
