@@ -38,6 +38,9 @@ const Header = () => {
     if (user && user.is_admin) {
       setAdmin(true);
     }
+    else{
+      setAdmin(false);
+    }
   }, [user]);
 
   const openModal = () => {
