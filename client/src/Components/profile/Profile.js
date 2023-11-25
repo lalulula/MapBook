@@ -5,6 +5,7 @@ import { logout } from "../../features/userSlice";
 import { useSelector } from "react-redux";
 import "./profile.css";
 import { updateUserAPIMethod, removeUserAPIMethod } from "../../api/user";
+import Popup from "reactjs-popup";
 
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
@@ -108,7 +109,7 @@ const Profile = () => {
               )}
             </div>
           </div>
-          
+
           {!isEditing && (
             <button className="edit_user_btn" onClick={handleClickEditUser}>
               Edit info
@@ -116,12 +117,60 @@ const Profile = () => {
           )}
         </div>
         <div className="profile_bottom">
-          <div className="logout" onClick={handleLogout}>
+          <Popup
+            trigger={
+              <div className="logout" onClick={handleLogout}>
+                logout
+              </div>
+            }
+            modal
+            nested
+            closeOnDocumentClick={false}
+            closeOnEscape={false}
+          >
+            {(close) => (
+              <div className="back2main_modal">
+                <div className="back2main_modal_content">
+                  <h3>Are You Sure You Want To Logout?</h3>
+                </div>
+
+                <div className="modal_btn_container">
+                  <button onClick={handleLogout}>Logout</button>
+                  <button onClick={() => close()}>Keep Me Signed In</button>
+                </div>
+              </div>
+            )}
+          </Popup>
+          <Popup
+            trigger={<div className="remove_account">remove account</div>}
+            modal
+            nested
+            closeOnDocumentClick={false}
+            closeOnEscape={false}
+          >
+            {(close) => (
+              <div className="back2main_modal">
+                <div className="back2main_modal_content">
+                  <h3>
+                    Are You Sure You Want To Remove Your Account?
+                    <br />
+                    This Action Cannot Be Undone.
+                  </h3>
+                </div>
+
+                <div className="modal_btn_container">
+                  <button onClick={handleRemoveUser}>Remove Account</button>
+                  <button onClick={() => close()}>Keep My Account</button>
+                </div>
+              </div>
+            )}
+          </Popup>
+          {/* <div className="logout" onClick={handleLogout}>
             logout
-          </div>
-          <div className="remove_account" onClick={handleRemoveUser}>
+          </div> */}
+          {/* <div className="remove_account" onClick={handleRemoveUser}>
             remove account
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
