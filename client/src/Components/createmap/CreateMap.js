@@ -119,6 +119,9 @@ const CreateMap = () => {
             <button onClick={() => setImportDataOpen(false)}>
               Import Data File
             </button>
+            <button onClick={() => navigate("/mainpage")}>
+              Return to Main Page
+            </button>
           </div>
         </div>
       </Popup>

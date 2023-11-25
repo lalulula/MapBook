@@ -78,16 +78,20 @@ const Header = () => {
                   <div onClick={() => navigate("/mymap")}>
                     <h4>MyMaps</h4>
                   </div>
-                  <div className="dropdown">
-                    <h4 className="dropbtn">Manage</h4>
-                    <div class="dropdown-content">
-                      <div onClick={() => navigate("/managemaps")}>Maps</div>
-                      <div onClick={() => navigate("/managesocials")}>
-                        Social Posts
+                  {admin && (
+                    <div className="dropdown">
+                      <h4 className="dropbtn">Manage</h4>
+                      <div className="dropdown-content">
+                        <div onClick={() => navigate("/managemaps")}>Maps</div>
+                        <div onClick={() => navigate("/managesocials")}>
+                          Social Posts
+                        </div>
+                        <div onClick={() => navigate("/manageusers")}>
+                          Users
+                        </div>
                       </div>
-                      <div onClick={() => navigate("/manageusers")}>Users</div>
                     </div>
-                  </div>
+                  )}
                   <div>
                     <img
                       src={profileImgPath ? profileImgPath : defaultProfileImg}

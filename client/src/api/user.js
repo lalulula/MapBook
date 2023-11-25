@@ -8,7 +8,7 @@ const defaultHeaders = {
 };
 // Get All Users (For ManageUsers)
 export const getAllUsersAPIMethod = () => {
-  const res = fetch(`${API_BASE_URL}/api/users/getAllUsers`, {
+  const res = fetch(`${API_BASE_URL}/api/users`, {
     ...defaultHeaders,
     method: "GET",
   })
