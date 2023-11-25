@@ -129,8 +129,8 @@ const Profile = () => {
             closeOnEscape={false}
           >
             {(close) => (
-              <div className="back2main_modal">
-                <div className="back2main_modal_content">
+              <div className="back2profile_modal">
+                <div className="back2profile_modal_content">
                   <h3>Are You Sure You Want To Logout?</h3>
                 </div>
 
@@ -149,8 +149,8 @@ const Profile = () => {
             closeOnEscape={false}
           >
             {(close) => (
-              <div className="back2main_modal">
-                <div className="back2main_modal_content">
+              <div className="back2profile_modal">
+                <div className="back2profile_modal_content">
                   <h3>
                     Are You Sure You Want To Remove Your Account?
                     <br />
@@ -165,12 +165,6 @@ const Profile = () => {
               </div>
             )}
           </Popup>
-          {/* <div className="logout" onClick={handleLogout}>
-            logout
-          </div> */}
-          {/* <div className="remove_account" onClick={handleRemoveUser}>
-            remove account
-          </div> */}
         </div>
       </div>
     </div>
