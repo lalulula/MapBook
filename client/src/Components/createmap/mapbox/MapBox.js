@@ -2,8 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactMapGL, { Source, Layer } from "react-map-gl";
 import mapboxgl from "mapbox-gl"; // Import mapboxgl
 import "./mapbox.css";
+import uk from './uk.geojson'
+
 
 const MapBox = () => {
+  const DEFAULT_GEOJSON =
+    "https://raw.githubusercontent.com/glynnbird/usstatesgeojson/master/california.geojson";
   const [lng, setLng] = useState(-122.48);
   const [lat, setLat] = useState(37.84);
   const [zoom, setZoom] = useState(12);
@@ -45,8 +49,10 @@ const MapBox = () => {
     map.on("load", () => {
       map.addSource("counties", {
         type: "vector",
-        url: "mapbox://mapbox.82pkq93d",
+        //url: "mapbox://mapbox.82pkq93d",
+        url: DEFAULT_GEOJSON
       });
+
       // TODO : We need to import a geojson file here, not a url,
       // TODO)... but somehow the url gets called even though the datatype is a geojson
       // map.on("load", () => {
@@ -103,6 +109,7 @@ const MapBox = () => {
       });
     });
   }, []);
+
   return (
     <div>
       <div ref={mapContainerRef} id="map" style={mapboxStyle}>

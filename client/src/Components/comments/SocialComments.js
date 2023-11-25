@@ -133,6 +133,7 @@ const SocialComments = () => {
                                 <div className="social_comment_header">
                                     <img className="social_comment_profile_img" src={defaultImg} />
                                     <div className="user">{comment.social_comment_owner}</div>
+                                    {console.log("COMMENTL ", comment)}
                                 </div>
 
                                 {editingCommentId === comment._id ? (
