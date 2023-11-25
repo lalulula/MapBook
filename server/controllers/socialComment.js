@@ -20,8 +20,8 @@ const getAllSocialComments = async (req, res) => {
 
 const getAllExistingSocialComments = async (req, res) => {
   try {
-    const socialPost = await SocialComment.find();
-    res.status(200).json(socialPost);
+    const socialComment = await SocialComment.find();
+    res.status(200).json(socialComment);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }

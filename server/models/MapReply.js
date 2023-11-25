@@ -8,11 +8,11 @@ const MapReplySchema = new mongoose.Schema(
       max: 50,
     },
     map_reply_owner: {
-      type: ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
     map_comment_id: {
-      type: ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
   },
