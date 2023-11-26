@@ -48,14 +48,16 @@ const MapObjSchema = new mongoose.Schema({
     default: [0, 0, 0, 0, 0],
   },
   map_users_liked: {
-    tpye: Map,
-    of: Boolean,
-    default: {},
+    type: [mongoose.Schema.Types.ObjectId],
+  },
+  map_name_comments: {
+    type: [mongoose.Schema.Types.ObjectId],
   },
   created_at: {
     type: Date,
     default: Date.now,
   },
+
 });
 const MapObj = mongoose.model("MapObj", MapObjSchema);
 module.exports = MapObj;
