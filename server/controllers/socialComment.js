@@ -106,6 +106,8 @@ const deleteSocialComment = async (req, res) => {
     const commentList = socialPost["social_comments"]
 
     const index = commentList.indexOf(sCommentId);
+    console.log(sCommentId)
+    console.log(commentList)
     commentList.splice(index, 1);
     await SocialPost.findByIdAndUpdate(
       socialComment["social_post_id"],
@@ -114,7 +116,7 @@ const deleteSocialComment = async (req, res) => {
       },
       { new: true }
     );
-
+    console.log(commentList)
 
     await SocialComment.findByIdAndDelete(sCommentId);
     // return res.status(200).json(socialPost);

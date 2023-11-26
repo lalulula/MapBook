@@ -1,53 +1,53 @@
-const SocialPostReply = require("../models/SocialPostReply");
+const MapPostReply = require("../models/MapPostReply");
 
 
-// Get all social post reply 
+// Get all map post reply 
 // return comment ids of post
-const getAllSocialPostReplys = async (req, res) => {
+const getAllMapPostReplys = async (req, res) => {
   try {
     const { sCommentId } = req.params;
-    const socialPostReplys = await SocialPostReply.find({social_comment_id: sCommentId});
+    const mapPostReplys = await MapPostReply.find({map_comment_id: sCommentId});
 
-    res.status(200).json(socialPostReplys);
+    res.status(200).json(mapPostReplys);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
 };
 
-const getAllExistingSocialPostReplys = async (req, res) => {
+const getAllExistingMapPostReplys = async (req, res) => {
   try {
-    const socialPostReply = await SocialPostReply.find();
-    res.status(200).json(socialPostReply);
+    const mapPostReply = await MapPostReply.find();
+    res.status(200).json(mapPostReply);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
 }
 
-// Get social post reply with sPostReplyId
-const getSocialPostReply = async (req, res) => {
+// Get map post reply with sPostReplyId
+const getMapPostReply = async (req, res) => {
   // console.log(req);
   try {
     const { sPostReplyId } = req.params;
-    const socialPostReply = await SocialPostReply.findById(sPostReplyId);
-    res.status(200).json(socialPostReply);
+    const mapPostReply = await MapPostReply.findById(sPostReplyId);
+    res.status(200).json(mapPostReply);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
 };
 
-// Create social post reply
-const createSocialPostReply = async (req, res) => {
+// Create map post reply
+const createMapPostReply = async (req, res) => {
   try {
-    const { social_reply_content, social_reply_owner, social_comment_id } =
+    const { map_reply_content, map_reply_owner, map_comment_id } =
       req.body;
 
-    const newPostReply = new SocialPostReply({
-      social_reply_content,
-      social_reply_owner,
-      social_comment_id,
+    const newPostReply = new MapPostReply({
+      map_reply_content,
+      map_reply_owner,
+      map_comment_id,
     });
     const savedPostReply = await newPostReply.save();
-    console.log("social post reply created successfully");
+    console.log("map post reply created successfully");
 
 
     return res.status(201).json(savedPostReply);
@@ -56,16 +56,16 @@ const createSocialPostReply = async (req, res) => {
   }
 };
 
-// Update comment by social comment id
-const editSocialPostReply = async (req, res) => {
+// Update comment by map comment id
+const editMapPostReply = async (req, res) => {
   try {
     const { sPostReplyId } = req.params;
-    const { social_reply_content } = req.body;
+    const { map_reply_content } = req.body;
 
-    const updatedPostReply = await SocialPostReply.findByIdAndUpdate(
+    const updatedPostReply = await MapPostReply.findByIdAndUpdate(
       sPostReplyId,
       {
-        social_reply_content: social_reply_content,
+        map_reply_content: map_reply_content,
       },
       { new: true }
     );
@@ -76,17 +76,17 @@ const editSocialPostReply = async (req, res) => {
 };
 
 
-// Update Comment by social reply id
-const deleteSocialPostReply = async (req, res) => {
+// Update Comment by map reply id
+const deleteMapPostReply = async (req, res) => {
   console.log(req.params);
   try {
     const { sPostReplyId } = req.params;
 
-    // remove socialComment id from socialPost
-    const socialPostReply = await SocialPostReply.findById(sPostReplyId);
+    // remove mapComment id from mapPost
+    const mapPostReply = await MapPostReply.findById(sPostReplyId);
 
-    await SocialPostReply.findByIdAndDelete(socialPostReply);
-    // return res.status(200).json(socialPost);
+    await MapPostReply.findByIdAndDelete(mapPostReply);
+    // return res.status(200).json(mapPost);
     return res.status(200).json({ success: true });
   } catch (err) {
     res.status(404).json({ success: false, message: err.message });
@@ -95,10 +95,10 @@ const deleteSocialPostReply = async (req, res) => {
 
 
 module.exports = {
-  getAllSocialPostReplys: getAllSocialPostReplys,
-  getAllExistingSocialPostReplys: getAllExistingSocialPostReplys,
-  getSocialPostReply: getSocialPostReply,
-  createSocialPostReply: createSocialPostReply,
-  editSocialPostReply: editSocialPostReply,
-  deleteSocialPostReply: deleteSocialPostReply
+  getAllMapPostReplys: getAllMapPostReplys,
+  getAllExistingMapPostReplys: getAllExistingMapPostReplys,
+  getMapPostReply: getMapPostReply,
+  createMapPostReply: createMapPostReply,
+  editMapPostReply: editMapPostReply,
+  deleteMapPostReply: deleteMapPostReply
 };
