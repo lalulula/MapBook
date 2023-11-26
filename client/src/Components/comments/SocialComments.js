@@ -8,11 +8,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useParams } from "react-router-dom";
 import { createSocialCommentAPIMethod, deleteSocialCommentAPIMethod, getAllExistingSocialCommentsAPI, getAllSocialCommentsAPI, updateSocialCommentAPIMethod } from "../../api/comment";
 import { useSelector } from "react-redux";
+import { getAllUsersAPIMethod } from "../../api/user";
 
 
 
 const SocialComments = () => {
-    const [user, setUser] = useState(null);
+    const [allUsers, setAllUsers] = useState(null);
     const [comments, setComments] = useState([]);
     const [postComments, setPostComments] = useState([]);
     const [finalComments, setFinalComments] = useState([]);
@@ -26,6 +27,7 @@ const SocialComments = () => {
     const { id } = useParams();
     const [showingComment, setShowingComment] = useState(false);
     const currentUserId = useSelector((state) => state.user.id);
+    const [fComments, setFcomments] = useState([]);
 
     const handleAddComment = () => {
         if (newComment.trim() !== '') {
@@ -73,7 +75,6 @@ const SocialComments = () => {
         const updatedComments = finalComments.map((c) =>
             c._id === commentId ? temp : c
         );
-        console.log("UPDATED COMMENTS: ", updatedComments);
 
         setFinalComments(updatedComments);
         setComments(updatedComments);
@@ -103,8 +104,16 @@ const SocialComments = () => {
 
     const refresh = () => {
         setShowingComment(!showingComment);
-        const arr = comments.filter((c) => postComments.includes(c._id));
-        setFinalComments(arr);
+        const commentsArr = comments.filter((c) => postComments.includes(c._id));
+        setFinalComments(commentsArr);
+    }
+
+    const getCommentUser = (userId) => {
+        const ret = allUsers.find((u) => (
+            u._id === userId
+        ));
+        console.log("ret: ", ret);
+        return ret && ret.username;
     }
 
     useEffect(() => {
@@ -115,25 +124,41 @@ const SocialComments = () => {
         getAllSocialCommentsAPI(id).then((c) => {
             setPostComments(c);
         })
+
+        getAllUsersAPIMethod().then((u) => {
+            setAllUsers(u);
+        })
+        /* const fetchPostComments = async () => {
+            try {
+                const comments = await getAllSocialCommentsAPI(id);
+                setPostComments(comments);
+                const comments2 = await getAllExistingSocialCommentsAPI();
+                setComments(comments2);
+            } catch (error) {
+                console.error('Error fetching post comments:', error);
+            }
+        }
+        fetchPostComments(); */
     }, []);
-
-
-    //will call get all comments api and then filter based on the mapId
 
     return (
         <div className="social_comments">
             <div className="social_comments_container">
-                <button onClick={refresh}>Show comments</button>
-                <h3>Comments</h3>
-                <hr id="socialcommentsline"></hr>
+                <div className="show_post_comments_container">
+                    <hr className="show_post_comments_hr"></hr>
+                    <button onClick={refresh} className="show_post_comments">{showingComment ? "Hide Comments" : "Show Comments"}</button>
+                    <hr className="show_post_comments_hr"></hr>
+
+                </div>
                 {showingComment && (
                     <div>
+                        <h3>Comments</h3>
+                        <hr id="socialcommentsline"></hr>
                         {finalComments.map((comment) => (
                             <div className="social_comment">
                                 <div className="social_comment_header">
                                     <img className="social_comment_profile_img" src={defaultImg} />
-                                    <div className="user">{comment.social_comment_owner}</div>
-                                    {console.log("COMMENTL ", comment)}
+                                    <div className="user">{getCommentUser(comment.social_comment_owner)}</div>
                                 </div>
 
                                 {editingCommentId === comment._id ? (

@@ -4,6 +4,7 @@
 
 .social_comments_container {
     width: 100%;
+    margin-top: 50px;
 }
 
 #socialcommentsline {
@@ -104,4 +105,23 @@
     display: flex;
     align-items: center;
     margin-bottom: 5px;
+}
+
+.show_post_comments_container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.show_post_comments {
+    border: none;
+    background: none;
+    color: rgb(174, 174, 174);
+    width: 150px;
+}
+
+.show_post_comments_hr {
+    width: 100px;
+    color: grey;
 }
