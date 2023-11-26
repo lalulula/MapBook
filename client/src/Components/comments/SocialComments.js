@@ -7,11 +7,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useParams } from "react-router-dom";
 import { createSocialCommentAPIMethod, deleteSocialCommentAPIMethod, getAllExistingSocialCommentsAPI, getAllSocialCommentsAPI, updateSocialCommentAPIMethod } from "../../api/comment";
+import { getAllUsersAPIMethod } from "../../api/user";
 import { useSelector } from "react-redux";
 import { getUserById } from "../../api/user";
-
-
-
 
 const SocialComments = () => {
     const [allUsers, setAllUsers] = useState(null);
@@ -47,15 +45,12 @@ const SocialComments = () => {
             tempPostComments.push(newCommentObject._id)
             setPostComments(tempPostComments);
 
-
-
             let userData = await getUserInfo(newCommentObject["social_comment_owner"])
             newCommentObject["username"] = userData["username"]
             newCommentObject["profile_img"] = userData["profile_img"]
 
             let tempCommentArray = finalComments;
             tempCommentArray.push(newCommentObject)
-
 
             setFinalComments(tempCommentArray);
 
@@ -94,10 +89,13 @@ const SocialComments = () => {
             c._id === commentId ? temp : c
         );
 
+        console.log("UPDATED COMMENTS: ", updatedComments);
+
         setFinalComments(updatedComments);
         setComments(updatedComments);
         setPostComments(updatedComments.map((c) => c._id));
         setEditingCommentId(null);
+        refresh();
         //updateCommentAPI(commentId), won't need updatedComments variable
     }
 
@@ -124,7 +122,6 @@ const SocialComments = () => {
         if (comment != null) {
             // console.log("GETUSERNAME: ", comment)
             const user = await getUserById(comment);
-            // console.log(user["username"]);
             return user;
         }
         return null;
@@ -145,10 +142,12 @@ const SocialComments = () => {
             }
 
         }
-
         setFinalComments(arr);
-        setShowingComment(!showingComment);
+    }
 
+    const handleClickShowComment = () => {
+        refresh();
+        setShowingComment(!showingComment);
     }
 
     useEffect(() => {
@@ -183,7 +182,7 @@ const SocialComments = () => {
             <div className="social_comments_container">
                 <div className="show_post_comments_container">
                     <hr className="show_post_comments_hr"></hr>
-                    <button onClick={refresh} className="show_post_comments">{showingComment ? "Hide Comments" : "Show Comments"}</button>
+                    <button onClick={handleClickShowComment} className="show_post_comments">{showingComment ? "Hide Comments" : "Show Comments"}</button>
                     <hr className="show_post_comments_hr"></hr>
 
                 </div>
@@ -195,8 +194,8 @@ const SocialComments = () => {
                             <div className="social_comment">
                                 <div className="social_comment_header">
                                     <img className="social_comment_profile_img" src={comment.profile_img != null ? comment.profile_img : defaultImg} />
+                                    {console.log("comment: ", comment)}
                                     <div className="user">{comment.username != null ? comment.username : "Unknown User"}</div>
-                                    {/* {console.log("COMMENTL ", comment)} */}
                                 </div>
 
                                 {editingCommentId === comment._id ? (
@@ -230,10 +229,10 @@ const SocialComments = () => {
                                                 <DeleteIcon />
                                                 Delete comment
                                             </div>
-                                            <div className="delete_comment_btn" onClick={() => handleReplyComment(comment._id)}>
+                                            {/* <div className="delete_comment_btn" onClick={() => handleReplyComment(comment._id)}>
                                                 <ChatBubbleOutlineIcon />
                                                 Reply
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 ) : (
