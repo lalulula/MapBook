@@ -113,10 +113,27 @@ const removeUser = async (req, res) => {
   }
 };
 
+// REMOVE USERS FOR ADMIN
+const adminRemoveUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findByIdAndDelete(id);
+
+    if (!user) {
+      return res.status(400).json("User not found");
+    }
+
+    res.status(200).json("User deleted successfully by an admin");
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+}
+
 module.exports = {
   getCurrentUser: getCurrentUser,
   getAllUsers: getAllUsers,
   updateUser: updateUser,
   removeUser: removeUser,
   getUserById: getUserById,
+  adminRemoveUser: adminRemoveUser
 };

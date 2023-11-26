@@ -20,8 +20,8 @@ const getAllSocialComments = async (req, res) => {
 
 const getAllExistingSocialComments = async (req, res) => {
   try {
-    const socialPost = await SocialComment.find();
-    res.status(200).json(socialPost);
+    const socialComment = await SocialComment.find();
+    res.status(200).json(socialComment);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
@@ -106,6 +106,8 @@ const deleteSocialComment = async (req, res) => {
     const commentList = socialPost["social_comments"]
 
     const index = commentList.indexOf(sCommentId);
+    console.log(sCommentId)
+    console.log(commentList)
     commentList.splice(index, 1);
     await SocialPost.findByIdAndUpdate(
       socialComment["social_post_id"],
@@ -114,7 +116,7 @@ const deleteSocialComment = async (req, res) => {
       },
       { new: true }
     );
-
+    console.log(commentList)
 
     await SocialComment.findByIdAndDelete(sCommentId);
     // return res.status(200).json(socialPost);

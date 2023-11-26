@@ -8,11 +8,11 @@ const MapCommentSchema = new mongoose.Schema(
       max: 50,
     },
     map_comment_owner: {
-      type: ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
     map_id: {
-      type: ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
   },

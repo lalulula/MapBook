@@ -8,7 +8,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useParams } from "react-router-dom";
 import { createSocialCommentAPIMethod, deleteSocialCommentAPIMethod, getAllExistingSocialCommentsAPI, getAllSocialCommentsAPI, updateSocialCommentAPIMethod } from "../../api/comment";
 import { useSelector } from "react-redux";
-import { getAllUsersAPIMethod } from "../../api/user";
+import { getUserById } from "../../api/user";
+
 
 
 
@@ -29,7 +30,7 @@ const SocialComments = () => {
     const currentUserId = useSelector((state) => state.user.id);
     const [fComments, setFcomments] = useState([]);
 
-    const handleAddComment = () => {
+    const handleAddComment = async () => {
         if (newComment.trim() !== '') {
             const newCommentObject = {
                 social_comment_content: newComment,
@@ -37,12 +38,29 @@ const SocialComments = () => {
                 social_post_id: id
             };
             setComments([...comments, newCommentObject]);
-            setPostComments([...postComments, newCommentObject._id]);
-            setFinalComments([...finalComments, newCommentObject]);
-            createSocialCommentAPIMethod(newCommentObject);
+
+            const result = await createSocialCommentAPIMethod(newCommentObject);
+            // console.log(result)
+
+            newCommentObject["_id"] = result._id;
+            let tempPostComments = postComments
+            tempPostComments.push(newCommentObject._id)
+            setPostComments(tempPostComments);
+
+
+
+            let userData = await getUserInfo(newCommentObject["social_comment_owner"])
+            newCommentObject["username"] = userData["username"]
+            newCommentObject["profile_img"] = userData["profile_img"]
+
+            let tempCommentArray = finalComments;
+            tempCommentArray.push(newCommentObject)
+
+
+            setFinalComments(tempCommentArray);
+
             setNewComment('');
         }
-
         //createCommentAPI(newCommentObject)
     };
 
@@ -102,18 +120,35 @@ const SocialComments = () => {
         //createCommentAPI(newCommentObject) */
     }
 
-    const refresh = () => {
-        setShowingComment(!showingComment);
-        const commentsArr = comments.filter((c) => postComments.includes(c._id));
-        setFinalComments(commentsArr);
+    const getUserInfo = async (comment) => {
+        if (comment != null) {
+            // console.log("GETUSERNAME: ", comment)
+            const user = await getUserById(comment);
+            // console.log(user["username"]);
+            return user;
+        }
+        return null;
     }
 
-    const getCommentUser = (userId) => {
-        const ret = allUsers.find((u) => (
-            u._id === userId
-        ));
-        console.log("ret: ", ret);
-        return ret && ret.username;
+    const refresh = async () => {
+        const arr = comments.filter((c) => postComments.includes(c._id));
+        for (let i = 0; i < arr.length; i++) {
+            try {
+                if (arr[i]["username"] == null) {
+                    let userData = await getUserInfo(arr[i]["social_comment_owner"])
+                    arr[i]["username"] = userData["username"]
+                    arr[i]["profile_img"] = userData["profile_img"]
+                }
+
+            } catch (error) {
+                console.error("Error fetching userData posts:", error);
+            }
+
+        }
+
+        setFinalComments(arr);
+        setShowingComment(!showingComment);
+
     }
 
     useEffect(() => {
@@ -141,6 +176,8 @@ const SocialComments = () => {
         fetchPostComments(); */
     }, []);
 
+    //will call get all comments api and then filter based on the mapId
+
     return (
         <div className="social_comments">
             <div className="social_comments_container">
@@ -157,8 +194,9 @@ const SocialComments = () => {
                         {finalComments.map((comment) => (
                             <div className="social_comment">
                                 <div className="social_comment_header">
-                                    <img className="social_comment_profile_img" src={defaultImg} />
-                                    <div className="user">{getCommentUser(comment.social_comment_owner)}</div>
+                                    <img className="social_comment_profile_img" src={comment.profile_img != null ? comment.profile_img : defaultImg} />
+                                    <div className="user">{comment.username != null ? comment.username : "Unknown User"}</div>
+                                    {/* {console.log("COMMENTL ", comment)} */}
                                 </div>
 
                                 {editingCommentId === comment._id ? (

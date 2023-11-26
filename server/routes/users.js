@@ -14,9 +14,10 @@ router.get("", users.getAllUsers);
 // GET UserInfo by Id
 router.get("/getUser/:id", users.getUserById);
 
-
-
 // REMOVE USER
 router.delete("/:id", auth.verifyToken, users.removeUser);
+
+// ADMIN REMOVE A USER
+router.get("/admin/:removedUserId", users.adminRemoveUser);
 
 module.exports = router;

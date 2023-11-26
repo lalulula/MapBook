@@ -2,12 +2,9 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const multer = require("multer");
 const cloudinary = require('cloudinary').v2;
-const admin = require("firebase-admin");
 
 // UTILS
 const auth = require("./middleware/auth.js");
-const serviceAccount = require('./mapbook-firebase.json');
-const MapObj = require("./models/MapObj");
 
 // IMPORTED ROUTES
 const authRoutes = require("./routes/auth");

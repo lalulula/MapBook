@@ -6,8 +6,7 @@ import uk from './uk.geojson'
 
 
 const MapBox = () => {
-  const DEFAULT_GEOJSON =
-    "https://raw.githubusercontent.com/glynnbird/usstatesgeojson/master/california.geojson";
+  const DEFAULT_GEOJSON = "https://raw.githubusercontent.com/glynnbird/usstatesgeojson/master/california.geojson";
   const [lng, setLng] = useState(-122.48);
   const [lat, setLat] = useState(37.84);
   const [zoom, setZoom] = useState(12);
@@ -61,6 +60,7 @@ const MapBox = () => {
       //     type: "geojson",
       //     data: geojson,
       //   });
+      // });
 
       map.addLayer(
         {
@@ -92,20 +92,27 @@ const MapBox = () => {
         "building"
       );
 
-      map.on("click", (e) => {
-        console.log(e);
-        const bbox = [
-          [e.point.x - 5, e.point.y - 5],
-          [e.point.x + 5, e.point.y + 5],
-        ];
+      // map.on("click", (e) => {
+      //   console.log(e);
+      //   const bbox = [
+      //     [e.point.x - 5, e.point.y - 5],
+      //     [e.point.x + 5, e.point.y + 5],
+      //   ];
 
-        const selectedFeatures = map.queryRenderedFeatures(bbox, {
-          layers: ["counties"],
-        });
+      //   const selectedFeatures = map.queryRenderedFeatures(bbox, {
+      //     layers: ["counties"],
+      //   });
 
-        const fips = selectedFeatures.map((feature) => feature.properties.FIPS);
+      //   const fips = selectedFeatures.map((feature) => feature.properties.FIPS);
 
-        map.setFilter("counties-highlighted", ["in", "FIPS", ...fips]);
+      //   map.setFilter("counties-highlighted", ["in", "FIPS", ...fips]);
+      // });
+
+      // Add a click event listener to the map
+      map.on('click', 'your-geojson-layer', (e) => {
+        // Handle the click event here
+        const feature = e.features[0];
+        console.log('Clicked feature:', feature);
       });
     });
   }, []);
