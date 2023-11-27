@@ -14,6 +14,7 @@ import LikeButton from "../buttons/LikeButton";
 import defaultUserImg from "../../assets/img/user.png";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import SocialCommentSection from "../comments/SocialCommentSection";
 
 const SocialPostDetails = () => {
   const { id } = useParams();
@@ -197,6 +198,7 @@ const SocialPostDetails = () => {
         <div className="socialpostdetails_bottom">
           {/* NOTE) loop through currentPost.social_comments (will contain ID) */}
           <SocialComments id={id} />
+          {/* <SocialCommentSection /> */}
         </div>
       </div>
     </div>

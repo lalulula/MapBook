@@ -19,6 +19,15 @@ function checkStatus(response) {
   }
 }
 
+export const getSocialCommentAPI = (id) => {
+  return fetch(`${API_BASE_URL}/api/socialComment/${id}`,
+    {
+      ...defaultHeaders,
+      method: "GET",
+    }
+  ).then(parseJSON);
+};
+
 export const getAllSocialCommentsAPI = (id) => {
   console.log(`${API_BASE_URL}/api/socialComment/socialComments/${id}`);
   return fetch(`${API_BASE_URL}/api/socialComment/socialComments/${id}`,

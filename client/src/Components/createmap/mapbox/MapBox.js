@@ -48,8 +48,8 @@ const MapBox = () => {
     map.on("load", () => {
       map.addSource("counties", {
         type: "vector",
-        //url: "mapbox://mapbox.82pkq93d",
-        url: DEFAULT_GEOJSON
+        url: "mapbox://mapbox.82pkq93d",
+        //url: DEFAULT_GEOJSON
       });
 
       // TODO : We need to import a geojson file here, not a url,
