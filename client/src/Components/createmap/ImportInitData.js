@@ -62,13 +62,13 @@ const ImportInitData = ({
           console.error("Error processing the ZIP file:", error);
         }
       }
-
+      console.log(parsedData);
       // Check if the "template" key exists at the top level
       if ("mapbook_template" in parsedData) {
         setSkipSteps(true);
         console.log(
           'The "mapbook_template" key exists with value:',
-          parsedData.template
+          parsedData.mapbook_template
         );
 
         setGeojsonData(parsedData);

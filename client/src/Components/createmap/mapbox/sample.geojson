@@ -1,17 +1,17 @@
 {
   "type": "FeatureCollection",
+  "mapbook_template": "Heat",
+  "mapbook_mapname": "Sample MapData",
+  "mapbook_topic": "Economy",
+  "mapbook_customtopic": "",
+  "mapbook_visibility": false,
+  "mapbook_datanames": [], 
+  "mapbook_heatrange": { "from": 0, "to": 0, "width": 0 },  
+  "mapbook_heat_selectedcolors":  ["#FF5733", "#FF8C33", "#FFC133", "#FFE433", "#D6FF33"], 
+  "mapbook_themedata": [],
   "features": [
      {
        "type": "Feature",
-       "mapbook_template": "Heat",
-       "mapbook_mapname": "Sample MapData",
-       "mapbook_topic": "Economy",
-       "mapbook_customtopic": "",
-       "mapbook_visibility": false,
-       "mapbook_datanames": [], 
-       "mapbook_heatrange": { "from": 0, "to": 0, "width": 0 },  
-       "mapbook_heat_selectedcolors":  ["#FF5733", "#FF8C33", "#FFC133", "#FFE433", "#D6FF33"], 
-       "mapbook_themedata": [],
        "properties": {
          "id": 1,
          "name": "Sample 1",
