@@ -85,10 +85,10 @@ const ImportInitData = ({
           mapbook_topic: "",
           mapbook_customtopic: "",
           mapbook_visibility: "",
-          mapbook_datanames: [],
-          mapbook_heatrange: [],
-          mapbook_heat_selectedcolors: [],
-          mapbook_themedata: [],
+          mapbook_datanames: [], //piebar
+          mapbook_heatrange: [],  // heat range
+          mapbook_heat_selectedcolors: [], // heat color
+          mapbook_themedata: [],//Color + data name
         };
         console.log(newGeojsonData);
         setGeojsonData(newGeojsonData);
