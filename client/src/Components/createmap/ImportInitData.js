@@ -62,7 +62,6 @@ const ImportInitData = ({
           console.error("Error processing the ZIP file:", error);
         }
       }
-      console.log(parsedData);
       // Check if the "template" key exists at the top level
       if ("mapbook_template" in parsedData) {
         setSkipSteps(true);
@@ -70,8 +69,10 @@ const ImportInitData = ({
           'The "mapbook_template" key exists with value:',
           parsedData.mapbook_template
         );
-
+        // console.log(parsedData);
         setGeojsonData(parsedData);
+        updateGeojsonData(parsedData);
+
       } else {
         console.log(
           'The "mapbook_template" key does not exist at the top level.'
@@ -88,8 +89,9 @@ const ImportInitData = ({
           mapbook_heat_selectedcolors: [], // heat color
           mapbook_themedata: [], //Color + data name
         };
-        console.log(newGeojsonData);
+        // console.log("newGeojsonData: ", newGeojsonData);
         setGeojsonData(newGeojsonData);
+
         updateGeojsonData(newGeojsonData);
       }
     } catch (error) {

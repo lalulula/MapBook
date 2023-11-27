@@ -28,10 +28,14 @@ const CreateMap = () => {
   const DEFAULT_GEOJSON =
     "https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/us-income.geojson";
   const [selectedMapFile, setSelectedMapFile] = useState(DEFAULT_GEOJSON);
+
   const updateGeojsonData = (newGeojsonData) => {
     setSelectedMapFile(newGeojsonData);
   };
+
   useEffect(() => {
+    console.log("useEffect: geojsonData: ", geojsonData);
+    console.log("useEffect: selectedMapFile: ", selectedMapFile)
     const newGeojsonData = {
       ...geojsonData,
       mapbook_mapname: options.name,
