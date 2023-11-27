@@ -255,7 +255,7 @@ const Step3 = ({ selectedMapFile }) => {
     });
 
     map.on("load", () => {
-      console.log("selectedMapFile: ", selectedMapFile)
+      console.log("selectedMapFile: ", selectedMapFile);
       map.addSource("counties", {
         type: "geojson",
         // data: "https://raw.githubusercontent.com/glynnbird/usstatesgeojson/master/california.geojson"
