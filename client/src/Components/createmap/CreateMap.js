@@ -152,11 +152,16 @@ const CreateMap = () => {
           </div>
         </div>
       </Popup>
-
-      <span className="create_map_container">
+      {/* <span className="create_map_container"> */}
+      <span
+        className={
+          step !== 3 ? "create_map_container" : "create_map_container_step3"
+        }
+      >
         {importDataOpen ? null : (
           <div
-            className={step !== 3 ? "create_map_steps" : "create_map_steps3"}
+            // className={step !== 3 ? "create_map_steps" : "create_map_steps3"}
+            className={step !== 3 ? "create_map_steps" : ""}
           >
             {steps[step]}
           </div>

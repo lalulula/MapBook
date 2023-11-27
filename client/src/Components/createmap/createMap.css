@@ -19,6 +19,10 @@
   align-items: center;
   flex-direction: column;
 }
+.create_map_container_step3 {
+  width: 80%;
+  height: 80%;
+}
 
 .create_map_container i {
   cursor: pointer;

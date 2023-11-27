@@ -205,7 +205,7 @@
 // };
 
 // export default Step3;
-
+// Try2
 import React, { useEffect, useRef, useState } from "react";
 import ReactMapGL, { Source, Layer } from "react-map-gl";
 import mapboxgl from "mapbox-gl"; // Import mapboxgl
@@ -226,14 +226,14 @@ const Step3 = ({ selectedMapFile }) => {
   const MAPBOX_TOKEN =
     "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
 
-  const mapboxStyle = {
-    position: "absolute",
-    // top: 0,
-    bottom: 0,
-    left: 0,
-    width: "80%",
-    height: "70%",
-  };
+  // const mapboxStyle = {
+  //   position: "absolute",
+  //   // top: 0,
+  //   bottom: 0,
+  //   left: 0,
+  //   width: "80%",
+  //   height: "70%",
+  // };
   const mapContainerRef = useRef(null);
   useEffect(() => {
     console.log(selectedMapFile);
@@ -334,8 +334,12 @@ const Step3 = ({ selectedMapFile }) => {
   }, []);
 
   return (
-    <div>
-      <div ref={mapContainerRef} id="map" style={mapboxStyle}>
+    <div className="mapbox">
+      <div
+        ref={mapContainerRef}
+        style={{ height: "inherit", width: "inherit" }}
+        // style={mapboxStyle}
+      >
         <div>
           Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
         </div>
