@@ -206,17 +206,15 @@
 
 // export default Step3;
 
-
-
 import React, { useEffect, useRef, useState } from "react";
 import ReactMapGL, { Source, Layer } from "react-map-gl";
 import mapboxgl from "mapbox-gl"; // Import mapboxgl
 import "./mapbox/mapbox.css";
-import uk from './mapbox/uk.geojson'
-
+import uk from "./mapbox/uk.geojson";
 
 const Step3 = ({ selectedMapFile }) => {
-  const DEFAULT_GEOJSON = "https://raw.githubusercontent.com/glynnbird/usstatesgeojson/master/california.geojson";
+  const DEFAULT_GEOJSON =
+    "https://raw.githubusercontent.com/glynnbird/usstatesgeojson/master/california.geojson";
   const [lng, setLng] = useState(-122.48);
   const [lat, setLat] = useState(37.84);
   const [zoom, setZoom] = useState(12);
@@ -238,7 +236,7 @@ const Step3 = ({ selectedMapFile }) => {
   };
   const mapContainerRef = useRef(null);
   useEffect(() => {
-    console.log(selectedMapFile)
+    console.log(selectedMapFile);
     let map;
 
     mapboxgl.accessToken = MAPBOX_TOKEN;
@@ -260,8 +258,7 @@ const Step3 = ({ selectedMapFile }) => {
       map.addSource("counties", {
         type: "geojson",
         // data: "https://raw.githubusercontent.com/glynnbird/usstatesgeojson/master/california.geojson"
-        data: selectedMapFile
-
+        data: selectedMapFile,
       });
 
       // TODO : We need to import a geojson file here, not a url,
@@ -282,12 +279,12 @@ const Step3 = ({ selectedMapFile }) => {
           // "source-layer": "original",
           paint: {
             // "fill-color": "rgba(0.5,0.5,0,0.4)",
-            "fill-color": '#ff0088',
+            "fill-color": "#ff0088",
             "fill-opacity": 0.4,
-            "fill-outline-color": "#000000"
+            "fill-outline-color": "#000000",
             // "fill-outline-opacity": 0.8
           },
-        },
+        }
         // "building"
       );
 
@@ -303,27 +300,25 @@ const Step3 = ({ selectedMapFile }) => {
             "fill-opacity": 0.75,
           },
           filter: ["in", "name", ""],
-        },
+        }
         // "building"
       );
 
       map.on("click", (e) => {
         // console.log(e);
         const bbox = [
-          [e.point.x - 5, e.point.y - 5],
-          [e.point.x + 5, e.point.y + 5],
+          [e.point.x, e.point.y],
+          [e.point.x, e.point.y],
         ];
 
         const selectedFeatures = map.queryRenderedFeatures(bbox, {
           layers: ["counties"],
         });
-        // console.log("event e: ", e)
-        // console.log("selectedFeatures: ", selectedFeatures[0].properties.name)
 
         const names = selectedFeatures.map(
           (feature) => feature.properties.name
-        ); 
-        console.log("fips: ", names)
+        );
+        console.log("fips: ", names);
         map.setFilter("counties-highlighted", ["in", "name", ...names]);
       });
 
