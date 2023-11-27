@@ -1,66 +1,189 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
+const axios = require("axios");
 
 const User = require("../models/User");
 
 // LOGIN
 const login = async (req, res) => {
-  try {
-    const { username, password } = req.body;
+  if (req.body.googleAccessToken) {
+    const {googleAccessToken} = req.body;
+    const { username, password, email } = req.body;
 
-    const validUser = await User.findOne({ username: username });
-    if (!validUser)
-      return res.status(400).json({ msg: "User does not exist. " });
+    axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+      headers: {
+        "Authorization": `Bearer ${googleAccessToken}`
+      }
+    }).then(async response => {
 
-    const isMatch = await bcrypt.compare(password, validUser.password);
-    if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
+      const existingUser = await User.findOne({
+        $or: [{
+          email: email
+        }, {
+          username: username
+        }]
+      });
 
-    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
+      if (!existingUser) 
+        return res.status(404).json({message: "User doesn't exist!"})
 
-    // make sure the password not send back to the frontend
-    const { password: hashedPassword, ...user } = validUser._doc;
+      const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET, {expiresIn: "1h"});
 
-    const expiryDate = new Date(Date.now() + 3600000); // 1 hour cookie
-    res
-      .cookie("access_token", token, { httpOnly: true, expires: expiryDate })
-      .status(200)
-      .json({ token, user });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+      // make sure the password not send back to the frontend
+      const { password: hashedPassword, ...user } = existingUser._doc;
+        
+      res
+        .cookie("access_token", token, { httpOnly: true })
+        .status(200)
+        .json({ token, user });
+                    
+    }).catch(err => {
+      res.status(400).json({message: "Invalid access token!"})
+    })
+  } else {
+    try {
+      const { username, password } = req.body;
+  
+      const existingUser = await User.findOne({username});
+
+      if (!existingUser) 
+        return res.status(404).json({message: "User doesn't exist!"})
+  
+      const isMatch = await bcrypt.compare(password, existingUser.password);
+      if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
+  
+      const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET);
+  
+      // make sure the password not send back to the frontend
+      const { password: hashedPassword, ...user } = existingUser._doc;
+  
+      const expiryDate = new Date(Date.now() + 3600000); // 1 hour cookie
+      res
+        .cookie("access_token", token, { httpOnly: true, expires: expiryDate })
+        .status(200)
+        .json({ token, user });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
   }
 };
 
 // Create or REGISTER
 const register = async (req, res) => {
-  try {
-    const { email, username, password, is_admin, profile_img, maps_created } =
-      req.body;
+  if (req.body.googleAccessToken) {
+    const {googleAccessToken} = req.body;
+    // const googleAccessToken = "sdajhfjkasdhkjfghasjkhg4123hfuifhvk.";
+    const { email, username, password, is_admin, profile_img, maps_created } = req.body;
 
-    // check for duplicate username
-    const validUser = await User.findOne({ username: username });
-    if (validUser)
-      return res.status(400).json({ msg: "Username is already used." });
+    axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+      headers: {
+        "Authorization": `Bearer ${googleAccessToken}`
+      }
+    }).then(async response => {
+      const existingUser = await User.findOne({
+        $or: [{
+          email: email
+        }, {
+          username: username
+        }]
+      });
 
-    // hash password
-    const salt = await bcrypt.genSalt();
-    const passwordHash = await bcrypt.hash(password, salt);
+      if (existingUser) 
+        return res.status(400).json({message: "User already exist!"})
 
-    // if not, continue
-    const newUser = new User({
-      email,
-      username,
-      password: passwordHash,
-      is_admin,
-      profile_img,
-      maps_created,
-    });
-    const savedUser = await newUser.save();
-    const { password: hashedPassword, ...user } = savedUser._doc;
-    return res.status(201).json(user);
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
+      // hash password
+      const salt = await bcrypt.genSalt();
+      const passwordHash = await bcrypt.hash(password, salt);
+
+      const newUser = new User({
+        email,
+        username,
+        password: passwordHash,
+        is_admin,
+        profile_img,
+        maps_created,
+      });
+      const savedUser = await newUser.save();
+      const { password: hashedPassword, ...user } = savedUser._doc;
+
+      const token = jwt.sign({ id: savedUser._id }, process.env.JWT_SECRET, {expiresIn: "1h"});
+        
+      res
+        .cookie("access_token", token, { httpOnly: true })
+        .status(200)
+        .json({ token, user });
+
+    }).catch(err => {
+      res.status(400).json({message: "Invalid access token!"})
+    })
+  } else {
+    try {
+      const { email, username, password, is_admin, profile_img, maps_created } =
+        req.body;
+  
+      // check for duplicate username or email
+      const existingUser = await User.findOne({
+        $or: [{
+          email: email
+        }, {
+          username: username
+        }]
+      });
+
+      if (existingUser)
+        return res.status(400).json({ msg: "Username is already used." });
+  
+      // hash password
+      const salt = await bcrypt.genSalt();
+      const passwordHash = await bcrypt.hash(password, salt);
+  
+      // if not, continue
+      const newUser = new User({
+        email,
+        username,
+        password: passwordHash,
+        is_admin,
+        profile_img,
+        maps_created,
+      });
+      const savedUser = await newUser.save();
+      const { password: hashedPassword, ...user } = savedUser._doc;
+      return res.status(201).json(user);
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
   }
 };
 
-module.exports = { register: register, login: login };
+const registerGoogle = async (req, res) => {
+  const {googleAccessToken} = req.body;
+
+  axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+    headers: {
+      "Authorization": `Bearer ${googleAccessToken}`
+    }
+  }).then(async response => {
+    const username = response.data.given_name + response.data.family_name;
+    const email = response.data.email;
+
+    const existingUser = await User.findOne({
+      $or: [{
+        email: email
+      }, {
+        username: username
+      }]
+    });
+
+    if (existingUser) 
+      return res.status(400).json({message: "User already exist!"})
+
+    const newUser = await User.create({verified:"true", email, username})
+
+    res.status(200).json({newUser})
+  }).catch(err => {
+    res.status(400).json({message: "Invalid access token!"})
+  })
+};
+
+module.exports = { register: register, login: login, registerGoogle: registerGoogle };
