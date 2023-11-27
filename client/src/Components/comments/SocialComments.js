@@ -78,11 +78,16 @@ const SocialComments = () => {
 
     const handleEditCommentSave = (commentId) => {
         const newCom = { social_comment_content: commentText };
+        const commentObject = finalComments.find((c) => c._id === commentId);
         updateSocialCommentAPIMethod(commentId, newCom);
+        const tempUsername = (allUsers.find((u) => u._id === commentObject.social_comment_owner)).username;
+        const tempProfilePic = (allUsers.find((u) => u._id === commentObject.social_comment_owner)).profile_img;
 
         const temp = {
             social_comment_content: commentText,
-            social_comment_owner: currentUserId
+            social_comment_owner: currentUserId,
+            username: tempUsername,
+            profile_img: tempProfilePic
         }
 
         const updatedComments = finalComments.map((c) =>
@@ -95,7 +100,6 @@ const SocialComments = () => {
         setComments(updatedComments);
         setPostComments(updatedComments.map((c) => c._id));
         setEditingCommentId(null);
-        refresh();
         //updateCommentAPI(commentId), won't need updatedComments variable
     }
 
@@ -136,11 +140,9 @@ const SocialComments = () => {
                     arr[i]["username"] = userData["username"]
                     arr[i]["profile_img"] = userData["profile_img"]
                 }
-
             } catch (error) {
                 console.error("Error fetching userData posts:", error);
             }
-
         }
         setFinalComments(arr);
     }
@@ -162,17 +164,6 @@ const SocialComments = () => {
         getAllUsersAPIMethod().then((u) => {
             setAllUsers(u);
         })
-        /* const fetchPostComments = async () => {
-            try {
-                const comments = await getAllSocialCommentsAPI(id);
-                setPostComments(comments);
-                const comments2 = await getAllExistingSocialCommentsAPI();
-                setComments(comments2);
-            } catch (error) {
-                console.error('Error fetching post comments:', error);
-            }
-        }
-        fetchPostComments(); */
     }, []);
 
     //will call get all comments api and then filter based on the mapId
