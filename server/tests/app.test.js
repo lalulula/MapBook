@@ -34,7 +34,7 @@ describe("Test example", () => {
         username: "test",
         password: "test123"
       })
-      .expect(400)
+      .expect(404)
   });
 
   // test("PUT /api/users", async () => {
