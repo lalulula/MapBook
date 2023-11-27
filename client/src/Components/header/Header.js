@@ -37,8 +37,7 @@ const Header = () => {
     }
     if (user && user.is_admin) {
       setAdmin(true);
-    }
-    else{
+    } else {
       setAdmin(false);
     }
   }, [user]);
@@ -186,7 +185,7 @@ const Header = () => {
                   {admin && (
                     <div className="dropdown">
                       <h4 className="dropbtn">Manage</h4>
-                      <div class="dropdown-content">
+                      <div className="dropdown-content">
                         <div onClick={() => navigate("/managemaps")}>Maps</div>
                         <div onClick={() => navigate("/managesocials")}>
                           Social Posts
