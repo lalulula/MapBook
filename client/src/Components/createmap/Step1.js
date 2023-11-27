@@ -7,7 +7,6 @@ import { Button } from "@mui/material";
 
 const Step1 = ({ nextStep, options, setOptions }) => {
   const handleMapNameChange = (name) => {
-    console.log(name);
     setOptions({ ...options, name });
   };
   const handleTopicClick = (topic) => {
@@ -25,9 +24,9 @@ const Step1 = ({ nextStep, options, setOptions }) => {
   const handlePrivacy = (e) => {
     setOptions({ ...options, isPrivate: e.target.checked });
   };
-  useEffect(() => {
-    // console.log(options.topic.value);
-  }, [options]);
+  // useEffect(() => {
+  //   console.log(options.topic.value);
+  // }, [options]);
 
   const topics = [
     "Economy",

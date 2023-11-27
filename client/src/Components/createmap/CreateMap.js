@@ -18,7 +18,7 @@ const CreateMap = () => {
     template: "",
     isPrivate: false,
   });
-  const [pieBarData, setPieBarData] = useState([""]);
+  const [pieBarData, setPieBarData] = useState([""]); //data names for pie&bar
   const [themeData, setThemeData] = useState([{ data: "", color: "#fff" }]);
   const [selectedColors, setSelectedColors] = useState([]);
   const [heatRange, setHeatRange] = useState({ from: 0, to: 0, width: 0 });
@@ -44,10 +44,9 @@ const CreateMap = () => {
       mapbook_heat_selectedcolors: selectedColors, // heat color
       mapbook_themedata: themeData, //Color + data name
     };
-    console.log(newGeojsonData);
     setGeojsonData(newGeojsonData);
     updateGeojsonData(newGeojsonData);
-  }, []);
+  }, [options, pieBarData, heatRange, selectedColors, themeData]);
 
   useEffect(() => {
     if (skipStep) {
@@ -137,6 +136,7 @@ const CreateMap = () => {
       >
         <div>
           <ImportInitData
+            geojsonData={geojsonData}
             setGeojsonData={setGeojsonData}
             setSkipSteps={setSkipSteps}
             setSelectedMapFile={setSelectedMapFile}

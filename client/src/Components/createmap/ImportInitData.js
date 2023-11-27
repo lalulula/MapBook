@@ -4,14 +4,10 @@ import * as shapefile from "shapefile"; // Import the shapefile library
 import "./mapbox/mapbox.css";
 const ImportInitData = ({
   setSkipSteps,
-  setSelectedMapFile,
   setGeojsonData,
   updateGeojsonData,
+  geojsonData,
 }) => {
-  // const [geojsonData, setGeojsonData] = useState(null);
-  // const updateGeojsonData = (newGeojsonData) => {
-  //   setSelectedMapFile(newGeojsonData);
-  // };
   const handleFileChange = async (e) => {
     try {
       const file = e.target.files[0];
@@ -77,7 +73,9 @@ const ImportInitData = ({
 
         setGeojsonData(parsedData);
       } else {
-        console.log('The "template" key does not exist at the top level.');
+        console.log(
+          'The "mapbook_template" key does not exist at the top level.'
+        );
         const newGeojsonData = {
           ...parsedData,
           mapbook_template: "",
@@ -86,9 +84,9 @@ const ImportInitData = ({
           mapbook_customtopic: "",
           mapbook_visibility: "",
           mapbook_datanames: [], //piebar
-          mapbook_heatrange: [],  // heat range
+          mapbook_heatrange: { from: 0, to: 0, width: 0 }, // heat range
           mapbook_heat_selectedcolors: [], // heat color
-          mapbook_themedata: [],//Color + data name
+          mapbook_themedata: [], //Color + data name
         };
         console.log(newGeojsonData);
         setGeojsonData(newGeojsonData);
