@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import JSZip from "jszip";
 import * as shapefile from "shapefile"; // Import the shapefile library
-
-const ImportInitData = ({ setSkipSteps, setSelectedMapFile }) => {
-  const [geojsonData, setGeojsonData] = useState(null);
-  const updateGeojsonData = (newGeojsonData) => {
-    setSelectedMapFile(newGeojsonData);
-  };
+import "./mapbox/mapbox.css";
+const ImportInitData = ({
+  setSkipSteps,
+  setSelectedMapFile,
+  setGeojsonData,
+  updateGeojsonData,
+}) => {
+  // const [geojsonData, setGeojsonData] = useState(null);
+  // const updateGeojsonData = (newGeojsonData) => {
+  //   setSelectedMapFile(newGeojsonData);
+  // };
   const handleFileChange = async (e) => {
     try {
       const file = e.target.files[0];
@@ -82,6 +87,8 @@ const ImportInitData = ({ setSkipSteps, setSelectedMapFile }) => {
           mapbook_visibility: "",
           mapbook_datanames: [],
           mapbook_heatrange: [],
+          mapbook_heat_selectedcolors: [],
+          mapbook_themedata: [],
         };
         console.log(newGeojsonData);
         setGeojsonData(newGeojsonData);

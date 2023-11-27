@@ -26,7 +26,7 @@ const Step1 = ({ nextStep, options, setOptions }) => {
     setOptions({ ...options, isPrivate: e.target.checked });
   };
   useEffect(() => {
-    console.log(options.topic.value);
+    // console.log(options.topic.value);
   }, [options]);
 
   const topics = [

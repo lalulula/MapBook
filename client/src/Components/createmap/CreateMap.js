@@ -24,13 +24,30 @@ const CreateMap = () => {
   const [heatRange, setHeatRange] = useState({ from: 0, to: 0, width: 0 });
   const [skipStep, setSkipSteps] = useState(false);
   const [importDataOpen, setImportDataOpen] = useState(true);
+  const [geojsonData, setGeojsonData] = useState(null);
   const DEFAULT_GEOJSON =
-  "https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/us-income.geojson";
+    "https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/us-income.geojson";
   const [selectedMapFile, setSelectedMapFile] = useState(DEFAULT_GEOJSON);
-
+  const updateGeojsonData = (newGeojsonData) => {
+    setSelectedMapFile(newGeojsonData);
+  };
   useEffect(() => {
-    console.log(options);
-  }, [options]);
+    const newGeojsonData = {
+      ...geojsonData,
+      mapbook_mapname: options.name,
+      mapbook_template: options.template,
+      mapbook_topic: options.topic,
+      mapbook_customtopic: options.customTopic,
+      mapbook_visibility: options.isPrivate,
+      mapbook_datanames: pieBarData, //piebar
+      mapbook_heatrange: heatRange, // heat range
+      mapbook_heat_selectedcolors: selectedColors, // heat color
+      mapbook_themedata: themeData, //Color + data name
+    };
+    console.log(newGeojsonData);
+    setGeojsonData(newGeojsonData);
+    updateGeojsonData(newGeojsonData);
+  }, []);
 
   useEffect(() => {
     if (skipStep) {
@@ -73,6 +90,7 @@ const CreateMap = () => {
         setSelectedColors={setSelectedColors}
         heatRange={heatRange}
         setHeatRange={setHeatRange}
+        setSelectedMapFile={setSelectedMapFile}
       />
     ),
     // 3: <Step3 prevStep={prevStep} options={options} />,
@@ -118,7 +136,12 @@ const CreateMap = () => {
         onClose={closeImportDataPopup}
       >
         <div>
-          <ImportInitData setSkipSteps={setSkipSteps} setSelectedMapFile={setSelectedMapFile} />
+          <ImportInitData
+            setGeojsonData={setGeojsonData}
+            setSkipSteps={setSkipSteps}
+            setSelectedMapFile={setSelectedMapFile}
+            updateGeojsonData={updateGeojsonData}
+          />
           <div className="modal_btn_container">
             <button onClick={() => setImportDataOpen(false)}>
               Import Data File
