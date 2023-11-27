@@ -15,7 +15,7 @@ export let persistor = persistStore(store);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
-  <GoogleOAuthProvider clientId="274154138703-j3eqfrs1bhlrndduc85b5dgk2ps9dtg4.apps.googleusercontent.com">
+  <GoogleOAuthProvider clientId = {process.env.REACT_APP_CLIENT_ID}>
     <Provider store={store}>
       {/* <PersistGate loading={null} persistor={persistor}> */}
       <App />

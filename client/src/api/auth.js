@@ -11,14 +11,6 @@ const defaultHeaders = {
 
 //register user
 export const createUserAPIMethod = (user) => {
-  // const response = fetch(
-  //   `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/register`,
-  //   {
-  //     ...defaultHeaders,
-  //     method: "POST",
-  //     body: JSON.stringify(user),
-  //   }
-  // ).then(checkStatus);
   console.log("User Data:", user);
   const response = fetch(`${API_BASE_URL}/api/auth/register`, {
     ...defaultHeaders,

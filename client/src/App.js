@@ -70,10 +70,13 @@ function App() {
             path="/createmap"
             element={isAuthenticated ? <CreateMap /> : <LandingPage />}
           />
+          <Route
+            path="/profile"
+            element={isAuthenticated ? <Profile /> : <LandingPage />}
+          />
           <Route path="/editmap/:id" element={<EditMap />} />
           <Route path="/socialpage" element={<SocialPage />} />
           <Route path="/mymap" element={<MyMap />} />
-          <Route path="/profile" element={<Profile />} />
           <Route path="/mapdetails/:id" element={<MapDetails />} />
           <Route path="socialpostdetails/:id" element={<SocialPostDetails />} />
           <Route path="/mainpage" element={<MainPage />} />
