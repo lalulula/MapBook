@@ -306,7 +306,7 @@ const Step3 = ({ selectedMapFile }) => {
       );
 
       map.on("click", (e) => {
-        // console.log(e);
+        console.log(e);
         const bbox = [
           [e.point.x, e.point.y],
           [e.point.x, e.point.y],
@@ -315,9 +315,16 @@ const Step3 = ({ selectedMapFile }) => {
         const selectedFeatures = map.queryRenderedFeatures(bbox, {
           layers: ["counties"],
         });
+      
+        // TODO: modify datas 
+        // check code below.
+        // console.log("selectedFeatures: ", selectedFeatures[0])
+        // selectedFeatures[0]["properties"]["mapbook_data"] = "hello"
+        // console.log("selectedFeatures: after modify: ", selectedFeatures[0])
 
         const names = selectedFeatures.map(
           (feature) => feature.properties.name
+          
         );
         console.log("fips: ", names);
         map.setFilter("counties-highlighted", ["in", "name", ...names]);
