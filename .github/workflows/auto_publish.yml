@@ -53,7 +53,7 @@ jobs:
           heroku_app_name: "mapbook" #Must be unique in Heroku
           heroku_email: "mapbook2023@gmail.com"
           appdir: "client"
-          procfile: "web: npm install -g serve && npx serve -s build" 
+          procfile: "web: npm --force install -g serve && npx serve -s build" 
       
   deploying-heroku-backend:
     needs: [run-backend-tests]

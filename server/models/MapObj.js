@@ -50,7 +50,7 @@ const MapObjSchema = new mongoose.Schema({
   map_users_liked: {
     type: [mongoose.Schema.Types.ObjectId],
   },
-  map_name_comments: {
+  map_comments: {
     type: [mongoose.Schema.Types.ObjectId],
   },
   created_at: {

@@ -42,7 +42,7 @@ const getMapComment = async (req, res) => {
 // Create map comment
 const createMapComment = async (req, res) => {
   try {
-    const { map_comment_content, map_comment_owner, map_post_id } =
+    const { map_comment_content, map_comment_owner, map_id } =
       req.body;
 
     console.log("req.body: ", req.body); //why isn't this printing
@@ -51,17 +51,17 @@ const createMapComment = async (req, res) => {
     const newComment = new MapComment({
       map_comment_content,
       map_comment_owner,
-      map_post_id,
+      map_id,
     });
     const savedComment = await newComment.save();
     console.log("map comment created successfully");
 
     // add mapComment id to mapPost
-    const mapPost = await MapPost.findById(map_post_id);
+    const mapPost = await MapPost.findById(map_id);
     const commentList = mapPost["map_comments"]
     commentList.push(savedComment["_id"])
     await MapPost.findByIdAndUpdate(
-      map_post_id,
+      map_id,
       {
         map_comments: commentList,
       },
@@ -102,13 +102,13 @@ const deleteMapComment = async (req, res) => {
 
     // remove mapComment id from mapPost
     const mapComment = await MapComment.findById(sCommentId);
-    const mapPost = await MapPost.findById(mapComment["map_post_id"]);
+    const mapPost = await MapPost.findById(mapComment["map_id"]);
     const commentList = mapPost["map_comments"]
 
     const index = commentList.indexOf(sCommentId);
     commentList.splice(index, 1);
     await MapPost.findByIdAndUpdate(
-      mapComment["map_post_id"],
+      mapComment["map_id"],
       {
         map_comments: commentList,
       },
