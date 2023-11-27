@@ -4,13 +4,14 @@ import * as shapefile from "shapefile"; // Import the shapefile library
 
 const ImportInitData = ({ setSkipSteps, setSelectedMapFile }) => {
   const [geojsonData, setGeojsonData] = useState(null);
-
+  const updateGeojsonData = (newGeojsonData) => {
+    setSelectedMapFile(newGeojsonData);
+  };
   const handleFileChange = async (e) => {
     try {
       const file = e.target.files[0];
       const texts = await file.text();
       let parsedData;
-
 
       if (file.name.endsWith(".json") || file.name.endsWith(".geojson")) {
         parsedData = JSON.parse(texts);
@@ -62,22 +63,30 @@ const ImportInitData = ({ setSkipSteps, setSelectedMapFile }) => {
       }
 
       // Check if the "template" key exists at the top level
-      if ("template" in parsedData) {
+      if ("mapbook_template" in parsedData) {
         setSkipSteps(true);
         console.log(
-          'The "template" key exists with value:',
+          'The "mapbook_template" key exists with value:',
           parsedData.template
         );
 
         setGeojsonData(parsedData);
       } else {
         console.log('The "template" key does not exist at the top level.');
-        setGeojsonData(null);
+        const newGeojsonData = {
+          ...parsedData,
+          mapbook_template: "",
+          mapbook_mapname: "",
+          mapbook_topic: "",
+          mapbook_customtopic: "",
+          mapbook_visibility: "",
+          mapbook_datanames: [],
+          mapbook_heatrange: [],
+        };
+        console.log(newGeojsonData);
+        setGeojsonData(newGeojsonData);
+        updateGeojsonData(newGeojsonData);
       }
-
-      setSelectedMapFile(parsedData);
-
-      console.log("GeoJSON Data:", parsedData);
     } catch (error) {
       console.error("Error loading GeoJSON file:", error);
     }
