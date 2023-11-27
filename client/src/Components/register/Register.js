@@ -9,7 +9,7 @@ import { SHA256, enc } from "crypto-js";
 import Lottie from "lottie-react";
 import landingData1 from "../../assets/Lottie/processIndic.json";
 
-import { GoogleLogin } from "react-google-login";
+// import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/userSlice";
@@ -97,43 +97,43 @@ const Register = () => {
 
   const dispatch = useDispatch();
 
-  const googleSuccess = async (res) => {
-    console.log(res);
+  // const googleSuccess = async (res) => {
+  //   console.log(res);
 
-    const googlePassword = SHA256(res?.googleId).toString(enc.Hex);
-    const user = {
-      username: res?.profileObj.familyName + res?.profileObj.givenName,
-      email: res?.profileObj.email,
-      password: googlePassword,
-      profile_img: res?.profileObj.imageUrl,
-      isAdmin: username.toLowerCase() === "admin" ? true : false,
-      googleAccessToken: res?.accessToken
-    };
-    createUserAPIMethod(user)
-      .then((response) => {
-        if (response.ok) {
-          response.json().then((jsonResult) => {
-            console.log("Successfully registered with Google");
-            dispatch(login(jsonResult));
-            navigate("/");
-          });
-        } else {
-          console.log("Invalid register with Google");
-          setFailed(true);
-        }
-      })
-      .catch((err) => {
-        console.error("Error registering user with Google:", err);
-      })
-      .finally(() => {
-        setRegisterIsLoading(false);
-      });
-  };
+  //   const googlePassword = SHA256(res?.googleId).toString(enc.Hex);
+  //   const user = {
+  //     username: res?.profileObj.familyName + res?.profileObj.givenName,
+  //     email: res?.profileObj.email,
+  //     password: googlePassword,
+  //     profile_img: res?.profileObj.imageUrl,
+  //     isAdmin: username.toLowerCase() === "admin" ? true : false,
+  //     googleAccessToken: res?.accessToken
+  //   };
+  //   createUserAPIMethod(user)
+  //     .then((response) => {
+  //       if (response.ok) {
+  //         response.json().then((jsonResult) => {
+  //           console.log("Successfully registered with Google");
+  //           dispatch(login(jsonResult));
+  //           navigate("/");
+  //         });
+  //       } else {
+  //         console.log("Invalid register with Google");
+  //         setFailed(true);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error registering user with Google:", err);
+  //     })
+  //     .finally(() => {
+  //       setRegisterIsLoading(false);
+  //     });
+  // };
 
-  const googleFailure = (error) => {
-    console.log(error);
-    console.log("Google Sign In was unsuccessful.");
-  };
+  // const googleFailure = (error) => {
+  //   console.log(error);
+  //   console.log("Google Sign In was unsuccessful.");
+  // };
 
   return (
     <div className="register">
@@ -229,7 +229,7 @@ const Register = () => {
 
         <div className="google_divider">OR</div>
         {/* Google Sign-Up Button */}
-        <GoogleLogin
+        {/* <GoogleLogin
           clientId = {process.env.REACT_APP_CLIENT_ID}
           render={(renderProps) => (
             <Button
@@ -251,7 +251,7 @@ const Register = () => {
           onSuccess={googleSuccess}
           onFailure={googleFailure}
           cookiePolicy="single_host_origin"
-        />
+            /> */}
         {failed && (
           <p className="ui negative mini message">
             Registration failed. Please check your information or enter a
@@ -264,3 +264,5 @@ const Register = () => {
 };
 
 export default Register;
+
+// "react-google-login": "^5.2.2",
