@@ -34,7 +34,7 @@ const getAllUsers = async (req, res) => {
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
-}
+};
 
 // UPDATE USER
 const updateUser = async (req, res) => {
@@ -61,7 +61,7 @@ const updateUser = async (req, res) => {
             message: "Error",
           });
         }
-        
+
         const updatedUser = await User.findByIdAndUpdate(
           id,
           {
@@ -70,7 +70,7 @@ const updateUser = async (req, res) => {
           { new: true }
         );
         res.status(200).json(updatedUser);
-      }); 
+      });
     } else {
       cloudinary.uploader.upload(req.file.path, async function (err, result) {
         if (err) {
@@ -80,7 +80,7 @@ const updateUser = async (req, res) => {
             message: "Error",
           });
         }
-        
+
         const updatedUser = await User.findByIdAndUpdate(
           id,
           {
@@ -90,7 +90,7 @@ const updateUser = async (req, res) => {
           { new: true }
         );
         res.status(200).json(updatedUser);
-      }); 
+      });
     }
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -114,20 +114,18 @@ const removeUser = async (req, res) => {
 };
 
 // REMOVE USERS FOR ADMIN
+
 const adminRemoveUser = async (req, res) => {
+  // console.log(req.params);
   try {
     const { id } = req.params;
-    const user = await User.findByIdAndDelete(id);
-
-    if (!user) {
-      return res.status(400).json("User not found");
-    }
-
-    res.status(200).json("User deleted successfully by an admin");
+    await User.findByIdAndDelete(id);
+    // return res.status(200).json(socialPost);
+    return res.status(200).json({ success: true });
   } catch (err) {
-    res.status(404).json({ message: err.message });
+    res.status(404).json({ success: false, message: err.message });
   }
-}
+};
 
 module.exports = {
   getCurrentUser: getCurrentUser,
@@ -135,5 +133,5 @@ module.exports = {
   updateUser: updateUser,
   removeUser: removeUser,
   getUserById: getUserById,
-  adminRemoveUser: adminRemoveUser
+  adminRemoveUser: adminRemoveUser,
 };

@@ -49,7 +49,6 @@ const createMap = async (req, res) => {
       data_names, 
       data_values, 
       heat_range, 
-      map_users_liked, 
       created_at 
     } = req.body;
 
@@ -74,7 +73,6 @@ const createMap = async (req, res) => {
       data_names, 
       data_values, 
       heat_range, 
-      map_users_liked, 
       created_at
     });
     const savedMap = await newMap.save();
@@ -83,6 +81,62 @@ const createMap = async (req, res) => {
     res.json({ success: true, message: 'Map created successfully!' });
   } catch (error) {
     console.error('Error creating map:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+
+
+
+// Update map
+const editMap = async (req, res) => {
+  try {
+    const { mapId } = req.params;
+
+    const { 
+      map_name, 
+      topic, 
+      user_id, 
+      is_visible, 
+      template, 
+      colors, 
+      data_names, 
+      data_values, 
+      heat_range, 
+    } = req.body;
+
+    const fileBuffer = req.file.buffer;
+    const fileName = req.file.originalname;
+    const storageRef = bucket.file(fileName);
+    await storageRef.createWriteStream().end(fileBuffer);
+
+    const [fileUrl] = await storageRef.getSignedUrl({
+      action: 'read',
+      expires: '03-09-2025', // Replace with an expiration date
+    });
+
+    const updatedMap = await MapObj.findByIdAndUpdate(
+      mapId,
+      {
+        map_name: map_name,
+        topic: topic,
+        user_id: user_id,
+        is_visible: is_visible,
+        template: template,
+        file_path: fileUrl,
+        colors: colors,
+        data_names: data_names,
+        data_values: data_values,
+        heat_range: heat_range
+
+      },
+      { new: true }
+    );
+
+    // Respond with success message
+    res.status(200).json(updatedMap);
+  } catch (error) {
+    console.error('Error updating map:', error);
     res.status(500).json({ success: false, error: error.message });
   }
 };
@@ -121,5 +175,6 @@ module.exports = {
   getMaps: getMaps,
   getMap: getMap,
   createMap: createMap,
+  editMap: editMap,
   removeMap: removeMap
 };

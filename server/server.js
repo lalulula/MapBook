@@ -48,6 +48,8 @@ app.put('/api/users/:id', upload.single('image'), auth.verifyToken, userControll
 app.put("/api/social/createSocialPost", upload.array('post_images'), socialController.createPost);
 // CREATE MAP
 app.post("/api/maps", fileUpload.single('file'), auth.verifyToken, mapController.createMap);
+// UPDATE MAP
+app.put("/api/maps/:mapId", fileUpload.single('file'), auth.verifyToken, mapController.editMap);
 
 // ROUTES
 app.use("/api/auth", authRoutes);

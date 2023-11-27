@@ -24,6 +24,9 @@ const CreateMap = () => {
   const [heatRange, setHeatRange] = useState({ from: 0, to: 0, width: 0 });
   const [skipStep, setSkipSteps] = useState(false);
   const [importDataOpen, setImportDataOpen] = useState(true);
+  const DEFAULT_GEOJSON =
+  "https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/us-income.geojson";
+  const [selectedMapFile, setSelectedMapFile] = useState(DEFAULT_GEOJSON);
 
   useEffect(() => {
     console.log(options);
@@ -72,7 +75,8 @@ const CreateMap = () => {
         setHeatRange={setHeatRange}
       />
     ),
-    3: <Step3 prevStep={prevStep} options={options} />,
+    // 3: <Step3 prevStep={prevStep} options={options} />,
+    3: <Step3 selectedMapFile={selectedMapFile} />,
   };
 
   return (
@@ -114,7 +118,7 @@ const CreateMap = () => {
         onClose={closeImportDataPopup}
       >
         <div>
-          <ImportInitData setSkipSteps={setSkipSteps} />
+          <ImportInitData setSkipSteps={setSkipSteps} setSelectedMapFile={setSelectedMapFile} />
           <div className="modal_btn_container">
             <button onClick={() => setImportDataOpen(false)}>
               Import Data File

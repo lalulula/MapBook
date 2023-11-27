@@ -5,7 +5,7 @@ import SearchBar from "../searchbar/SearchBar";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { getAllUsersAPIMethod, removeUserAPIMethod } from "../../api/user";
+import { getAllUsersAPIMethod, adminRemoveUserAPIMethod } from "../../api/user";
 
 const ManageUsers = () => {
   const options = ["Date joined", "Name", "Username"];
@@ -23,20 +23,21 @@ const ManageUsers = () => {
   }, []);
   const handleDeleteUser = async (id) => {
     try {
-      console.log("removing social post");
-      const deleteSuccess = await removeUserAPIMethod(id);
-
+      console.log("removing user account");
+      const deleteSuccess = await adminRemoveUserAPIMethod(id);
+      console.log(deleteSuccess);
       if (deleteSuccess) {
         alert("Delete user with id:", id);
         // TODO : not refresh ->Fix it auto reload
         window.location.reload();
       } else {
-        alert("Error deleting post");
+        alert("Error removing user account ");
       }
     } catch (error) {
       console.error("Error handling delete operation:", error);
     }
   };
+
   const formatDate = (createdAt) => {
     const date = new Date(createdAt);
     const year = date.getFullYear();

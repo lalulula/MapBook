@@ -66,6 +66,25 @@ export const removeUserAPIMethod = async (userId, isAuth) => {
     console.error("Error removing a user account:", error.message);
   }
 };
+// REMOVE A USER : For Admin
+export const adminRemoveUserAPIMethod = async (userId) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/users/admin/${userId}`, {
+      ...defaultHeaders,
+      method: "DELETE",
+    }).then(checkStatus);
+
+    if (response) {
+      console.log(response.status);
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Error removing a user account: ", error);
+    return false;
+  }
+};
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {

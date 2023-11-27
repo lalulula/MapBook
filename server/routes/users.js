@@ -7,7 +7,6 @@ const router = express.Router();
 // GET A CURRENT LOGGED IN USER
 router.get("/:id", auth.verifyToken, users.getCurrentUser);
 
-
 // GET All UserInfo
 router.get("", users.getAllUsers);
 
@@ -18,6 +17,6 @@ router.get("/getUser/:id", users.getUserById);
 router.delete("/:id", auth.verifyToken, users.removeUser);
 
 // ADMIN REMOVE A USER
-router.get("/admin/:removedUserId", users.adminRemoveUser);
+router.delete("/admin/:id", users.adminRemoveUser);
 
 module.exports = router;
