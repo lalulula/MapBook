@@ -23,6 +23,7 @@ import EditSocialPost from "./Components/socialpostdetails/EditSocialPost";
 import ManageUsers from "./Components/manage/ManageUsers";
 import ManageSocials from "./Components/manage/ManageSocials";
 import ManageMaps from "./Components/manage/ManageMaps";
+import "reactjs-popup/dist/index.css";
 
 function App() {
   //Initial Loading Feature For Web
