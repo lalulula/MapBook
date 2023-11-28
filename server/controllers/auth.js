@@ -1,47 +1,50 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const dotenv = require("dotenv");
-const axios = require("axios");
 const { OAuth2Client } = require('google-auth-library');
 
 const User = require("../models/User");
 
 // LOGIN
 const login = async (req, res) => {
-  if (req.body.googleAccessToken) {
-    const {googleAccessToken} = req.body;
-    const { username, password, email } = req.body;
+  if (req.body.googleCredential) {
+    try {
+      const client = new OAuth2Client(req.body.clientId);
 
-    axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
-      headers: {
-        "Authorization": `Bearer ${googleAccessToken}`
-      }
-    }).then(async response => {
-
-      const existingUser = await User.findOne({
-        $or: [{
-          email: email
-        }, {
-          username: username
-        }]
+      const ticket = await client.verifyIdToken({
+        idToken: req.body.googleCredential,
+        audience: req.body.clientId,
       });
 
-      if (!existingUser) 
-        return res.status(404).json({message: "User doesn't exist!"})
+      if (ticket) {
+        const payload = ticket.getPayload();
 
-      const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET, {expiresIn: "1h"});
+        const username = payload.name;
+        const email = payload.email;
 
-      // make sure the password not send back to the frontend
-      const { password: hashedPassword, ...user } = existingUser._doc;
-        
-      res
-        .cookie("access_token", token, { httpOnly: true })
-        .status(200)
-        .json({ token, user });
-                    
-    }).catch(err => {
-      res.status(400).json({message: "Invalid access token!"})
-    })
+        const existingUser = await User.findOne({
+          $or: [{
+            email: email
+          }, {
+            username: username
+          }]
+        });
+
+        if (!existingUser) 
+          return res.status(404).json({message: "User doesn't exist!"})
+
+        const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET, {expiresIn: "1h"});
+
+        // make sure the password not send back to the frontend
+        const { password: hashedPassword, ...user } = existingUser._doc;
+          
+        res
+          .cookie("access_token", token, { httpOnly: true })
+          .status(200)
+          .json({ token, user });
+      }
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
   } else {
     try {
       const { username, password } = req.body;
@@ -90,7 +93,6 @@ const register = async (req, res) => {
 
         const username = payload.name;
         const email = payload.email;
-        console.log(email);
 
         const { is_admin, maps_created } = req.body;
         const profile_img = payload.picture;
@@ -110,7 +112,7 @@ const register = async (req, res) => {
           email,
           username,
           password: passwordHash,
-          is_admin,
+          is_admin: username.toLowerCase() === "admin" ? true : false,
           profile_img,
           maps_created,
         });

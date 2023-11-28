@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import "./register.css";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createUserAPIMethod, signUpGoogleAPIMethod } from "../../api/auth";
+import { createUserAPIMethod } from "../../api/auth";
 import { useForm } from "react-hook-form";
 import { Button, Form } from "semantic-ui-react";
 import { SHA256, enc } from "crypto-js";
@@ -12,7 +12,6 @@ import landingData1 from "../../assets/Lottie/processIndic.json";
 import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/userSlice";
-import { jwtDecode } from "jwt-decode";
 
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
@@ -87,12 +86,9 @@ const Register = () => {
   const dispatch = useDispatch();
 
   const googleSuccess = async (res) => {
-    const creds = jwtDecode(res.credential);
-
     const req = {
       googleCredential: res.credential,
       clientId: process.env.REACT_APP_CLIENT_ID,
-      is_admin: username.toLowerCase() === "admin" ? true : false,
     }
 
     createUserAPIMethod(req)
@@ -235,5 +231,3 @@ const Register = () => {
 };
 
 export default Register;
-
-// "react-google-login": "^5.2.2",

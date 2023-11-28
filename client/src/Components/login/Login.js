@@ -1,18 +1,15 @@
 import "./login.css";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { login, selectUser } from "../../features/userSlice";
-import Register from "../register/Register";
+import { login } from "../../features/userSlice";
 import { loginUserAPIMethod, createUserAPIMethod } from "../../api/auth";
 import { useForm } from "react-hook-form";
 import { Button, Form } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import Lottie from "lottie-react";
 import landingData1 from "../../assets/Lottie/processIndic.json";
 
-import { OAuthProvider, OAuthConsumer } from "@react-oauth/google";
-import { gapi } from "gapi-script";
+import { GoogleLogin} from "@react-oauth/google";
 
 import { SHA256, enc } from "crypto-js";
 
@@ -22,8 +19,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const clientId =
-  //   "274154138703-j3eqfrs1bhlrndduc85b5dgk2ps9dtg4.apps.googleusercontent.com";
   const [loginLoading, setLoginIsLoading] = useState(false);
   const style = {
     height: 50,
@@ -37,9 +32,6 @@ const Login = () => {
   } = useForm();
 
   const dispatch = useDispatch();
-  // const handleLogin = async (credentialResponse) => {
-  //   console.log(credentialResponse);
-  // };
 
   const onSubmit2 = async (user) => {
     setLoginIsLoading(true);
@@ -71,13 +63,6 @@ const Login = () => {
   };
 
   useEffect(() => {
-    function start() {
-      gapi.client.init({
-        clientId: process.env.REACT_APP_CLIENT_ID,
-        scope: 'email',
-      });
-    }
-
     if (isLoggedIn) {
       navigate("/mainpage");
     } else {
@@ -85,64 +70,58 @@ const Login = () => {
     }
   }, [isLoggedIn]);
 
-  // const googleSuccess = async (res) => {
-  //   console.log(res);
+  const googleSuccess = async (res) => {
+    const req = {
+      googleCredential: res.credential,
+      clientId: process.env.REACT_APP_CLIENT_ID,
+    }
 
-  //   setLoginIsLoading(true);
-  //   const googlePassword = SHA256(res?.googleId).toString(enc.Hex);
-  //   const user = {
-  //     username: res?.profileObj.familyName + res?.profileObj.givenName,
-  //     email: res?.profileObj.email,
-  //     password: googlePassword,
-  //     profile_img: res?.profileObj.imageUrl,
-  //     isAdmin: username.toLowerCase() === "admin" ? true : false,
-  //     googleAccessToken: res?.accessToken
-  //   };
+    setLoginIsLoading(true);
 
-  //   loginUserAPIMethod(user)
-  //     .then((res) => {
-  //       if (res.ok) {
-  //         res.json().then((jsonResult) => {
-  //           console.log("logged in with Google!");
-  //           dispatch(login(jsonResult));
-  //           setIsLoggedIn(true);
-  //         });
-  //       } else {
-  //         // if a user sign in with a valid google acc but hasn't been existed in the DB yet, it will automatically signs that google account up and sign in
-  //         console.log("This Google account hasn't been signed up yet. This Google account will be signed up automatically.");
-  //         createUserAPIMethod(user)
-  //           .then((response) => {
-  //             if (response.ok) {
-  //               response.json().then((jsonResult) => {
-  //                 console.log("Successfully logged in with Google");
-  //                 dispatch(login(jsonResult));
-  //                 navigate("/");
-  //               });
-  //             } else {
-  //               console.log("Invalid login with Google");
-  //             }
-  //           })
-  //           .catch((err) => {
-  //             console.error("Error signing in with Google:", err);
-  //             setIsLoggedIn(false);
-  //             setErrorMessage("Google sign in failed. Please try again.");
-  //           })
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.error("Error during login with Google:", err);
-  //       setIsLoggedIn(false);
-  //       setErrorMessage("Something went wrong during login with Google");
-  //     })
-  //     .finally(() => {
-  //       setLoginIsLoading(false);
-  //     });
-  // };
+    loginUserAPIMethod(req)
+      .then((res) => {
+        if (res.ok) {
+          res.json().then((jsonResult) => {
+            console.log("logged in with Google!");
+            dispatch(login(jsonResult));
+            setIsLoggedIn(true);
+          });
+        } else {
+          // if a user sign in with a valid google acc but hasn't been existed in the DB yet, it will automatically signs that google account up and sign in
+          console.log("This Google account hasn't been signed up yet. This Google account will be signed up automatically.");
+          createUserAPIMethod(req)
+            .then((response) => {
+              if (response.ok) {
+                response.json().then((jsonResult) => {
+                  console.log("Successfully logged in with Google");
+                  dispatch(login(jsonResult));
+                  navigate("/");
+                });
+              } else {
+                console.log("Invalid login with Google");
+              }
+            })
+            .catch((err) => {
+              console.error("Error signing in with Google:", err);
+              setIsLoggedIn(false);
+              setErrorMessage("Google sign in failed. Please try again.");
+            })
+        }
+      })
+      .catch((err) => {
+        console.error("Error during login with Google:", err);
+        setIsLoggedIn(false);
+        setErrorMessage("Something went wrong during login with Google");
+      })
+      .finally(() => {
+        setLoginIsLoading(false);
+      });
+  };
 
-  // const googleFailure = (error) => {
-  //   console.log(error);
-  //   console.log("Google Sign In was unsuccessful.");
-  // };
+  const googleFailure = (error) => {
+    console.log(error);
+    console.log("Google Sign In was unsuccessful.");
+  };
 
   return (
     <div className="login">
@@ -211,29 +190,15 @@ const Login = () => {
 
         <div className="google_divider">OR</div>
         {/* Google Sign-In Button */}
-        {/* <GoogleLogin
-          clientId = {process.env.REACT_APP_CLIENT_ID}
-          render={(renderProps) => (
-            <Button
-              className="google_register_btn"
-              style={{
-                marginTop: "10px",
-                display: "flex",
-                justifyContent: "center",
-                gap: "0.5rem",
-              }}
-              onClick={renderProps.onClick}
-              disabled={renderProps.disabled}
-              variant="contained"
-            >
-              <i className="bi bi-google" />
-              Sign in with Google
-            </Button>
-          )}
-          onSuccess={googleSuccess}
-          onFailure={googleFailure}
-          cookiePolicy="single_host_origin"
-            /> */}
+        <div style={{display: "flex", justifyContent: "center", paddingTop: "10px"}}>
+          <GoogleLogin
+            onSuccess={googleSuccess}
+            onFailure={googleFailure}
+            theme="filled_blue"
+            text="signin_with"
+            width="100px"
+          />
+        </div>
       </Form>
     </div>
   );
