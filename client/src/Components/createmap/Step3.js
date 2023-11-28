@@ -68,7 +68,7 @@ const Step3 = ({ selectedMapFile }) => {
 
     const colors = selectedMapFile["mapbook_heat_selectedcolors"];
     const color = getColor(datavalue, colors, ranges);
-    console.log("heat range", from, to, width, datavalue, color);
+
     setInputData((prevInputData) => ({
       ...prevInputData,
       value: datavalue,
@@ -77,8 +77,6 @@ const Step3 = ({ selectedMapFile }) => {
   };
 
   const handleThematicData = (data, value) => {
-    console.log(data, value);
-
     setInputData((prevInputData) => ({
       ...prevInputData,
       dataName: data["dataName"],
@@ -98,29 +96,31 @@ const Step3 = ({ selectedMapFile }) => {
       feature[0]["properties"]["mapbook_data"] = {
         [selectedMapFile["mapbook_circlemapdata"]]: inputData,
       };
-    } else if (showModalPie || showModalBar) {
-      console.log("input data on submit: ", inputData);
-      feature[0]["properties"]["mapbook_data"] = inputData;
-    } else if (showModalThematic) {
-      feature[0]["properties"]["mapbook_data"] = inputData;
-    } else if (showModalHeat) {
+    } else {
       feature[0]["properties"]["mapbook_data"] = inputData;
     }
+    //Same for other types
+    // else if (showModalPie || showModalBar) {
+    //   console.log("input data on submit: ", inputData);
+    //   feature[0]["properties"]["mapbook_data"] = inputData;
+    // } else if (showModalThematic) {
+    //   feature[0]["properties"]["mapbook_data"] = inputData;
+    // } else if (showModalHeat) {
+    //   feature[0]["properties"]["mapbook_data"] = inputData;
+    // }
     for (var i = 0; i < tempArr.length; i++) {
       if (tempArr[i]["properties"].name === feature[0]["properties"].name) {
         selectedMapFile["features"][i] = feature[0];
-        console.log("Data added!");
         break;
       }
     }
-
     console.log("updated selectedmapfile: ", selectedMapFile);
     handleClickRegion();
   };
 
   const mapContainerRef = useRef(null);
   useEffect(() => {
-    // console.log(selectedMapFile);
+    console.log(selectedMapFile);
     let map;
 
     mapboxgl.accessToken = MAPBOX_TOKEN;
@@ -211,7 +211,7 @@ const Step3 = ({ selectedMapFile }) => {
 
         setFeature(newSelectedFeature);
 
-        console.log("fips: ", names);
+        console.log("Selected region name: ", names);
         map.setFilter("counties-highlighted", ["in", "name", ...names]);
         handleClickRegion();
       });
@@ -222,7 +222,7 @@ const Step3 = ({ selectedMapFile }) => {
 
         if (regions.length > 0) {
           const tempFeature = selectedMapFile["features"].find(
-            (m) => m["properties"].name == regions[0]["properties"].name
+            (m) => m["properties"].name === regions[0]["properties"].name
           );
           //console.log("tempFeature: ", tempFeature);
           var data = tempFeature["properties"].mapbook_data;
@@ -247,24 +247,23 @@ const Step3 = ({ selectedMapFile }) => {
       <div
         ref={mapContainerRef}
         id="map"
-        // style={mapboxStyle}
         style={{ height: "inherit", width: "inherit" }}
       >
         <div>
           Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
         </div>
         <div>
-          Map Name: {(selectedMapFile["mapbook_mapname"], "\n")}
-          Map Template: {(selectedMapFile["mapbook_template"], "\n")}
-          Map Topic: {(selectedMapFile["mapbook_topic"], "\n")}
-          Map CustomTopic: {(selectedMapFile["mapbook_customtopic"], "\n")}
+          Map Name: {selectedMapFile["mapbook_mapname"]}
+          <br />
+          Map Template: {selectedMapFile["mapbook_template"]}
+          <br />
+          Map Topic: {selectedMapFile["mapbook_topic"]}
+          <br />
+          Map CustomTopic: {selectedMapFile["mapbook_customtopic"]}
+          <br />
           Visibility:
-          {
-            (selectedMapFile["mapbook_visibility"] === "true"
-              ? "Private"
-              : "Public",
-            "\n")
-          }
+          {selectedMapFile["mapbook_visibility"] ? "Private" : "Public"}
+          <br />
         </div>
 
         {/* Pie & Bar Modal - DONE*/}
