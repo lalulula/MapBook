@@ -93,7 +93,7 @@ const Step3 = ({ selectedMapFile }) => {
     }
     if (showModalCircle) {
       feature[0]["properties"]["mapbook_data"] = {
-        [selectedMapFile["mapbook_circlemapdata"]]: inputData,
+        [selectedMapFile["mapbook_circleheatmapdata"]]: inputData,
       };
     } else {
       feature[0]["properties"]["mapbook_data"] = inputData;
