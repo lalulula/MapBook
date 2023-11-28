@@ -100,7 +100,7 @@ const MapComments = () => {
   /* useEffect(() => {
       getSocialCommentsAPI(id).then((c) => { //get comments that have social_post_id == id
           setComments(c);
-      })
+      })dfdfdfdfjjj
   }, []); */
 
   return (
