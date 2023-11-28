@@ -17,6 +17,10 @@ const Step3 = ({ selectedMapFile }) => {
   const [feature, setFeature] = useState(null);
   const [inputData, setInputData] = useState(null);
   const [hoverData, setHoverData] = useState("Out of range");
+
+  useEffect(() => {
+    console.log(inputData);
+  });
   const handleClickRegion = () => {
     if (selectedMapFile["mapbook_template"] === "Bar Chart")
       setShowModalBar(!showModalBar);
@@ -38,39 +42,47 @@ const Step3 = ({ selectedMapFile }) => {
       [dataname]: value,
     }));
   };
-  /* useEffect(() => {
-    console.log(inputData);
-  }); */
-  /* const handleAddData = (e) => {
-    e.preventDefault();
-    var tempArr = selectedMapFile["features"];
-
-    if (tempArr.length <= 0 || feature[0] == null) {
-      return;
-    }
-    if (setShowModalCircle) {
-      feature[0]["properties"]["mapbook_data"] = {
-        [selectedMapFile["mapbook_circlemapdata"]]: inputData,
-      };
-    } else if (setShowModalPie || setShowModalBar) {
-      console.log("input data on submit: ", inputData);
-      feature[0]["properties"]["mapbook_data"] = inputData;
-    } else if (setShowModalThematic) {
-      feature[0]["properties"]["mapbook_data"] = inputData;
-    } else if (setShowModalHeat) {
-      feature[0]["properties"]["mapbook_data"] = inputData;
-    }
-    for (var i = 0; i < tempArr.length; i++) {
-      if (tempArr[i]["properties"].name === feature[0]["properties"].name) {
-        selectedMapFile["features"][i] = feature[0];
-        console.log("Data added!");
-        break;
+  const getColor = (datavalue, colors, ranges) => {
+    for (let i = 0; i < ranges.length - 1; i++) {
+      if (datavalue >= ranges[i] && datavalue < ranges[i + 1]) {
+        return colors[i];
       }
     }
+    // TODO Handle the case where the number is outside the defined ranges (make it invalid)
+    return "Invalid Color";
+  };
 
-    console.log("updated selectedmapfile: ", selectedMapFile);
-    handleClickRegion();
-  }; */
+  const handleHeatMapData = (datavalue) => {
+    const from = Number(selectedMapFile["mapbook_heatrange"]["from"]);
+    const to = Number(selectedMapFile["mapbook_heatrange"]["to"]);
+    const width = (to - from) / 5;
+    const ranges = [
+      from,
+      from + width,
+      from + width * 2,
+      from + width * 3,
+      from + width * 4,
+      to,
+    ];
+
+    const colors = selectedMapFile["mapbook_heat_selectedcolors"];
+    const color = getColor(datavalue, colors, ranges);
+    console.log("heat range", from, to, width, datavalue, color);
+    setInputData((prevInputData) => ({
+      ...prevInputData,
+      value: datavalue,
+      color: color,
+    }));
+  };
+
+  const handleThematicData = (datavalue) => {
+    setInputData((prevInputData) => ({
+      ...prevInputData,
+      value: datavalue,
+      // color: color,
+    }));
+  };
+
   const handleAddData = (e) => {
     e.preventDefault();
     var tempArr = selectedMapFile["features"];
@@ -128,16 +140,6 @@ const Step3 = ({ selectedMapFile }) => {
         type: "geojson",
         data: selectedMapFile,
       });
-
-      // TODO : We need to import a geojson file here, not a url,
-      // TODO)... but somehow the url gets called even though the datatype is a geojson
-      // map.on("load", () => {
-      //   // Add a new source for the geojson file
-      //   map.addSource("geojson-data", {
-      //     type: "geojson",
-      //     data: geojson,
-      //   });
-      // });
 
       map.addLayer(
         {
@@ -209,22 +211,26 @@ const Step3 = ({ selectedMapFile }) => {
         map.setFilter("counties-highlighted", ["in", "name", ...names]);
         handleClickRegion();
       });
-      map.on('mousemove', (event) => {
+      map.on("mousemove", (event) => {
         const regions = map.queryRenderedFeatures(event.point, {
-          layers: ['counties']
+          layers: ["counties"],
         });
 
         if (regions.length > 0) {
-          const tempFeature = (selectedMapFile["features"]).find((m) => m["properties"].name == regions[0]["properties"].name);
+          const tempFeature = selectedMapFile["features"].find(
+            (m) => m["properties"].name == regions[0]["properties"].name
+          );
           //console.log("tempFeature: ", tempFeature);
           var data = tempFeature["properties"].mapbook_data;
-          if (data == undefined) {
+          if (data === undefined) {
             setHoverData("No data");
           } else {
-            setHoverData(JSON.stringify(tempFeature["properties"].mapbook_data))
+            setHoverData(
+              JSON.stringify(tempFeature["properties"].mapbook_data)
+            );
           }
         }
-      })
+      });
     });
   }, []);
 
@@ -253,11 +259,11 @@ const Step3 = ({ selectedMapFile }) => {
             (selectedMapFile["mapbook_visibility"] === "true"
               ? "Private"
               : "Public",
-              "\n")
+            "\n")
           }
         </div>
 
-        {/* Pie & Bar Modal - Inprogress*/}
+        {/* Pie & Bar Modal - DONE*/}
         {(showModalPie || showModalBar) && (
           <div className="add_map_data_modal">
             {console.log("FDKFJLSDJFLDS")}
@@ -295,9 +301,9 @@ const Step3 = ({ selectedMapFile }) => {
             </div>
             <form onSubmit={handleAddData}>
               <label>
-                {selectedMapFile["mapbook_circlemapdata"]}
+                {selectedMapFile["mapbook_circleheatmapdata"]}
                 <input
-                  type="text"
+                  type="number"
                   onChange={(e) => setInputData(e.target.value)}
                 />
               </label>
@@ -309,6 +315,7 @@ const Step3 = ({ selectedMapFile }) => {
         {/* Thematic Modal */}
         {showModalThematic && (
           <div className="add_map_data_modal">
+            Theme
             <div
               className="close_add_map_data_modal"
               onClick={handleClickRegion}
@@ -320,7 +327,7 @@ const Step3 = ({ selectedMapFile }) => {
                 data:
                 <input
                   type="text"
-                  onChange={(e) => setInputData(e.target.value)}
+                  onChange={(e) => handleThematicData(e.target.value)}
                 />
               </label>
               <button type="submit">Submit</button>
@@ -328,7 +335,7 @@ const Step3 = ({ selectedMapFile }) => {
           </div>
         )}
 
-        {/* Heat Modal */}
+        {/* Heat Modal - Done */}
         {showModalHeat && (
           <div className="add_map_data_modal">
             <div
@@ -337,12 +344,13 @@ const Step3 = ({ selectedMapFile }) => {
             >
               close
             </div>
+            Heat
             <form onSubmit={handleAddData}>
               <label>
-                data:
+                {selectedMapFile["mapbook_circleheatmapdata"]}
                 <input
-                  type="text"
-                  onChange={(e) => setInputData(e.target.value)}
+                  type="number"
+                  onChange={(e) => handleHeatMapData(e.target.value)}
                 />
               </label>
               <button type="submit">Submit</button>
