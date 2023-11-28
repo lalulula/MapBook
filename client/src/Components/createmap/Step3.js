@@ -19,7 +19,8 @@ const Step3 = ({ selectedMapFile }) => {
   const [hoverData, setHoverData] = useState("Out of range");
 
   useEffect(() => {
-    console.log(inputData);
+    // console.log(inputData);
+    // console.log(selectedMapFile["mapbook_themedata"][0]["dataName"]);
   });
   const handleClickRegion = () => {
     if (selectedMapFile["mapbook_template"] === "Bar Chart")
@@ -80,7 +81,7 @@ const Step3 = ({ selectedMapFile }) => {
 
     setInputData((prevInputData) => ({
       ...prevInputData,
-      data: data["data"],
+      dataName: data["dataName"],
       color: data["color"],
       value: value,
     }));
@@ -327,7 +328,7 @@ const Step3 = ({ selectedMapFile }) => {
             <form onSubmit={handleAddData}>
               {selectedMapFile["mapbook_themedata"].map((data, index) => (
                 <label key={index}>
-                  {data["data"]}:
+                  {data.dataName}:{data.color}
                   <input
                     type="text"
                     onChange={(e) => handleThematicData(data, e.target.value)}

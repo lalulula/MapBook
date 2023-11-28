@@ -3,12 +3,12 @@ import { BlockPicker } from "react-color";
 const Thematic = ({ themeData, setThemeData }) => {
   const [selectedDataIndexes, setSelectedDataIndexes] = useState([]);
   const handleAddThemeData = () => {
-    setThemeData([...themeData, { data: "", color: "#fff" }]);
+    setThemeData([...themeData, { dataName: "", color: "#fff" }]);
     setSelectedDataIndexes([...selectedDataIndexes, null]);
   };
   const handleThemeDataInput = (index, newData) => {
     const updatedData = [...themeData];
-    updatedData[index].data = newData;
+    updatedData[index].dataName = newData;
     setThemeData(updatedData);
   };
   const handleThemeDataColorChange = (index, newColor) => {
@@ -39,7 +39,7 @@ const Thematic = ({ themeData, setThemeData }) => {
           <div className="data_input_container" key={index}>
             <input
               placeholder="Enter Data"
-              value={theme.data}
+              value={theme.dataName}
               onChange={(e) => handleThemeDataInput(index, e.target.value)}
             />
             <div
