@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import Lottie from "lottie-react";
 import landingData1 from "../../assets/Lottie/processIndic.json";
 
-// import { GoogleLogin } from "react-google-login";
+import { OAuthProvider, OAuthConsumer } from "@react-oauth/google";
 import { gapi } from "gapi-script";
 
 import { SHA256, enc } from "crypto-js";

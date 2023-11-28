@@ -9,10 +9,10 @@ import { SHA256, enc } from "crypto-js";
 import Lottie from "lottie-react";
 import landingData1 from "../../assets/Lottie/processIndic.json";
 
-// import { GoogleLogin } from "react-google-login";
-import { gapi } from "gapi-script";
+import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/userSlice";
+import { jwtDecode } from "jwt-decode";
 
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
@@ -84,56 +84,42 @@ const Register = () => {
       });
   };
 
-  useEffect(() => {
-    function start() {
-      gapi.client.init({
-        clientId: process.env.REACT_APP_CLIENT_ID,
-        scope: 'email',
-      });
-    }
-
-    gapi.load('client:auth2', start);
-  }, []);
-
   const dispatch = useDispatch();
 
-  // const googleSuccess = async (res) => {
-  //   console.log(res);
+  const googleSuccess = async (res) => {
+    const creds = jwtDecode(res.credential);
 
-  //   const googlePassword = SHA256(res?.googleId).toString(enc.Hex);
-  //   const user = {
-  //     username: res?.profileObj.familyName + res?.profileObj.givenName,
-  //     email: res?.profileObj.email,
-  //     password: googlePassword,
-  //     profile_img: res?.profileObj.imageUrl,
-  //     isAdmin: username.toLowerCase() === "admin" ? true : false,
-  //     googleAccessToken: res?.accessToken
-  //   };
-  //   createUserAPIMethod(user)
-  //     .then((response) => {
-  //       if (response.ok) {
-  //         response.json().then((jsonResult) => {
-  //           console.log("Successfully registered with Google");
-  //           dispatch(login(jsonResult));
-  //           navigate("/");
-  //         });
-  //       } else {
-  //         console.log("Invalid register with Google");
-  //         setFailed(true);
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.error("Error registering user with Google:", err);
-  //     })
-  //     .finally(() => {
-  //       setRegisterIsLoading(false);
-  //     });
-  // };
+    const req = {
+      googleCredential: res.credential,
+      clientId: process.env.REACT_APP_CLIENT_ID,
+      is_admin: username.toLowerCase() === "admin" ? true : false,
+    }
 
-  // const googleFailure = (error) => {
-  //   console.log(error);
-  //   console.log("Google Sign In was unsuccessful.");
-  // };
+    createUserAPIMethod(req)
+      .then((response) => {
+        if (response.ok) {
+          response.json().then((jsonResult) => {
+            console.log("Successfully registered with Google");
+            dispatch(login(jsonResult));
+            navigate("/");
+          });
+        } else {
+          console.log("Invalid register with Google");
+          setFailed(true);
+        }
+      })
+      .catch((err) => {
+        console.error("Error registering user with Google:", err);
+      })
+      .finally(() => {
+        setRegisterIsLoading(false);
+      });
+  };
+
+  const googleFailure = (error) => {
+    console.log(error);
+    console.log("Google Sign In was unsuccessful.");
+  };
 
   return (
     <div className="register">
@@ -227,31 +213,17 @@ const Register = () => {
           </Button>
         )}
 
-        <div className="google_divider">OR</div>
+        <div className="google_divider" >OR</div>
         {/* Google Sign-Up Button */}
-        {/* <GoogleLogin
-          clientId = {process.env.REACT_APP_CLIENT_ID}
-          render={(renderProps) => (
-            <Button
-              className="google_register_btn"
-              style={{
-                marginTop: "10px",
-                display: "flex",
-                justifyContent: "center",
-                gap: "0.5rem",
-              }}
-              onClick={renderProps.onClick}
-              disabled={renderProps.disabled}
-              variant="contained"
-            >
-              <i className="bi bi-google" />
-              Sign up with Google
-            </Button>
-          )}
-          onSuccess={googleSuccess}
-          onFailure={googleFailure}
-          cookiePolicy="single_host_origin"
-            /> */}
+        <div style={{display: "flex", justifyContent: "center", paddingTop: "10px"}}>
+          <GoogleLogin
+            onSuccess={googleSuccess}
+            onFailure={googleFailure}
+            theme="filled_blue"
+            text="continue_with"
+            width="100px"
+          />
+        </div>
         {failed && (
           <p className="ui negative mini message">
             Registration failed. Please check your information or enter a

@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const axios = require("axios");
+const { OAuth2Client } = require('google-auth-library');
 
 const User = require("../models/User");
 
@@ -71,52 +72,61 @@ const login = async (req, res) => {
 
 // Create or REGISTER
 const register = async (req, res) => {
-  if (req.body.googleAccessToken) {
-    const {googleAccessToken} = req.body;
-    // const googleAccessToken = "sdajhfjkasdhkjfghasjkhg4123hfuifhvk.";
-    const { email, username, password, is_admin, profile_img, maps_created } = req.body;
+  if (req.body.googleCredential) {
+    try {
+      const client = new OAuth2Client(req.body.clientId);
 
-    axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
-      headers: {
-        "Authorization": `Bearer ${googleAccessToken}`
+      const ticket = await client.verifyIdToken({
+        idToken: req.body.googleCredential,
+        audience: req.body.clientId,
+      });
+      
+      if (ticket) {
+        const payload = ticket.getPayload();
+
+        // hash password
+        const salt = await bcrypt.genSalt();
+        const passwordHash = await bcrypt.hash(payload.jti, salt);
+
+        const username = payload.name;
+        const email = payload.email;
+        console.log(email);
+
+        const { is_admin, maps_created } = req.body;
+        const profile_img = payload.picture;
+
+        const existingUser = await User.findOne({
+          $or: [{
+            email: email
+          }, {
+            username: username
+          }]
+        });
+
+        if (existingUser) 
+          return res.status(400).json({message: "User already exist!"});
+
+        const newUser = new User({
+          email,
+          username,
+          password: passwordHash,
+          is_admin,
+          profile_img,
+          maps_created,
+        });
+        const savedUser = await newUser.save();
+        const { password: hashedPassword, ...user } = savedUser._doc;
+
+        const token = jwt.sign({ id: savedUser._id }, process.env.JWT_SECRET, {expiresIn: "1h"});
+          
+        res
+          .cookie("access_token", token, { httpOnly: true })
+          .status(200)
+          .json({ token, user });
       }
-    }).then(async response => {
-      const existingUser = await User.findOne({
-        $or: [{
-          email: email
-        }, {
-          username: username
-        }]
-      });
-
-      if (existingUser) 
-        return res.status(400).json({message: "User already exist!"})
-
-      // hash password
-      const salt = await bcrypt.genSalt();
-      const passwordHash = await bcrypt.hash(password, salt);
-
-      const newUser = new User({
-        email,
-        username,
-        password: passwordHash,
-        is_admin,
-        profile_img,
-        maps_created,
-      });
-      const savedUser = await newUser.save();
-      const { password: hashedPassword, ...user } = savedUser._doc;
-
-      const token = jwt.sign({ id: savedUser._id }, process.env.JWT_SECRET, {expiresIn: "1h"});
-        
-      res
-        .cookie("access_token", token, { httpOnly: true })
-        .status(200)
-        .json({ token, user });
-
-    }).catch(err => {
-      res.status(400).json({message: "Invalid access token!"})
-    })
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
   } else {
     try {
       const { email, username, password, is_admin, profile_img, maps_created } =
@@ -156,34 +166,4 @@ const register = async (req, res) => {
   }
 };
 
-const registerGoogle = async (req, res) => {
-  const {googleAccessToken} = req.body;
-
-  axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
-    headers: {
-      "Authorization": `Bearer ${googleAccessToken}`
-    }
-  }).then(async response => {
-    const username = response.data.given_name + response.data.family_name;
-    const email = response.data.email;
-
-    const existingUser = await User.findOne({
-      $or: [{
-        email: email
-      }, {
-        username: username
-      }]
-    });
-
-    if (existingUser) 
-      return res.status(400).json({message: "User already exist!"})
-
-    const newUser = await User.create({verified:"true", email, username})
-
-    res.status(200).json({newUser})
-  }).catch(err => {
-    res.status(400).json({message: "Invalid access token!"})
-  })
-};
-
-module.exports = { register: register, login: login, registerGoogle: registerGoogle };
+module.exports = { register: register, login: login };
