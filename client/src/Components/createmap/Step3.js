@@ -218,6 +218,7 @@ const Step3 = ({ selectedMapFile }) => {
   const [lng, setLng] = useState(-122.48);
   const [lat, setLat] = useState(37.84);
   const [zoom, setZoom] = useState(12);
+  const [showModal, setShowModal] = useState(false);
   const [viewport, setViewport] = useState({
     latitude: 38.88,
     longitude: -98,
@@ -226,14 +227,19 @@ const Step3 = ({ selectedMapFile }) => {
   const MAPBOX_TOKEN =
     "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
 
-  // const mapboxStyle = {
-  //   position: "absolute",
-  //   // top: 0,
-  //   bottom: 0,
-  //   left: 0,
-  //   width: "80%",
-  //   height: "70%",
-  // };
+  const mapboxStyle = {
+    /* position: "absolute", */
+    // top: 0,
+    bottom: 100,
+    left: 100,
+    width: "80%",
+    height: "70%",
+  };
+
+  const handleClickRegion = () => {
+    setShowModal(!showModal);
+  }
+
   const mapContainerRef = useRef(null);
   useEffect(() => {
     console.log(selectedMapFile);
@@ -315,7 +321,7 @@ const Step3 = ({ selectedMapFile }) => {
         const selectedFeatures = map.queryRenderedFeatures(bbox, {
           layers: ["counties"],
         });
-      
+
         // TODO: modify datas 
         // check code below.
         // console.log("selectedFeatures: ", selectedFeatures[0])
@@ -324,10 +330,11 @@ const Step3 = ({ selectedMapFile }) => {
 
         const names = selectedFeatures.map(
           (feature) => feature.properties.name
-          
+
         );
         console.log("fips: ", names);
         map.setFilter("counties-highlighted", ["in", "name", ...names]);
+        handleClickRegion();
       });
 
       // // Add a click event listener to the map
@@ -341,16 +348,23 @@ const Step3 = ({ selectedMapFile }) => {
     });
   }, []);
 
+
+
+
   return (
-    <div className="mapbox">
-      <div
-        ref={mapContainerRef}
-        style={{ height: "inherit", width: "inherit" }}
-        // style={mapboxStyle}
-      >
+    <div className="step3_container">
+      <div ref={mapContainerRef} id="map" style={mapboxStyle}>
         <div>
           Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
         </div>
+        {showModal && (
+          <div className="add_map_data_modal">
+            <div className="close_add_map_data_modal" onClick={handleClickRegion}>
+              close
+            </div>
+            Add data here
+          </div>
+        )}
       </div>
     </div>
   );

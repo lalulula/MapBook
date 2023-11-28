@@ -38,7 +38,7 @@ const CreateMap = () => {
     console.log("useEffect: selectedMapFile: ", selectedMapFile);
     const newGeojsonData = {
       ...geojsonData,
-      mapbook_mapname: options.name,
+      /* mapbook_mapname: options.name,
       mapbook_template: options.template,
       mapbook_topic: options.topic,
       mapbook_customtopic: options.customTopic,
@@ -46,7 +46,7 @@ const CreateMap = () => {
       mapbook_datanames: pieBarData, //piebar
       mapbook_heatrange: heatRange, // heat range
       mapbook_heat_selectedcolors: selectedColors, // heat color
-      mapbook_themedata: themeData, //Color + data name
+      mapbook_themedata: themeData, //Color + data name */
     };
     setGeojsonData(newGeojsonData);
     updateGeojsonData(newGeojsonData);
