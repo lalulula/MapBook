@@ -44,11 +44,8 @@ const createMap = async (req, res) => {
       topic, 
       user_id, 
       is_visible, 
-      template, 
-      colors, 
-      data_names, 
-      data_values, 
-      heat_range, 
+      map_users_liked,
+      map_comments,
       created_at 
     } = req.body;
 
@@ -66,13 +63,10 @@ const createMap = async (req, res) => {
       map_name, 
       topic, 
       user_id, 
-      is_visible, 
-      template,
-      file_path: fileUrl, 
-      colors, 
-      data_names, 
-      data_values, 
-      heat_range, 
+      is_visible,
+      file_path: fileUrl,
+      map_users_liked,
+      map_comments, 
       created_at
     });
     const savedMap = await newMap.save();

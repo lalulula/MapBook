@@ -27,9 +27,11 @@ const MapObjSchema = new mongoose.Schema({
   },
   map_users_liked: {
     type: [mongoose.Schema.Types.ObjectId],
+    default: [],
   },
   map_comments: {
     type: [mongoose.Schema.Types.ObjectId],
+    default: [],
   },
   created_at: {
     type: Date,
