@@ -217,6 +217,19 @@ const Step3 = ({ selectedMapFile }) => {
         <div>
           Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
         </div>
+        <div>
+          Map Name: {(selectedMapFile["mapbook_mapname"], "\n")}
+          Map Template: {(selectedMapFile["mapbook_template"], "\n")}
+          Map Topic: {(selectedMapFile["mapbook_topic"], "\n")}
+          Map CustomTopic: {(selectedMapFile["mapbook_customtopic"], "\n")}
+          Visibility:
+          {
+            (selectedMapFile["mapbook_visibility"] === "true"
+              ? "Private"
+              : "Public",
+            "\n")
+          }
+        </div>
         {/* Thematic Modal */}
         {showModalThematic && (
           <div className="add_map_data_modal">
@@ -262,8 +275,71 @@ const Step3 = ({ selectedMapFile }) => {
           </div>
         )}
         {/* Circle Modal */}
+        {showModalCircle && (
+          <div className="add_map_data_modal">
+            <div
+              className="close_add_map_data_modal"
+              onClick={handleClickRegion}
+            >
+              close
+            </div>
+            <form onSubmit={handleAddData}>
+              <label>
+                data:
+                <input
+                  type="text"
+                  /* value={newComment} */
+                  onChange={(e) => setInputData(e.target.value)}
+                />
+              </label>
+              <button type="submit">Submit</button>
+            </form>
+          </div>
+        )}
         {/* Pie Modal */}
+        {showModalPie && (
+          <div className="add_map_data_modal">
+            <div
+              className="close_add_map_data_modal"
+              onClick={handleClickRegion}
+            >
+              close
+            </div>
+            <form onSubmit={handleAddData}>
+              <label>
+                data:
+                <input
+                  type="text"
+                  /* value={newComment} */
+                  onChange={(e) => setInputData(e.target.value)}
+                />
+              </label>
+              <button type="submit">Submit</button>
+            </form>
+          </div>
+        )}
         {/* Heat Modal */}
+        {showModalHeat && (
+          <div className="add_map_data_modal">
+            <div
+              className="close_add_map_data_modal"
+              onClick={handleClickRegion}
+            >
+              close
+            </div>
+            <form onSubmit={handleAddData}>
+              <label>
+                data:
+                <input
+                  type="text"
+                  /* value={newComment} */
+                  onChange={(e) => setInputData(e.target.value)}
+                />
+              </label>
+              <button type="submit">Submit</button>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );
