@@ -4,9 +4,7 @@ import * as shapefile from "shapefile"; // Import the shapefile library
 import "./mapbox/mapbox.css";
 const ImportInitData = ({
   setSkipSteps,
-  setGeojsonData,
-  updateGeojsonData,
-  geojsonData,
+  setSelectedMapFile
 }) => {
   const handleFileChange = async (e) => {
     try {
@@ -70,8 +68,7 @@ const ImportInitData = ({
           parsedData.mapbook_template
         );
         // console.log(parsedData);
-        setGeojsonData(parsedData);
-        updateGeojsonData(parsedData);
+        setSelectedMapFile(parsedData);
 
       } else {
         console.log(
@@ -89,10 +86,8 @@ const ImportInitData = ({
           mapbook_heat_selectedcolors: [], // heat color
           mapbook_themedata: [], //Color + data name
         };
-        // console.log("newGeojsonData: ", newGeojsonData);
-        setGeojsonData(newGeojsonData);
+        setSelectedMapFile(newGeojsonData);
 
-        updateGeojsonData(newGeojsonData);
       }
     } catch (error) {
       console.error("Error loading GeoJSON file:", error);
@@ -120,20 +115,3 @@ const ImportInitData = ({
 };
 
 export default ImportInitData;
-//   const renderFeatureInfo = () => {
-//     if (geojsonData && geojsonData.length > 0) {
-//       return (
-//         <div>
-//           <h2>Feature Information</h2>
-//           <ul>
-//             {geojsonData.map((feature, index) => (
-//               <li key={index}>
-//                 Feature {index + 1}: {JSON.stringify(feature.properties)}
-//               </li>
-//             ))}
-//           </ul>
-//         </div>
-//       );
-//     }
-//     return null;
-//   };

@@ -24,23 +24,22 @@ const CreateMap = () => {
   const [heatRange, setHeatRange] = useState({ from: 0, to: 0, width: 0 }); //HEATMAP: range value
   const [skipStep, setSkipSteps] = useState(false);
   const [importDataOpen, setImportDataOpen] = useState(true);
-  const [geojsonData, setGeojsonData] = useState(null);
+
   const DEFAULT_GEOJSON =
     "https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/us-income.geojson";
   // Use selectedMapFile
   const [selectedMapFile, setSelectedMapFile] = useState(DEFAULT_GEOJSON);
-  const updateGeojsonData = (newGeojsonData) => {
-    setSelectedMapFile(newGeojsonData);
-  };
+  // const updateGeojsonData = (newGeojsonData) => {
+  //   setSelectedMapFile(newGeojsonData);
+  // };
   // useEffect(() => {
   //   console.log(selectedMapFile);
   // }, [selectedMapFile]);
 
   useEffect(() => {
-    // console.log("useEffect: geojsonData: ", geojsonData);
     // console.log("useEffect: selectedMapFile: ", selectedMapFile);
     const newGeojsonData = {
-      ...geojsonData,
+      ...selectedMapFile,
       mapbook_mapname: options.name,
       mapbook_template: options.template,
       mapbook_topic: options.topic,
@@ -51,8 +50,10 @@ const CreateMap = () => {
       mapbook_heat_selectedcolors: selectedColors, // heat color
       mapbook_themedata: themeData, //Color + data name
     };
-    setGeojsonData(newGeojsonData);
-    updateGeojsonData(newGeojsonData);
+    // setGeojsonData(newGeojsonData);
+    // updateGeojsonData(newGeojsonData);
+    setSelectedMapFile(newGeojsonData);
+
   }, [options, pieBarData, heatRange, selectedColors, themeData]);
 
   useEffect(() => {
@@ -143,11 +144,8 @@ const CreateMap = () => {
       >
         <div>
           <ImportInitData
-            geojsonData={geojsonData}
-            setGeojsonData={setGeojsonData}
             setSkipSteps={setSkipSteps}
             setSelectedMapFile={setSelectedMapFile}
-            updateGeojsonData={updateGeojsonData}
           />
           <div className="modal_btn_container">
             <button onClick={() => setImportDataOpen(false)}>
