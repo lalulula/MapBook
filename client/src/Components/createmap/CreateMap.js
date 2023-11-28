@@ -14,6 +14,7 @@ const CreateMap = () => {
   const [options, setOptions] = useState({
     name: "",
     topic: "",
+    circleMapData: "",
     customTopic: "",
     template: "",
     isPrivate: false,
@@ -29,13 +30,14 @@ const CreateMap = () => {
     "https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/us-income.geojson";
 
   const [selectedMapFile, setSelectedMapFile] = useState(DEFAULT_GEOJSON);
- 
+
   useEffect(() => {
     // console.log("useEffect: selectedMapFile: ", selectedMapFile);
     const newGeojsonData = {
       ...selectedMapFile,
       mapbook_mapname: options.name,
       mapbook_template: options.template,
+      mapbook_circlemapdata: options.circleMapData,
       mapbook_topic: options.topic,
       mapbook_customtopic: options.customTopic,
       mapbook_visibility: options.isPrivate,
@@ -45,7 +47,6 @@ const CreateMap = () => {
       mapbook_themedata: themeData, //Color + data name
     };
     setSelectedMapFile(newGeojsonData);
-
   }, [options, pieBarData, heatRange, selectedColors, themeData]);
 
   useEffect(() => {

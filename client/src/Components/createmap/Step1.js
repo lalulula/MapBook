@@ -21,12 +21,17 @@ const Step1 = ({ nextStep, options, setOptions }) => {
     const newVal = template.value;
     setOptions({ ...options, template: newVal });
   };
+  const handleCircleMapDataChange = (circleData) => {
+    const newVal = circleData;
+    setOptions({ ...options, circleMapData: newVal });
+  };
   const handlePrivacy = (e) => {
     setOptions({ ...options, isPrivate: e.target.checked });
   };
-  // useEffect(() => {
-  //   console.log(options.topic.value);
-  // }, [options]);
+
+  useEffect(() => {
+    console.log(options);
+  }, [options]);
 
   const topics = [
     "Economy",
@@ -86,6 +91,13 @@ const Step1 = ({ nextStep, options, setOptions }) => {
           onChange={handleTemplateClick}
           value={options.template}
         />
+        {options.template === "Circle Map" && (
+          <input
+            value={options.circleMapData}
+            placeholder="Enter Data Name"
+            onChange={(e) => handleCircleMapDataChange(e.target.value)}
+          />
+        )}
       </div>
       <br />
       <div>

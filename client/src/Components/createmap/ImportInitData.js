@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import JSZip from "jszip";
 import * as shapefile from "shapefile"; // Import the shapefile library
 import "./mapbox/mapbox.css";
-const ImportInitData = ({
-  setSkipSteps,
-  setSelectedMapFile
-}) => {
+const ImportInitData = ({ setSkipSteps, setSelectedMapFile }) => {
   const handleFileChange = async (e) => {
     try {
       const file = e.target.files[0];
@@ -69,15 +66,15 @@ const ImportInitData = ({
         );
         // console.log(parsedData);
         setSelectedMapFile(parsedData);
-
       } else {
         console.log(
           'The "mapbook_template" key does not exist at the top level.'
         );
         const newGeojsonData = {
           ...parsedData,
-          mapbook_template: "",
           mapbook_mapname: "",
+          mapbook_template: "",
+          mapbook_circlemapdata: "",
           mapbook_topic: "",
           mapbook_customtopic: "",
           mapbook_visibility: "",
@@ -87,7 +84,6 @@ const ImportInitData = ({
           mapbook_themedata: [], //Color + data name
         };
         setSelectedMapFile(newGeojsonData);
-
       }
     } catch (error) {
       console.error("Error loading GeoJSON file:", error);
