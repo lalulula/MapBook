@@ -210,7 +210,6 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactMapGL, { Source, Layer } from "react-map-gl";
 import mapboxgl from "mapbox-gl"; // Import mapboxgl
 import "./mapbox/mapbox.css";
-import uk from "./mapbox/uk.geojson";
 
 const Step3 = ({ selectedMapFile }) => {
   const DEFAULT_GEOJSON =
@@ -218,7 +217,11 @@ const Step3 = ({ selectedMapFile }) => {
   const [lng, setLng] = useState(-122.48);
   const [lat, setLat] = useState(37.84);
   const [zoom, setZoom] = useState(12);
-  const [showModal, setShowModal] = useState(false);
+  const [showModalThematic, setShowModalThematic] = useState(false);
+  const [showModalPie, setShowModalPie] = useState(false);
+  const [showModalBar, setShowModalBar] = useState(false);
+  const [feature, setFeature] = useState(null);
+  const [inputData, setInputData] = useState(null);
   const [viewport, setViewport] = useState({
     latitude: 38.88,
     longitude: -98,
@@ -237,7 +240,16 @@ const Step3 = ({ selectedMapFile }) => {
   };
 
   const handleClickRegion = () => {
-    setShowModal(!showModal);
+    if (selectedMapFile["mapbook_template"] == "Bar Chart") setShowModalBar(!showModalBar);
+    else if (selectedMapFile["mapbook_template"] == "Thematic Map") setShowModalThematic(!showModalThematic);
+  }
+
+  const handleAddData = (e) => {
+    e.preventDefault();
+    console.log("selectedmapfile specific: ", (selectedMapFile["features"]).filter(m => m === feature));
+    console.log("feature in handleadddata: ", feature);
+    feature[0]["properties"]["mapbook_data"] = { data_value: inputData }
+    handleClickRegion();
   }
 
   const mapContainerRef = useRef(null);
@@ -325,8 +337,10 @@ const Step3 = ({ selectedMapFile }) => {
         // TODO: modify datas 
         // check code below.
         // console.log("selectedFeatures: ", selectedFeatures[0])
-        // selectedFeatures[0]["properties"]["mapbook_data"] = "hello"
-        // console.log("selectedFeatures: after modify: ", selectedFeatures[0])
+        // selectedFeatures[0]["properties"]["mapbook_data"] = { data_value: 1 }
+        console.log("selectedFeatures: after modify: ", selectedFeatures[0])
+
+        setFeature(selectedFeatures);
 
         const names = selectedFeatures.map(
           (feature) => feature.properties.name
@@ -349,20 +363,46 @@ const Step3 = ({ selectedMapFile }) => {
   }, []);
 
 
-
-
   return (
     <div className="step3_container">
       <div ref={mapContainerRef} id="map" style={mapboxStyle}>
         <div>
           Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
         </div>
-        {showModal && (
+        {showModalThematic && (
           <div className="add_map_data_modal">
             <div className="close_add_map_data_modal" onClick={handleClickRegion}>
               close
             </div>
-            Add data here
+            <form onSubmit={handleAddData}>
+              <label>
+                data:
+                <input
+                  type="text"
+                  /* value={newComment} */
+                  onChange={(e) => setInputData(e.target.value)}
+                />
+              </label>
+              <button type="submit">Submit</button>
+            </form>
+          </div>
+        )}
+        {showModalBar && (
+          <div className="add_map_data_modal">
+            <div className="close_add_map_data_modal" onClick={handleClickRegion}>
+              close
+            </div>
+            <form onSubmit={handleAddData}>
+              <label>
+                data for bar:
+                <input
+                  type="text"
+                  /* value={newComment} */
+                  onChange={(e) => setInputData(e.target.value)}
+                />
+              </label>
+              <button type="submit">Submit</button>
+            </form>
           </div>
         )}
       </div>
