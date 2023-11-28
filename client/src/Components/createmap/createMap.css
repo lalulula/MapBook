@@ -311,11 +311,12 @@
   display: flex;
   flex-direction: column;
   position: absolute;
-  right: 0;
+  right: 50px;
   width: 200px;
   height: 200px;
   background-color: white;
   color: black;
+  overflow-wrap: break-word;
 }
 
 /* Add a media query for smaller screens */
