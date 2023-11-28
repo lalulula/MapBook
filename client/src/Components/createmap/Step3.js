@@ -16,35 +16,35 @@ const Step3 = ({ selectedMapFile }) => {
   const [showModalHeat, setShowModalHeat] = useState(false);
   const [feature, setFeature] = useState(null);
   const [inputData, setInputData] = useState(null);
-  const [mapInformation, setMapInformation] = useState({
-    mapbook_mapname: "",
-    mapbook_template: "",
-    mapbook_topic: "",
-    mapbook_customtopic: "",
-    mapbook_visibility: false,
-    mapbook_datanames: [],
-    mapbook_heatrange: {},
-    mapbook_heat_selectedcolors: [],
-    mapbook_themedata: [],
-  });
-  useEffect(() => {
-    setMapInformation({
-      mapbook_mapname: selectedMapFile["mapbook_mapname"],
-      mapbook_template: selectedMapFile["mapbook_template"],
-      mapbook_topic: selectedMapFile["mapbook_topic"],
-      mapbook_customtopic: selectedMapFile["mapbook_customtopic"],
-      mapbook_visibility: selectedMapFile["mapbook_visibility"],
-      mapbook_datanames: selectedMapFile["mapbook_datanames"],
-      mapbook_heatrange: selectedMapFile["mapbook_heatrange"],
-      mapbook_heat_selectedcolors:
-        selectedMapFile["mapbook_heat_selectedcolors"],
-      mapbook_themedata: selectedMapFile["mapbook_themedata"],
-    });
-  }, []);
-  useEffect(() => {
-    console.log(mapInformation);
-    console.log(selectedMapFile);
-  }, [mapInformation]);
+  // const [mapInformation, setMapInformation] = useState({
+  //   mapbook_mapname: "",
+  //   mapbook_template: "",
+  //   mapbook_topic: "",
+  //   mapbook_customtopic: "",
+  //   mapbook_visibility: false,
+  //   mapbook_datanames: [],
+  //   mapbook_heatrange: {},
+  //   mapbook_heat_selectedcolors: [],
+  //   mapbook_themedata: [],
+  // });
+  // useEffect(() => {
+  //   setMapInformation({
+  //     mapbook_mapname: selectedMapFile["mapbook_mapname"],
+  //     mapbook_template: selectedMapFile["mapbook_template"],
+  //     mapbook_topic: selectedMapFile["mapbook_topic"],
+  //     mapbook_customtopic: selectedMapFile["mapbook_customtopic"],
+  //     mapbook_visibility: selectedMapFile["mapbook_visibility"],
+  //     mapbook_datanames: selectedMapFile["mapbook_datanames"],
+  //     mapbook_heatrange: selectedMapFile["mapbook_heatrange"],
+  //     mapbook_heat_selectedcolors:
+  //       selectedMapFile["mapbook_heat_selectedcolors"],
+  //     mapbook_themedata: selectedMapFile["mapbook_themedata"],
+  //   });
+  // }, []);
+  // useEffect(() => {
+  //   console.log(mapInformation);
+  //   console.log(selectedMapFile);
+  // }, [mapInformation]);
 
   // const handleClickRegion = () => {
   //   if (mapInformation["mapbook_template"] === "Bar Chart")
@@ -63,6 +63,12 @@ const Step3 = ({ selectedMapFile }) => {
       setShowModalBar(!showModalBar);
     else if (selectedMapFile["mapbook_template"] === "Thematic Map")
       setShowModalThematic(!showModalThematic);
+    else if (selectedMapFile["mapbook_template"] === "Pie Chart")
+      setShowModalPie(!showModalThematic);
+    else if (selectedMapFile["mapbook_template"] === "Circle Map")
+      setShowModalCircle(!showModalThematic);
+    else if (selectedMapFile["mapbook_template"] === "Heat Map")
+      setShowModalHeat(!showModalThematic);
   };
 
   const handleAddData = (e) => {
