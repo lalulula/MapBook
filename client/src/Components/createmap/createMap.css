@@ -20,6 +20,7 @@
   align-items: center;
   flex-direction: column;
 }
+
 .create_map_container_step3 {
   width: 80%;
   height: 80%;
@@ -304,6 +305,17 @@
   top: 50%;
   left: 50%;
   background-color: black;
+}
+
+.map_region_info {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  background-color: white;
+  color: black;
 }
 
 /* Add a media query for smaller screens */

@@ -16,6 +16,7 @@ const Step3 = ({ selectedMapFile }) => {
   const [showModalHeat, setShowModalHeat] = useState(false);
   const [feature, setFeature] = useState(null);
   const [inputData, setInputData] = useState(null);
+  const [hoverData, setHoverData] = useState("Out of range");
   const handleClickRegion = () => {
     if (selectedMapFile["mapbook_template"] === "Bar Chart")
       setShowModalBar(!showModalBar);
@@ -37,9 +38,9 @@ const Step3 = ({ selectedMapFile }) => {
       [dataname]: value,
     }));
   };
-  useEffect(() => {
+  /* useEffect(() => {
     console.log(inputData);
-  });
+  }); */
   /* const handleAddData = (e) => {
     e.preventDefault();
     var tempArr = selectedMapFile["features"];
@@ -208,11 +209,31 @@ const Step3 = ({ selectedMapFile }) => {
         map.setFilter("counties-highlighted", ["in", "name", ...names]);
         handleClickRegion();
       });
+      map.on('mousemove', (event) => {
+        const regions = map.queryRenderedFeatures(event.point, {
+          layers: ['counties']
+        });
+
+        if (regions.length > 0) {
+          const tempFeature = (selectedMapFile["features"]).find((m) => m["properties"].name == regions[0]["properties"].name);
+          //console.log("tempFeature: ", tempFeature);
+          var data = tempFeature["properties"].mapbook_data;
+          if (data == undefined) {
+            setHoverData("No data");
+          } else {
+            setHoverData(JSON.stringify(tempFeature["properties"].mapbook_data))
+          }
+        }
+      })
     });
   }, []);
 
   return (
     <div className="step3_container">
+      <div className="map_region_info">
+        <p>Hover over a region!</p>
+        {hoverData}
+      </div>
       <div
         ref={mapContainerRef}
         id="map"
