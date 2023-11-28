@@ -36,8 +36,8 @@ const Step3 = ({ selectedMapFile }) => {
   };
 
   const handlePieBarInputChange = (dataname, value) => {
-    console.log("dataname: ", dataname);
-    console.log("value: ", value);
+    // console.log("dataname: ", dataname);
+    // console.log("value: ", value);
     setInputData((prevInputData) => ({
       ...prevInputData,
       [dataname]: value,
@@ -77,11 +77,10 @@ const Step3 = ({ selectedMapFile }) => {
   };
 
   const handleThematicData = (data, value) => {
+    // console.log(data, value);
     setInputData((prevInputData) => ({
       ...prevInputData,
-      dataName: data["dataName"],
-      color: data["color"],
-      value: value,
+      [data["dataName"]]: { color: data["color"], value: value },
     }));
   };
 
