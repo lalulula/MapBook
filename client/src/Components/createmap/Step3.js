@@ -1,256 +1,69 @@
-// import React, { useState, useEffect, useRef, useCallback } from "react";
-// import ReactMapboxGL, { Source, Layer } from "react-map-gl";
-// import * as shapefile from "shapefile"; // Import the shapefile library
-// import JSZip from "jszip";
-// import MapTool from "../maptools/MapTools";
-// import Popup from "reactjs-popup";
-// import { useNavigate } from "react-router-dom";
-// import "reactjs-popup/dist/index.css";
-// const MAPBOX_TOKEN =
-//   "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
-// const DEFAULT_GEOJSON =
-//   "https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/us-income.geojson";
-
-// const Step3 = ({ prevStep }) => {
-//   const [viewport, setViewport] = useState({
-//     width: "100vw",
-//     height: "90vh",
-//     latitude: 44.065256,
-//     longitude: -125.075801,
-//     zoom: 5,
-//   });
-//   const fileInput = useRef(null);
-//   const [selectedMapFile, setSelectedMapFile] = useState(DEFAULT_GEOJSON);
-//   const [fileName, setFileName] = useState("init.geojson");
-//   const handleLoadMap = () => {
-//     fileInput.current.click();
-//   };
-
-//   const handleMapChange = async (e) => {
-//     try {
-//       const file = e.target.files[0];
-//       setFileName(file.name);
-
-//       const texts = await file.text();
-
-//       // uploadedFile -> type: json object
-//       let uploadedFile;
-
-//       if (file.name.endsWith(".json") || file.name.endsWith(".geojson")) {
-//         uploadedFile = JSON.parse(texts);
-//       } else if (file.name.endsWith(".kml")) {
-//         var tj = require("./togeojson");
-//         var kml = new DOMParser().parseFromString(texts, "text/xml");
-//         uploadedFile = JSON.parse(JSON.stringify(tj.kml(kml), null, 4));
-//       } else if (file.name.endsWith(".zip")) {
-//         try {
-//           const zip = new JSZip();
-//           const zipContents = await zip.loadAsync(file); // Load the ZIP file asynchronously
-//           // Find the .shp and .dbf files in the ZIP archive
-//           let shpBuffer, dbfBuffer;
-//           for (const fileName in zipContents.files) {
-//             if (fileName.endsWith(".shp")) {
-//               shpBuffer = await zipContents.files[fileName].async(
-//                 "arraybuffer"
-//               );
-//             } else if (fileName.endsWith(".dbf")) {
-//               dbfBuffer = await zipContents.files[fileName].async(
-//                 "arraybuffer"
-//               );
-//             }
-//           }
-//           // Process shpBuffer and dbfBuffer here
-//           // You can use a library like 'shapefile' to read the contents
-
-//           const geojson = await shapefile.read(shpBuffer, dbfBuffer);
-//           // console.log(geojson.features[0]);
-//           for (const data in geojson.features) {
-//             var i = 0;
-//             var name = "NAME_";
-//             for (i = 0; i < 10; i++) {
-//               if (geojson.features[data].properties[name + i] === undefined) {
-//                 i--;
-//                 break;
-//               }
-//             }
-
-//             geojson.features[data].properties.name =
-//               geojson.features[data].properties[name + i];
-//           }
-
-//           uploadedFile = geojson;
-//         } catch (error) {
-//           // Handle any errors that may occur during file processing
-//           console.error("Error processing the ZIP file:", error);
-//         }
-//       }
-//       setSelectedMapFile(uploadedFile);
-//     } catch (error) {
-//       setSelectedMapFile(DEFAULT_GEOJSON);
-//       console.log(error);
-//     }
-//   };
-
-//   const [hoverInfo, setHoverInfo] = useState(null);
-//   const onHover = useCallback((e) => {
-//     const {
-//       features,
-//       point: { x, y },
-//     } = e;
-//     const hoveredFeature = features && features[0];
-//     setHoverInfo(hoveredFeature && { feature: hoveredFeature, x, y });
-//   }, []);
-//   // MAPBOX STATE-END
-//   const [mapCreated, setMapCreated] = useState(true);
-//   const navigate = useNavigate();
-//   const handleAddMap = () => {
-//     console.log("Add Map");
-//   };
-//   return (
-//     <>
-//       <div>
-//         <span>{fileName}</span>
-//         <button onClick={handleLoadMap}>Load Map</button>
-//         <input
-//           type="file"
-//           id="mapFile"
-//           ref={fileInput}
-//           onChange={handleMapChange}
-//           style={{ display: "none" }}
-//           accept=".json, .geojson, .kml, .zip"
-//         />
-//       </div>
-//       <div className="step3_maptools">
-//         <MapTool />
-//       </div>
-//       <div className="mapbox">
-//         <ReactMapboxGL
-//           style={{ height: "inherit", width: "inherit" }}
-//           initialViewState={{
-//             longitude: -122.4,
-//             latitude: 37.8,
-//             zoom: 3,
-//           }}
-//           onViewportChange={setViewport}
-//           mapStyle="mapbox://styles/mapbox/outdoors-v11"
-//           mapboxAccessToken={MAPBOX_TOKEN}
-//         >
-//           {selectedMapFile && (
-//             <Source
-//               id="geoSource"
-//               type="geojson"
-//               generateId={true}
-//               data={selectedMapFile}
-//             >
-//               <Layer
-//                 type="fill"
-//                 source="geoSource"
-//                 paint={{
-//                   "fill-color": "#0080ff",
-//                   "fill-opacity": 0.4,
-//                   "fill-outline-color": "#000000",
-//                 }}
-//               />
-//               <Layer
-//                 type="symbol"
-//                 source="geoSource"
-//                 layout={{
-//                   "text-field": ["get", "name"],
-//                 }}
-//               />
-//               <Layer
-//                 id="outline"
-//                 type="line"
-//                 source="geoSource"
-//                 paint={{
-//                   "line-color": "#000",
-//                   "line-width": 3,
-//                 }}
-//               />
-//             </Source>
-//           )}
-//         </ReactMapboxGL>
-//         <div className="btn_container">
-//           {/* <button onClick={prevStep} className="before_btn">
-//             Go Back
-//           </button> */}
-//           <Popup
-//             trigger={<button className="next_btn">Add Map</button>}
-//             modal
-//             nested
-//             closeOnDocumentClick={false}
-//             closeOnEscape={false}
-//           >
-//             {(close) => (
-//               <div className="create_map_modal">
-//                 {mapCreated ? (
-//                   <div className="create_map_modal_content">
-//                     <h3> Map Successfully Created! Explore Other Maps!</h3>
-//                   </div>
-//                 ) : (
-//                   <div>Error Creating Map</div>
-//                 )}
-//                 <div>
-//                   <button onClick={() => navigate("/mainpage")}>
-//                     Go to MainPage
-//                   </button>
-//                 </div>
-//               </div>
-//             )}
-//           </Popup>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Step3;
-// Try2
 import React, { useEffect, useRef, useState } from "react";
 import ReactMapGL, { Source, Layer } from "react-map-gl";
 import mapboxgl from "mapbox-gl"; // Import mapboxgl
 import "./mapbox/mapbox.css";
 
 const Step3 = ({ selectedMapFile }) => {
-  const DEFAULT_GEOJSON =
-    "https://raw.githubusercontent.com/glynnbird/usstatesgeojson/master/california.geojson";
   const [lng, setLng] = useState(-122.48);
   const [lat, setLat] = useState(37.84);
   const [zoom, setZoom] = useState(12);
   const [showModalThematic, setShowModalThematic] = useState(false);
-  const [showModalPie, setShowModalPie] = useState(false);
   const [showModalBar, setShowModalBar] = useState(false);
+  const [showModalPie, setShowModalPie] = useState(false);
+  const [showModalCircle, setShowModalCircle] = useState(false);
+  const [showModalHeat, setShowModalHeat] = useState(false);
   const [feature, setFeature] = useState(null);
   const [inputData, setInputData] = useState(null);
-  const [viewport, setViewport] = useState({
-    latitude: 38.88,
-    longitude: -98,
-    zoom: 3,
+  const [mapInformation, setMapInformation] = useState({
+    mapbook_mapname: "",
+    mapbook_template: "",
+    mapbook_topic: "",
+    mapbook_customtopic: "",
+    mapbook_visibility: false,
+    mapbook_datanames: [],
+    mapbook_heatrange: {},
+    mapbook_heat_selectedcolors: [],
+    mapbook_themedata: [],
   });
+
   const MAPBOX_TOKEN =
     "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
 
-  const mapboxStyle = {
-    /* position: "absolute", */
-    // top: 0,
-    bottom: 100,
-    left: 100,
-    width: "80%",
-    height: "70%",
+  const handleClickRegion = () => {
+    if (selectedMapFile["mapbook_template"] === "Bar Chart")
+      setShowModalBar(!showModalBar);
+    else if (selectedMapFile["mapbook_template"] === "Thematic Map")
+      setShowModalThematic(!showModalThematic);
   };
 
-  const handleClickRegion = () => {
-    if (selectedMapFile["mapbook_template"] == "Bar Chart") setShowModalBar(!showModalBar);
-    else if (selectedMapFile["mapbook_template"] == "Thematic Map") setShowModalThematic(!showModalThematic);
-  }
+  useEffect(() => {
+    setMapInformation({
+      mapbook_mapname: selectedMapFile["mapbook_mapname"],
+      mapbook_template: selectedMapFile["mapbook_template"],
+      mapbook_topic: selectedMapFile["mapbook_topic"],
+      mapbook_customtopic: selectedMapFile["mapbook_customtopic"],
+      mapbook_visibility: selectedMapFile["mapbook_visibility"],
+      mapbook_datanames: selectedMapFile["mapbook_datanames"],
+      mapbook_heatrange: selectedMapFile["mapbook_heatrange"],
+      mapbook_heat_selectedcolors:
+        selectedMapFile["mapbook_heat_selectedcolors"],
+      mapbook_themedata: selectedMapFile["mapbook_themedata"],
+    });
+  }, []);
+  useEffect(() => {
+    console.log(mapInformation);
+  }, [mapInformation]);
 
   const handleAddData = (e) => {
     e.preventDefault();
-    console.log("selectedmapfile specific: ", (selectedMapFile["features"]).filter(m => m === feature));
+    console.log(
+      "selectedmapfile specific: ",
+      selectedMapFile["features"].filter((m) => m === feature)
+    );
     console.log("feature in handleadddata: ", feature);
-    feature[0]["properties"]["mapbook_data"] = { data_value: inputData }
+    feature[0]["properties"]["mapbook_data"] = { data_value: inputData };
     handleClickRegion();
-  }
+  };
 
   const mapContainerRef = useRef(null);
   useEffect(() => {
@@ -334,17 +147,16 @@ const Step3 = ({ selectedMapFile }) => {
           layers: ["counties"],
         });
 
-        // TODO: modify datas 
+        // TODO: modify datas
         // check code below.
         // console.log("selectedFeatures: ", selectedFeatures[0])
         // selectedFeatures[0]["properties"]["mapbook_data"] = { data_value: 1 }
-        console.log("selectedFeatures: after modify: ", selectedFeatures[0])
+        console.log("selectedFeatures: after modify: ", selectedFeatures[0]);
 
         setFeature(selectedFeatures);
 
         const names = selectedFeatures.map(
           (feature) => feature.properties.name
-
         );
         console.log("fips: ", names);
         map.setFilter("counties-highlighted", ["in", "name", ...names]);
@@ -362,16 +174,23 @@ const Step3 = ({ selectedMapFile }) => {
     });
   }, []);
 
-
   return (
     <div className="step3_container">
-      <div ref={mapContainerRef} id="map" style={mapboxStyle}>
+      <div
+        ref={mapContainerRef}
+        id="map"
+        // style={mapboxStyle}
+        style={{ height: "inherit", width: "inherit" }}
+      >
         <div>
           Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
         </div>
         {showModalThematic && (
           <div className="add_map_data_modal">
-            <div className="close_add_map_data_modal" onClick={handleClickRegion}>
+            <div
+              className="close_add_map_data_modal"
+              onClick={handleClickRegion}
+            >
               close
             </div>
             <form onSubmit={handleAddData}>
@@ -389,7 +208,10 @@ const Step3 = ({ selectedMapFile }) => {
         )}
         {showModalBar && (
           <div className="add_map_data_modal">
-            <div className="close_add_map_data_modal" onClick={handleClickRegion}>
+            <div
+              className="close_add_map_data_modal"
+              onClick={handleClickRegion}
+            >
               close
             </div>
             <form onSubmit={handleAddData}>
