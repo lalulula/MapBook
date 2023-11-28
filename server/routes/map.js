@@ -13,4 +13,7 @@ router.get("/getMap/:mapId", auth.verifyToken, map.getMap);
 // REMOVE A MAP & FILE FROM FIREBASE
 router.delete("/:id", auth.verifyToken, map.removeMap);
 
+// like and dislike map
+router.put("/likeMap/:sMapId", map.likeMap);
+
 module.exports = router;

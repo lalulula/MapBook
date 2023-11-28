@@ -13,6 +13,9 @@ const socialRoutes = require("./routes/social");
 const socialCommentRoutes = require("./routes/socialComment");
 const socialCommentReplyRoutes = require("./routes/socialPostReply.js");
 const mapRoutes = require("./routes/map.js");
+const mapCommentRoutes = require("./routes/mapComment.js");
+const mapReplyRoutes = require("./routes/mapReply.js");
+
 
 // IMPORTED CONTROLLERS
 const userController = require("./controllers/users");
@@ -77,6 +80,9 @@ app.use("/api/social", socialRoutes);
 app.use("/api/socialComment", socialCommentRoutes);
 app.use("/api/socialCommentReply", socialCommentReplyRoutes);
 app.use("/api/maps", mapRoutes);
+app.use("/api/mapComment", mapCommentRoutes);
+app.use("/api/mapReply", mapReplyRoutes);
+
 
 // MONGOOSE SETUP
 const PORT = process.env.PORT || 3001;

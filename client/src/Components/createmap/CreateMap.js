@@ -27,15 +27,9 @@ const CreateMap = () => {
 
   const DEFAULT_GEOJSON =
     "https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/us-income.geojson";
-  // Use selectedMapFile
-  const [selectedMapFile, setSelectedMapFile] = useState(DEFAULT_GEOJSON);
-  // const updateGeojsonData = (newGeojsonData) => {
-  //   setSelectedMapFile(newGeojsonData);
-  // };
-  // useEffect(() => {
-  //   console.log(selectedMapFile);
-  // }, [selectedMapFile]);
 
+  const [selectedMapFile, setSelectedMapFile] = useState(DEFAULT_GEOJSON);
+ 
   useEffect(() => {
     // console.log("useEffect: selectedMapFile: ", selectedMapFile);
     const newGeojsonData = {
@@ -50,8 +44,6 @@ const CreateMap = () => {
       mapbook_heat_selectedcolors: selectedColors, // heat color
       mapbook_themedata: themeData, //Color + data name
     };
-    // setGeojsonData(newGeojsonData);
-    // updateGeojsonData(newGeojsonData);
     setSelectedMapFile(newGeojsonData);
 
   }, [options, pieBarData, heatRange, selectedColors, themeData]);

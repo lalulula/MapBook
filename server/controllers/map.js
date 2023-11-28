@@ -171,10 +171,39 @@ const removeMap = async (req, res) => {
   }
 };
 
+
+// Update map like
+const likeMap = async (req, res) => {
+  try {
+    const { sMapId } = req.params;
+    const { userId } = req.body;
+    const mapObj = await MapObj.findById(sMapId);
+    const likedUsers = mapObj["map_users_liked"];
+
+    const index = likedUsers.indexOf(userId);
+    if (index == -1) {
+      likedUsers.push(userId);
+    } else {
+      likedUsers.splice(index, 1);
+    }
+    const updatedMap = await MapObj.findByIdAndUpdate(
+      sMapId,
+      {
+        map_users_liked: likedUsers,
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedMap);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
 module.exports = {
   getMaps: getMaps,
   getMap: getMap,
   createMap: createMap,
   editMap: editMap,
-  removeMap: removeMap
+  removeMap: removeMap,
+  likeMap: likeMap
 };

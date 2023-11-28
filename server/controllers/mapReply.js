@@ -1,8 +1,8 @@
-const MapPostReply = require("../models/MapPostReply");
+const MapPostReply = require("../models/MapReply");
 
 
 // Get all map post reply 
-// return comment ids of post
+// return reply ids of post
 const getAllMapPostReplys = async (req, res) => {
   try {
     const { sCommentId } = req.params;
@@ -27,8 +27,8 @@ const getAllExistingMapPostReplys = async (req, res) => {
 const getMapPostReply = async (req, res) => {
   // console.log(req);
   try {
-    const { sPostReplyId } = req.params;
-    const mapPostReply = await MapPostReply.findById(sPostReplyId);
+    const { sReplyId } = req.params;
+    const mapPostReply = await MapPostReply.findById(sReplyId);
     res.status(200).json(mapPostReply);
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -59,11 +59,11 @@ const createMapPostReply = async (req, res) => {
 // Update comment by map comment id
 const editMapPostReply = async (req, res) => {
   try {
-    const { sPostReplyId } = req.params;
+    const { sReplyId } = req.params;
     const { map_reply_content } = req.body;
 
     const updatedPostReply = await MapPostReply.findByIdAndUpdate(
-      sPostReplyId,
+      sReplyId,
       {
         map_reply_content: map_reply_content,
       },
@@ -80,10 +80,10 @@ const editMapPostReply = async (req, res) => {
 const deleteMapPostReply = async (req, res) => {
   console.log(req.params);
   try {
-    const { sPostReplyId } = req.params;
+    const { sReplyId } = req.params;
 
     // remove mapComment id from mapPost
-    const mapPostReply = await MapPostReply.findById(sPostReplyId);
+    const mapPostReply = await MapPostReply.findById(sReplyId);
 
     await MapPostReply.findByIdAndDelete(mapPostReply);
     // return res.status(200).json(mapPost);

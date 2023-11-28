@@ -1,4 +1,4 @@
-const MapPost = require("../models/MapPost");
+const MapPost = require("../models/MapObj");
 const MapComment = require("../models/MapComment");
 
 
