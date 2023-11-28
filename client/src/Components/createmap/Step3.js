@@ -52,6 +52,7 @@ const Step3 = ({ selectedMapFile }) => {
   }, []);
   useEffect(() => {
     console.log(mapInformation);
+    console.log(selectedMapFile);
   }, [mapInformation]);
 
   const handleAddData = (e) => {
@@ -67,7 +68,7 @@ const Step3 = ({ selectedMapFile }) => {
 
   const mapContainerRef = useRef(null);
   useEffect(() => {
-    console.log(selectedMapFile);
+    // console.log(selectedMapFile);
     let map;
 
     mapboxgl.accessToken = MAPBOX_TOKEN;
