@@ -85,11 +85,12 @@ const Step3 = ({ selectedMapFile }) => {
     for (var i = 0; i < tempArr.length; i++) {
       if (tempArr[i]["properties"].name == feature[0]["properties"].name) {
         console.log("hi");
-        selectedMapFile["features"][i] = feature;
+        selectedMapFile["features"][i] = feature[0];
         break;
       }
     }
 
+    console.log("updated selectedmapfile: ", selectedMapFile);
     handleClickRegion();
   };
 
@@ -163,8 +164,19 @@ const Step3 = ({ selectedMapFile }) => {
         // "building"
       );
 
+      map.addLayer(
+        {
+          id: 'data-labels',
+          type: 'symbol',
+          source: 'counties',
+          layout: {
+            'text-field': ['get', 'income_grp'],
+            'text-size': 20,
+          },
+        });
+
       map.on("click", (e) => {
-        console.log(e);
+        console.log("this is e: ", e);
         const bbox = [
           [e.point.x, e.point.y],
           [e.point.x, e.point.y],
@@ -174,11 +186,19 @@ const Step3 = ({ selectedMapFile }) => {
           layers: ["counties"],
         });
 
-        setFeature(selectedFeatures);
 
         const names = selectedFeatures.map(
           (feature) => feature.properties.name
         );
+
+        const newSelectedFeature = selectedMapFile["features"].filter((f) => (
+          f["properties"].name === names[0]
+        ))
+
+        console.log("selectedfeatures: ", newSelectedFeature);
+
+        setFeature(newSelectedFeature);
+
         console.log("fips: ", names);
         map.setFilter("counties-highlighted", ["in", "name", ...names]);
         handleClickRegion();
