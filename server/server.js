@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const multer = require("multer");
-const cloudinary = require('cloudinary').v2;
+const cloudinary = require("cloudinary").v2;
 
 // UTILS
 const auth = require("./middleware/auth.js");
@@ -33,23 +33,42 @@ cloudinary.config({
 
 // IMG FILE STORAGE
 const storage = multer.diskStorage({
-  filename: function (req,file,cb) {
-    cb(null, file.originalname)
-  }
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
 });
 
-const upload = multer({storage: storage});
+const upload = multer({ storage: storage });
 
 const fileUpload = multer({ storage: multer.memoryStorage() });
 
 // ROUTES WITH FILES
-app.put('/api/users/:id', upload.single('image'), auth.verifyToken, userController.updateUser);
+app.put(
+  "/api/users/:id",
+  upload.single("image"),
+  auth.verifyToken,
+  userController.updateUser
+);
 // Create Post
-app.put("/api/social/createSocialPost", upload.array('post_images'), socialController.createPost);
+app.put(
+  "/api/social/createSocialPost",
+  upload.array("post_images"),
+  socialController.createPost
+);
 // CREATE MAP
-app.post("/api/maps", fileUpload.single('file'), auth.verifyToken, mapController.createMap);
+app.post(
+  "/api/maps",
+  fileUpload.single("file"),
+  auth.verifyToken,
+  mapController.createMap
+);
 // UPDATE MAP
-app.put("/api/maps/:mapId", fileUpload.single('file'), auth.verifyToken, mapController.editMap);
+app.put(
+  "/api/maps/:mapId",
+  fileUpload.single("file"),
+  auth.verifyToken,
+  mapController.editMap
+);
 
 // ROUTES
 app.use("/api/auth", authRoutes);
@@ -59,13 +78,12 @@ app.use("/api/socialComment", socialCommentRoutes);
 app.use("/api/socialCommentReply", socialCommentReplyRoutes);
 app.use("/api/maps", mapRoutes);
 
-
 // MONGOOSE SETUP
 const PORT = process.env.PORT || 3001;
 mongoose
   .connect(process.env.MONGO_URL, {})
   .then(() => {
-    if (process.env.NODE_ENV !== 'test') {
+    if (process.env.NODE_ENV !== "test") {
       app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
     }
   })
