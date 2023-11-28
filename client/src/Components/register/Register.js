@@ -226,8 +226,7 @@ const Register = () => {
         </div>
         {failed && (
           <p className="ui negative mini message">
-            Registration failed. Please check your information or enter a
-            different username.
+            Registration failed. Please check your information and make sure that the account has not been created.
           </p>
         )}
       </Form>
