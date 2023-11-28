@@ -79,7 +79,7 @@ const ImportInitData = ({ setSkipSteps, setSelectedMapFile }) => {
           mapbook_customtopic: "",
           mapbook_visibility: "",
           mapbook_datanames: [], //piebar
-          mapbook_heatrange: { from: 0, to: 0, width: 0 }, // heat range
+          mapbook_heatrange: [], // heat range
           mapbook_heat_selectedcolors: [], // heat color
           mapbook_themedata: [], //Color + data name
         };

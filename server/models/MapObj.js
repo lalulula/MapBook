@@ -25,28 +25,6 @@ const MapObjSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  template: {
-    type: String,
-    enum: ["heat", "thematic", "circle", "pie", "bar"],
-    required: true,
-  },
-  colors: {
-    type: String,
-    required: true,
-  },
-  data_names: {
-    type: Array,
-    // required: true,
-  },
-  data_values: {
-    type: Map,
-    of: Number,
-    // required: true,
-  },
-  heat_range: {
-    type: Array,
-    default: [0, 0, 0, 0, 0],
-  },
   map_users_liked: {
     type: [mongoose.Schema.Types.ObjectId],
   },
