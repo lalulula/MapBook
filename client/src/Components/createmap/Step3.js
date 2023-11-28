@@ -32,7 +32,7 @@ const Step3 = ({ selectedMapFile }) => {
   const handleClickRegion = () => {
     if (selectedMapFile["mapbook_template"] === "Bar Chart")
       setShowModalBar(!showModalBar);
-    else if (selectedMapFile["mapbook_template"] === "Thematic Map")
+    else if (mapInformation["mapbook_template"] === "Thematic Map")
       setShowModalThematic(!showModalThematic);
   };
 
@@ -65,11 +65,10 @@ const Step3 = ({ selectedMapFile }) => {
     if (tempArr.length <= 0 || feature[0] == null) {
       return;
     }
-    feature[0]["properties"]["mapbook_data"] = { data_value: inputData }
+    feature[0]["properties"]["mapbook_data"] = { data_value: inputData };
     for (var i = 0; i < tempArr.length; i++) {
-
-      if (((tempArr[i])["properties"]).name == feature[0]["properties"].name) {
-        console.log('hi');
+      if (tempArr[i]["properties"].name == feature[0]["properties"].name) {
+        console.log("hi");
         selectedMapFile["features"][i] = feature;
         break;
       }
@@ -102,7 +101,6 @@ const Step3 = ({ selectedMapFile }) => {
       console.log("ON LOAD selectedMapFile: ", selectedMapFile);
       map.addSource("counties", {
         type: "geojson",
-        // data: "https://raw.githubusercontent.com/glynnbird/usstatesgeojson/master/california.geojson"
         data: selectedMapFile,
       });
 
@@ -160,13 +158,6 @@ const Step3 = ({ selectedMapFile }) => {
           layers: ["counties"],
         });
 
-        // TODO: modify datas
-        // check code below.
-        // console.log("selectedFeatures: ", selectedFeatures[0])
-        // selectedFeatures[0]["properties"]["mapbook_data"] = { data_value: 1 }
-        console.log("selectedmapfile: ", selectedMapFile);
-        console.log("selectedFeatures: after modify: ", selectedFeatures[0])
-
         setFeature(selectedFeatures);
 
         const names = selectedFeatures.map(
@@ -176,15 +167,6 @@ const Step3 = ({ selectedMapFile }) => {
         map.setFilter("counties-highlighted", ["in", "name", ...names]);
         handleClickRegion();
       });
-
-      // // Add a click event listener to the map
-      // map.on('click', 'your-geojson-layer', (e) => {
-      //   // Handle the click event here
-      //   console.log("event e: ", e)
-
-      //   const feature = e.features[0];
-      //   console.log('Clicked feature:', feature);
-      // });
     });
   }, []);
 
