@@ -30,6 +30,8 @@ const Step3 = ({ selectedMapFile }) => {
   };
 
   const handlePieBarInputChange = (dataname, value) => {
+    console.log("dataname: ", dataname);
+    console.log("value: ", value);
     setInputData((prevInputData) => ({
       ...prevInputData,
       [dataname]: value,
@@ -38,7 +40,7 @@ const Step3 = ({ selectedMapFile }) => {
   useEffect(() => {
     console.log(inputData);
   });
-  const handleAddData = (e) => {
+  /* const handleAddData = (e) => {
     e.preventDefault();
     var tempArr = selectedMapFile["features"];
 
@@ -50,6 +52,7 @@ const Step3 = ({ selectedMapFile }) => {
         [selectedMapFile["mapbook_circlemapdata"]]: inputData,
       };
     } else if (setShowModalPie || setShowModalBar) {
+      console.log("input data on submit: ", inputData);
       feature[0]["properties"]["mapbook_data"] = inputData;
     } else if (setShowModalThematic) {
       feature[0]["properties"]["mapbook_data"] = inputData;
@@ -58,8 +61,38 @@ const Step3 = ({ selectedMapFile }) => {
     }
     for (var i = 0; i < tempArr.length; i++) {
       if (tempArr[i]["properties"].name === feature[0]["properties"].name) {
-        console.log("hi");
         selectedMapFile["features"][i] = feature[0];
+        console.log("Data added!");
+        break;
+      }
+    }
+
+    console.log("updated selectedmapfile: ", selectedMapFile);
+    handleClickRegion();
+  }; */
+  const handleAddData = (e) => {
+    e.preventDefault();
+    var tempArr = selectedMapFile["features"];
+
+    if (tempArr.length <= 0 || feature[0] == null) {
+      return;
+    }
+    if (showModalCircle) {
+      feature[0]["properties"]["mapbook_data"] = {
+        [selectedMapFile["mapbook_circlemapdata"]]: inputData,
+      };
+    } else if (showModalPie || showModalBar) {
+      console.log("input data on submit: ", inputData);
+      feature[0]["properties"]["mapbook_data"] = inputData;
+    } else if (showModalThematic) {
+      feature[0]["properties"]["mapbook_data"] = inputData;
+    } else if (showModalHeat) {
+      feature[0]["properties"]["mapbook_data"] = inputData;
+    }
+    for (var i = 0; i < tempArr.length; i++) {
+      if (tempArr[i]["properties"].name === feature[0]["properties"].name) {
+        selectedMapFile["features"][i] = feature[0];
+        console.log("Data added!");
         break;
       }
     }
@@ -143,8 +176,8 @@ const Step3 = ({ selectedMapFile }) => {
         type: "symbol",
         source: "counties",
         layout: {
-          "text-field": ["get", "income_grp"],
-          "text-size": 20,
+          "text-field": ["get", "name"],
+          "text-size": 15,
         },
       });
 
@@ -199,13 +232,14 @@ const Step3 = ({ selectedMapFile }) => {
             (selectedMapFile["mapbook_visibility"] === "true"
               ? "Private"
               : "Public",
-            "\n")
+              "\n")
           }
         </div>
 
         {/* Pie & Bar Modal - Inprogress*/}
         {(showModalPie || showModalBar) && (
           <div className="add_map_data_modal">
+            {console.log("FDKFJLSDJFLDS")}
             PIEBAR
             <div
               className="close_add_map_data_modal"
@@ -220,7 +254,7 @@ const Step3 = ({ selectedMapFile }) => {
                   <input
                     type="text"
                     onChange={(e) =>
-                      handlePieBarInputChange(index, e.target.value)
+                      handlePieBarInputChange(dataname, e.target.value)
                     }
                   />
                 </label>
