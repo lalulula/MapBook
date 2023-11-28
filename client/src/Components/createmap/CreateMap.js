@@ -22,7 +22,7 @@ const CreateMap = () => {
   const [pieBarData, setPieBarData] = useState([""]); //data names for pie & bar
   const [themeData, setThemeData] = useState([{ data: "", color: "#fff" }]); //Theme: color and dataname
   const [selectedColors, setSelectedColors] = useState([]); //HEATMAP: color for each range
-  const [heatRange, setHeatRange] = useState([]); //HEATMAP: range value
+  const [heatRange, setHeatRange] = useState({ from: 0, to: 0 }); //HEATMAP: range value
   const [skipStep, setSkipSteps] = useState(false);
   const [importDataOpen, setImportDataOpen] = useState(true);
 
