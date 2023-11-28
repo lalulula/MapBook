@@ -246,9 +246,24 @@ const Step3 = ({ selectedMapFile }) => {
 
   const handleAddData = (e) => {
     e.preventDefault();
-    console.log("selectedmapfile specific: ", (selectedMapFile["features"]).filter(m => m === feature));
-    console.log("feature in handleadddata: ", feature);
+    var index = 0;
+    /* console.log("selectedmapfile specific: ", (selectedMapFile["features"]).map((m) => (m["properties"]).name == feature[0]["properties"].name));
+    console.log("feature in handleadddata: ", feature); */
+    var tempArr = selectedMapFile["features"];
+
+    if (tempArr.length <= 0 || feature[0] == null) {
+      return;
+    }
     feature[0]["properties"]["mapbook_data"] = { data_value: inputData }
+    for (var i = 0; i < tempArr.length; i++) {
+
+      if (((tempArr[i])["properties"]).name == feature[0]["properties"].name) {
+        console.log('hi');
+        selectedMapFile["features"][i] = feature;
+        break;
+      }
+    }
+
     handleClickRegion();
   }
 
@@ -273,7 +288,7 @@ const Step3 = ({ selectedMapFile }) => {
     });
 
     map.on("load", () => {
-      console.log("selectedMapFile: ", selectedMapFile);
+      console.log("ON LOAD selectedMapFile: ", selectedMapFile);
       map.addSource("counties", {
         type: "geojson",
         // data: "https://raw.githubusercontent.com/glynnbird/usstatesgeojson/master/california.geojson"
@@ -338,6 +353,7 @@ const Step3 = ({ selectedMapFile }) => {
         // check code below.
         // console.log("selectedFeatures: ", selectedFeatures[0])
         // selectedFeatures[0]["properties"]["mapbook_data"] = { data_value: 1 }
+        console.log("selectedmapfile: ", selectedMapFile);
         console.log("selectedFeatures: after modify: ", selectedFeatures[0])
 
         setFeature(selectedFeatures);
