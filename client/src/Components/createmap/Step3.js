@@ -4,6 +4,8 @@ import mapboxgl from "mapbox-gl"; // Import mapboxgl
 import "./mapbox/mapbox.css";
 
 const Step3 = ({ selectedMapFile }) => {
+  const MAPBOX_TOKEN =
+    "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
   const [lng, setLng] = useState(-122.48);
   const [lat, setLat] = useState(37.84);
   const [zoom, setZoom] = useState(12);
@@ -25,17 +27,6 @@ const Step3 = ({ selectedMapFile }) => {
     mapbook_heat_selectedcolors: [],
     mapbook_themedata: [],
   });
-
-  const MAPBOX_TOKEN =
-    "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
-
-  const handleClickRegion = () => {
-    if (selectedMapFile["mapbook_template"] === "Bar Chart")
-      setShowModalBar(!showModalBar);
-    else if (mapInformation["mapbook_template"] === "Thematic Map")
-      setShowModalThematic(!showModalThematic);
-  };
-
   useEffect(() => {
     setMapInformation({
       mapbook_mapname: selectedMapFile["mapbook_mapname"],
@@ -54,6 +45,25 @@ const Step3 = ({ selectedMapFile }) => {
     console.log(mapInformation);
     console.log(selectedMapFile);
   }, [mapInformation]);
+
+  // const handleClickRegion = () => {
+  //   if (mapInformation["mapbook_template"] === "Bar Chart")
+  //     setShowModalBar(!showModalBar);
+  //   else if (mapInformation["mapbook_template"] === "Thematic Map")
+  //     setShowModalThematic(!showModalThematic);
+  //   else if (mapInformation["mapbook_template"] === "Pie Chart")
+  //     setShowModalPie(!showModalThematic);
+  //   else if (mapInformation["mapbook_template"] === "Circle Map")
+  //     setShowModalCircle(!showModalThematic);
+  //   else if (mapInformation["mapbook_template"] === "Heat Map")
+  //     setShowModalHeat(!showModalThematic);
+  // };
+  const handleClickRegion = () => {
+    if (selectedMapFile["mapbook_template"] === "Bar Chart")
+      setShowModalBar(!showModalBar);
+    else if (selectedMapFile["mapbook_template"] === "Thematic Map")
+      setShowModalThematic(!showModalThematic);
+  };
 
   const handleAddData = (e) => {
     e.preventDefault();
@@ -181,6 +191,7 @@ const Step3 = ({ selectedMapFile }) => {
         <div>
           Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
         </div>
+        {/* Thematic Modal */}
         {showModalThematic && (
           <div className="add_map_data_modal">
             <div
@@ -202,6 +213,7 @@ const Step3 = ({ selectedMapFile }) => {
             </form>
           </div>
         )}
+        {/* Bar Modal */}
         {showModalBar && (
           <div className="add_map_data_modal">
             <div
@@ -223,6 +235,9 @@ const Step3 = ({ selectedMapFile }) => {
             </form>
           </div>
         )}
+        {/* Circle Modal */}
+        {/* Pie Modal */}
+        {/* Heat Modal */}
       </div>
     </div>
   );
