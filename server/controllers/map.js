@@ -80,8 +80,6 @@ const createMap = async (req, res) => {
 };
 
 
-
-
 // Update map
 const editMap = async (req, res) => {
   try {
