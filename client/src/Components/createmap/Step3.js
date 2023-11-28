@@ -75,11 +75,14 @@ const Step3 = ({ selectedMapFile }) => {
     }));
   };
 
-  const handleThematicData = (datavalue) => {
+  const handleThematicData = (data, value) => {
+    console.log(data, value);
+
     setInputData((prevInputData) => ({
       ...prevInputData,
-      value: datavalue,
-      // color: color,
+      data: data["data"],
+      color: data["color"],
+      value: value,
     }));
   };
 
@@ -266,7 +269,6 @@ const Step3 = ({ selectedMapFile }) => {
         {/* Pie & Bar Modal - DONE*/}
         {(showModalPie || showModalBar) && (
           <div className="add_map_data_modal">
-            {console.log("FDKFJLSDJFLDS")}
             PIEBAR
             <div
               className="close_add_map_data_modal"
@@ -323,13 +325,15 @@ const Step3 = ({ selectedMapFile }) => {
               close
             </div>
             <form onSubmit={handleAddData}>
-              <label>
-                data:
-                <input
-                  type="text"
-                  onChange={(e) => handleThematicData(e.target.value)}
-                />
-              </label>
+              {selectedMapFile["mapbook_themedata"].map((data, index) => (
+                <label key={index}>
+                  {data["data"]}:
+                  <input
+                    type="text"
+                    onChange={(e) => handleThematicData(data, e.target.value)}
+                  />
+                </label>
+              ))}
               <button type="submit">Submit</button>
             </form>
           </div>
