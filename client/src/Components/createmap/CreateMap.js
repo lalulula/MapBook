@@ -14,7 +14,7 @@ const CreateMap = () => {
   const [options, setOptions] = useState({
     name: "",
     topic: "",
-    circleMapData: "",
+    circleHeatMapData: "",
     customTopic: "",
     template: "",
     isPrivate: false,
@@ -37,7 +37,7 @@ const CreateMap = () => {
       ...selectedMapFile,
       mapbook_mapname: options.name,
       mapbook_template: options.template,
-      mapbook_circlemapdata: options.circleMapData,
+      mapbook_circleheatmapdata: options.circleHeatMapData,
       mapbook_topic: options.topic,
       mapbook_customtopic: options.customTopic,
       mapbook_visibility: options.isPrivate,

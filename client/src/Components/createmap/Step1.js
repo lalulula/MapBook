@@ -21,9 +21,9 @@ const Step1 = ({ nextStep, options, setOptions }) => {
     const newVal = template.value;
     setOptions({ ...options, template: newVal });
   };
-  const handleCircleMapDataChange = (circleData) => {
+  const handleCircleHeatMapDataChange = (circleData) => {
     const newVal = circleData;
-    setOptions({ ...options, circleMapData: newVal });
+    setOptions({ ...options, circleHeatMapData: newVal });
   };
   const handlePrivacy = (e) => {
     setOptions({ ...options, isPrivate: e.target.checked });
@@ -93,9 +93,16 @@ const Step1 = ({ nextStep, options, setOptions }) => {
         />
         {options.template === "Circle Map" && (
           <input
-            value={options.circleMapData}
-            placeholder="Enter Data Name"
-            onChange={(e) => handleCircleMapDataChange(e.target.value)}
+            value={options.circleHeatMapData}
+            placeholder="Enter CircleMap Data Name"
+            onChange={(e) => handleCircleHeatMapDataChange(e.target.value)}
+          />
+        )}
+        {options.template === "Heat Map" && (
+          <input
+            value={options.circleHeatMapData}
+            placeholder="Enter HeatMap Data Name"
+            onChange={(e) => handleCircleHeatMapDataChange(e.target.value)}
           />
         )}
       </div>

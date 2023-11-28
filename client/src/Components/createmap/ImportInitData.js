@@ -74,7 +74,7 @@ const ImportInitData = ({ setSkipSteps, setSelectedMapFile }) => {
           ...parsedData,
           mapbook_mapname: "",
           mapbook_template: "",
-          mapbook_circlemapdata: "",
+          mapbook_circleheatmapdata: "",
           mapbook_topic: "",
           mapbook_customtopic: "",
           mapbook_visibility: "",
