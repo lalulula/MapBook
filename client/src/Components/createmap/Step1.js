@@ -29,9 +29,9 @@ const Step1 = ({ nextStep, options, setOptions }) => {
     setOptions({ ...options, isPrivate: e.target.checked });
   };
 
-  useEffect(() => {
-    console.log(options);
-  }, [options]);
+  // useEffect(() => {
+  //   console.log(options);
+  // }, [options]);
 
   const topics = [
     "Economy",

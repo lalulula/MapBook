@@ -19,23 +19,27 @@ const Step3 = ({ selectedMapFile }) => {
   const handleClickRegion = () => {
     if (selectedMapFile["mapbook_template"] === "Bar Chart")
       setShowModalBar(!showModalBar);
+    else if (selectedMapFile["mapbook_template"] === "Pie Chart")
+      setShowModalPie(!showModalPie);
+    else if (selectedMapFile["mapbook_template"] === "Circle Map")
+      setShowModalCircle(!showModalCircle);
     else if (selectedMapFile["mapbook_template"] === "Thematic Map")
       setShowModalThematic(!showModalThematic);
-    else if (selectedMapFile["mapbook_template"] === "Pie Chart")
-      setShowModalPie(!showModalThematic);
-    else if (selectedMapFile["mapbook_template"] === "Circle Map")
-      setShowModalCircle(!showModalThematic);
     else if (selectedMapFile["mapbook_template"] === "Heat Map")
-      setShowModalHeat(!showModalThematic);
+      setShowModalHeat(!showModalHeat);
+  };
+
+  const handlePieBarInputChange = (dataname, value) => {
+    setInputData((prevInputData) => ({
+      ...prevInputData,
+      [dataname]: value,
+    }));
   };
   useEffect(() => {
-    console.log(selectedMapFile["mapbook_circlemapdata"]);
-  }, []);
+    console.log(inputData);
+  });
   const handleAddData = (e) => {
     e.preventDefault();
-    var index = 0;
-    /* console.log("selectedmapfile specific: ", (selectedMapFile["features"]).map((m) => (m["properties"]).name == feature[0]["properties"].name));
-  console.log("feature in handleadddata: ", feature); */
     var tempArr = selectedMapFile["features"];
 
     if (tempArr.length <= 0 || feature[0] == null) {
@@ -45,22 +49,20 @@ const Step3 = ({ selectedMapFile }) => {
       feature[0]["properties"]["mapbook_data"] = {
         [selectedMapFile["mapbook_circlemapdata"]]: inputData,
       };
-      for (var i = 0; i < tempArr.length; i++) {
-        if (tempArr[i]["properties"].name === feature[0]["properties"].name) {
-          console.log("hi");
-          selectedMapFile["features"][i] = feature[0];
-          break;
-        }
+    } else if (setShowModalPie || setShowModalBar) {
+      feature[0]["properties"]["mapbook_data"] = inputData;
+    } else if (setShowModalThematic) {
+      feature[0]["properties"]["mapbook_data"] = inputData;
+    } else if (setShowModalHeat) {
+      feature[0]["properties"]["mapbook_data"] = inputData;
+    }
+    for (var i = 0; i < tempArr.length; i++) {
+      if (tempArr[i]["properties"].name === feature[0]["properties"].name) {
+        console.log("hi");
+        selectedMapFile["features"][i] = feature[0];
+        break;
       }
     }
-    // feature[0]["properties"]["mapbook_data"] = { data_value: inputData };
-    // for (var i = 0; i < tempArr.length; i++) {
-    //   if (tempArr[i]["properties"].name == feature[0]["properties"].name) {
-    //     console.log("hi");
-    //     selectedMapFile["features"][i] = feature[0];
-    //     break;
-    //   }
-    // }
 
     console.log("updated selectedmapfile: ", selectedMapFile);
     handleClickRegion();
@@ -200,6 +202,55 @@ const Step3 = ({ selectedMapFile }) => {
             "\n")
           }
         </div>
+
+        {/* Pie & Bar Modal - Inprogress*/}
+        {(showModalPie || showModalBar) && (
+          <div className="add_map_data_modal">
+            PIEBAR
+            <div
+              className="close_add_map_data_modal"
+              onClick={handleClickRegion}
+            >
+              close
+            </div>
+            <form onSubmit={handleAddData}>
+              {selectedMapFile["mapbook_datanames"].map((dataname, index) => (
+                <label key={index}>
+                  {dataname}:
+                  <input
+                    type="text"
+                    onChange={(e) =>
+                      handlePieBarInputChange(index, e.target.value)
+                    }
+                  />
+                </label>
+              ))}
+              <button type="submit">Submit</button>
+            </form>
+          </div>
+        )}
+        {/* Circle Modal - DONE */}
+        {showModalCircle && (
+          <div className="add_map_data_modal">
+            <div
+              className="close_add_map_data_modal"
+              onClick={handleClickRegion}
+            >
+              close
+            </div>
+            <form onSubmit={handleAddData}>
+              <label>
+                {selectedMapFile["mapbook_circlemapdata"]}
+                <input
+                  type="text"
+                  onChange={(e) => setInputData(e.target.value)}
+                />
+              </label>
+              <button type="submit">Submit</button>
+            </form>
+          </div>
+        )}
+
         {/* Thematic Modal */}
         {showModalThematic && (
           <div className="add_map_data_modal">
@@ -214,7 +265,6 @@ const Step3 = ({ selectedMapFile }) => {
                 data:
                 <input
                   type="text"
-                  /* value={newComment} */
                   onChange={(e) => setInputData(e.target.value)}
                 />
               </label>
@@ -222,72 +272,7 @@ const Step3 = ({ selectedMapFile }) => {
             </form>
           </div>
         )}
-        {/* Bar Modal */}
-        {showModalBar && (
-          <div className="add_map_data_modal">
-            <div
-              className="close_add_map_data_modal"
-              onClick={handleClickRegion}
-            >
-              close
-            </div>
-            <form onSubmit={handleAddData}>
-              <label>
-                data for bar:
-                <input
-                  type="text"
-                  /* value={newComment} */
-                  onChange={(e) => setInputData(e.target.value)}
-                />
-              </label>
-              <button type="submit">Submit</button>
-            </form>
-          </div>
-        )}
-        {/* Circle Modal */}
-        {showModalCircle && (
-          <div className="add_map_data_modal">
-            <div
-              className="close_add_map_data_modal"
-              onClick={handleClickRegion}
-            >
-              close
-            </div>
-            <form onSubmit={handleAddData}>
-              <label>
-                {selectedMapFile["mapbook_circlemapdata"]}
-                <input
-                  type="text"
-                  /* value={newComment} */
-                  onChange={(e) => setInputData(e.target.value)}
-                />
-              </label>
-              <button type="submit">Submit</button>
-            </form>
-          </div>
-        )}
-        {/* Pie Modal */}
-        {showModalPie && (
-          <div className="add_map_data_modal">
-            <div
-              className="close_add_map_data_modal"
-              onClick={handleClickRegion}
-            >
-              close
-            </div>
-            <form onSubmit={handleAddData}>
-              <label>
-                data:
-                <input
-                  type="text"
-                  /* value={newComment} */
-                  onChange={(e) => setInputData(e.target.value)}
-                />
-              </label>
-              <button type="submit">Submit</button>
-            </form>
-          </div>
-        )}
+
         {/* Heat Modal */}
         {showModalHeat && (
           <div className="add_map_data_modal">
@@ -302,7 +287,6 @@ const Step3 = ({ selectedMapFile }) => {
                 data:
                 <input
                   type="text"
-                  /* value={newComment} */
                   onChange={(e) => setInputData(e.target.value)}
                 />
               </label>
