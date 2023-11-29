@@ -23,6 +23,7 @@ const SocialComments = () => {
     const { id } = useParams();
     const [showingComment, setShowingComment] = useState(false);
     const [replyingCommentId, setReplyingCommentId] = useState(null);
+    const [tempCommentId, setTempCommentId] = useState(null);
 
     const currentUserId = useSelector((state) => state.user.id);
 
@@ -92,7 +93,9 @@ const SocialComments = () => {
     }
 
     const handleClickReplyComment = (cid) => {
+        console.log("clicked reply! ", cid);
         setReplyingCommentId(cid);
+        setTempCommentId(cid);
     }
 
     const getUserInfo = async (comment) => {
@@ -154,7 +157,6 @@ const SocialComments = () => {
                     <div>
                         <h3>Comments</h3>
                         <hr id="socialcommentsline"></hr>
-                        {console.log("FINAL COMMENTS IN DIV: ", finalComments)}
                         {finalComments.map((comment, i) => (
                             <div className="social_comment" key={i}>
                                 <div className="social_comment_header">
@@ -164,66 +166,57 @@ const SocialComments = () => {
                                 {editingCommentId === comment._id ? (
                                     <div>
                                         <textarea className="edit_comment_input" value={commentText} onChange={(e) => setCommentText(e.target.value)} />
-                                        {/* {console.log("commentID in the div: ", comment._id)}
-                                        {console.log("editingcomId in the div: ", editingCommentId)} */}
                                         <button className="save_comment_changes" onClick={() => handleEditCommentSave(comment._id)}>
                                             save
                                         </button>
-                                        {/* <div className="comment_replies">
-                                        {sampleReplies.map((reply) => (
-                                            <div>
-                                                {reply.commentId == comment._id && (
-                                                    <div className="comment_reply">
-                                                        <div className="comment_reply_top">
-                                                            <img className="social_comment_profile_img" src={defaultImg} />
-                                                            {reply.user}
-                                                        </div>
-                                                        {reply.reply}
+                                        <div className="social_comment_replies_container">
+                                            <SocialReplies commentId={comment._id} replyingCommentId={replyingCommentId} tempCommentId={tempCommentId} />
+                                        </div>
+                                        <div className="comment_tools">
+                                            {comment.social_comment_owner == currentUserId && (
+                                                <div className="social_comment_bottom">
+                                                    <div className="edit_comment_btn" onClick={() => handleClickEditComment(comment._id)}>
+                                                        <EditIcon />
+                                                        Edit comment
                                                     </div>
-                                                )}
-                                            </div>
-                                        )
-                                        )}
-                                    </div> */}
-                                        <div className="social_comment_bottom">
-                                            <div className="edit_comment_btn" onClick={() => handleClickEditComment(comment._id)}>
-                                                <EditIcon />
-                                                Edit comment
-                                            </div>
-                                            <div className="delete_comment_btn" onClick={() => handleDeleteComment(comment._id)}>
-                                                <DeleteIcon />
-                                                Delete comment
-                                            </div>
-                                            {/* <div className="delete_comment_btn" onClick={() => handleReplyComment(comment._id)}>
+                                                    <div className="delete_comment_btn" onClick={() => handleDeleteComment(comment._id)}>
+                                                        <DeleteIcon />
+                                                        Delete comment
+                                                    </div>
+                                                </div>
+                                            )
+                                            }
+                                            <div className="reply_comment_btn" onClick={() => handleClickReplyComment(comment._id)}>
                                                 <ChatBubbleOutlineIcon />
                                                 Reply
-                                            </div> */}
+                                            </div>
                                         </div>
                                     </div>
                                 ) : (
                                     <div>
                                         <p className="social_comment_content">{comment.social_comment_content}</p>
                                         <div className="social_comment_replies_container">
-                                            <SocialReplies commentId={comment._id} replyingCommentId={replyingCommentId} setReplyingCommentId={setReplyingCommentId} />
+                                            <SocialReplies commentId={comment._id} replyingCommentId={replyingCommentId} setReplyingCommentId={setReplyingCommentId} tempCommentId={tempCommentId} />
                                         </div>
-                                        {comment.social_comment_owner == currentUserId && (
-                                            <div className="social_comment_bottom">
-                                                <div className="edit_comment_btn" onClick={() => handleClickEditComment(comment._id)}>
-                                                    <EditIcon />
-                                                    Edit comment
+                                        <div className="comment_tools">
+                                            {comment.social_comment_owner == currentUserId && (
+                                                <div className="social_comment_bottom">
+                                                    <div className="edit_comment_btn" onClick={() => handleClickEditComment(comment._id)}>
+                                                        <EditIcon />
+                                                        Edit comment
+                                                    </div>
+                                                    <div className="delete_comment_btn" onClick={() => handleDeleteComment(comment._id)}>
+                                                        <DeleteIcon />
+                                                        Delete comment
+                                                    </div>
                                                 </div>
-                                                <div className="delete_comment_btn" onClick={() => handleDeleteComment(comment._id)}>
-                                                    <DeleteIcon />
-                                                    Delete comment
-                                                </div>
-                                                <div className="delete_comment_btn" onClick={() => handleClickReplyComment(comment._id)}>
-                                                    <ChatBubbleOutlineIcon />
-                                                    Reply
-                                                </div>
+                                            )
+                                            }
+                                            <div className="reply_comment_btn" onClick={() => handleClickReplyComment(comment._id)}>
+                                                <ChatBubbleOutlineIcon />
+                                                Reply
                                             </div>
-                                        )
-                                        }
-
+                                        </div>
                                     </div>
                                 )}
 
