@@ -14,7 +14,6 @@ import LikeButton from "../buttons/LikeButton";
 import defaultUserImg from "../../assets/img/user.png";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import SocialCommentSection from "../comments/SocialCommentSection";
 
 const SocialPostDetails = () => {
   const { id } = useParams();

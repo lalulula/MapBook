@@ -10,6 +10,7 @@ import { createSocialCommentAPIMethod, deleteSocialCommentAPIMethod, getAllExist
 import { getAllUsersAPIMethod } from "../../api/user";
 import { useSelector } from "react-redux";
 import { getUserById } from "../../api/user";
+import SocialReplies from "./SocialReplies";
 
 const SocialComments = () => {
     const [allUsers, setAllUsers] = useState(null);
@@ -19,14 +20,11 @@ const SocialComments = () => {
     const [newComment, setNewComment] = useState('');
     const [commentText, setCommentText] = useState('');
     const [editingCommentId, setEditingCommentId] = useState(null);
-    const [isReplying, setIsReplying] = useState(false);
-    const [replyingCommentId, setReplyingCommentId] = useState(null);
-    const [replyText, setReplyText] = useState('');
-    const [newReply, setNewReply] = useState('');
     const { id } = useParams();
     const [showingComment, setShowingComment] = useState(false);
+    const [replyingCommentId, setReplyingCommentId] = useState(null);
+
     const currentUserId = useSelector((state) => state.user.id);
-    const [fComments, setFcomments] = useState([]);
 
     const handleAddComment = async () => {
         if (newComment.trim() !== '') {
@@ -70,56 +68,31 @@ const SocialComments = () => {
     };
 
     const handleClickEditComment = (commentId) => {
-        setEditingCommentId(commentId);
+        if (editingCommentId != null) {
+            setEditingCommentId(null);
+        } else {
+            setEditingCommentId(commentId);
+        }
         const commentToEdit = finalComments.find((comment) => comment._id === commentId);
         setCommentText(commentToEdit.social_comment_content);
-        //setIsEditingComment(!isEditingComment);
     }
 
     const handleEditCommentSave = (commentId) => {
-        const newCom = { social_comment_content: commentText };
-        const commentObject = finalComments.find((c) => c._id === commentId);
+        const newCom = finalComments.find((c) => c._id == commentId);
+        newCom["social_comment_content"] = commentText;
         updateSocialCommentAPIMethod(commentId, newCom);
-        const tempUsername = (allUsers.find((u) => u._id === commentObject.social_comment_owner)).username;
-        const tempProfilePic = (allUsers.find((u) => u._id === commentObject.social_comment_owner)).profile_img;
-
-        const temp = {
-            social_comment_content: commentText,
-            social_comment_owner: currentUserId,
-            username: tempUsername,
-            profile_img: tempProfilePic
-        }
-
         const updatedComments = finalComments.map((c) =>
-            c._id === commentId ? temp : c
+            c._id === commentId ? newCom : c
         );
-
-        console.log("UPDATED COMMENTS: ", updatedComments);
 
         setFinalComments(updatedComments);
         setComments(updatedComments);
         setPostComments(updatedComments.map((c) => c._id));
         setEditingCommentId(null);
-        //updateCommentAPI(commentId), won't need updatedComments variable
     }
 
-    const handleReplyComment = (commentId) => {
-        /* setReplyingCommentId(commentId);
-        console.log(commentId); */
-    }
-
-    const handleClickReplyComment = () => {
-        /* if (replyText.trim() !== '') {
-            const newReplyObject = {
-                _id: sampleReplies.length + 1,
-                user: 'sam',
-                reply: replyText,
-                commentId: replyingCommentId,
-            };
-            setSampleReplies([...sampleReplies, newReplyObject]);
-            setReplyText('');
-        }
-        //createCommentAPI(newCommentObject) */
+    const handleClickReplyComment = (cid) => {
+        setReplyingCommentId(cid);
     }
 
     const getUserInfo = async (comment) => {
@@ -181,17 +154,18 @@ const SocialComments = () => {
                     <div>
                         <h3>Comments</h3>
                         <hr id="socialcommentsline"></hr>
-                        {finalComments.map((comment) => (
-                            <div className="social_comment">
+                        {console.log("FINAL COMMENTS IN DIV: ", finalComments)}
+                        {finalComments.map((comment, i) => (
+                            <div className="social_comment" key={i}>
                                 <div className="social_comment_header">
                                     <img className="social_comment_profile_img" src={comment.profile_img != null ? comment.profile_img : defaultImg} />
-                                    {console.log("comment: ", comment)}
                                     <div className="user">{comment.username != null ? comment.username : "Unknown User"}</div>
                                 </div>
-
                                 {editingCommentId === comment._id ? (
                                     <div>
                                         <textarea className="edit_comment_input" value={commentText} onChange={(e) => setCommentText(e.target.value)} />
+                                        {/* {console.log("commentID in the div: ", comment._id)}
+                                        {console.log("editingcomId in the div: ", editingCommentId)} */}
                                         <button className="save_comment_changes" onClick={() => handleEditCommentSave(comment._id)}>
                                             save
                                         </button>
@@ -228,29 +202,10 @@ const SocialComments = () => {
                                     </div>
                                 ) : (
                                     <div>
-                                        <p>{comment.social_comment_content}</p>
-                                        {/* <div className="comment_replies">
-                                            {sampleReplies.map((reply) => (
-                                                <div>
-                                                    {reply.commentId == comment._id && (
-                                                        <div className="comment_reply">
-                                                            <div className="comment_reply_top">
-                                                                <img className="social_comment_profile_img" src={defaultImg} />
-                                                                {reply.user}
-                                                            </div>
-                                                            {reply.reply}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            )
-                                            )}
-                                            {replyingCommentId === comment._id && (
-                                                <div>
-                                                    <textarea value={replyText} onChange={(e) => setReplyText(e.target.value)} />
-                                                    <button onClick={() => handleClickReplyComment(comment._id)}>reply</button>
-                                                </div>
-                                            )}
-                                        </div> */}
+                                        <p className="social_comment_content">{comment.social_comment_content}</p>
+                                        <div className="social_comment_replies_container">
+                                            <SocialReplies commentId={comment._id} replyingCommentId={replyingCommentId} setReplyingCommentId={setReplyingCommentId} />
+                                        </div>
                                         {comment.social_comment_owner == currentUserId && (
                                             <div className="social_comment_bottom">
                                                 <div className="edit_comment_btn" onClick={() => handleClickEditComment(comment._id)}>
@@ -261,10 +216,10 @@ const SocialComments = () => {
                                                     <DeleteIcon />
                                                     Delete comment
                                                 </div>
-                                                {/* <div className="delete_comment_btn" onClick={() => handleReplyComment(comment._id)}>
-                                            <ChatBubbleOutlineIcon />
-                                            Reply
-                                        </div> */}
+                                                <div className="delete_comment_btn" onClick={() => handleClickReplyComment(comment._id)}>
+                                                    <ChatBubbleOutlineIcon />
+                                                    Reply
+                                                </div>
                                             </div>
                                         )
                                         }
@@ -289,8 +244,6 @@ const SocialComments = () => {
                         <button className="social_comment_button" onClick={handleAddComment}>Post</button>
                     </div>
                 )}
-
-
             </div>
         </div>
     )

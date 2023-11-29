@@ -39,7 +39,6 @@ export const getAllSocialCommentsAPI = (id) => {
 };
 
 export const getAllExistingSocialCommentsAPI = () => {
-  console.log(`${API_BASE_URL}/api/socialComment/existingSocialComments`);
   return fetch(`${API_BASE_URL}/api/socialComment/existingSocialComments`,
     //await fetch(`${API_BASE_URL}/api/users/${userId}`, {
     {
@@ -79,9 +78,45 @@ export const updateSocialCommentAPIMethod = (id, newComment) => {
   );
 };
 
+export const getAllExistingSocialRepliesAPI = () => {
+  return fetch(`${API_BASE_URL}/api/socialCommentReply/existingSocialPostReplys`,
+    {
+      ...defaultHeaders,
+      method: "GET",
+    }
+  ).then(parseJSON);
+};
+
+export const getAllSocialRepliesAPI = (id) => {
+  return fetch(`${API_BASE_URL}/api/socialCommentReply/socialPostReplys/${id}`,
+    {
+      ...defaultHeaders,
+      method: "GET",
+    }
+  ).then(parseJSON);
+};
+
+export const createSocialReplyAPIMethod = (reply) => {
+  return fetch(`${API_BASE_URL}/api/socialCommentReply/createSocialPostReply`, {
+    ...defaultHeaders,
+    method: 'POST',
+    body: JSON.stringify(reply),
+  }).then(parseJSON);
+}
+
+export const updateSocialReplyAPIMethod = (id, newReply) => {
+  return fetch(
+    `${API_BASE_URL}/api/socialCommentReply/editSocialPostReply/${id}`,
+    {
+      ...defaultHeaders,
+      method: "PUT", // The method defaults to GET
+      body: JSON.stringify(newReply),
+    }
+  );
+};
 
 //map comments
-export const getAllSocialCommentsReplyAPIMethod = () => {
+/* export const getAllSocialCommentsReplyAPIMethod = () => {
   return fetch(
     `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/socialcommentsreply`,
     {
@@ -89,9 +124,9 @@ export const getAllSocialCommentsReplyAPIMethod = () => {
       method: "GET",
     }
   ).then(checkStatus);
-};
+}; */
 
-export const getAllMapCommentsReplyAPIMethod = () => {
+/* export const getAllMapCommentsReplyAPIMethod = () => {
   return fetch(
     `https://mapbookbackend-bfa7bc027f74.herokuapp.com/api/auth/mapcommentsreply`,
     {
@@ -99,7 +134,7 @@ export const getAllMapCommentsReplyAPIMethod = () => {
       method: "GET",
     }
   ).then(checkStatus);
-};
+}; */
 
 function parseJSON(response) {
   return response.json();
