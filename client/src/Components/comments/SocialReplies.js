@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { createSocialReplyAPIMethod, getAllExistingSocialCommentsAPI, getAllExistingSocialRepliesAPI, getAllSocialRepliesAPI, updateSocialReplyAPIMethod } from "../../api/comment";
+import { createSocialReplyAPIMethod, deleteSocialReplyAPIMethod, getAllExistingSocialCommentsAPI, getAllExistingSocialRepliesAPI, getAllSocialRepliesAPI, updateSocialReplyAPIMethod } from "../../api/comment";
 import { getAllUsersAPIMethod } from "../../api/user";
 import { useSelector } from "react-redux";
 
@@ -62,6 +62,14 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId }) =
         ));
         setAllReplies(updatedReplies);
         setEditingReplyId(null);
+        setDropdownVisible(false);
+    }
+
+    const handleDeleteReply = (replyId) => {
+        const filteredReplies = allReplies.filter((c) => c._id !== replyId);
+        setAllReplies(filteredReplies);
+        deleteSocialReplyAPIMethod(replyId);
+        setDropdownVisible(false);
     }
 
     useEffect(() => {
@@ -86,7 +94,7 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId }) =
                     </div>
                     <p className="social_comment_content">
                         {editingReplyId === reply._id ? (
-                            <div className="">
+                            <div>
                                 <textarea value={replyText} onChange={(e) => setReplyText(e.target.value)} />
                                 <button className="save_reply_changes" onClick={() => handleEditReplySave(reply._id)}>
                                     save
@@ -98,13 +106,14 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId }) =
                                 <div className="social_reply_dotted_menu" onClick={() => handleClickDottedMenu(reply._id)}>
                                     ...
                                 </div>
-                                {dropdownVisible == reply._id && (
+                                {console.log("dropdownvis? ", dropdownVisible)}
+                                {dropdownVisible === reply._id && (
                                     <div className="social_reply_dropdown">
                                         <div className="edit_reply_button" onClick={() => handleClickEditReply(reply._id)}>
                                             Edit
                                         </div>
                                         <hr style={{ "width": "100%" }}></hr>
-                                        <div className="delete_reply_button">
+                                        <div className="delete_reply_button" onClick={() => handleDeleteReply(reply._id)}>
                                             Delete
                                         </div>
                                     </div>

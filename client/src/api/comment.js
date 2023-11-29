@@ -115,6 +115,16 @@ export const updateSocialReplyAPIMethod = (id, newReply) => {
   );
 };
 
+export const deleteSocialReplyAPIMethod = (replyId) => {
+  return fetch(
+    `${API_BASE_URL}/api/socialCommentReply/deleteSocialPostReply/${replyId}`,
+    {
+      ...defaultHeaders,
+      method: "DELETE",
+    }
+  ).then(parseJSON);
+};
+
 //map comments
 /* export const getAllSocialCommentsReplyAPIMethod = () => {
   return fetch(
