@@ -25,6 +25,11 @@ const MapObjSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  mapPreviewImg :{
+    type: String,
+    // you can change default image
+    default: "https://i.stack.imgur.com/fdKJ3.png",
+  },
   map_users_liked: {
     type: [mongoose.Schema.Types.ObjectId],
     default: [],
