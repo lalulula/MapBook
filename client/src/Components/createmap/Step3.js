@@ -2,8 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactMapGL, { Source, Layer } from "react-map-gl";
 import mapboxgl from "mapbox-gl"; // Import mapboxgl
 import "./mapbox/mapbox.css";
+import { createMapAPIMethod } from "../../api/map";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Step3 = ({ selectedMapFile }) => {
+  const navigate = useNavigate();
   const MAPBOX_TOKEN =
     "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
   const [lng, setLng] = useState(-122.48);
@@ -17,11 +21,8 @@ const Step3 = ({ selectedMapFile }) => {
   const [feature, setFeature] = useState(null);
   const [inputData, setInputData] = useState(null);
   const [hoverData, setHoverData] = useState("Out of range");
+  const userId = useSelector((state) => state.user.id);
 
-  useEffect(() => {
-    // console.log(inputData);
-    // console.log(selectedMapFile["mapbook_themedata"][0]["dataName"]);
-  });
   const handleClickRegion = () => {
     if (selectedMapFile["mapbook_template"] === "Bar Chart")
       setShowModalBar(!showModalBar);
@@ -36,8 +37,6 @@ const Step3 = ({ selectedMapFile }) => {
   };
 
   const handlePieBarInputChange = (dataname, value) => {
-    // console.log("dataname: ", dataname);
-    // console.log("value: ", value);
     setInputData((prevInputData) => ({
       ...prevInputData,
       [dataname]: value,
@@ -77,7 +76,6 @@ const Step3 = ({ selectedMapFile }) => {
   };
 
   const handleThematicData = (data, value) => {
-    // console.log(data, value);
     setInputData((prevInputData) => ({
       ...prevInputData,
       [data["dataName"]]: { color: data["color"], value: value },
@@ -98,15 +96,6 @@ const Step3 = ({ selectedMapFile }) => {
     } else {
       feature[0]["properties"]["mapbook_data"] = inputData;
     }
-    //Same for other types
-    // else if (showModalPie || showModalBar) {
-    //   console.log("input data on submit: ", inputData);
-    //   feature[0]["properties"]["mapbook_data"] = inputData;
-    // } else if (showModalThematic) {
-    //   feature[0]["properties"]["mapbook_data"] = inputData;
-    // } else if (showModalHeat) {
-    //   feature[0]["properties"]["mapbook_data"] = inputData;
-    // }
     for (var i = 0; i < tempArr.length; i++) {
       if (tempArr[i]["properties"].name === feature[0]["properties"].name) {
         selectedMapFile["features"][i] = feature[0];
@@ -236,6 +225,38 @@ const Step3 = ({ selectedMapFile }) => {
       });
     });
   }, []);
+  // Convert data to GEOJSON //
+  function saveGeoJSONToFile(geoJSONObject, filename) {
+    const geoJSONString = JSON.stringify(geoJSONObject, null, 2);
+    const newGeoJson = new Blob([geoJSONString], { type: "application/json" });
+
+    // Create a download link
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(newGeoJson);
+    link.download = filename;
+    // Append the link to the body -> trigger click event to start the download
+    document.body.appendChild(link);
+    link.click();
+    // RM link from DOM
+    document.body.removeChild(link);
+    console.log(`GeoJSON saved as ${filename}`);
+    return newGeoJson;
+  }
+
+  // Click Create Map Btn
+  const handleCreateMap = async () => {
+    const mapData = { ...selectedMapFile, user_id: userId };
+    console.log(mapData);
+    console.log("saved");
+    const geoJSONObject = selectedMapFile;
+    const mapFile = saveGeoJSONToFile(
+      geoJSONObject,
+      `${selectedMapFile["mapbook_mapname"]}.geojson`
+    );
+    console.log(mapFile);
+    // const res = await createMapAPIMethod(mapData);
+    // console.log(res);
+  };
 
   return (
     <div className="step3_container">
@@ -248,6 +269,7 @@ const Step3 = ({ selectedMapFile }) => {
         id="map"
         style={{ height: "inherit", width: "inherit" }}
       >
+        <button onClick={handleCreateMap}>Create Map</button>
         <div>
           Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
         </div>

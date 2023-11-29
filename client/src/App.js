@@ -23,6 +23,7 @@ import EditSocialPost from "./Components/socialpostdetails/EditSocialPost";
 import ManageUsers from "./Components/manage/ManageUsers";
 import ManageSocials from "./Components/manage/ManageSocials";
 import ManageMaps from "./Components/manage/ManageMaps";
+
 import "reactjs-popup/dist/index.css";
 
 function App() {
@@ -86,6 +87,7 @@ function App() {
           <Route path="/manageusers" element={<ManageUsers />} />{" "}
           <Route path="/managesocials" element={<ManageSocials />} />
           <Route path="/managemaps" element={<ManageMaps />} />
+          <Route path="/mapdetails/:id" element={<MapDetails />} />
           {/* admin */}
           {/* <Route
             path="/mainpage"

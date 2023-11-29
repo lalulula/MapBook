@@ -11,7 +11,7 @@ const MapDetails = () => {
   const { id } = useParams();
   const [currentMap, setCurrentMap] = useState({});
   //will make an api call to get the id of a map
-  const curr = data.filter((obj) => obj._id == id);
+  const curr = data.filter((obj) => obj._id === id);
   const navigate = useNavigate();
 
   useEffect(() => {

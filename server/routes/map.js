@@ -10,6 +10,9 @@ router.get("/getMaps/:userId", auth.verifyToken, map.getMaps);
 // GET A MAP BY A MAP ID
 router.get("/getMap/:mapId", auth.verifyToken, map.getMap);
 
+// GET A MAP BY A MAP ID
+router.post("/createMap", map.createMap);
+
 // REMOVE A MAP & FILE FROM FIREBASE
 router.delete("/:id", auth.verifyToken, map.removeMap);
 

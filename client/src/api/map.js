@@ -8,6 +8,27 @@ const defaultHeaders = {
     "Content-Type": "application/json; charset=UTF-8",
   },
 };
+
+// Create Map
+export const createMapAPIMethod = async (mapData) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/createMap`, {
+      ...defaultHeaders,
+      method: "POST",
+      body: JSON.stringify(mapData), // Assuming selectedMapFile contains the data you want to send
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to create map");
+    }
+
+    const data = await response.json();
+    console.log("Map created successfully:", data);
+  } catch (error) {
+    console.error("Error creating map:", error.message);
+  }
+};
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;

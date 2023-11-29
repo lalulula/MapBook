@@ -21,6 +21,7 @@
     "flowbite-react": "^0.6.4",
     "formik": "^2.4.5",
     "framer-motion": "^10.16.4",
+    "fs": "^0.0.1-security",
     "gapi-script": "^1.2.0",
     "geojson": "^0.5.0",
     "intersection-observer": "^0.12.2",
@@ -74,7 +75,6 @@
       "defaults",
       "not ie 11"
     ],
-
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",

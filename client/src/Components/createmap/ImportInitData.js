@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import JSZip from "jszip";
 import * as shapefile from "shapefile"; // Import the shapefile library
 import "./mapbox/mapbox.css";
+import { useSelector } from "react-redux";
 const ImportInitData = ({ setSkipSteps, setSelectedMapFile }) => {
+  const userId = useSelector((state) => state.user.id);
   const handleFileChange = async (e) => {
     try {
       const file = e.target.files[0];
@@ -82,6 +84,7 @@ const ImportInitData = ({ setSkipSteps, setSelectedMapFile }) => {
           mapbook_heatrange: { from: 0, to: 0 }, // heat range
           mapbook_heat_selectedcolors: [], // heat color
           mapbook_themedata: [], //Color + data name
+          mapbook_owner: userId,
         };
         setSelectedMapFile(newGeojsonData);
       }
