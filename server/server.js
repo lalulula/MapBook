@@ -46,6 +46,7 @@ const upload = multer({ storage: storage });
 const fileUpload = multer({ storage: multer.memoryStorage() });
 
 // ROUTES WITH FILES
+// UPDATE A USER
 app.put(
   "/api/users/:id",
   upload.single("image"),
