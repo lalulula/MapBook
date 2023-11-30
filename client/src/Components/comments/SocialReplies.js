@@ -112,11 +112,11 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tem
                                         )}
                                         {dropdownVisible === reply._id && (
                                             <div className="social_reply_dropdown">
-                                                <div className="edit_reply_button" onClick={() => handleClickEditReply(reply._id)}>
+                                                <div className="edit_reply_btn" onClick={() => handleClickEditReply(reply._id)}>
                                                     Edit
                                                 </div>
                                                 <hr style={{ "width": "100%" }}></hr>
-                                                <div className="delete_reply_button" onClick={() => handleDeleteReply(reply._id)}>
+                                                <div className="delete_reply_btn" onClick={() => handleDeleteReply(reply._id)}>
                                                     Delete
                                                 </div>
                                             </div>

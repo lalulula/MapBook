@@ -116,7 +116,7 @@ const CreateMap = () => {
             <div className="back2main_modal_content">
               <h3>
                 Are you sure you want to go to the mainpage?
-                <br /> Your works will not be saved.
+                <br /> Your work will not be saved.
               </h3>
             </div>
 
