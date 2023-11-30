@@ -5,6 +5,7 @@ import "./mapbox/mapbox.css";
 import { createMapAPIMethod } from "../../api/map";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 
 const Step3 = ({ selectedMapFile }) => {
   const navigate = useNavigate();
@@ -242,7 +243,18 @@ const Step3 = ({ selectedMapFile }) => {
     console.log(`GeoJSON saved as ${filename}`);
     return newGeoJson;
   }
-
+  const isAuth = useSelector((state) => state.user.isAuthenticated);
+  const createMap = async (mapData) => {
+    const response = await fetch(`${API_BASE_URL}/api/map/createMap`, {
+      method: "Post",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${isAuth}`,
+      },
+    });
+    const data = await response.json();
+    console.log(data);
+  };
   // Click Create Map Btn
   const handleCreateMap = async () => {
     const mapData = { ...selectedMapFile, user_id: userId };
@@ -253,9 +265,8 @@ const Step3 = ({ selectedMapFile }) => {
       geoJSONObject,
       `${selectedMapFile["mapbook_mapname"]}.geojson`
     );
-    console.log(mapFile);
-    // const res = await createMapAPIMethod(mapData);
-    // console.log(res);
+    createMap(mapFile);
+    // console.log(mapFile);
   };
 
   return (
