@@ -1,8 +1,11 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { OAuth2Client } = require('google-auth-library');
+const crypto = require('crypto');
+const sendEmail = require('../utils/sendEmail');
 
 const User = require("../models/User");
+const ResetToken = require("../models/ResetToken");
 
 // LOGIN
 const login = async (req, res) => {
@@ -29,18 +32,22 @@ const login = async (req, res) => {
           }]
         });
 
-        if (!existingUser) 
+        if (!existingUser) {
           return res.status(404).json({message: "User doesn't exist!"})
+        } else {
+          if (existingUser.isGoogle === false) {
+            return res.status(405).json({message: "The account registered with this email has not been signed up with Google. Please sign in using the Email-Password Form."})
+          }
+          const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET, {expiresIn: "1h"});
 
-        const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET, {expiresIn: "1h"});
-
-        // make sure the password not send back to the frontend
-        const { password: hashedPassword, ...user } = existingUser._doc;
-          
-        res
-          .cookie("access_token", token, { httpOnly: true })
-          .status(200)
-          .json({ token, user });
+          // make sure the password not send back to the frontend
+          const { password: hashedPassword, ...user } = existingUser._doc;
+            
+          res
+            .cookie("access_token", token, { httpOnly: true })
+            .status(200)
+            .json({ token, user });
+        }
       }
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -51,22 +58,27 @@ const login = async (req, res) => {
   
       const existingUser = await User.findOne({username});
 
-      if (!existingUser) 
+      if (!existingUser) {
         return res.status(404).json({message: "User doesn't exist!"})
-  
-      const isMatch = await bcrypt.compare(password, existingUser.password);
-      if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
-  
-      const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET);
-  
-      // make sure the password not send back to the frontend
-      const { password: hashedPassword, ...user } = existingUser._doc;
-  
-      const expiryDate = new Date(Date.now() + 3600000); // 1 hour cookie
-      res
-        .cookie("access_token", token, { httpOnly: true, expires: expiryDate })
-        .status(200)
-        .json({ token, user });
+      } else {
+        if (existingUser.isGoogle === true) {
+          return res.status(405).json({message: "The account registered with this email has been signed up with Google. Please sign in with Google."})
+        }
+
+        const isMatch = await bcrypt.compare(password, existingUser.password);
+        if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
+    
+        const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET);
+    
+        // make sure the password not send back to the frontend
+        const { password: hashedPassword, ...user } = existingUser._doc;
+    
+        const expiryDate = new Date(Date.now() + 3600); // 1 hour cookie
+        res
+          .cookie("access_token", token, { httpOnly: true, expires: expiryDate })
+          .status(200)
+          .json({ token, user });
+      }
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -115,6 +127,7 @@ const register = async (req, res) => {
           is_admin: username.toLowerCase() === "admin" ? true : false,
           profile_img,
           maps_created,
+          isGoogle: true,
         });
         const savedUser = await newUser.save();
         const { password: hashedPassword, ...user } = savedUser._doc;
@@ -158,6 +171,7 @@ const register = async (req, res) => {
         is_admin,
         profile_img,
         maps_created,
+        isGoogle: false,
       });
       const savedUser = await newUser.save();
       const { password: hashedPassword, ...user } = savedUser._doc;
@@ -168,4 +182,71 @@ const register = async (req, res) => {
   }
 };
 
-module.exports = { register: register, login: login };
+const resetPasswordRequest = async (req, res) => {
+  try {
+    const email = req.body.email;
+
+    const user = await User.findOne({ email });
+
+    if (!user)
+      return res.status(404).json({message: "User doesn't exist!"});
+
+    if (user.isGoogle === true) {
+      return res.status(405).json({message: "The account registered with this email has been signed up with Google, so the password can not be reset. Please sign in with Google."})
+    }
+
+    const token = await ResetToken.findOne({ userId: user._id });
+    if (token) await token.deleteOne();
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const hashedResetToken = await bcrypt.hash(resetToken, Number(bcryptSalt));
+
+    await new ResetToken({
+      userId: user._id,
+      token: hashedResetToken,
+      createdAt: Date.now(),
+    }).save();
+
+    const link = `http://localhost:3000/passwordReset/${resetToken}/${user._id}`;
+    sendEmail(user.email,"Password Reset Request", {name: user.username, link: link,}, "./templates/requestResetPassword.handlebars");
+    return res.json({ link });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const userId = req.body.userId;
+    const token = req.body.token;
+    const password = req.body.password;
+
+    let passwordResetToken = await ResetToken.findOne({ userId });
+    if (!passwordResetToken) {
+      throw new Error("Invalid or expired password reset token");
+    }
+
+    const isValid = await bcrypt.compare(token, passwordResetToken.token);
+    if (!isValid) {
+      throw new Error("Invalid or expired password reset token");
+    }
+
+    const hash = await bcrypt.hash(password, Number(bcryptSalt));
+    await User.updateOne({ _id: userId }, { $set: { password: hash } }, { new: true });
+
+    const user = await User.findById({ id: userId });
+    sendEmail(
+      user.email,
+      "Password Reset Successfully",
+      { name: user.username },
+      "./templates/resetPassword.handlebars"
+    );
+
+    await passwordResetToken.deleteOne();
+
+    return res.json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+module.exports = { register: register, login: login, resetPasswordRequest: resetPasswordRequest, resetPassword: resetPassword  };
