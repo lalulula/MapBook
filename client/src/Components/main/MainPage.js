@@ -34,9 +34,10 @@ const MainPage = () => {
         <Dropdown
           options={searchFilterOps}
           value={searchFilterOption}
-          placeholder="Search By.."
+          placeholder="Search By"
           className="search_filter_dropdown"
           onChange={handleSeachFilter}
+          style={{ "border-radius ": "5px" }}
         />
       </div>
       <div className="main_maps_container">

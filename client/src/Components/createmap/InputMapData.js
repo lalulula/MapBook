@@ -8,7 +8,7 @@ import PieBar from "./template/PieBar";
 import Heat from "./template/Heat";
 import Thematic from "./template/Thematic";
 import MapAddData from "./MapAddData";
-import "./createmap.css";
+import "./createMap.css";
 
 const InputMapData = ({
   options,
