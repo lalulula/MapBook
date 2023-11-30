@@ -3,7 +3,7 @@ import { createSocialReplyAPIMethod, deleteSocialReplyAPIMethod, getAllExistingS
 import { getAllUsersAPIMethod } from "../../api/user";
 import { useSelector } from "react-redux";
 
-const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tempCommentId }) => {
+const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tempCommentId, setEditingCommentId }) => {
     const [allExistingReplies, setAllExistingReplies] = useState([]);
     const [allReplies, setAllReplies] = useState([]);
     const [isReplying, setIsReplying] = useState(false);
@@ -30,7 +30,6 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tem
             setNewReply('');
             setReplyingCommentId(null);
         }
-        //createCommentAPI(newCommentObject)
     }
 
     const handleClickDottedMenu = (replyId) => {
@@ -42,12 +41,12 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tem
     }
 
     const handleClickEditReply = (replyId) => {
-        if (editingReplyId != null) {
+        if (editingReplyId == replyId) {
             setEditingReplyId(null);
         } else {
             setEditingReplyId(replyId);
         }
-        setDropdownVisible(null);
+        setDropdownVisible(false);
         const replyToEdit = allReplies.find((r) => r._id == replyId);
         setReplyText(replyToEdit.social_reply_content);
     }
@@ -94,9 +93,7 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tem
     }, []);
 
     return (
-        <div>
-            {console.log("replyingcommentid: ", replyingCommentId)}
-            {console.log("commentId: ", commentId)}
+        <div className="social_comment_replies_wrapper">
             {allReplies.length > -1 && (
                 <div className="social_comment_replies">
                     {allReplies.length > 0 && allReplies.map((reply, i) => (
@@ -107,8 +104,8 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tem
                             </div>
                             <p className="social_comment_content">
                                 {editingReplyId === reply._id ? (
-                                    <div>
-                                        <textarea value={replyText} onChange={(e) => setReplyText(e.target.value)} />
+                                    <div className="social_comment_content_textarea">
+                                        <textarea className="social_comment_reply_input" value={replyText} onChange={(e) => setReplyText(e.target.value)} />
                                         <button className="save_reply_changes" onClick={() => handleEditReplySave(reply._id)}>
                                             save
                                         </button>
@@ -152,17 +149,16 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tem
                             </p>
                         </div>
                     ))}
-                    {console.log("뭐야")}
                     {replyingCommentId == commentId && (
                         <div className="reply_text_field">
                             <textarea
-                                id="social_comment_reply_input"
+                                className="social_comment_reply_input"
                                 type="text"
                                 placeholder="Write your reply"
                                 value={newReply}
                                 onChange={(e) => setNewReply(e.target.value)}>
                             </textarea>
-                            <button onClick={handleClickReplyComment}>Post</button>
+                            <button className="post_reply_btn" onClick={handleClickReplyComment}>Post</button>
                         </div>
                     )}
                 </div>

@@ -101,8 +101,12 @@ const SocialComments = () => {
     }
 
     const handleClickReplyComment = (cid) => {
-        setReplyingCommentId(cid);
-        setTempCommentId(cid);
+        if (replyingCommentId != null) {
+            setReplyingCommentId(null);
+        } else {
+            setReplyingCommentId(cid);
+            setTempCommentId(cid);
+        }
     }
 
     const getUserInfo = async (comment) => {
@@ -217,7 +221,7 @@ const SocialComments = () => {
                                     <div>
                                         <p className="social_comment_content">{comment.social_comment_content}</p>
                                         <div className="social_comment_replies_container">
-                                            <SocialReplies commentId={comment._id} replyingCommentId={replyingCommentId} setReplyingCommentId={setReplyingCommentId} tempCommentId={tempCommentId} />
+                                            <SocialReplies commentId={comment._id} replyingCommentId={replyingCommentId} setReplyingCommentId={setReplyingCommentId} tempCommentId={tempCommentId} setEditingCommentId={setEditingCommentId} />
                                         </div>
                                         <div className="comment_tools">
                                             {showDeleteConfirmationModal == comment._id && (
@@ -250,7 +254,7 @@ const SocialComments = () => {
                                             }
                                             <div className="reply_comment_btn" onClick={() => handleClickReplyComment(comment._id)}>
                                                 <ChatBubbleOutlineIcon />
-                                                Reply
+                                                <p>Reply</p>
                                             </div>
                                         </div>
                                     </div>
