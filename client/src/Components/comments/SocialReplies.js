@@ -12,6 +12,7 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tem
     const [allUsers, setAllUsers] = useState([]);
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [editingReplyId, setEditingReplyId] = useState(null);
+    const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
     const currentUserId = useSelector((state) => state.user.id);
 
     const handleClickReplyComment = async () => {
@@ -63,6 +64,16 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tem
         setDropdownVisible(false);
     }
 
+    const handleClickDeleteReply = (replyId) => {
+        setDropdownVisible(false);
+        if (showDeleteConfirmationModal) {
+            setShowDeleteConfirmationModal(false);
+            return;
+        } else {
+            setShowDeleteConfirmationModal(replyId);
+        }
+    }
+
     const handleDeleteReply = (replyId) => {
         const filteredReplies = allReplies.filter((c) => c._id !== replyId);
         setAllReplies(filteredReplies);
@@ -104,6 +115,21 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tem
                                     </div>
                                 ) : (
                                     <div>
+                                        {showDeleteConfirmationModal == reply._id && (
+                                            <div className="delete_confirmation_modal">
+                                                <div className="delete_confirmation_modal_top">
+                                                    Are you sure you want to delete this comment?
+                                                </div>
+                                                <div className="delete_confirmation_modal_bottom">
+                                                    <button className="delete_comment_confirm" onClick={() => handleDeleteReply(reply._id)}>
+                                                        Yes
+                                                    </button>
+                                                    <button className="cancel_delete_comment" onClick={() => setShowDeleteConfirmationModal(false)}>
+                                                        No
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )}
                                         {reply.social_reply_content}
                                         {reply.social_reply_owner == currentUserId && (
                                             <div className="social_reply_dotted_menu" onClick={() => handleClickDottedMenu(reply._id)}>
@@ -116,7 +142,7 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tem
                                                     Edit
                                                 </div>
                                                 <hr style={{ "width": "100%" }}></hr>
-                                                <div className="delete_reply_btn" onClick={() => handleDeleteReply(reply._id)}>
+                                                <div className="delete_reply_btn" onClick={() => handleClickDeleteReply(reply._id)}>
                                                     Delete
                                                 </div>
                                             </div>

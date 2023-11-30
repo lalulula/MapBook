@@ -178,6 +178,21 @@ const SocialComments = () => {
                                         <div className="social_comment_replies_container">
                                             <SocialReplies commentId={comment._id} replyingCommentId={replyingCommentId} tempCommentId={tempCommentId} />
                                         </div>
+                                        {showDeleteConfirmationModal == comment._id && (
+                                            <div className="delete_confirmation_modal">
+                                                <div className="delete_confirmation_modal_top">
+                                                    Are you sure you want to delete this comment?
+                                                </div>
+                                                <div className="delete_confirmation_modal_bottom">
+                                                    <button className="delete_comment_confirm" onClick={() => handleDeleteComment(comment._id)}>
+                                                        Yes
+                                                    </button>
+                                                    <button className="cancel_delete_comment" onClick={() => setShowDeleteConfirmationModal(false)}>
+                                                        No
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )}
                                         <div className="comment_tools">
                                             {comment.social_comment_owner == currentUserId && (
                                                 <div className="social_comment_bottom">
@@ -185,7 +200,7 @@ const SocialComments = () => {
                                                         <EditIcon />
                                                         Edit comment
                                                     </div>
-                                                    <div className="delete_comment_btn" onClick={() => handleDeleteComment(comment._id)}>
+                                                    <div className="delete_comment_btn" onClick={() => handleClickDeleteComment(comment._id)}>
                                                         <DeleteIcon />
                                                         Delete comment
                                                     </div>
