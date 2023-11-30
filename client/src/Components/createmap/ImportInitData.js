@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import JSZip from "jszip";
 import * as shapefile from "shapefile"; // Import the shapefile library
-import "./mapbox/mapbox.css";
 import { useSelector } from "react-redux";
 const ImportInitData = ({ setSkipSteps, setSelectedMapFile }) => {
   const userId = useSelector((state) => state.user.id);
@@ -103,7 +102,7 @@ const ImportInitData = ({ setSkipSteps, setSelectedMapFile }) => {
           <input
             type="file"
             onChange={handleFileChange}
-            accept=".json, .geojson"
+            // accept=".json, .geojson"
           />
         </button>
       </div>

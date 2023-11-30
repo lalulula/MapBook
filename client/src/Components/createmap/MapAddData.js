@@ -1,14 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactMapGL, { Source, Layer } from "react-map-gl";
 import mapboxgl from "mapbox-gl"; // Import mapboxgl
-import "./mapbox/mapbox.css";
 import { createMapAPIMethod } from "../../api/map";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 
-const Step3 = ({ selectedMapFile }) => {
-  const navigate = useNavigate();
+const MapAddData = ({ selectedMapFile }) => {
   const MAPBOX_TOKEN =
     "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
   const [lng, setLng] = useState(-122.48);
@@ -398,7 +396,7 @@ const Step3 = ({ selectedMapFile }) => {
   );
 };
 
-export default Step3;
+export default MapAddData;
 
 // const [mapInformation, setMapInformation] = useState({
 //   mapbook_mapname: "",
