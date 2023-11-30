@@ -11,8 +11,9 @@ const defaultHeaders = {
 
 // Create Map
 export const createMapAPIMethod = async (mapData) => {
+  console.log(mapData);
   try {
-    const response = await fetch(`${API_BASE_URL}/api/createMap`, {
+    const response = await fetch(`${API_BASE_URL}/api/map/createMap`, {
       ...defaultHeaders,
       method: "POST",
       body: JSON.stringify(mapData), // Assuming selectedMapFile contains the data you want to send
