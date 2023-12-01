@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "./header.css";
 import "intersection-observer";
@@ -14,6 +14,7 @@ const Header = () => {
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const route = window.location.pathname;
+  const staticRoutes = ["resetPasswordRequest", "resetPassword"];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const profileImgPath = useSelector((state) => state.user.user.profile_img);
 
@@ -92,6 +93,7 @@ const Header = () => {
                       </div>
                     </div>
                   </div>
+<<<<<<< HEAD
                 )}
                 <div>
                   <img
@@ -151,6 +153,64 @@ const Header = () => {
                 </div>
               </>
             )}
+=======
+                </>
+              ) : route === "/" ? (
+                <>
+                  {/* Case 2) User not authenticated*/}
+                  <div className="modal_container">
+                    <CustomModal isOpen={isModalOpen} closeModal={closeModal} />
+                  </div>
+                  <div onClick={openModal}>
+                    <h4>Get Started</h4>
+                  </div>
+                  <div onClick={() => navigate("/login")}>
+                    <h4>Login</h4>
+                  </div>
+                  <div onClick={() => navigate("/register")}>
+                    <h4>Register</h4>
+                  </div>
+                </>
+              ) : route === "/login" || 
+                  route === "/register" || 
+                  route === "/resetPasswordRequest" || 
+                  // route === `/resetPassword/${resetToken}/${routeUserId}` ||
+                  // route === `/resetPasswordRequest/${routeUserId}` ? (
+                  staticRoutes.includes(route.split("/")[1]) ? (
+                <>
+                  <div onClick={() => navigate("/login")}>
+                    <h4>Login</h4>
+                  </div>
+                  <div onClick={() => navigate("/register")}>
+                    <h4>Register</h4>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div
+                    onClick={() =>
+                      window.alert("You need to Register to continue!")
+                    }
+                  >
+                    <h4>CreateMaps</h4>
+                  </div>
+                  <div onClick={() => navigate("/socialpage")}>
+                    <h4>Social</h4>
+                  </div>
+                  <div
+                    onClick={() =>
+                      window.alert("You need to Register to continue!")
+                    }
+                  >
+                    <h4>MyMaps</h4>
+                  </div>
+                  <div onClick={() => navigate("/register")}>
+                    <h4>Register</h4>
+                  </div>
+                </>
+              )}
+            </div>
+>>>>>>> jass
           </div>
         </div>
       </div>
@@ -219,7 +279,12 @@ const Header = () => {
                     <h4>Register</h4>
                   </div>
                 </>
-              ) : route === "/login" || route === "/register" ? (
+              ) : route === "/login" || 
+                  route === "/register" || 
+                  route === "/resetPasswordRequest" || 
+                  // route === `/resetPassword/${resetToken}/${routeUserId}` ||
+                  // route === `/resetPasswordRequest/${routeUserId}` ? (
+                  staticRoutes.includes(route.split("/")[1]) ? (
                 <>
                   <div onClick={() => navigate("/login")}>
                     <h4>Login</h4>

@@ -12,9 +12,10 @@ const sendEmail = async (email, subject, payload, template) => {
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: 465,
+      source: true,
       auth: {
         user: process.env.SMTP_EMAIL,
-        pass: process.env.SMTP_PASSWORD,
+        pass: process.env.SMTP_PASSWORD
       },
     });
 
@@ -26,6 +27,8 @@ const sendEmail = async (email, subject, payload, template) => {
         to: email,
         subject: subject,
         html: compiledTemplate(payload),
+        // text: "Hello. This email is for your password recovery.",
+        text: compiledTemplate(payload),
       };
     };
 

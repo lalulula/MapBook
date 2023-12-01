@@ -6,7 +6,7 @@ const bodyParser = require("body-parser")
 const corsOptions ={
    origin:'*', 
    method: "GET",
-  //  credentials:true,            //access-control-allow-credentials:true
+  //  credentials:true,
   //  optionSuccessStatus:200,
   "maxAgeSeconds": 3600
 }
