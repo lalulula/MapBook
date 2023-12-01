@@ -26,6 +26,10 @@
   align-items: center;
 }
 
+.main_maps_container {
+  width: 100%;
+}
+
 @media all and (max-width: 1000px) {
   .main_maps {
     grid-template-columns: repeat(2, 1fr);
