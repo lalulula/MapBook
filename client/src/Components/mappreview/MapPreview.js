@@ -79,6 +79,7 @@ import React, { useState } from "react";
 import "./mapPreview.css";
 import dumImg from "../../assets/img/dum.jpg";
 import { useNavigate } from "react-router-dom";
+//import { Popover, Text, Button } from '@mantine/core';
 
 const MapPreview = ({ data }) => {
   const navigate = useNavigate();
@@ -114,6 +115,14 @@ const MapPreview = ({ data }) => {
 
   return (
     <div className="map_preview_container" onClick={() => handleEdit(data._id)}>
+      {/* <Popover width={200} position="bottom" withArrow shadow="md">
+        <Popover.Target>
+          <Button>Toggle popover</Button>
+        </Popover.Target>
+        <Popover.Dropdown>
+          <Text size="xs">This is uncontrolled popover, it is opened when button is clicked</Text>
+        </Popover.Dropdown>
+      </Popover> */}
       {optionsMenuVisible && (
         <div className="options_menu">
           <ul>

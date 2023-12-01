@@ -30,6 +30,16 @@ export const createMapAPIMethod = async (mapData) => {
   }
 };
 
+export const getAllMapsAPI = () => {
+  const res = fetch(`${API_BASE_URL}/api/maps/getAllMaps`, {
+    ...defaultHeaders,
+    method: "GET",
+  })
+    .then(checkStatus)
+    .then(parseJSON);
+  return res;
+};
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
