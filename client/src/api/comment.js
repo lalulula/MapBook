@@ -79,7 +79,7 @@ export const updateSocialCommentAPIMethod = (id, newComment) => {
 };
 
 export const getAllExistingSocialRepliesAPI = () => {
-  return fetch(`${API_BASE_URL}/api/socialCommentReply/existingSocialPostReplys`,
+  return fetch(`${API_BASE_URL}/api/socialCommentReply/existingSocialPostReplies`,
     {
       ...defaultHeaders,
       method: "GET",
@@ -88,7 +88,7 @@ export const getAllExistingSocialRepliesAPI = () => {
 };
 
 export const getAllSocialRepliesAPI = (id) => {
-  return fetch(`${API_BASE_URL}/api/socialCommentReply/socialPostReplys/${id}`,
+  return fetch(`${API_BASE_URL}/api/socialCommentReply/socialPostReplies/${id}`,
     {
       ...defaultHeaders,
       method: "GET",

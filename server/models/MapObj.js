@@ -5,7 +5,6 @@ const MapObjSchema = new mongoose.Schema({
     type: String,
     required: true,
     max: 50,
-    unique: true,
   },
   topic: {
     type: String,
@@ -22,6 +21,10 @@ const MapObjSchema = new mongoose.Schema({
     default: true,
   },
   user_id: {
+    type: String,
+    required: true,
+  },
+  map_description: {
     type: String,
     required: true,
   },

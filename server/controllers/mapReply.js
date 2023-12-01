@@ -3,18 +3,18 @@ const MapPostReply = require("../models/MapReply");
 
 // Get all map post reply 
 // return reply ids of post
-const getAllMapPostReplys = async (req, res) => {
+const getAllMapPostReplies = async (req, res) => {
   try {
     const { sCommentId } = req.params;
-    const mapPostReplys = await MapPostReply.find({map_comment_id: sCommentId});
+    const mapPostReplies = await MapPostReply.find({map_comment_id: sCommentId});
 
-    res.status(200).json(mapPostReplys);
+    res.status(200).json(mapPostReplies);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
 };
 
-const getAllExistingMapPostReplys = async (req, res) => {
+const getAllExistingMapPostReplies = async (req, res) => {
   try {
     const mapPostReply = await MapPostReply.find();
     res.status(200).json(mapPostReply);
@@ -95,8 +95,8 @@ const deleteMapPostReply = async (req, res) => {
 
 
 module.exports = {
-  getAllMapPostReplys: getAllMapPostReplys,
-  getAllExistingMapPostReplys: getAllExistingMapPostReplys,
+  getAllMapPostReplies: getAllMapPostReplies,
+  getAllExistingMapPostReplies: getAllExistingMapPostReplies,
   getMapPostReply: getMapPostReply,
   createMapPostReply: createMapPostReply,
   editMapPostReply: editMapPostReply,

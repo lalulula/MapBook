@@ -3,10 +3,10 @@ const mapReply = require("../controllers/mapReply.js");
 
 const router = express.Router();
 
-// Get all map post Replys of comment ID
-router.get("/mapReplys/:sCommentId", mapReply.getAllMapPostReplys);
+// Get all map post Replies of comment ID
+router.get("/mapReplies/:sCommentId", mapReply.getAllMapPostReplies);
 
-router.get("/existingMapReplys", mapReply.getAllExistingMapPostReplys);
+router.get("/existingMapReplies", mapReply.getAllExistingMapPostReplies);
 
 
 // Get map Reply with Reply ID

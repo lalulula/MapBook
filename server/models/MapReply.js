@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const MapReplySchema = new mongoose.Schema(
+const MapReplieschema = new mongoose.Schema(
   {
     map_reply_content: {
       type: String,
@@ -17,5 +17,5 @@ const MapReplySchema = new mongoose.Schema(
     },
   },
 );
-const MapReply = mongoose.model("MapReply", MapReplySchema);
+const MapReply = mongoose.model("MapReply", MapReplieschema);
 module.exports = MapReply

@@ -51,7 +51,7 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tem
         setReplyText(replyToEdit.social_reply_content);
     }
 
-    const handleEditReplySave = (replyId) => {
+    const handleEditRepliesave = (replyId) => {
         const newRep = allReplies.find((c) => c._id == replyId);
         newRep["social_reply_content"] = replyText;
         updateSocialReplyAPIMethod(replyId, newRep);
@@ -106,7 +106,7 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tem
                                 {editingReplyId === reply._id ? (
                                     <div className="social_comment_content_textarea">
                                         <textarea className="social_comment_reply_input" value={replyText} onChange={(e) => setReplyText(e.target.value)} />
-                                        <button className="save_reply_changes" onClick={() => handleEditReplySave(reply._id)}>
+                                        <button className="save_reply_changes" onClick={() => handleEditRepliesave(reply._id)}>
                                             save
                                         </button>
                                     </div>

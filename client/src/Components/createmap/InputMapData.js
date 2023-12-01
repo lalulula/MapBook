@@ -317,7 +317,11 @@ const InputMapData = ({
       )} */}
       {showMapEdit ? (
         <>
-          <Map selectedMapFile={selectedMapFile} />
+          <Map
+            selectedMapFile={selectedMapFile}
+            options={options}
+            setOptions={setOptions}
+          />
         </>
       ) : (
         <>

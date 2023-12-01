@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import "./createMap.css";
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 
-const Map = ({ selectedMapFile }) => {
+const MapAddData = ({ selectedMapFile, options, setOptions }) => {
   const MAPBOX_TOKEN =
     "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
   const [lng, setLng] = useState(-122.48);
@@ -22,6 +22,7 @@ const Map = ({ selectedMapFile }) => {
   const [inputData, setInputData] = useState(null);
   const [hoverData, setHoverData] = useState("Out of range");
   const userId = useSelector((state) => state.user.id);
+  const navigate = useNavigate();
 
   const handleClickRegion = () => {
     if (selectedMapFile["mapbook_template"] === "Bar Chart")
@@ -228,11 +229,19 @@ const Map = ({ selectedMapFile }) => {
       });
     });
   }, []);
+
   // Convert data to GEOJSON //
   function saveGeoJSONToFile(geoJSONObject, filename) {
-    const geoJSONString = JSON.stringify(geoJSONObject, null, 2);
-    const newGeoJson = new Blob([geoJSONString], { type: "application/json" });
+    const geoJSONString = JSON.stringify(geoJSONObject);
+    // console.log("geoJSONString: ", geoJSONString)
+    const newGeoJson = new File([geoJSONString], filename, { type: "application/json" });
+    return newGeoJson;
+  }
 
+  function downloadGeoJSON(geoJSONObject, filename){
+
+    const newGeoJson = saveGeoJSONToFile(geoJSONObject, filename);
+    // console.log(newGeoJson)
     // Create a download link
     const link = document.createElement("a");
     link.href = URL.createObjectURL(newGeoJson);
@@ -244,24 +253,42 @@ const Map = ({ selectedMapFile }) => {
     document.body.removeChild(link);
     console.log(`GeoJSON saved as ${filename}`);
     return newGeoJson;
+
   }
+
   const isAuth = useSelector((state) => state.user.isAuthenticated);
+  
   const createMap = async (mapData) => {
-    const response = await fetch(`${API_BASE_URL}/api/map/createMap`, {
-      method: "Post",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${isAuth}`,
-      },
-    });
-    const data = await response.json();
-    console.log(data);
+
+    // console.log("options: ", options)
+    const newMapObj = {
+      map_name: options.name,
+      topic: options.customTopic == "" ? options.topic : options.customTopic,
+      is_visible: !options.isPrivate,
+      user_id: userId,
+      map_description: options.description,
+      file: mapData
+    }
+  
+    // console.log("newMapObj: ", newMapObj)
+
+  
+    const res = await createMapAPIMethod(newMapObj);
+    console.log("res: ", res)
+    if (res.ok) {
+      // const responseMsg = await res.json;
+      navigate("/mainpage");
+      console.log("create map success!")
+    } else {
+      alert(`Error: ${res.status} - ${res.statusText}`);
+    }
+
   };
   // Click Create Map Btn
   const handleCreateMap = async () => {
     const mapData = { ...selectedMapFile, user_id: userId };
-    console.log(mapData);
-    console.log("saved");
+    // console.log(mapData);
+    // console.log("saved");
     const geoJSONObject = selectedMapFile;
     const mapFile = saveGeoJSONToFile(
       geoJSONObject,
