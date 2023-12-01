@@ -14,6 +14,15 @@ admin.initializeApp({
 });
 const bucket = admin.storage().bucket();
 
+const getAllMaps = async (req, res) => {
+  try {
+    const map = await MapObj.find();
+    res.status(200).json(map);
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}
+
 // GET ALL MAPS CREATED BY A USER
 const getMaps = async (req, res) => {
   try {
@@ -192,6 +201,7 @@ const likeMap = async (req, res) => {
 };
 
 module.exports = {
+  getAllMaps: getAllMaps,
   getMaps: getMaps,
   getMap: getMap,
   createMap: createMap,

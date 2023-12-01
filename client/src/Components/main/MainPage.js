@@ -7,11 +7,13 @@ import SearchBar from "../searchbar/SearchBar";
 import Dropdown from "react-dropdown";
 import Lottie from "lottie-react";
 import NoMapAni from "../../assets/Lottie/NoMaps.json";
+import { getAllMapsAPI } from "../../api/map";
 
 
 const MainPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchFilterOption, setSearchFilterOption] = useState("");
+  const [allMaps, setAllMaps] = useState([]);
   const searchFilterOps = ["MapName", "Topics", "Description"];
   const handleSeachFilter = (e) => {
     setSearchFilterOption(e.value);
@@ -19,13 +21,20 @@ const MainPage = () => {
   useEffect(() => {
     // console.log(searchFilterOption);
   }, [searchFilterOption]);
-  const filteredMaps = dumMapJsonData.filter((map) => {
+  const filteredMaps = dumMapJsonData.filter((map) => { //change to allMaps.filter
     return searchFilterOption === "MapName"
       ? map.map_name.toLowerCase().includes(searchTerm.toLowerCase())
       : searchFilterOption === "Topics"
         ? map.topic.toLowerCase().includes(searchTerm.toLowerCase())
         : map.description.toLowerCase().includes(searchTerm.toLowerCase());
   });
+
+  /* useEffect(() => {
+    getAllMapsAPI().then((m) => {
+      console.log("getting all maps...");
+      setAllMaps(m);
+    })
+  }, []); */
 
   return (
     <div className="main_container">
@@ -34,9 +43,10 @@ const MainPage = () => {
         <Dropdown
           options={searchFilterOps}
           value={searchFilterOption}
-          placeholder="Search By.."
+          placeholder="Search By"
           className="search_filter_dropdown"
           onChange={handleSeachFilter}
+          style={{ "border-radius ": "5px" }}
         />
       </div>
       <div className="main_maps_container">

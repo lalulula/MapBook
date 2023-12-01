@@ -210,7 +210,7 @@ import { Button } from "@mui/material";
 import PieBar from "./template/PieBar";
 import Heat from "./template/Heat";
 import Thematic from "./template/Thematic";
-import MapAddData from "./MapAddData";
+import Map from "./Map";
 import Popup from "reactjs-popup";
 import "./createMap.css";
 import { useNavigate } from "react-router-dom";
@@ -409,7 +409,7 @@ const InputMapData = ({
               />
             </div>
           </div>
-          <MapAddData selectedMapFile={selectedMapFile} />
+          <Map selectedMapFile={selectedMapFile} />
           <div className="addmapdata_right_sidebar">
             <h3>Map Data</h3>
             {template && template !== "Circle Map" && <h3>Enter Data Names</h3>}

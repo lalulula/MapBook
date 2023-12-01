@@ -5,6 +5,8 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@mantine/core": "^7.2.2",
+    "@mantine/hooks": "^7.2.2",
     "@mapbox/togeojson": "^0.16.2",
     "@mui/icons-material": "^5.14.16",
     "@mui/material": "^5.14.17",
@@ -82,7 +84,10 @@
     ]
   },
   "devDependencies": {
-    "cypress": "^13.4.0"
+    "cypress": "^13.4.0",
+    "postcss": "^8.4.31",
+    "postcss-preset-mantine": "^1.11.0",
+    "postcss-simple-vars": "^7.0.1"
   },
   "browser": {
     "crypto": false

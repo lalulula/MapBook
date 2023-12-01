@@ -427,7 +427,7 @@ const MapAddData = ({ selectedMapFile, options, setOptions }) => {
   );
 };
 
-export default MapAddData;
+export default Map;
 
 // const [mapInformation, setMapInformation] = useState({
 //   mapbook_mapname: "",
