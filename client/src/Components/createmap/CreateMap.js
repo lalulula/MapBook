@@ -157,7 +157,7 @@
 import React, { useEffect } from "react";
 import InputMapData from "./InputMapData";
 import { useState } from "react";
-import "./createMap.css";
+import "./createmap.css";
 import { useNavigate } from "react-router-dom";
 import Popup from "reactjs-popup";
 import ImportInitData from "./ImportInitData";
@@ -204,7 +204,7 @@ const CreateMap = () => {
     setSelectedMapFile(newGeojsonData);
   }, [options, pieBarData, heatRange, selectedColors, themeData]);
 
-  useEffect(() => { }, [skipStep]);
+  useEffect(() => {}, [skipStep]);
 
   const closeImportDataPopup = () => {
     setImportDataOpen(false);
