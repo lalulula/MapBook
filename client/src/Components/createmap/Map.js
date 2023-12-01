@@ -301,7 +301,9 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
         <p>Hover over a region!</p>
         {hoverData}
       </div> */}
-      <button onClick={handleCreateMap}>Create Map</button>
+      <div className="map_operation_container">
+        <button onClick={handleCreateMap}>Create Map</button>
+      </div>
       <div ref={mapContainerRef} id="map">
         {/* <div>
           Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
