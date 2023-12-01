@@ -11,23 +11,21 @@ const defaultHeaders = {
 
 // Create Map
 export const createMapAPIMethod = async (mapData) => {
-  console.log(mapData);
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/map/createMap`, {
-      ...defaultHeaders,
-      method: "POST",
-      body: JSON.stringify(mapData), // Assuming selectedMapFile contains the data you want to send
-    });
+  var keys = Object.keys(mapData);
+  const formData = new FormData();
 
-    if (!response.ok) {
-      throw new Error("Failed to create map");
-    }
+  for (var i = 0; i < keys.length; i++) {
 
-    const data = await response.json();
-    console.log("Map created successfully:", data);
-  } catch (error) {
-    console.error("Error creating map:", error.message);
+    formData.append(keys[i], mapData[keys[i]]);
   }
+
+  const response = await fetch(`${API_BASE_URL}/api/map/createMap`, {
+    // ...defaultHeaders,
+    method: "POST",
+    body: formData, 
+  });
+  return response;
+
 };
 
 function checkStatus(response) {

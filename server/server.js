@@ -61,16 +61,16 @@ app.put(
 );
 // CREATE MAP
 app.post(
-  "/api/maps",
+  "/api/map/createMap",
   fileUpload.single("file"),
-  auth.verifyToken,
+  // auth.verifyToken,
   mapController.createMap
 );
 // UPDATE MAP
 app.put(
   "/api/maps/:mapId",
   fileUpload.single("file"),
-  auth.verifyToken,
+  // auth.verifyToken,
   mapController.editMap
 );
 

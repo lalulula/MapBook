@@ -3,18 +3,18 @@ const SocialPostReply = require("../models/SocialPostReply");
 
 // Get all social post reply 
 // return comment ids of post
-const getAllSocialPostReplys = async (req, res) => {
+const getAllSocialPostReplies = async (req, res) => {
   try {
     const { sCommentId } = req.params;
-    const socialPostReplys = await SocialPostReply.find({social_comment_id: sCommentId});
+    const socialPostReplies = await SocialPostReply.find({social_comment_id: sCommentId});
 
-    res.status(200).json(socialPostReplys);
+    res.status(200).json(socialPostReplies);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
 };
 
-const getAllExistingSocialPostReplys = async (req, res) => {
+const getAllExistingSocialPostReplies = async (req, res) => {
   try {
     const socialPostReply = await SocialPostReply.find();
     res.status(200).json(socialPostReply);
@@ -95,8 +95,8 @@ const deleteSocialPostReply = async (req, res) => {
 
 
 module.exports = {
-  getAllSocialPostReplys: getAllSocialPostReplys,
-  getAllExistingSocialPostReplys: getAllExistingSocialPostReplys,
+  getAllSocialPostReplies: getAllSocialPostReplies,
+  getAllExistingSocialPostReplies: getAllExistingSocialPostReplies,
   getSocialPostReply: getSocialPostReply,
   createSocialPostReply: createSocialPostReply,
   editSocialPostReply: editSocialPostReply,

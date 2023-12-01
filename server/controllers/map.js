@@ -44,12 +44,10 @@ const createMap = async (req, res) => {
       topic,
       user_id,
       is_visible,
-      map_users_liked,
-      map_comments,
-      created_at,
+      map_description,
     } = req.body;
-    console.log(req.body);
-    console.log(req.file);
+    // console.log(req.body);
+    // console.log(req.file);
 
     const fileBuffer = req.file.buffer;
     const fileName = req.file.originalname;
@@ -66,18 +64,20 @@ const createMap = async (req, res) => {
       topic,
       user_id,
       is_visible,
+      map_description,
       file_path: fileUrl,
-      map_users_liked,
-      map_comments,
-      created_at,
     });
     const savedMap = await newMap.save();
 
     // Respond with success message
-    res.json({ success: true, message: "Map created successfully!" });
+    // return res.status(201).json({ success: true, message: "Map created successfully!" });
+    return res.status(201).json(savedMap);
+
   } catch (error) {
-    console.error("Error creating map:", error);
-    res.status(500).json({ success: false, error: error.message });
+    // console.error("Error creating map:", error);
+    // return res.status(500).json({ success: false, error: error.message });
+    return res.status(500).json({ error: error.message });
+
   }
 };
 

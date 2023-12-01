@@ -3,10 +3,10 @@ const socialPostReply = require("../controllers/socialPostReply.js");
 
 const router = express.Router();
 
-// Get all social post Replys of comment ID
-router.get("/socialPostReplys/:sCommentId", socialPostReply.getAllSocialPostReplys);
+// Get all social post Replies of comment ID
+router.get("/socialPostReplies/:sCommentId", socialPostReply.getAllSocialPostReplies);
 
-router.get("/existingSocialPostReplys", socialPostReply.getAllExistingSocialPostReplys);
+router.get("/existingSocialPostReplies", socialPostReply.getAllExistingSocialPostReplies);
 
 
 // Get social Reply with Reply ID

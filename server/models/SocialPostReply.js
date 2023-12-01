@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const SocialPostReplySchema = new mongoose.Schema({
+const SocialPostReplieschema = new mongoose.Schema({
   social_reply_content: {
     type: String,
     required: true,
@@ -17,6 +17,6 @@ const SocialPostReplySchema = new mongoose.Schema({
 });
 const SocialPostReply = mongoose.model(
   "SocialPostReply",
-  SocialPostReplySchema
+  SocialPostReplieschema
 );
 module.exports = SocialPostReply;

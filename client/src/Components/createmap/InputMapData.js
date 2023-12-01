@@ -212,7 +212,7 @@ import Heat from "./template/Heat";
 import Thematic from "./template/Thematic";
 import MapAddData from "./MapAddData";
 import Popup from "reactjs-popup";
-import "./createmap.css";
+import "./createMap.css";
 import { useNavigate } from "react-router-dom";
 
 const InputMapData = ({
@@ -317,7 +317,7 @@ const InputMapData = ({
       )} */}
       {showMapEdit ? (
         <>
-          <MapAddData selectedMapFile={selectedMapFile} />
+          <MapAddData selectedMapFile={selectedMapFile}   options={options} setOptions={setOptions}/>
         </>
       ) : (
         <>

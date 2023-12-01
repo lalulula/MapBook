@@ -25,6 +25,10 @@ const MapObjSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  map_description: {
+    type: String,
+    required: true,
+  },
   mapPreviewImg :{
     type: String,
     // you can change default image
