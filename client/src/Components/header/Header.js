@@ -93,7 +93,6 @@ const Header = () => {
                       </div>
                     </div>
                   </div>
-<<<<<<< HEAD
                 )}
                 <div>
                   <img
@@ -120,7 +119,12 @@ const Header = () => {
                   <h4>Register</h4>
                 </div>
               </>
-            ) : route === "/login" || route === "/register" ? (
+            ) : route === "/login" || 
+                route === "/register" || 
+                route === "/resetPasswordRequest" || 
+                // route === `/resetPassword/${resetToken}/${routeUserId}` ||
+                // route === `/resetPasswordRequest/${routeUserId}` ? (
+                staticRoutes.includes(route.split("/")[1]) ? (
               <>
                 <div onClick={() => navigate("/login")}>
                   <h4>Login</h4>
@@ -153,64 +157,6 @@ const Header = () => {
                 </div>
               </>
             )}
-=======
-                </>
-              ) : route === "/" ? (
-                <>
-                  {/* Case 2) User not authenticated*/}
-                  <div className="modal_container">
-                    <CustomModal isOpen={isModalOpen} closeModal={closeModal} />
-                  </div>
-                  <div onClick={openModal}>
-                    <h4>Get Started</h4>
-                  </div>
-                  <div onClick={() => navigate("/login")}>
-                    <h4>Login</h4>
-                  </div>
-                  <div onClick={() => navigate("/register")}>
-                    <h4>Register</h4>
-                  </div>
-                </>
-              ) : route === "/login" || 
-                  route === "/register" || 
-                  route === "/resetPasswordRequest" || 
-                  // route === `/resetPassword/${resetToken}/${routeUserId}` ||
-                  // route === `/resetPasswordRequest/${routeUserId}` ? (
-                  staticRoutes.includes(route.split("/")[1]) ? (
-                <>
-                  <div onClick={() => navigate("/login")}>
-                    <h4>Login</h4>
-                  </div>
-                  <div onClick={() => navigate("/register")}>
-                    <h4>Register</h4>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div
-                    onClick={() =>
-                      window.alert("You need to Register to continue!")
-                    }
-                  >
-                    <h4>CreateMaps</h4>
-                  </div>
-                  <div onClick={() => navigate("/socialpage")}>
-                    <h4>Social</h4>
-                  </div>
-                  <div
-                    onClick={() =>
-                      window.alert("You need to Register to continue!")
-                    }
-                  >
-                    <h4>MyMaps</h4>
-                  </div>
-                  <div onClick={() => navigate("/register")}>
-                    <h4>Register</h4>
-                  </div>
-                </>
-              )}
-            </div>
->>>>>>> jass
           </div>
         </div>
       </div>
