@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import "./createMap.css";
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 
-const MapAddData = ({ selectedMapFile, options, setOptions }) => {
+const Map = ({ selectedMapFile, options, setOptions }) => {
   const MAPBOX_TOKEN =
     "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
   const [lng, setLng] = useState(-122.48);
@@ -234,12 +234,13 @@ const MapAddData = ({ selectedMapFile, options, setOptions }) => {
   function saveGeoJSONToFile(geoJSONObject, filename) {
     const geoJSONString = JSON.stringify(geoJSONObject);
     // console.log("geoJSONString: ", geoJSONString)
-    const newGeoJson = new File([geoJSONString], filename, { type: "application/json" });
+    const newGeoJson = new File([geoJSONString], filename, {
+      type: "application/json",
+    });
     return newGeoJson;
   }
 
-  function downloadGeoJSON(geoJSONObject, filename){
-
+  function downloadGeoJSON(geoJSONObject, filename) {
     const newGeoJson = saveGeoJSONToFile(geoJSONObject, filename);
     // console.log(newGeoJson)
     // Create a download link
@@ -253,13 +254,11 @@ const MapAddData = ({ selectedMapFile, options, setOptions }) => {
     document.body.removeChild(link);
     console.log(`GeoJSON saved as ${filename}`);
     return newGeoJson;
-
   }
 
   const isAuth = useSelector((state) => state.user.isAuthenticated);
-  
-  const createMap = async (mapData) => {
 
+  const createMap = async (mapData) => {
     // console.log("options: ", options)
     const newMapObj = {
       map_name: options.name,
@@ -267,22 +266,20 @@ const MapAddData = ({ selectedMapFile, options, setOptions }) => {
       is_visible: !options.isPrivate,
       user_id: userId,
       map_description: options.description,
-      file: mapData
-    }
-  
+      file: mapData,
+    };
+
     // console.log("newMapObj: ", newMapObj)
 
-  
     const res = await createMapAPIMethod(newMapObj);
-    console.log("res: ", res)
+    console.log("res: ", res);
     if (res.ok) {
       // const responseMsg = await res.json;
       navigate("/mainpage");
-      console.log("create map success!")
+      console.log("create map success!");
     } else {
       alert(`Error: ${res.status} - ${res.statusText}`);
     }
-
   };
   // Click Create Map Btn
   const handleCreateMap = async () => {
