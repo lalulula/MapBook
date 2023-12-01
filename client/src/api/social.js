@@ -52,15 +52,13 @@ export const createSocialPostAPIMethod = async (socialPost) => {
 
   for (var i = 0; i < keys.length; i++) {
     console.log(typeof keys[i]);
-    if(keys[i] == "post_images"){
-      for(var j = 0; j < socialPost[keys[i]].length; j++){
+    if (keys[i] === "post_images") {
+      for (var j = 0; j < socialPost[keys[i]].length; j++) {
         formData.append(keys[i], socialPost[keys[i]][j]);
       }
-    }
-    else{
+    } else {
       formData.append(keys[i], socialPost[keys[i]]);
     }
-
   }
   // formData.append("image", selectedFile);
   // formData.append("username", username);
@@ -75,14 +73,11 @@ export const createSocialPostAPIMethod = async (socialPost) => {
 };
 
 export const likeSocialPostAPIMethod = (postId, userId) => {
-  return fetch(
-    `${API_BASE_URL}/api/social/likePost/${postId}`,
-    {
-      ...defaultHeaders,
-      method: "PUT", // The method defaults to GET
-      body: JSON.stringify(userId),
-    }
-  );
+  return fetch(`${API_BASE_URL}/api/social/likePost/${postId}`, {
+    ...defaultHeaders,
+    method: "PUT", // The method defaults to GET
+    body: JSON.stringify(userId),
+  });
   //return response;
 };
 
