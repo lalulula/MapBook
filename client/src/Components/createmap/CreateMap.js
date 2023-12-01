@@ -1,10 +1,11 @@
 // import React, { useEffect } from "react";
 // import InputMapData from "./InputMapData";
 // import { useState } from "react";
-// import "./createmap.css";
+// import "./createMap.css";
 // import { useNavigate } from "react-router-dom";
 // import Popup from "reactjs-popup";
 // import ImportInitData from "./ImportInitData";
+// import FileDropBox from "./FileDropBox";
 
 // const CreateMap = () => {
 //   const navigate = useNavigate();
@@ -14,6 +15,7 @@
 //     circleHeatMapData: "",
 //     customTopic: "",
 //     template: "",
+//     description: "",
 //     isPrivate: false,
 //   });
 //   const [pieBarData, setPieBarData] = useState([""]); //data names for pie & bar
@@ -33,6 +35,7 @@
 //     const newGeojsonData = {
 //       ...selectedMapFile,
 //       mapbook_mapname: options.name,
+//       mapbook_description: options.description,
 //       mapbook_template: options.template,
 //       mapbook_circleheatmapdata: options.circleHeatMapData,
 //       mapbook_topic: options.topic,
@@ -53,49 +56,15 @@
 //   };
 
 //   return (
-//     <div className="create_map_page">
-//       {importDataOpen ? (
-//         <></>
-//       ) : (
-//         <>
-//           <Popup
-//             trigger={
-//               <span className="back_btn_createmap">
-//                 <i className="bi bi-arrow-left" />
-//                 &nbsp;&nbsp;MainPage
-//               </span>
-//             }
-//             modal
-//             nested
-//             closeOnDocumentClick={false}
-//             closeOnEscape={false}
-//           >
-//             {(close) => (
-//               <div className="back2main_modal">
-//                 <div className="back2main_modal_content">
-//                   <h3>
-//                     Are you sure you want to go to the mainpage?
-//                     <br /> Your work will not be saved.
-//                   </h3>
-//                 </div>
-
-//                 <div className="modal_btn_container">
-//                   <button onClick={() => navigate("/mainpage")}>
-//                     Go to Main Page
-//                   </button>
-//                   <button onClick={() => close()}>Keep Me on This Page</button>
-//                 </div>
-//               </div>
-//             )}
-//           </Popup>
-//         </>
-//       )}
+//     <div className="createmap_container">
+//       {/* <FileDropBox/> */}
 //       <Popup
 //         open={importDataOpen}
 //         closeOnDocumentClick={false}
 //         closeOnEscape={false}
 //         onClose={closeImportDataPopup}
 //       >
+//         <FileDropBox />
 //         <div>
 //           <ImportInitData
 //             setSkipSteps={setSkipSteps}
@@ -113,25 +82,9 @@
 //       </Popup>
 
 //       {importDataOpen ? null : (
-//         <div
-//           className={showMapEdit ? "map_add_data_container" : "createmap_steps"}
-//           style={{
-//             ...(showMapEdit
-//               ? {} // empty style when showMapEdit is true
-//               : {
-//                   backgroundColor: "rgb(47, 47, 47)",
-//                   margin: "0 5rem 0 5rem",
-//                   width: "80%",
-//                   height: "80%",
-//                   padding: " 2rem 2rem 8rem 2rem",
-//                   borderRadius: "10px",
-//                   display: "flex",
-//                   alignItems: "center",
-//                   justifyContent: "space-around",
-//                 }),
-//           }}
-//         >
+//         <div className="createmap_add_data_container">
 //           <InputMapData
+//             importDataOpen={importDataOpen}
 //             options={options}
 //             setOptions={setOptions}
 //             pieBarData={pieBarData}
@@ -161,6 +114,7 @@ import "./createMap.css";
 import { useNavigate } from "react-router-dom";
 import Popup from "reactjs-popup";
 import ImportInitData from "./ImportInitData";
+import FileDropBox from "./FileDropBox";
 
 const CreateMap = () => {
   const navigate = useNavigate();
@@ -212,12 +166,14 @@ const CreateMap = () => {
 
   return (
     <div className="createmap_container">
+      {/* <FileDropBox/> */}
       <Popup
         open={importDataOpen}
         closeOnDocumentClick={false}
         closeOnEscape={false}
         onClose={closeImportDataPopup}
       >
+        <FileDropBox />
         <div>
           <ImportInitData
             setSkipSteps={setSkipSteps}

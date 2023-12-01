@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import ReactMapGL, { Source, Layer } from "react-map-gl";
+// import ReactMapGL, { Source, Layer } from "react-map-gl";
 import mapboxgl from "mapbox-gl"; // Import mapboxgl
 import { createMapAPIMethod } from "../../api/map";
 import { useSelector } from "react-redux";
@@ -420,46 +420,3 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
 };
 
 export default Map;
-
-// const [mapInformation, setMapInformation] = useState({
-//   mapbook_mapname: "",
-//   mapbook_template: "",
-//   mapbook_topic: "",
-//   mapbook_customtopic: "",
-//   mapbook_visibility: false,
-//   mapbook_datanames: [],
-//   mapbook_heatrange: {},
-//   mapbook_heat_selectedcolors: [],
-//   mapbook_themedata: [],
-// });
-// useEffect(() => {
-//   setMapInformation({
-//     mapbook_mapname: selectedMapFile["mapbook_mapname"],
-//     mapbook_template: selectedMapFile["mapbook_template"],
-//     mapbook_topic: selectedMapFile["mapbook_topic"],
-//     mapbook_customtopic: selectedMapFile["mapbook_customtopic"],
-//     mapbook_visibility: selectedMapFile["mapbook_visibility"],
-//     mapbook_datanames: selectedMapFile["mapbook_datanames"],
-//     mapbook_heatrange: selectedMapFile["mapbook_heatrange"],
-//     mapbook_heat_selectedcolors:
-//       selectedMapFile["mapbook_heat_selectedcolors"],
-//     mapbook_themedata: selectedMapFile["mapbook_themedata"],
-//   });
-// }, []);
-// useEffect(() => {
-//   console.log(mapInformation);
-//   console.log(selectedMapFile);
-// }, [mapInformation]);
-
-// const handleClickRegion = () => {
-//   if (mapInformation["mapbook_template"] === "Bar Chart")
-//     setShowModalBar(!showModalBar);
-//   else if (mapInformation["mapbook_template"] === "Thematic Map")
-//     setShowModalThematic(!showModalThematic);
-//   else if (mapInformation["mapbook_template"] === "Pie Chart")
-//     setShowModalPie(!showModalThematic);
-//   else if (mapInformation["mapbook_template"] === "Circle Map")
-//     setShowModalCircle(!showModalThematic);
-//   else if (mapInformation["mapbook_template"] === "Heat Map")
-//     setShowModalHeat(!showModalThematic);
-// };

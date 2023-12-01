@@ -41,8 +41,9 @@
 }
 /* Modal-Return to main */
 .popup-content {
-  padding: 2rem;
+  padding: 1rem !important;
   border-radius: 10px;
+  width: 40rem !important;
 }
 
 .back2main_modal {

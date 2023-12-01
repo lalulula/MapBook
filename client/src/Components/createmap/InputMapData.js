@@ -8,6 +8,7 @@ import PieBar from "./template/PieBar";
 import Heat from "./template/Heat";
 import Thematic from "./template/Thematic";
 import Map from "./Map";
+import ColorGenerator from "./template/ColorGenerator";
 import Popup from "reactjs-popup";
 import "./createMap.css";
 import { useNavigate } from "react-router-dom";
@@ -76,51 +77,6 @@ const InputMapData = ({
   // const [showMapEdit, setShowMapEdit] = useState(false);
   return (
     <>
-      {/* {importDataOpen ? (
-        <></>
-      ) : (
-        <>
-          <Popup
-            trigger={
-              <span className="back_btn_createmap">
-                <i className="bi bi-arrow-left" />
-                &nbsp;&nbsp;MainPage
-              </span>
-            }
-            modal
-            nested
-            closeOnDocumentClick={false}
-            closeOnEscape={false}
-          >
-            {(close) => (
-              <div className="back2main_modal">
-                <div className="back2main_modal_content">
-                  <h3>
-                    Are you sure you want to go to the mainpage?
-                    <br /> Your work will not be saved.
-                  </h3>
-                </div>
-
-                <div className="modal_btn_container">
-                  <button onClick={() => navigate("/mainpage")}>
-                    Go to Main Page
-                  </button>
-                  <button onClick={() => close()}>Keep Me on This Page</button>
-                </div>
-              </div>
-            )}
-          </Popup>
-        </>
-      )} */}
-      {/* {showMapEdit ? (
-        <>
-          <Map
-            selectedMapFile={selectedMapFile}
-            options={options}
-            setOptions={setOptions}
-          />
-        </>
-      ) : ( */}
       <>
         <div className="addmapdata_left_sidebar">
           <div>
@@ -214,7 +170,10 @@ const InputMapData = ({
             <PieBar pieBarData={pieBarData} setPieBarData={setPieBarData} />
           )}
           {template === "Thematic Map" && (
-            <Thematic themeData={themeData} setThemeData={setThemeData} />
+            <>
+              <Thematic themeData={themeData} setThemeData={setThemeData} />
+              <ColorGenerator />
+            </>
           )}
           {template === "Heat Map" && (
             <Heat
@@ -244,7 +203,6 @@ const InputMapData = ({
           )}
         </div>
       </>
-      {/* )} */}
     </>
   );
 };
