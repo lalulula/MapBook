@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import "./createMap.css";
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 
-const MapAddData = ({ selectedMapFile, options, setOptions }) => {
+const Map = ({ selectedMapFile, options, setOptions }) => {
   const MAPBOX_TOKEN =
     "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
   const [lng, setLng] = useState(-122.48);
