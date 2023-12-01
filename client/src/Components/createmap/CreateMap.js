@@ -157,7 +157,7 @@
 import React, { useEffect } from "react";
 import InputMapData from "./InputMapData";
 import { useState } from "react";
-import "./createmap.css";
+import "./createMap.css";
 import { useNavigate } from "react-router-dom";
 import Popup from "reactjs-popup";
 import ImportInitData from "./ImportInitData";

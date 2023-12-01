@@ -212,7 +212,7 @@ import Heat from "./template/Heat";
 import Thematic from "./template/Thematic";
 import Map from "./Map";
 import Popup from "reactjs-popup";
-import "./createmap.css";
+import "./createMap.css";
 import { useNavigate } from "react-router-dom";
 
 const InputMapData = ({
