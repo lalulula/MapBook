@@ -4,6 +4,7 @@ import mapboxgl from "mapbox-gl"; // Import mapboxgl
 import { createMapAPIMethod } from "../../api/map";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import "./createmap.css";
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 
 const MapAddData = ({ selectedMapFile }) => {
@@ -119,6 +120,9 @@ const MapAddData = ({ selectedMapFile }) => {
         zoom: zoom,
       });
     }
+    map.on("idle", function () {
+      map.resize();
+    });
     map.on("move", () => {
       setLng(map.getCenter().lng.toFixed(4));
       setLat(map.getCenter().lat.toFixed(4));
@@ -268,18 +272,18 @@ const MapAddData = ({ selectedMapFile }) => {
   };
 
   return (
-    <div className="step3_container">
-      <div className="map_region_info">
+    <div className="addmapdata_center">
+      {/* <div className="map_region_info">
         <p>Hover over a region!</p>
         {hoverData}
-      </div>
+      </div> */}
       <div
         ref={mapContainerRef}
         id="map"
-        style={{ height: "inherit", width: "inherit" }}
+        // style={{ height: "inherit", width: "inherit" }}
       >
         <button onClick={handleCreateMap}>Create Map</button>
-        <div>
+        {/* <div>
           Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
         </div>
         <div>
@@ -294,7 +298,7 @@ const MapAddData = ({ selectedMapFile }) => {
           Visibility:
           {selectedMapFile["mapbook_visibility"] ? "Private" : "Public"}
           <br />
-        </div>
+        </div> */}
 
         {/* Pie & Bar Modal - DONE*/}
         {(showModalPie || showModalBar) && (
