@@ -5,7 +5,7 @@ const auth = require("../middleware/auth.js");
 const router = express.Router();
 
 //GET ALL MAPS
-router.get("/getAllMaps", auth.verifyToken, map.getAllMaps);
+router.get("/getAllMaps", map.getAllMaps);
 
 // GET ALL MAPS CREATED BY A USER
 router.get("/getMaps/:userId", auth.verifyToken, map.getMaps);
