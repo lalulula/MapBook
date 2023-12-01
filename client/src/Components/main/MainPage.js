@@ -37,8 +37,8 @@ const MainPage = () => {
   }, []); */
 
   return (
-    <div className="main_container">
-      <div className="search_container">
+    <div className="mainpage_container">
+      <div className="search_wrapper">
         <SearchBar onSearchChange={(term) => setSearchTerm(term)} />
         <Dropdown
           options={searchFilterOps}
@@ -49,16 +49,17 @@ const MainPage = () => {
           style={{ "border-radius ": "5px" }}
         />
       </div>
-      <div className="main_maps_container">
-        <div className="main_maps">
+
+      <div className="mainpage_maps_container">
+        <div className="mainpage_maps">
           {filteredMaps.length != 0 && filteredMaps.map((item, index) => (
             <MapPreview key={index} data={item} />
           ))}
         </div>
 
         {filteredMaps.length == 0 && (
-          <div className="main_maps_no_search_container">
-            <div className="main_maps_no_search">
+          <div className="mainpage_maps_no_search_container">
+            <div className="mainpage_maps_no_search">
               <br />
               <h1>
                 No search results for '{searchTerm}'

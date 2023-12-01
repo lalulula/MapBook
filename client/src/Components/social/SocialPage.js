@@ -46,8 +46,8 @@ const SocialPage = () => {
     return searchFilterOption === "Title"
       ? post.title.toLowerCase().includes(searchTerm.toLowerCase())
       : searchFilterOption === "Topics"
-      ? post.topic.toLowerCase().includes(searchTerm.toLowerCase())
-      : post.post_content.toLowerCase().includes(searchTerm.toLowerCase());
+        ? post.topic.toLowerCase().includes(searchTerm.toLowerCase())
+        : post.post_content.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   const handleShowMySocialPosts = async () => {

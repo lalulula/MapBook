@@ -1,11 +1,3 @@
-.search_container {
-  display: flex;
-  justify-content: center;
-  align-items: baseline;
-  width: 100%;
-
-}
-
 .search_bar_wrapper i {
   position: absolute;
 }

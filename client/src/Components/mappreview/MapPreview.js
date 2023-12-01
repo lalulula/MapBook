@@ -79,7 +79,8 @@ import React, { useState } from "react";
 import "./mapPreview.css";
 import dumImg from "../../assets/img/dum.jpg";
 import { useNavigate } from "react-router-dom";
-import { Popover, Text, Button } from '@mantine/core';
+/* import { Popover, Text, Button, Portal } from '@mantine/core';
+import '@mantine/core/styles.css'; */
 
 const MapPreview = ({ data }) => {
   const navigate = useNavigate();
@@ -114,8 +115,17 @@ const MapPreview = ({ data }) => {
   };
 
   return (
-    <div className="map_preview_container" onClick={() => handleEdit(data._id)}>
-      {/* <Popover width={200} position="bottom" withArrow shadow="md">
+    <div className="mappreview_container" onClick={() => handleEdit(data._id)}>
+      {optionsMenuVisible && (
+        <div className="mappreview_options_menu">
+          <ul>
+            <li className="mappreview_handle_fork" onClick={handleFork}>Fork</li>
+            <li onClick={handleShare}>Share</li>
+            <li onClick={handleExport}>Export</li>
+          </ul>
+        </div>
+      )}
+      {/* <Popover position="bottom" withArrow shadow="md">
         <Popover.Target>
           <Button>Toggle popover</Button>
         </Popover.Target>
@@ -123,28 +133,19 @@ const MapPreview = ({ data }) => {
           <Text size="xs">This is uncontrolled popover, it is opened when button is clicked</Text>
         </Popover.Dropdown>
       </Popover> */}
-      {optionsMenuVisible && (
-        <div className="options_menu">
-          <ul>
-            <li className="map_preview_handle_fork" onClick={handleFork}>Fork</li>
-            <li onClick={handleShare}>Share</li>
-            <li onClick={handleExport}>Export</li>
-          </ul>
-        </div>
-      )}
       <i onClick={toggleOptionsMenu}
         className="bi bi-three-dots-vertical"
         style={{ color: "black" }}
       ></i>
-      <img className="map_preview_img" src={dumImg} alt={data.map_name} />
-      <div className="map_preview_content">
-        <div className="map_name_container">
-          <div className="map_name">{data.map_name}</div>
+      <img className="mappreview_img" src={dumImg} alt={data.map_name} />
+      <div className="mappreview_content">
+        <div className="mappreview_name_container">
+          <div className="mappreview_name">{data.map_name}</div>
         </div>
-        <div className="map_topic">{data.topic}</div>
-        <div className="map_count_container">
-          <div className="map_like">Liked by {data.map_users_liked} users</div>
-          <div className="map_no_comment">
+        <div className="mappreview_topic">{data.topic}</div>
+        <div className="mappreview_count_container">
+          <div className="mappreview_like">Liked by {data.map_users_liked} users</div>
+          <div className="mappreview_no_comment">
             {data.map_comment_count} comments
           </div>
         </div>

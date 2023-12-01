@@ -1,4 +1,4 @@
-.map_preview_container {
+.mappreview_container {
   height: 100%;
   position: relative;
   border-radius: 5px;
@@ -20,64 +20,64 @@
   border: 2px solid gray;
 }
 
-.map_name_container {
+.mappreview_name_container {
   display: flex;
 }
 
-.map_preview_container:hover {
+.mappreview_container:hover {
   /* transform: scale(1.05); */
 }
 
-.map_preview_img {
+.mappreview_img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.map_preview_content {
+.mappreview_content {
   border-top: 2px dotted black;
   background-color: #ffffff;
   padding: 15px;
 }
 
-.map_name {
+.mappreview_name {
   font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 8px;
   color: #000000;
 }
 
-.map_topic {
+.mappreview_topic {
   font-size: 1rem;
   font-weight: 300;
   margin-bottom: 8px;
   color: #000000;
 }
 
-.map_count_container {
+.mappreview_count_container {
   display: flex;
   justify-content: space-between;
 }
 
-.map_like {
+.mappreview_like {
   font-size: 0.8rem;
   color: #000000;
   margin-bottom: 8px;
 }
 
-.map_no_comment {
+.mappreview_no_comment {
   font-weight: 300;
   font-size: 0.8rem;
   color: #000000;
 }
 
-.options_menu ul {
+.mappreview_options_menu ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.options_menu {
+.mappreview_options_menu {
   grid-area: options;
   background-color: rgb(57, 57, 57);
   position: absolute;
@@ -90,24 +90,24 @@
   z-index: 1;
 }
 
-.options_menu ul {
+.mappreview_options_menu ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.options_menu li {
+.mappreview_options_menu li {
   cursor: pointer;
   padding: 5px 10px;
   transition: background-color 0.3s;
 }
 
-.options_menu li:hover {
+.mappreview_options_menu li:hover {
   background-color: rgb(109, 109, 109);
   border-radius: 3px;
 }
 
-.map_options {
+.mappreview_options {
   background-color: white;
 }
 
