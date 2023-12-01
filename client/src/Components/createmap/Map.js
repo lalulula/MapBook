@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-// import ReactMapGL, { Source, Layer } from "react-map-gl";
 import mapboxgl from "mapbox-gl"; // Import mapboxgl
 import { createMapAPIMethod } from "../../api/map";
 import { useSelector } from "react-redux";
@@ -12,7 +11,7 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
     "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
   const [lng, setLng] = useState(-122.48);
   const [lat, setLat] = useState(37.84);
-  const [zoom, setZoom] = useState(12);
+  const [zoom, setZoom] = useState(3);
   const [showModalThematic, setShowModalThematic] = useState(false);
   const [showModalBar, setShowModalBar] = useState(false);
   const [showModalPie, setShowModalPie] = useState(false);
@@ -280,7 +279,6 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
   // Click Create Map Btn
   const handleCreateMap = async () => {
     console.log("clicked");
-    const mapData = { ...selectedMapFile, user_id: userId };
     // console.log(mapData);
     // console.log("saved");
     const geoJSONObject = selectedMapFile;
@@ -302,23 +300,6 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
         <button onClick={handleCreateMap}>Create Map</button>
       </div>
       <div ref={mapContainerRef} id="map">
-        {/* <div>
-          Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
-        </div>
-        <div>
-          Map Name: {selectedMapFile["mapbook_mapname"]}
-          <br />
-          Map Template: {selectedMapFile["mapbook_template"]}
-          <br />
-          Map Topic: {selectedMapFile["mapbook_topic"]}
-          <br />
-          Map CustomTopic: {selectedMapFile["mapbook_customtopic"]}
-          <br />
-          Visibility:
-          {selectedMapFile["mapbook_visibility"] ? "Private" : "Public"}
-          <br />
-        </div> */}
-
         {/* Pie & Bar Modal - DONE*/}
         {(showModalPie || showModalBar) && (
           <div className="add_map_data_modal">

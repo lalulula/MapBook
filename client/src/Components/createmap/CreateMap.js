@@ -71,7 +71,7 @@ const CreateMap = () => {
         />
         <div></div>
       </Popup>
-
+      {/* After Inputing Data file */}
       {importDataOpen ? null : (
         <div className="createmap_add_data_container">
           <InputMapData
