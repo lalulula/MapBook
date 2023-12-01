@@ -5,7 +5,6 @@ const MapObjSchema = new mongoose.Schema({
     type: String,
     required: true,
     max: 50,
-    unique: true,
   },
   topic: {
     type: String,
