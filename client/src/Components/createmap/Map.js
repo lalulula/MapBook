@@ -4,7 +4,7 @@ import mapboxgl from "mapbox-gl"; // Import mapboxgl
 import { createMapAPIMethod } from "../../api/map";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import "./createmap.css";
+import "./createMap.css";
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 
 const Map = ({ selectedMapFile }) => {
