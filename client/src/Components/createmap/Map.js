@@ -4,6 +4,15 @@ import { createMapAPIMethod } from "../../api/map";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./createMap.css";
+import Button from "@mui/joy/Button";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import Input from "@mui/joy/Input";
+import Modal from "@mui/joy/Modal";
+import ModalDialog from "@mui/joy/ModalDialog";
+import DialogTitle from "@mui/joy/DialogTitle";
+import DialogContent from "@mui/joy/DialogContent";
+import Stack from "@mui/joy/Stack";
 
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 
@@ -25,6 +34,10 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
   const navigate = useNavigate();
 
   const handleClickRegion = () => {
+    // if (selectedMapFile["mapbook_template"] === "") {
+    //   alert("Choose Map template and enter data!");
+    //   return;
+    // }
     if (selectedMapFile["mapbook_template"] === "Bar Chart") {
       setShowModalBar(!showModalBar);
     } else if (selectedMapFile["mapbook_template"] === "Pie Chart")
@@ -307,29 +320,61 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
       <div ref={mapContainerRef} id="map">
         {/* Pie & Bar Modal - DONE*/}
         {(showModalPie || showModalBar) && (
-          <div className="add_map_data_modal">
-            PIEBAR
-            <div
-              className="close_add_map_data_modal"
-              onClick={handleClickRegion}
-            >
-              close
-            </div>
-            <form onSubmit={handleAddData}>
-              {selectedMapFile["mapbook_datanames"].map((dataname, index) => (
-                <label key={index}>
-                  {dataname}:
-                  <input
-                    type="text"
-                    onChange={(e) =>
-                      handlePieBarInputChange(dataname, e.target.value)
-                    }
-                  />
-                </label>
-              ))}
-              <button type="submit">Submit</button>
-            </form>
-          </div>
+          <Modal
+            open={showModalPie || showModalBar}
+            onClose={() => {
+              setShowModalBar(false) || setShowModalPie(false);
+            }}
+          >
+            <ModalDialog>
+              <DialogTitle>Create new project</DialogTitle>
+              <DialogContent>
+                Fill in the information of the project.
+              </DialogContent>
+              <form
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  setShowModalBar(false);
+                  setShowModalPie(false);
+                }}
+              >
+                <Stack spacing={2}>
+                  <FormControl>
+                    <FormLabel>Name</FormLabel>
+                    <Input autoFocus required />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Description</FormLabel>
+                    <Input required />
+                  </FormControl>
+                  <Button type="submit">Submit</Button>
+                </Stack>
+              </form>
+            </ModalDialog>
+          </Modal>
+          // <div className="add_map_data_modal">
+          //   PIEBAR
+          //   <div
+          //     className="close_add_map_data_modal"
+          //     onClick={handleClickRegion}
+          //   >
+          //     close
+          //   </div>
+          //   <form onSubmit={handleAddData}>
+          //     {selectedMapFile["mapbook_datanames"].map((dataname, index) => (
+          //       <label key={index}>
+          //         {dataname}:
+          //         <input
+          //           type="text"
+          //           onChange={(e) =>
+          //             handlePieBarInputChange(dataname, e.target.value)
+          //           }
+          //         />
+          //       </label>
+          //     ))}
+          //     <button type="submit">Submit</button>
+          //   </form>
+          // </div>
         )}
         {/* Circle Modal - DONE */}
         {showModalCircle && (
