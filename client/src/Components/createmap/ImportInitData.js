@@ -74,6 +74,7 @@ const ImportInitData = ({ setSkipSteps, setSelectedMapFile }) => {
         const newGeojsonData = {
           ...parsedData,
           mapbook_mapname: "",
+          mapbook_description: "",
           mapbook_template: "",
           mapbook_circleheatmapdata: "",
           mapbook_topic: "",
