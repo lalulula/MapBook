@@ -165,8 +165,8 @@ const Login = () => {
             </p>
           )}
         </Form.Field>
-        <a href="/register" style={{ marginBottom: "15px", alignSelf: "end" }}>
-          Don't have an account?
+        <a href="/resetPasswordRequest" style={{ marginBottom: "15px", alignSelf: "end" }}>
+          Forgot Password?
         </a>
 
         {loginLoading ? (
@@ -198,6 +198,15 @@ const Login = () => {
             text="signin_with"
             width="100px"
           />
+        </div>
+
+        <div className="no_account" style={{ marginTop: "40px", alignSelf: "center", display: "flex" }}>
+          <a href="/register" style={{ marginRight: "10px" }}>
+            Don't have an account?
+          </a>
+          <a href="/register" style={{ color: "whitesmoke", fontWeight: "bold" }}>
+            Sign Up
+          </a>
         </div>
       </Form>
     </div>

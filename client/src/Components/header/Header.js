@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "./header.css";
 import "intersection-observer";
@@ -14,6 +14,7 @@ const Header = () => {
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const route = window.location.pathname;
+  const staticRoutes = ["resetPasswordRequest", "resetPassword"];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const profileImgPath = useSelector((state) => state.user.user.profile_img);
 
@@ -119,7 +120,12 @@ const Header = () => {
                     <h4>Register</h4>
                   </div>
                 </>
-              ) : route === "/login" || route === "/register" ? (
+              ) : route === "/login" || 
+                  route === "/register" || 
+                  route === "/resetPasswordRequest" || 
+                  // route === `/resetPassword/${resetToken}/${routeUserId}` ||
+                  // route === `/resetPasswordRequest/${routeUserId}` ? (
+                  staticRoutes.includes(route.split("/")[1]) ? (
                 <>
                   <div onClick={() => navigate("/login")}>
                     <h4>Login</h4>
@@ -221,7 +227,12 @@ const Header = () => {
                     <h4>Register</h4>
                   </div>
                 </>
-              ) : route === "/login" || route === "/register" ? (
+              ) : route === "/login" || 
+                  route === "/register" || 
+                  route === "/resetPasswordRequest" || 
+                  // route === `/resetPassword/${resetToken}/${routeUserId}` ||
+                  // route === `/resetPasswordRequest/${routeUserId}` ? (
+                  staticRoutes.includes(route.split("/")[1]) ? (
                 <>
                   <div onClick={() => navigate("/login")}>
                     <h4>Login</h4>

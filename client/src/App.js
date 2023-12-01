@@ -23,6 +23,9 @@ import EditSocialPost from "./Components/socialpostdetails/EditSocialPost";
 import ManageUsers from "./Components/manage/ManageUsers";
 import ManageSocials from "./Components/manage/ManageSocials";
 import ManageMaps from "./Components/manage/ManageMaps";
+import ResetPasswordRequest from "./Components/resetPasswordRequest/ResetPasswordRequest";
+import ResetPasswordRequestToken from "./Components/resetPasswordRequest/ResetPasswordRequestToken";
+import ResetPassword from "./Components/resetPassword/ResetPassword";
 
 import "reactjs-popup/dist/index.css";
 
@@ -68,6 +71,9 @@ function App() {
           />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/resetPasswordRequest" element={<ResetPasswordRequest />} />
+          <Route path="/resetPasswordRequest/:userId" element={<ResetPasswordRequestToken />} />
+          <Route path="/resetPassword/:resetToken/:userId" element={<ResetPassword />} />
           <Route
             path="/createmap"
             element={isAuthenticated ? <CreateMap /> : <LandingPage />}

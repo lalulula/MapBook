@@ -6,6 +6,7 @@ const sendEmail = require('../utils/sendEmail');
 
 const User = require("../models/User");
 const ResetToken = require("../models/ResetToken");
+const { log } = require("console");
 
 // LOGIN
 const login = async (req, res) => {
@@ -197,8 +198,11 @@ const resetPasswordRequest = async (req, res) => {
 
     const token = await ResetToken.findOne({ userId: user._id });
     if (token) await token.deleteOne();
+
     const resetToken = crypto.randomBytes(32).toString("hex");
-    const hashedResetToken = await bcrypt.hash(resetToken, Number(bcryptSalt));
+
+    const salt = await bcrypt.genSalt();
+    const hashedResetToken = await bcrypt.hash(resetToken, salt);
 
     await new ResetToken({
       userId: user._id,
@@ -206,9 +210,9 @@ const resetPasswordRequest = async (req, res) => {
       createdAt: Date.now(),
     }).save();
 
-    const link = `http://localhost:3000/passwordReset/${resetToken}/${user._id}`;
-    sendEmail(user.email,"Password Reset Request", {name: user.username, link: link,}, "./templates/requestResetPassword.handlebars");
-    return res.json({ link });
+    // const link = `http://localhost:3000/resetPassword/${resetToken}/${user._id}`;
+    sendEmail(user.email,"Password Reset Request", {name: user.username, resetToken: resetToken,}, "./templates/requestResetPassword.handlebars");
+    return res.status(200).json({ resetToken: resetToken, userId: user._id });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
@@ -217,23 +221,28 @@ const resetPasswordRequest = async (req, res) => {
 const resetPassword = async (req, res) => {
   try {
     const userId = req.body.userId;
-    const token = req.body.token;
-    const password = req.body.password;
+    const token = req.body.resetToken;
+    const password = req.body.resetPassword;
 
-    let passwordResetToken = await ResetToken.findOne({ userId });
+    const passwordResetToken = await ResetToken.findOne({ userId });
     if (!passwordResetToken) {
-      throw new Error("Invalid or expired password reset token");
+      return res.status(404).json({message: "Invalid or expired password reset token"});
     }
 
     const isValid = await bcrypt.compare(token, passwordResetToken.token);
     if (!isValid) {
-      throw new Error("Invalid or expired password reset token");
+      return res.status(404).json({message: "Invalid or expired password reset token"});
     }
 
-    const hash = await bcrypt.hash(password, Number(bcryptSalt));
-    await User.updateOne({ _id: userId }, { $set: { password: hash } }, { new: true });
+    // hash password
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(password, salt);
 
-    const user = await User.findById({ id: userId });
+    // update user's password
+    await User.updateOne({ _id: userId }, { $set: { password: passwordHash } }, { new: true });
+
+    const user = await User.findById({ _id: userId });
+    console.log(user);
     sendEmail(
       user.email,
       "Password Reset Successfully",
@@ -245,8 +254,29 @@ const resetPassword = async (req, res) => {
 
     return res.json({ success: true });
   } catch (err) {
+    console.log(err)
     return res.status(500).json({ error: err.message });
   }
 };
 
-module.exports = { register: register, login: login, resetPasswordRequest: resetPasswordRequest, resetPassword: resetPassword  };
+const validateResetToken = async (req, res) => {
+  try {
+    const { resetToken, userId } = req.body;
+
+    const passwordResetToken = await ResetToken.findOne({ userId });
+
+    if (!passwordResetToken) {
+      return res.status(404).json({message: "Invalid or expired password reset token"});
+    }
+
+    const isValid = await bcrypt.compare(resetToken, passwordResetToken.token);
+    if (!isValid) {
+      return res.status(404).json({message: "Invalid or expired password reset token"});
+    }
+    return res.json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
+module.exports = { register: register, login: login, resetPasswordRequest: resetPasswordRequest, resetPassword: resetPassword, validateResetToken: validateResetToken  };

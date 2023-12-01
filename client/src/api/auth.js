@@ -30,6 +30,36 @@ export const loginUserAPIMethod = async (user) => {
   return response;
 };
 
+// RESET PASSWORD REQUEST
+export const resetPasswordRequestAPIMethod = (email) => {
+  const response = fetch(`${API_BASE_URL}/api/auth/resetPasswordRequest`, {
+    ...defaultHeaders,
+    method: "POST",
+    body: JSON.stringify(email),
+  });
+  return response;
+};
+
+// RESET PASSWORD
+export const resetPasswordAPIMethod = (password) => {
+  const response = fetch(`${API_BASE_URL}/api/auth/resetPassword`, {
+    ...defaultHeaders,
+    method: "POST",
+    body: JSON.stringify(password),
+  });
+  return response;
+};
+
+// VALIDATE RESET PASSWORD TOKEN
+export const validateResetTokenAPIMethod = (resetToken) => {
+  const response = fetch(`${API_BASE_URL}/api/auth/validateResetToken`, {
+    ...defaultHeaders,
+    method: "POST",
+    body: JSON.stringify(resetToken),
+  });
+  return response;
+};
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
