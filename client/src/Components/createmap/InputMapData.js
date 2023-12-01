@@ -172,16 +172,18 @@ const InputMapData = ({
           {template === "Thematic Map" && (
             <>
               <Thematic themeData={themeData} setThemeData={setThemeData} />
-              <ColorGenerator />
             </>
           )}
           {template === "Heat Map" && (
-            <Heat
-              selectedColors={selectedColors}
-              setSelectedColors={setSelectedColors}
-              heatRange={heatRange}
-              setHeatRange={setHeatRange}
-            />
+            <>
+              <Heat
+                selectedColors={selectedColors}
+                setSelectedColors={setSelectedColors}
+                heatRange={heatRange}
+                setHeatRange={setHeatRange}
+              />
+              <ColorGenerator />
+            </>
           )}
           {template && (
             <div className="">
