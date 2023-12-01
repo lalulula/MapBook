@@ -262,7 +262,7 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
     // console.log("options: ", options)
     const newMapObj = {
       map_name: options.name,
-      topic: options.customTopic == "" ? options.topic : options.customTopic,
+      topic: options.customTopic === "" ? options.topic : options.customTopic,
       is_visible: !options.isPrivate,
       user_id: userId,
       map_description: options.description,
@@ -301,12 +301,8 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
         <p>Hover over a region!</p>
         {hoverData}
       </div> */}
-      <div
-        ref={mapContainerRef}
-        id="map"
-        // style={{ height: "inherit", width: "inherit" }}
-      >
-        <button onClick={handleCreateMap}>Create Map</button>
+      <button onClick={handleCreateMap}>Create Map</button>
+      <div ref={mapContainerRef} id="map">
         {/* <div>
           Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
         </div>
