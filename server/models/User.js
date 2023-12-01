@@ -29,8 +29,7 @@ const UserSchema = new mongoose.Schema({
       "https://res.cloudinary.com/dkzqcfizf/image/upload/v1700360538/odw6r4pxcwwjm3h8oyxa.png",
   },
   maps_created: {
-    type: Array,
-    default: [],
+    type: [mongoose.Schema.Types.ObjectId],
   },
   created_at: {
     type: Date,

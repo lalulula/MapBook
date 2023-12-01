@@ -14,7 +14,7 @@ router.get("/getMaps/:userId", auth.verifyToken, map.getMaps);
 router.get("/getMap/:mapId", auth.verifyToken, map.getMap);
 
 // // CREATE A MAP
-// router.post("/createMap", auth.verifyToken, map.createMap);
+router.post("/createMap", auth.verifyToken, map.createMap);
 
 // REMOVE A MAP & FILE FROM FIREBASE
 router.delete("/:id", auth.verifyToken, map.removeMap);

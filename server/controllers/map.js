@@ -5,6 +5,7 @@ const admin = require("firebase-admin");
 const { URL } = require("url");
 const path = require("path");
 const dotenv = require("dotenv");
+const User = require("../models/User");
 dotenv.config();
 
 // INITIALIZE FIREBASE
@@ -55,8 +56,8 @@ const createMap = async (req, res) => {
       is_visible,
       map_description,
     } = req.body;
-    // console.log(req.body);
-    // console.log(req.file);
+    console.log(req.body);
+    console.log(req.file);
 
     const fileBuffer = req.file.buffer;
     const fileName = req.file.originalname;
@@ -77,6 +78,17 @@ const createMap = async (req, res) => {
       file_path: fileUrl,
     });
     const savedMap = await newMap.save();
+
+    const user = await User.findById(user_id);
+    const mapsCreated = user["maps_created"];
+    mapsCreated.push(savedMap["_id"]);
+    await User.findByIdAndUpdate(
+      user_id,
+      {
+        maps_created: mapsCreated,
+      },
+      { new: true }
+    )
 
     // Respond with success message
     // return res.status(201).json({ success: true, message: "Map created successfully!" });
