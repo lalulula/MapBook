@@ -22,7 +22,6 @@ const MainPage = () => {
     // console.log(searchFilterOption);
   }, [searchFilterOption]);
 
-  const defaultDropdownValue = "Map Name";
   const filteredMaps = allMaps.filter((map) => { //change to allMaps.filter
     console.log("search filter option: ", searchFilterOption);
     return (searchFilterOption === "Map Name" || searchFilterOption === "Search by")

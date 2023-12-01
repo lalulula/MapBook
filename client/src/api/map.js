@@ -22,7 +22,7 @@ export const createMapAPIMethod = async (mapData) => {
   const response = await fetch(`${API_BASE_URL}/api/map/createMap`, {
     // ...defaultHeaders,
     method: "POST",
-    body: formData, 
+    body: formData,
   });
   return response;
 
@@ -35,6 +35,14 @@ export const getAllMapsAPI = () => {
   })
     .then(checkStatus)
     .then(parseJSON);
+  return res;
+};
+
+export const getMapsAPI = (id) => {
+  const res = fetch(`${API_BASE_URL}/api/maps/getMaps/${id}`, {
+    ...defaultHeaders,
+    method: "GET",
+  }).then(parseJSON);
   return res;
 };
 

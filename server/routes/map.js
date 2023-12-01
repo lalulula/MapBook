@@ -8,7 +8,7 @@ const router = express.Router();
 router.get("/getAllMaps", map.getAllMaps);
 
 // GET ALL MAPS CREATED BY A USER
-router.get("/getMaps/:userId", auth.verifyToken, map.getMaps);
+router.get("/getMaps/:userId", /* auth.verifyToken, */ map.getMaps);
 
 // GET A MAP BY A MAP ID
 router.get("/getMap/:mapId", auth.verifyToken, map.getMap);

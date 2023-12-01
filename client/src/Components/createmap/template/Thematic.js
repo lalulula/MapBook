@@ -32,8 +32,6 @@ const Thematic = ({ themeData, setThemeData }) => {
 
   return (
     <div>
-      <h3>Enter Data Names</h3>
-      <br />
       <div className="data_container">
         {themeData.map((theme, index) => (
           <div className="data_input_container" key={index}>
