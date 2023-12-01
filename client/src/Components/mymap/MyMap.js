@@ -9,6 +9,7 @@ import "./mymap.css";
 import Lottie from "lottie-react";
 import NoMapAni from "../../assets/Lottie/NoMaps.json";
 import dumMapJsonData from "../main/dum_data.json";
+import { getMapsAPI } from "../../api/map";
 
 const MyMap = () => {
   const dispatch = useDispatch();
@@ -26,30 +27,36 @@ const MyMap = () => {
   const handleSeachFilter = (e) => {
     setSearchFilterOption(e.value);
   };
-  const filteredMaps = myMaps.filter((map) => {
-    return searchFilterOption === "MapName"
+
+  const filteredMaps = myMaps.filter((map) => { //change to allMaps.filter
+    return (searchFilterOption === "Map Name" || searchFilterOption === "Search by")
       ? map.map_name.toLowerCase().includes(searchTerm.toLowerCase())
       : searchFilterOption === "Topics"
-      ? map.topic.toLowerCase().includes(searchTerm.toLowerCase())
-      : map.description.toLowerCase().includes(searchTerm.toLowerCase());
+        ? map.topic.toLowerCase().includes(searchTerm.toLowerCase())
+        : map.map_description.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   useEffect(() => {
     if (isAuthenticated) {
       setUserData(user);
-      setMyMaps(user.maps_created);
+      //setMyMaps(user.maps_created);
+      getMapsAPI(user._id).then((m) => {
+        setMyMaps(m);
+      })
       console.log("Authenticated user:", user);
     } else {
       console.log("User is not authenticated");
     }
   }, [isAuthenticated, dispatch, navigate, user]);
 
+
+
   return (
     <div className="mymaps_main_container">
       <h1>{user.username}'s Maps</h1>
       {myMaps.length !== 0 && (
-        <div className="my_maps_top">
-          <div className="my_maps_searchbar">
+        <div className="mymaps_top">
+          <div className="mymaps_searchbar">
             <SearchBar onSearchChange={(term) => setSearchTerm(term)} />
           </div>
 

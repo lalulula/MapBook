@@ -28,14 +28,11 @@
   color: rgb(85, 85, 85);
 }
 
-.my_maps_searchbar {
-  width: 50%;
-}
-
-.my_maps_top {
+.mymaps_top {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: baseline;
+  width: 100%;
 }
 
 .search_filter_dropdown {

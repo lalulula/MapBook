@@ -5,16 +5,16 @@ const auth = require("../middleware/auth.js");
 const router = express.Router();
 
 //GET ALL MAPS
-router.get("/getAllMaps", auth.verifyToken, map.getAllMaps);
+router.get("/getAllMaps", map.getAllMaps);
 
 // GET ALL MAPS CREATED BY A USER
-router.get("/getMaps/:userId", auth.verifyToken, map.getMaps);
+router.get("/getMaps/:userId", /* auth.verifyToken, */ map.getMaps);
 
 // GET A MAP BY A MAP ID
 router.get("/getMap/:mapId", auth.verifyToken, map.getMap);
 
 // // CREATE A MAP
-// router.post("/createMap", auth.verifyToken, map.createMap);
+router.post("/createMap", auth.verifyToken, map.createMap);
 
 // REMOVE A MAP & FILE FROM FIREBASE
 router.delete("/:id", auth.verifyToken, map.removeMap);

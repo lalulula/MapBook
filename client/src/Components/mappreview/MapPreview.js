@@ -125,14 +125,6 @@ const MapPreview = ({ data }) => {
           </ul>
         </div>
       )}
-      {/* <Popover position="bottom" withArrow shadow="md">
-        <Popover.Target>
-          <Button>Toggle popover</Button>
-        </Popover.Target>
-        <Popover.Dropdown>
-          <Text size="xs">This is uncontrolled popover, it is opened when button is clicked</Text>
-        </Popover.Dropdown>
-      </Popover> */}
       <i onClick={toggleOptionsMenu}
         className="bi bi-three-dots-vertical"
         style={{ color: "black" }}
@@ -144,9 +136,9 @@ const MapPreview = ({ data }) => {
         </div>
         <div className="mappreview_topic">{data.topic}</div>
         <div className="mappreview_count_container">
-          <div className="mappreview_like">Liked by {data.map_users_liked} users</div>
+          <div className="mappreview_like">Liked by {data.map_users_liked.length} users</div>
           <div className="mappreview_no_comment">
-            {data.map_comment_count} comments
+            {data.map_comments.length} comments
           </div>
         </div>
       </div>

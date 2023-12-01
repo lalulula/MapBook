@@ -85,6 +85,7 @@
   font-size: 18px;
   margin-top: 10px;
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .username_line,
@@ -99,6 +100,7 @@
   right: 25%;
   position: absolute;
 }
+
 /* CONFIRM POPUP */
 .back2profile_modal {
   display: flex;
@@ -117,17 +119,20 @@
   padding: 1rem;
   text-align: center;
 }
+
 .modal_btn_container {
   display: flex;
   gap: 2rem;
   justify-content: center;
 }
+
 .modal_btn_container button {
   color: black;
   border: white;
   padding: 8px 15px 8px 15px;
   border-radius: 5px;
 }
+
 .modal_btn_container button:hover {
   color: rgb(47, 85, 120);
   background-color: rgba(47, 85, 120, 0.141);

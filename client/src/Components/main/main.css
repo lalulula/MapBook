@@ -14,6 +14,11 @@
 
 }
 
+.mainpage_search_filter_dropdown {
+  width: 130px;
+  font-size: small;
+}
+
 .mainpage_maps {
   width: 100%;
   display: grid;

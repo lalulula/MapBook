@@ -14,27 +14,29 @@ const MainPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchFilterOption, setSearchFilterOption] = useState("");
   const [allMaps, setAllMaps] = useState([]);
-  const searchFilterOps = ["MapName", "Topics", "Description"];
+  const searchFilterOps = ["Map Name", "Topics", "Description"];
   const handleSeachFilter = (e) => {
     setSearchFilterOption(e.value);
   };
   useEffect(() => {
     // console.log(searchFilterOption);
   }, [searchFilterOption]);
-  const filteredMaps = dumMapJsonData.filter((map) => { //change to allMaps.filter
-    return searchFilterOption === "MapName"
+
+  const filteredMaps = allMaps.filter((map) => { //change to allMaps.filter
+    console.log("search filter option: ", searchFilterOption);
+    return (searchFilterOption === "Map Name" || searchFilterOption === "Search by")
       ? map.map_name.toLowerCase().includes(searchTerm.toLowerCase())
       : searchFilterOption === "Topics"
         ? map.topic.toLowerCase().includes(searchTerm.toLowerCase())
-        : map.description.toLowerCase().includes(searchTerm.toLowerCase());
+        : map.map_description.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
-  /* useEffect(() => {
+  useEffect(() => {
     getAllMapsAPI().then((m) => {
-      console.log("getting all maps...");
       setAllMaps(m);
     })
-  }, []); */
+  }, [])
+
 
   return (
     <div className="mainpage_container">
@@ -44,9 +46,8 @@ const MainPage = () => {
           options={searchFilterOps}
           value={searchFilterOption}
           placeholder="Search By"
-          className="search_filter_dropdown"
+          className="mainpage_search_filter_dropdown"
           onChange={handleSeachFilter}
-          style={{ "border-radius ": "5px" }}
         />
       </div>
 
