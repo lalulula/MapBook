@@ -259,7 +259,6 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
   const isAuth = useSelector((state) => state.user.isAuthenticated);
 
   const createMap = async (mapData) => {
-    // console.log("options: ", options)
     const newMapObj = {
       map_name: options.name,
       topic: options.customTopic === "" ? options.topic : options.customTopic,
@@ -268,9 +267,6 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
       map_description: options.description,
       file: mapData,
     };
-
-    // console.log("newMapObj: ", newMapObj)
-
     const res = await createMapAPIMethod(newMapObj);
     console.log("res: ", res);
     if (res.ok) {
@@ -283,6 +279,7 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
   };
   // Click Create Map Btn
   const handleCreateMap = async () => {
+    console.log("clicked");
     const mapData = { ...selectedMapFile, user_id: userId };
     // console.log(mapData);
     // console.log("saved");

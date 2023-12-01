@@ -206,7 +206,7 @@ const InputMapData = ({
             />
           </div>
         </div>
-        <Map selectedMapFile={selectedMapFile} />
+        <Map selectedMapFile={selectedMapFile} options={options} />
         <div className="addmapdata_right_sidebar">
           <h3>Map Data</h3>
           {template && template !== "Circle Map" && <h3>Enter Data Names</h3>}
