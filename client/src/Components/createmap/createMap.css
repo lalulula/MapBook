@@ -14,7 +14,8 @@
   flex: 1;
   padding: 1rem;
   margin: 1rem;
-  background-color: rgba(44, 44, 44, 0.66);
+  background-color: rgba(44, 44, 44, 0.46);
+  border-radius: 5px;
   height: -webkit-fill-available;
   display: flex;
   flex-direction: column;
@@ -33,15 +34,62 @@
   flex: 1;
   padding: 1rem;
   margin: 1rem;
-  background-color: rgba(44, 44, 44, 0.66);
+  background-color: rgba(44, 44, 44, 0.46);
+  border-radius: 5px;
   height: -webkit-fill-available;
 }
 .mapboxgl-canvas-container {
   height: 80vh;
   width: 100vh;
 }
+/* MAP TOOL BAR */
 .map_operation_container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2rem;
 }
+.map_undo_redo_container {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  border: 1px solid #333;
+  outline: none;
+  background-color: transparent;
+  border-radius: 5px;
+  padding: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.vertical_line_container {
+  color: #333;
+  font-weight: 200;
+}
+
+.map_undo_redo_container i:hover {
+  cursor: pointer;
+  color: #1f6baf;
+  transition: all 0.2s ease-in-out;
+}
+.map_operation_container button {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  padding: 5px 10px;
+  border: 2px solid #333;
+}
+.map_operation_container button:hover {
+  color: #1f6baf;
+  background-color: #33333350;
+  border: 2px solid #1f6baf;
+}
+/* END*/
+
 /* Modal-Return to main */
 .popup-content {
   padding: 1rem !important;
@@ -83,4 +131,11 @@
 .modal_btn_container button:hover {
   color: rgb(47, 85, 120);
   background-color: rgba(47, 85, 120, 0.14);
+}
+/* data input modal */
+.add_map_data_modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background-color: black;
 }

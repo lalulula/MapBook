@@ -4,6 +4,7 @@ import { createMapAPIMethod } from "../../api/map";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./createMap.css";
+
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 
 const Map = ({ selectedMapFile, options, setOptions }) => {
@@ -255,8 +256,6 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
     return newGeoJson;
   }
 
-  const isAuth = useSelector((state) => state.user.isAuthenticated);
-
   const createMap = async (mapData) => {
     const newMapObj = {
       map_name: options.name,
@@ -297,6 +296,12 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
         {hoverData}
       </div> */}
       <div className="map_operation_container">
+        <div className="map_undo_redo_container">
+          <i className="undo bx bx-undo" />
+          <div className="vertical_line_container">|</div>
+          <i className="redo bx bx-redo" />
+        </div>
+
         <button onClick={handleCreateMap}>Create Map</button>
       </div>
       <div ref={mapContainerRef} id="map">

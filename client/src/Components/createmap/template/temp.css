@@ -308,7 +308,7 @@
 }
 
 .add_map_data_modal {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   background-color: black;
