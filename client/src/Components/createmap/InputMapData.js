@@ -171,6 +171,7 @@ const InputMapData = ({
           />
         </div>
       </div>
+
       <Map selectedMapFile={selectedMapFile} options={options} />
       <div className="addmapdata_right_sidebar">
         <h3>Map Data</h3>

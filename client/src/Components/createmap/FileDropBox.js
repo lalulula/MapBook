@@ -19,7 +19,7 @@ function FileDropBox({ setSkipSteps, setSelectedMapFile, setImportDataOpen }) {
     setBackgroundColor("#fff");
     setCursor("auto");
     const files = e.dataTransfer.files;
-    setSelectedMapFile(files[0]);
+    setSelectedFile(files[0]);
     console.log(files);
   };
 

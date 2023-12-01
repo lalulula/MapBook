@@ -43,7 +43,7 @@
   width: 100vh;
 }
 /* MAP TOOL BAR */
-.map_operation_container {
+.map_toolbar_container {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -138,4 +138,17 @@
   top: 50%;
   left: 50%;
   background-color: black;
+}
+/* RENDER DATA */
+
+.map_region_info {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 50px;
+  width: 200px;
+  height: 200px;
+  background-color: white;
+  color: rgba(0, 0, 0, 0.827);
+  overflow-wrap: break-word;
 }

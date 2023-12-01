@@ -25,9 +25,9 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
   const navigate = useNavigate();
 
   const handleClickRegion = () => {
-    if (selectedMapFile["mapbook_template"] === "Bar Chart")
+    if (selectedMapFile["mapbook_template"] === "Bar Chart") {
       setShowModalBar(!showModalBar);
-    else if (selectedMapFile["mapbook_template"] === "Pie Chart")
+    } else if (selectedMapFile["mapbook_template"] === "Pie Chart")
       setShowModalPie(!showModalPie);
     else if (selectedMapFile["mapbook_template"] === "Circle Map")
       setShowModalCircle(!showModalCircle);
@@ -291,11 +291,11 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
 
   return (
     <div className="addmapdata_center">
-      {/* <div className="map_region_info">
+      <div className="map_region_info">
         <p>Hover over a region!</p>
         {hoverData}
-      </div> */}
-      <div className="map_operation_container">
+      </div>
+      <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
           <i className="undo bx bx-undo" />
           <div className="vertical_line_container">|</div>
