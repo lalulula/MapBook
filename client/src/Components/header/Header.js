@@ -122,8 +122,6 @@ const Header = () => {
             ) : route === "/login" || 
                 route === "/register" || 
                 route === "/resetPasswordRequest" || 
-                // route === `/resetPassword/${resetToken}/${routeUserId}` ||
-                // route === `/resetPasswordRequest/${routeUserId}` ? (
                 staticRoutes.includes(route.split("/")[1]) ? (
               <>
                 <div onClick={() => navigate("/login")}>
@@ -228,8 +226,6 @@ const Header = () => {
               ) : route === "/login" || 
                   route === "/register" || 
                   route === "/resetPasswordRequest" || 
-                  // route === `/resetPassword/${resetToken}/${routeUserId}` ||
-                  // route === `/resetPasswordRequest/${routeUserId}` ? (
                   staticRoutes.includes(route.split("/")[1]) ? (
                 <>
                   <div onClick={() => navigate("/login")}>
