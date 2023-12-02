@@ -139,6 +139,12 @@
   left: 50%;
   background-color: black;
 }
+.map_datainput_container {
+  display: flex;
+  gap: 2rem;
+}
+.map_datainput_element {
+}
 /* RENDER DATA */
 
 .map_region_info {

@@ -5,6 +5,17 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./createMap.css";
 
+import Button from "@mui/joy/Button";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import Input from "@mui/joy/Input";
+import Modal from "@mui/joy/Modal";
+import ModalDialog from "@mui/joy/ModalDialog";
+import DialogTitle from "@mui/joy/DialogTitle";
+import DialogContent from "@mui/joy/DialogContent";
+import Stack from "@mui/joy/Stack";
+import PieBarDataInput from "./modals/PieBarDataInput";
+
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 
 const Map = ({
@@ -327,16 +338,12 @@ const Map = ({
   };
   // Click Create Map Btn
   const handleCreateMap = async () => {
-    // console.log("clicked");
-    // console.log(mapData);
-    // console.log("saved");
     const geoJSONObject = selectedMapFile;
     const mapFile = saveGeoJSONToFile(
       geoJSONObject,
       `${selectedMapFile["mapbook_mapname"]}.geojson`
     );
     createMap(mapFile);
-    // console.log(mapFile);
   };
 
   return (
@@ -357,29 +364,15 @@ const Map = ({
       <div ref={mapContainerRef} id="map">
         {/* Pie & Bar Modal - DONE*/}
         {(showModalPie || showModalBar) && (
-          <div className="add_map_data_modal">
-            PIEBAR
-            <div
-              className="close_add_map_data_modal"
-              onClick={handleClickRegion}
-            >
-              close
-            </div>
-            <form onSubmit={handleAddData}>
-              {selectedMapFile["mapbook_datanames"].map((dataname, index) => (
-                <label key={index}>
-                  {dataname}:
-                  <input
-                    type="text"
-                    onChange={(e) =>
-                      handlePieBarInputChange(dataname, e.target.value)
-                    }
-                  />
-                </label>
-              ))}
-              <button type="submit">Submit</button>
-            </form>
-          </div>
+          <PieBarDataInput
+            showModalBar={showModalBar}
+            showModalPie={showModalPie}
+            setShowModalBar={setShowModalBar}
+            setShowModalPie={setShowModalPie}
+            handleAddData={handleAddData}
+            selectedMapFile={selectedMapFile}
+            handlePieBarInputChange={handlePieBarInputChange}
+          />
         )}
         {/* Circle Modal - DONE */}
         {showModalCircle && (
