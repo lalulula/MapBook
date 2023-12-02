@@ -171,15 +171,15 @@ const MapDataInputPage = ({
         themeData={themeData}
       />
       <div className="addmapdata_right_sidebar">
-        <h3>Map Data</h3>
+        <h3>Data Values</h3>
+        {(template === "Pie Chart" || template === "Bar Chart") && (
+          <PieBar pieBarData={pieBarData} setPieBarData={setPieBarData} />
+        )}
         {template === "Circle Map" && (
           <Circle
             options={options}
             handleCircleHeatMapDataChange={handleCircleHeatMapDataChange}
           />
-        )}
-        {(template === "Pie Chart" || template === "Bar Chart") && (
-          <PieBar pieBarData={pieBarData} setPieBarData={setPieBarData} />
         )}
         {template === "Thematic Map" && (
           <>
@@ -195,27 +195,9 @@ const MapDataInputPage = ({
               setHeatRange={setHeatRange}
               options={options}
               handleCircleHeatMapDataChange={handleCircleHeatMapDataChange}
+              selectedMapFile={selectedMapFile}
             />
-            <ColorGenerator />
           </>
-        )}
-        {template && (
-          <div className="">
-            <span className=""></span>
-            <button
-              className=""
-              disabled={
-                options["topic"] === "" || options["template"] === ""
-                  ? true
-                  : false
-              }
-              onClick={() => setShowMapEdit(true)}
-              topic={options["topic"]}
-              template={options["template"]}
-            >
-              Next
-            </button>
-          </div>
         )}
       </div>
     </>
