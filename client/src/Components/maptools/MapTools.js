@@ -23,7 +23,7 @@ const MapTools = ({ style, isEdit, currentMap }) => {
   const navigate = useNavigate();
   const [isPublic, setIsPublic] = useState(true);
   const user = useSelector((state) => state.user.user);
-  console.log("USER IN MAPTOOLS: ", user);
+  // console.log("USER IN MAPTOOLS: ", user);
 
 
   return isEdit ?
