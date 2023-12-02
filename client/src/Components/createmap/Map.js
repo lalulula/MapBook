@@ -7,7 +7,32 @@ import "./createMap.css";
 
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 
-const Map = ({ selectedMapFile, options, setOptions }) => {
+const Map = ({
+  selectedMapFile,
+  options,
+  setOptions,
+  setSelectedMapFile,
+  pieBarData,
+  heatRange,
+  selectedColors,
+  themeData,
+}) => {
+  useEffect(() => {
+    setSelectedMapFile((prevMapFile) => ({
+      ...prevMapFile,
+      mapbook_mapname: options.name,
+      mapbook_description: options.description,
+      mapbook_template: options.template,
+      mapbook_circleheatmapdata: options.circleHeatMapData,
+      mapbook_topic: options.topic,
+      mapbook_customtopic: options.customTopic,
+      mapbook_visibility: options.isPrivate,
+      mapbook_datanames: pieBarData, //piebar
+      mapbook_heatrange: heatRange, // heat range
+      mapbook_heat_selectedcolors: selectedColors, // heat color
+      mapbook_themedata: themeData, //Color + data name
+    }));
+  }, [options, pieBarData, themeData, themeData, heatRange, selectedColors]);
   const MAPBOX_TOKEN =
     "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
   const [lng, setLng] = useState(-122.48);
@@ -27,22 +52,41 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
   useEffect(() => {
     console.log(selectedMapFile);
   }, [selectedMapFile]);
+  // const handleClickRegion = () => {
+  //   console.log("clicking");
+  //   console.log(selectedMapFile);
+  //   console.log(selectedMapFile["mapbook_template"]);
+  //   if (selectedMapFile["mapbook_template"] === "Bar Chart") {
+  //     setShowModalBar(!showModalBar);
+  //   } else if (selectedMapFile["mapbook_template"] === "Pie Chart")
+  //     setShowModalPie(!showModalPie);
+  //   else if (selectedMapFile["mapbook_template"] === "Circle Map")
+  //     setShowModalCircle(!showModalCircle);
+  //   else if (selectedMapFile["mapbook_template"] === "Thematic Map")
+  //     setShowModalThematic(!showModalThematic);
+  //   else if (selectedMapFile["mapbook_template"] === "Heat Map")
+  //     setShowModalHeat(!showModalHeat);
+  // };
   const handleClickRegion = () => {
-    console.log("clicking");
-    console.log(selectedMapFile);
-    console.log(selectedMapFile["mapbook_template"]);
-    if (selectedMapFile["mapbook_template"] === "Bar Chart") {
-      setShowModalBar(!showModalBar);
-    } else if (selectedMapFile["mapbook_template"] === "Pie Chart")
-      setShowModalPie(!showModalPie);
-    else if (selectedMapFile["mapbook_template"] === "Circle Map")
-      setShowModalCircle(!showModalCircle);
-    else if (selectedMapFile["mapbook_template"] === "Thematic Map")
-      setShowModalThematic(!showModalThematic);
-    else if (selectedMapFile["mapbook_template"] === "Heat Map")
-      setShowModalHeat(!showModalHeat);
-  };
+    setSelectedMapFile((prevMapFile) => {
+      console.log(prevMapFile);
+      console.log(prevMapFile["mapbook_template"]);
 
+      if (prevMapFile["mapbook_template"] === "Bar Chart") {
+        setShowModalBar(!showModalBar);
+      } else if (prevMapFile["mapbook_template"] === "Pie Chart") {
+        setShowModalPie(!showModalPie);
+      } else if (prevMapFile["mapbook_template"] === "Circle Map") {
+        setShowModalCircle(!showModalCircle);
+      } else if (prevMapFile["mapbook_template"] === "Thematic Map") {
+        setShowModalThematic(!showModalThematic);
+      } else if (prevMapFile["mapbook_template"] === "Heat Map") {
+        setShowModalHeat(!showModalHeat);
+      }
+
+      return prevMapFile; // Return the unchanged state
+    });
+  };
   const handlePieBarInputChange = (dataname, value) => {
     setInputData((prevInputData) => ({
       ...prevInputData,
@@ -297,10 +341,10 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
 
   return (
     <div className="addmapdata_center">
-      <div className="map_region_info">
+      {/* <div className="map_region_info">
         <p>Hover over a region!</p>
         {hoverData}
-      </div>
+      </div> */}
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
           <i className="undo bx bx-undo" />
