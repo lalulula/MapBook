@@ -86,6 +86,7 @@ const ResetPassword = () => {
               <Button
                 onClick={() => navigate("/login")}
                 style={{ margin: "40px 30px 0 0" }}
+                primary
               >
                 Back to Login Page
               </Button>
@@ -139,12 +140,15 @@ const ResetPassword = () => {
               <Button
                 onClick={() => navigate("/login")}
                 style={{ marginTop: "20px" }}
+                primary
               >
                 Back to Login
               </Button>
               <Button
                 type="submit"
                 style={{ marginTop: "20px" }}
+                inverted
+                primary
               >
                 Send
               </Button>
@@ -160,12 +164,15 @@ const ResetPassword = () => {
               <Button
                 onClick={() => navigate("/login")}
                 style={{ margin: "40px 30px 0 0" }}
+                primary
               >
                 Back to Login Page
               </Button>
               <Button
                 onClick={() => navigate(`/resetPasswordRequest/${userId}`)}
                 style={{ margin: "40px 30px 0 0" }}
+                inverted
+                primary
               >
                 Resubmit the Token
               </Button>

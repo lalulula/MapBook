@@ -76,14 +76,16 @@ const ResetPasswordRequest = () => {
           <Button
             onClick={() => navigate("/login")}
             style={{ marginTop: "20px" }}
-          >
-            Back to Login
-          </Button>
+            content="Back to Login"
+            primary
+          />
           <Button
             type="submit"
             style={{ marginTop: "20px" }}
             disabled={isLoading}
             onClick={handleResetPasswordRequest}
+            inverted
+            primary
           >
             {isLoading ? 'Loading...' : "Send"}
           </Button>

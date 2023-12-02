@@ -48,6 +48,7 @@ const ResetPasswordRequestToken = () => {
           <Button
             onClick={() => navigate("/login")}
             style={{ marginTop: "20px" }}
+            primary
           >
             Back to Login
           </Button>
@@ -55,6 +56,8 @@ const ResetPasswordRequestToken = () => {
             type="submit"
             style={{ marginTop: "20px" }}
             onClick={handleSendToken}
+            inverted
+            primary
           >
             Send
           </Button>
