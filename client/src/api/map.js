@@ -28,6 +28,7 @@ export const createMapAPIMethod = async (mapData) => {
 
 };
 
+// GET ALL MAPS
 export const getAllMapsAPI = () => {
   const res = fetch(`${API_BASE_URL}/api/maps/getAllMaps`, {
     ...defaultHeaders,
@@ -38,8 +39,18 @@ export const getAllMapsAPI = () => {
   return res;
 };
 
-export const getMapsAPI = (id) => {
-  const res = fetch(`${API_BASE_URL}/api/maps/getMaps/${id}`, {
+// GET ALL MAPS CREATED BY A USER
+export const getMapsAPI = (userId) => {
+  const res = fetch(`${API_BASE_URL}/api/maps/getMaps/${userId}`, {
+    ...defaultHeaders,
+    method: "GET",
+  }).then(parseJSON);
+  return res;
+};
+
+// GET A MAP USING A MAP ID
+export const getMapAPI = (mapId) => {
+  const res = fetch(`${API_BASE_URL}/api/maps/getMap/${mapId}`, {
     ...defaultHeaders,
     method: "GET",
   }).then(parseJSON);

@@ -39,10 +39,10 @@ const getMaps = async (req, res) => {
 const getMap = async (req, res) => {
   try {
     const { mapId } = req.params;
-    const map = await MapObj.find({ _id: mapId });
+    const map = await MapObj.findById(mapId);
     res.status(200).json(map);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    res.status(404).json({ message: err.message });
   }
 };
 

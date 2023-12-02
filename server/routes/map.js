@@ -11,7 +11,7 @@ router.get("/getAllMaps", map.getAllMaps);
 router.get("/getMaps/:userId", /* auth.verifyToken, */ map.getMaps);
 
 // GET A MAP BY A MAP ID
-router.get("/getMap/:mapId", auth.verifyToken, map.getMap);
+router.get("/getMap/:mapId", map.getMap);
 
 // // CREATE A MAP
 router.post("/createMap", auth.verifyToken, map.createMap);

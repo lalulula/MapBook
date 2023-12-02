@@ -26,7 +26,7 @@ const getUserById = async (req, res) => {
   }
 };
 
-// GET All USERs
+// GET All USERS
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
