@@ -4,15 +4,6 @@ import { createMapAPIMethod } from "../../api/map";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./createMap.css";
-import Button from "@mui/joy/Button";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
-import Input from "@mui/joy/Input";
-import Modal from "@mui/joy/Modal";
-import ModalDialog from "@mui/joy/ModalDialog";
-import DialogTitle from "@mui/joy/DialogTitle";
-import DialogContent from "@mui/joy/DialogContent";
-import Stack from "@mui/joy/Stack";
 
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 
@@ -33,11 +24,13 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
   const userId = useSelector((state) => state.user.id);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    console.log(selectedMapFile);
+  }, [selectedMapFile]);
   const handleClickRegion = () => {
-    // if (selectedMapFile["mapbook_template"] === "") {
-    //   alert("Choose Map template and enter data!");
-    //   return;
-    // }
+    console.log("clicking");
+    console.log(selectedMapFile);
+    console.log(selectedMapFile["mapbook_template"]);
     if (selectedMapFile["mapbook_template"] === "Bar Chart") {
       setShowModalBar(!showModalBar);
     } else if (selectedMapFile["mapbook_template"] === "Pie Chart")
@@ -144,7 +137,7 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
     });
 
     map.on("load", () => {
-      console.log("ON LOAD selectedMapFile: ", selectedMapFile);
+      // console.log("ON LOAD selectedMapFile: ", selectedMapFile);
       map.addSource("counties", {
         type: "geojson",
         data: selectedMapFile,
@@ -194,7 +187,7 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
       });
 
       map.on("click", (e) => {
-        console.log("this is e: ", e);
+        // console.log("this is e: ", e);
         const bbox = [
           [e.point.x, e.point.y],
           [e.point.x, e.point.y],
@@ -212,11 +205,11 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
           (f) => f["properties"].name === names[0]
         );
 
-        console.log("selectedfeatures: ", newSelectedFeature);
+        // console.log("selectedfeatures: ", newSelectedFeature);
 
         setFeature(newSelectedFeature);
 
-        console.log("Selected region name: ", names);
+        // console.log("Selected region name: ", names);
         map.setFilter("counties-highlighted", ["in", "name", ...names]);
         handleClickRegion();
       });
@@ -265,7 +258,7 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
     link.click();
     // RM link from DOM
     document.body.removeChild(link);
-    console.log(`GeoJSON saved as ${filename}`);
+    // console.log(`GeoJSON saved as ${filename}`);
     return newGeoJson;
   }
 
@@ -279,18 +272,18 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
       file: mapData,
     };
     const res = await createMapAPIMethod(newMapObj);
-    console.log("res: ", res);
+    // console.log("res: ", res);
     if (res.ok) {
       // const responseMsg = await res.json;
       navigate("/mainpage");
-      console.log("create map success!");
+      // console.log("create map success!");
     } else {
       alert(`Error: ${res.status} - ${res.statusText}`);
     }
   };
   // Click Create Map Btn
   const handleCreateMap = async () => {
-    console.log("clicked");
+    // console.log("clicked");
     // console.log(mapData);
     // console.log("saved");
     const geoJSONObject = selectedMapFile;
@@ -320,61 +313,29 @@ const Map = ({ selectedMapFile, options, setOptions }) => {
       <div ref={mapContainerRef} id="map">
         {/* Pie & Bar Modal - DONE*/}
         {(showModalPie || showModalBar) && (
-          <Modal
-            open={showModalPie || showModalBar}
-            onClose={() => {
-              setShowModalBar(false) || setShowModalPie(false);
-            }}
-          >
-            <ModalDialog>
-              <DialogTitle>Create new project</DialogTitle>
-              <DialogContent>
-                Fill in the information of the project.
-              </DialogContent>
-              <form
-                onSubmit={(event) => {
-                  event.preventDefault();
-                  setShowModalBar(false);
-                  setShowModalPie(false);
-                }}
-              >
-                <Stack spacing={2}>
-                  <FormControl>
-                    <FormLabel>Name</FormLabel>
-                    <Input autoFocus required />
-                  </FormControl>
-                  <FormControl>
-                    <FormLabel>Description</FormLabel>
-                    <Input required />
-                  </FormControl>
-                  <Button type="submit">Submit</Button>
-                </Stack>
-              </form>
-            </ModalDialog>
-          </Modal>
-          // <div className="add_map_data_modal">
-          //   PIEBAR
-          //   <div
-          //     className="close_add_map_data_modal"
-          //     onClick={handleClickRegion}
-          //   >
-          //     close
-          //   </div>
-          //   <form onSubmit={handleAddData}>
-          //     {selectedMapFile["mapbook_datanames"].map((dataname, index) => (
-          //       <label key={index}>
-          //         {dataname}:
-          //         <input
-          //           type="text"
-          //           onChange={(e) =>
-          //             handlePieBarInputChange(dataname, e.target.value)
-          //           }
-          //         />
-          //       </label>
-          //     ))}
-          //     <button type="submit">Submit</button>
-          //   </form>
-          // </div>
+          <div className="add_map_data_modal">
+            PIEBAR
+            <div
+              className="close_add_map_data_modal"
+              onClick={handleClickRegion}
+            >
+              close
+            </div>
+            <form onSubmit={handleAddData}>
+              {selectedMapFile["mapbook_datanames"].map((dataname, index) => (
+                <label key={index}>
+                  {dataname}:
+                  <input
+                    type="text"
+                    onChange={(e) =>
+                      handlePieBarInputChange(dataname, e.target.value)
+                    }
+                  />
+                </label>
+              ))}
+              <button type="submit">Submit</button>
+            </form>
+          </div>
         )}
         {/* Circle Modal - DONE */}
         {showModalCircle && (

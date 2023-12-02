@@ -14,6 +14,7 @@ import FormHelperText from "@mui/joy/FormHelperText";
 import Textarea from "@mui/joy/Textarea";
 import Input from "@mui/joy/Input";
 import Typography from "@mui/joy/Typography";
+import { useEffect } from "react";
 const InputMapData = ({
   options,
   setOptions,
@@ -26,9 +27,26 @@ const InputMapData = ({
   heatRange,
   setHeatRange,
   selectedMapFile,
+  setSelectedMapFile,
   showMapEdit,
   setShowMapEdit,
 }) => {
+  useEffect(() => {
+    setSelectedMapFile((prevMapFile) => ({
+      ...prevMapFile,
+      mapbook_mapname: options.name,
+      mapbook_description: options.description,
+      mapbook_template: options.template,
+      mapbook_circleheatmapdata: options.circleHeatMapData,
+      mapbook_topic: options.topic,
+      mapbook_customtopic: options.customTopic,
+      mapbook_visibility: options.isPrivate,
+      mapbook_datanames: pieBarData, //piebar
+      mapbook_heatrange: heatRange, // heat range
+      mapbook_heat_selectedcolors: selectedColors, // heat color
+      mapbook_themedata: themeData, //Color + data name
+    }));
+  }, [options, pieBarData, themeData, themeData, heatRange, selectedColors]);
   const handleMapNameChange = (name) => {
     setOptions({ ...options, name });
   };
@@ -54,7 +72,6 @@ const InputMapData = ({
   const handlePrivacy = (e) => {
     setOptions({ ...options, isPrivate: e.target.checked });
   };
-  const navigate = useNavigate();
   const topics = [
     "Economy",
     "Education",

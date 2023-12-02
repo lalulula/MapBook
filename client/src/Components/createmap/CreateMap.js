@@ -21,7 +21,6 @@ const CreateMap = () => {
   const [themeData, setThemeData] = useState([{ dataName: "", color: "#fff" }]); //Theme: color and dataname
   const [selectedColors, setSelectedColors] = useState([]); //HEATMAP: color for each range
   const [heatRange, setHeatRange] = useState({ from: 0, to: 0 }); //HEATMAP: range value
-  const [skipStep, setSkipSteps] = useState(false);
   const [importDataOpen, setImportDataOpen] = useState(true);
   const [showMapEdit, setShowMapEdit] = useState(false);
   const DEFAULT_GEOJSON =
@@ -49,8 +48,6 @@ const CreateMap = () => {
     setSelectedMapFile(newGeojsonData);
   }, [options, pieBarData, heatRange, selectedColors, themeData]);
 
-  useEffect(() => {}, [skipStep]);
-
   const closeImportDataPopup = () => {
     setImportDataOpen(false);
   };
@@ -64,7 +61,6 @@ const CreateMap = () => {
         onClose={closeImportDataPopup}
       >
         <FileDropBox
-          setSkipSteps={setSkipSteps}
           setSelectedMapFile={setSelectedMapFile}
           selectedMapFile={selectedMapFile}
           setImportDataOpen={setImportDataOpen}

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { FileInput, Label } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 
-function FileDropBox({ setSkipSteps, setSelectedMapFile, setImportDataOpen }) {
+function FileDropBox({ setSelectedMapFile, setImportDataOpen }) {
   const [backgroundColor, setBackgroundColor] = useState("fff");
   const [textColor, setTextColor] = useState("rgba(128, 128, 128)");
   const [createTextColor, setCreateTextColor] = useState("rgba(128, 128, 128)");
@@ -25,7 +25,6 @@ function FileDropBox({ setSkipSteps, setSelectedMapFile, setImportDataOpen }) {
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
-
     setSelectedFile(file);
     try {
       const file = e.target.files[0];
@@ -82,7 +81,6 @@ function FileDropBox({ setSkipSteps, setSelectedMapFile, setImportDataOpen }) {
       }
       // Check if the "template" key exists at the top level
       if ("mapbook_template" in parsedData) {
-        setSkipSteps(true);
         console.log(
           'The "mapbook_template" key exists with value:',
           parsedData.mapbook_template
