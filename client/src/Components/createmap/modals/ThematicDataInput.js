@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/joy/Button";
 import FormControl from "@mui/joy/FormControl";
 import Input from "@mui/joy/Input";
@@ -7,48 +7,42 @@ import ModalDialog from "@mui/joy/ModalDialog";
 import Stack from "@mui/joy/Stack";
 import DialogTitle from "@mui/joy/DialogTitle";
 
-const PieBarDataInput = ({
-  showModalBar,
-  showModalPie,
-  setShowModalBar,
-  setShowModalPie,
+const ThematicDataInput = ({
+  showModalThematic,
+  setShowModalThematic,
   handleAddData,
   selectedMapFile,
-  handlePieBarInputChange,
+  handleThematicData,
   regionName,
 }) => {
   const [showCloseBtn, setShowCloseBtn] = useState(false);
 
   useEffect(() => {
     setShowCloseBtn(
-      selectedMapFile["mapbook_datanames"].length === 1 &&
-        selectedMapFile["mapbook_datanames"][0] === ""
+      selectedMapFile["mapbook_themedata"].length === 1 &&
+        selectedMapFile["mapbook_themedata"][0]["dataName"] === ""
     );
   }, [selectedMapFile]);
   return (
-    <Modal
-      open={showModalBar || showModalPie}
-      onClose={() => {
-        setShowModalBar(false);
-        setShowModalPie(false);
-      }}
-    >
+    <Modal open={showModalThematic} onClose={() => setShowModalThematic(false)}>
       <ModalDialog>
         <DialogTitle>Enter Data for {regionName}</DialogTitle>
         <form onSubmit={handleAddData}>
           <Stack spacing={2}>
             <div className="map_datainput_container">
-              {selectedMapFile["mapbook_datanames"].map((dataname, index) => (
+              {selectedMapFile["mapbook_themedata"].map((data, index) => (
                 <div key={index} className="map_datainput_element">
                   <FormControl>
-                    {dataname ? (
+                    {!showCloseBtn ? (
                       <>
-                        <h3 style={{ marginBottom: "0.5rem" }}>{dataname}</h3>
+                        <h3 style={{ marginBottom: "1rem" }}>
+                          {data["dataName"]}
+                        </h3>
                         <FormControl>
                           <Input
                             sx={{ marginBottom: "1rem" }}
                             onChange={(e) =>
-                              handlePieBarInputChange(dataname, e.target.value)
+                              handleThematicData(data, e.target.value)
                             }
                             placeholder="Enter data value"
                             required
@@ -59,7 +53,7 @@ const PieBarDataInput = ({
                       <>
                         <div className="inputdata_warning_txt">
                           First enter data name(s) on the right side bar
-                        </div>{" "}
+                        </div>
                       </>
                     )}
                   </FormControl>
@@ -69,8 +63,7 @@ const PieBarDataInput = ({
                 <Button
                   onClick={(e) => {
                     e.preventDefault();
-                    setShowModalBar(false);
-                    setShowModalPie(false);
+                    setShowModalThematic(false);
                   }}
                 >
                   Close
@@ -86,4 +79,4 @@ const PieBarDataInput = ({
   );
 };
 
-export default PieBarDataInput;
+export default ThematicDataInput;

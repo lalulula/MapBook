@@ -5,6 +5,8 @@ const Heat = ({
   setSelectedColors,
   heatRange,
   setHeatRange,
+  options,
+  handleCircleHeatMapDataChange,
 }) => {
   // https://www.color-hex.com/color-palettes/
   const colorScales = [
@@ -40,7 +42,13 @@ const Heat = ({
 
   return (
     <div className="heat_container">
+      <input
+        value={options.circleHeatMapData}
+        placeholder="Enter HeatMap Data Name"
+        onChange={(e) => handleCircleHeatMapDataChange(e.target.value)}
+      />
       <div className="heat_color_selector">
+        {" "}
         <h3>Select Color</h3>
         <table>
           <tbody>

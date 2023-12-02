@@ -15,7 +15,8 @@ import Textarea from "@mui/joy/Textarea";
 import Input from "@mui/joy/Input";
 import Typography from "@mui/joy/Typography";
 import { useEffect } from "react";
-const InputMapData = ({
+import Circle from "./template/Circle";
+const MapDataInputPage = ({
   options,
   setOptions,
   pieBarData,
@@ -135,20 +136,6 @@ const InputMapData = ({
             onChange={handleTemplateClick}
             value={options.template}
           />
-          {options.template === "Circle Map" && (
-            <input
-              value={options.circleHeatMapData}
-              placeholder="Enter CircleMap Data Name"
-              onChange={(e) => handleCircleHeatMapDataChange(e.target.value)}
-            />
-          )}
-          {options.template === "Heat Map" && (
-            <input
-              value={options.circleHeatMapData}
-              placeholder="Enter HeatMap Data Name"
-              onChange={(e) => handleCircleHeatMapDataChange(e.target.value)}
-            />
-          )}
         </div>
 
         <div>
@@ -185,7 +172,12 @@ const InputMapData = ({
       />
       <div className="addmapdata_right_sidebar">
         <h3>Map Data</h3>
-        {template && template !== "Circle Map" && <h3>Enter Data Names</h3>}
+        {template === "Circle Map" && (
+          <Circle
+            options={options}
+            handleCircleHeatMapDataChange={handleCircleHeatMapDataChange}
+          />
+        )}
         {(template === "Pie Chart" || template === "Bar Chart") && (
           <PieBar pieBarData={pieBarData} setPieBarData={setPieBarData} />
         )}
@@ -201,6 +193,8 @@ const InputMapData = ({
               setSelectedColors={setSelectedColors}
               heatRange={heatRange}
               setHeatRange={setHeatRange}
+              options={options}
+              handleCircleHeatMapDataChange={handleCircleHeatMapDataChange}
             />
             <ColorGenerator />
           </>
@@ -228,4 +222,4 @@ const InputMapData = ({
   );
 };
 
-export default InputMapData;
+export default MapDataInputPage;

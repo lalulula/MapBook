@@ -141,9 +141,14 @@
 }
 .map_datainput_container {
   display: flex;
-  gap: 2rem;
+  flex-direction: column;
+  align-items: stretch;
 }
-.map_datainput_element {
+.map_datainput_element .inputdata_warning_txt {
+  margin-bottom: 1rem;
+  color: rgb(203, 54, 54);
+  font-weight: 300;
+  font-size: small;
 }
 /* RENDER DATA */
 

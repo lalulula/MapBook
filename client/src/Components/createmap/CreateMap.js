@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import InputMapData from "./InputMapData";
+import MapDataInputPage from "./MapDataInputPage";
 import { useState } from "react";
 import "./createMap.css";
 import { useNavigate } from "react-router-dom";
 import Popup from "reactjs-popup";
-import FileDropBox from "./FileDropBox";
+import ImportFilePage from "./ImportFilePage";
 
 const CreateMap = () => {
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ const CreateMap = () => {
         closeOnEscape={false}
         onClose={closeImportDataPopup}
       >
-        <FileDropBox
+        <ImportFilePage
           setSelectedMapFile={setSelectedMapFile}
           selectedMapFile={selectedMapFile}
           setImportDataOpen={setImportDataOpen}
@@ -70,7 +70,7 @@ const CreateMap = () => {
       {/* After Inputing Data file */}
       {importDataOpen ? null : (
         <div className="createmap_add_data_container">
-          <InputMapData
+          <MapDataInputPage
             importDataOpen={importDataOpen}
             options={options}
             setOptions={setOptions}
