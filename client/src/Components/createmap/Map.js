@@ -54,8 +54,8 @@ const Map = ({
   const [feature, setFeature] = useState(null);
   const [inputData, setInputData] = useState(null);
   const [hoverData, setHoverData] = useState("Out of range");
-  const [undoStack, setUndoStack] = useState([]);
-  const [redoStack, setRedoStack] = useState([]);
+  const undoStack = useRef([]);
+  const redoStack = useRef([]);
 
   const userId = useSelector((state) => state.user.id);
 
@@ -99,17 +99,10 @@ const Map = ({
     }
     return "Invalid Color";
   };
-<<<<<<< HEAD
-  useEffect(() => {
-    // console.log(inputData);
-    // console.log(selectedMapFile);
-  }, [inputData]);
-=======
   // useEffect(() => {
   //   console.log(inputData);
   //   console.log(selectedMapFile);
   // }, [inputData]);
->>>>>>> 2a85e1efc05b98808d11ed93f988e812de8f8af8
 
   const handleHeatMapData = (datavalue) => {
     const from = Number(selectedMapFile["mapbook_heatrange"]["from"]);
@@ -144,6 +137,7 @@ const Map = ({
     e.preventDefault();
 
     // for undo/redo 
+    console.log("before calling handleChangeState: ", selectedMapFile)
     handleChangeState();
 
     var tempArr = selectedMapFile["features"];
@@ -170,45 +164,40 @@ const Map = ({
   };
 
   const handleUndo = () =>{
-    if(undoStack.length != 0){
+    if(undoStack.current.length != 0){
       console.log("undo Clicked");
       // pop {a} from undo stack
-      const popedState = undoStack.pop();
-
+      const popedState = undoStack.current.pop();
 
       // push current state into redo stack
-      const tempRedoStack = redoStack;
-      const tempSelectedMapFile = structuredClone(selectedMapFile)
-
-      tempRedoStack.push(tempSelectedMapFile);
-      setRedoStack(tempRedoStack);
+      redoStack.current.push(selectedMapFile);
 
       // change current state to {a}
-      setSelectedMapFile((popedState) => popedState)
-    
+      // setSelectedMapFile(popedState)
+      selectedMapFile = popedState
+
+      console.log("popedState: ", popedState);
       console.log("afterUndo: ", selectedMapFile);
     }
 
   }
   
   const handleRedo = () =>{
-    if(redoStack.length != 0){
+    if(redoStack.current.length != 0){
 
       console.log("redo Clicked");
 
       // pop {a} from redo stack
-      const popedState = redoStack.pop();
+      const popedState = redoStack.current.pop();
 
       // push current state into undo stack
-      const tempUndoStack = undoStack;
-      const tempSelectedMapFile = structuredClone(selectedMapFile)
-
-      tempUndoStack.push(tempSelectedMapFile);
-      setUndoStack(tempUndoStack);
+      undoStack.current.push(selectedMapFile);
 
       // change current state to {a}
-      setSelectedMapFile((popedState) => popedState)
+      // setSelectedMapFile(popedState)
+      selectedMapFile = popedState
 
+      console.log("popedState: ", popedState);
       console.log("afterRedo: ", selectedMapFile);
     }
 
@@ -217,13 +206,11 @@ const Map = ({
 
   const handleChangeState = () =>{
     // push the state which is right before current change into undo stack
-    const tempUndoStack = undoStack;
-    const tempSelectedMapFile = structuredClone(selectedMapFile)
-    tempUndoStack.push(tempSelectedMapFile);
-    setUndoStack(tempUndoStack);
+    undoStack.current.push(structuredClone(selectedMapFile));
 
+    console.log("undoStack: ", undoStack)
     // clear redo stack
-    setRedoStack([]);
+    redoStack.current = []
   }
   
 
