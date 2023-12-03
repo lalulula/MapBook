@@ -54,6 +54,9 @@ const Map = ({
   const [feature, setFeature] = useState(null);
   const [inputData, setInputData] = useState(null);
   const [hoverData, setHoverData] = useState("Out of range");
+  const [undoState, setUndoState] = useState([]);
+  const [redoState, setRedoState] = useState([]);
+  const [recentState, setRecentState] = useState();
   const userId = useSelector((state) => state.user.id);
   const navigate = useNavigate();
   
@@ -167,6 +170,14 @@ const Map = ({
     console.log("updated selectedmapfile: ", selectedMapFile);
     handleClickRegion();
   };
+
+  const handleUndo = () =>{
+
+  }
+  const handleRedo = () =>{
+
+  }
+  
 
   const mapContainerRef = useRef(null);
 
