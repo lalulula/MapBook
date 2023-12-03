@@ -61,17 +61,29 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
           // console.log(geojson.features[0]);
           for (const data in geojson.features) {
             var i = 0;
+
             var name = "NAME_";
+
             for (i = 0; i < 10; i++) {
               if (geojson.features[data].properties[name + i] === undefined) {
                 i--;
                 break;
               }
             }
+            var feature_name = geojson.features[data].properties[name + i]
 
-            geojson.features[data].properties.name =
-              geojson.features[data].properties[name + i];
+            const keys = Object.keys(geojson.features[data].properties);
+            // console.log("keys: ", keys);
+            // console.log(keys.length)
+            for(let j = 0; j < keys.length; j++){
+              // console.log("keys[j]: ", keys[j])
+              delete geojson.features[data].properties[keys[j]];
+              
+            }
+
+            geojson.features[data].properties["name"] = feature_name;
           }
+          // console.log("geojson: ", geojson)
 
           parsedData = geojson;
         } catch (error) {
@@ -106,6 +118,7 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
           mapbook_themedata: [], //Color + data name
           mapbook_owner: userId,
         };
+
         setSelectedMapFile(newGeojsonData);
       }
     } catch (error) {

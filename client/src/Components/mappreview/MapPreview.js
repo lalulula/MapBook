@@ -83,7 +83,7 @@ import { useNavigate } from "react-router-dom";
 import '@mantine/core/styles.css'; */
 
 const MapPreview = ({ data }) => {
-  console.log("data: ", data);
+  // console.log("data: ", data);
   const navigate = useNavigate();
   const [optionsMenuVisible, setOptionsMenuVisible] = useState(false);
 
