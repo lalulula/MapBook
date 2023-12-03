@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { BlockPicker } from "react-color";
+import Input from "@mui/joy/Input";
+import Button from "@mui/joy/Button";
+
 const Thematic = ({ themeData, setThemeData }) => {
   const [selectedDataIndexes, setSelectedDataIndexes] = useState([]);
   const handleAddThemeData = () => {
@@ -35,39 +38,46 @@ const Thematic = ({ themeData, setThemeData }) => {
       <div className="data_container">
         {themeData.map((theme, index) => (
           <div className="data_input_container" key={index}>
-            <input
+            <Input
               placeholder="Enter Data"
+              required
+              name={`data_name_${index}`}
               value={theme.dataName}
               onChange={(e) => handleThemeDataInput(index, e.target.value)}
+              startDecorator={
+                <>
+                  <div
+                    onClick={() => {
+                      showColorPicker(index);
+                    }}
+                    style={{
+                      backgroundColor: `${theme.color}`,
+                      width: 25,
+                      height: 25,
+                      borderRadius: "50%",
+                    }}
+                  />
+                  {selectedDataIndexes[index] === index && (
+                    <BlockPicker
+                      key={index}
+                      color={theme.color}
+                      onChange={(color) => {
+                        handleThemeDataColorChange(index, color.hex);
+                        const updatedIndexes = [...selectedDataIndexes];
+                        updatedIndexes[index] = null;
+                        setSelectedDataIndexes(updatedIndexes);
+                      }}
+                    />
+                  )}
+                </>
+              }
+              endDecorator={
+                <i
+                  className="bi bi-x-circle"
+                  onClick={() => handleRemoveThemeData(index)}
+                />
+              }
             />
-            <div
-              onClick={() => {
-                showColorPicker(index);
-              }}
-              style={{
-                backgroundColor: `${theme.color}`,
-                width: 25,
-                height: 25,
-                borderRadius: "50%",
-              }}
-            ></div>
-            <i
-              className="bi bi-x-circle"
-              onClick={() => handleRemoveThemeData(index)}
-            />
-
-            {selectedDataIndexes[index] === index && (
-              <BlockPicker
-                key={index}
-                color={theme.color}
-                onChange={(color) => {
-                  handleThemeDataColorChange(index, color.hex);
-                  const updatedIndexes = [...selectedDataIndexes];
-                  updatedIndexes[index] = null;
-                  setSelectedDataIndexes(updatedIndexes);
-                }}
-              />
-            )}
           </div>
         ))}
       </div>

@@ -45,17 +45,6 @@ const ColorGenerator = ({ selectedColors, setSelectedColors }) => {
   return (
     <div style={{ display: "flex" }}>
       <input type="color" value={baseColor} onChange={handleBaseColorChange} />
-      {/* {colorArray.map((color, index) => (
-        <div
-          key={index}
-          style={{
-            backgroundColor: color,
-            padding: "5px",
-            width: "2rem",
-            height: "2rem",
-          }}
-        ></div>
-      ))} */}
     </div>
   );
 };
