@@ -23,7 +23,7 @@
 }
 
 .addmapdata_center {
-  width: fit-content;
+  /* width: fit-content; */
   height: fit-content;
   flex: 5;
   display: flex;
@@ -33,10 +33,11 @@
 .addmapdata_right_sidebar {
   flex: 1;
   padding: 1rem;
-  margin: 1rem;
+  margin: 1rem 1rem 1rem 2rem;
   background-color: rgba(44, 44, 44, 0.46);
   border-radius: 5px;
   height: -webkit-fill-available;
+  width: fit-content;
 }
 .mapboxgl-canvas-container {
   height: 80vh;
@@ -135,6 +136,16 @@
 } */
 /* RIGHT SIDEBAR DATA IMPUT */
 .data_input_container {
+  display: flex;
+}
+.data_input_value {
+  flex: 2;
+}
+.data_input_delete {
+}
+.data_input_container_heat {
+  display: flex;
+  flex-direction: column;
 }
 .add_data_btn {
   display: flex;

@@ -65,22 +65,6 @@ const Map = ({
     // console.log("selectedMapFile: useEffect: ", selectedMapFile);
   }, [selectedMapFile]);
 
-  // const handleClickRegion = () => {
-  //   console.log("clicking");
-  //   console.log(selectedMapFile);
-  //   console.log(selectedMapFile["mapbook_template"]);
-  //   if (selectedMapFile["mapbook_template"] === "Bar Chart") {
-  //     setShowModalBar(!showModalBar);
-  //   } else if (selectedMapFile["mapbook_template"] === "Pie Chart")
-  //     setShowModalPie(!showModalPie);
-  //   else if (selectedMapFile["mapbook_template"] === "Circle Map")
-  //     setShowModalCircle(!showModalCircle);
-  //   else if (selectedMapFile["mapbook_template"] === "Thematic Map")
-  //     setShowModalThematic(!showModalThematic);
-  //   else if (selectedMapFile["mapbook_template"] === "Heat Map")
-  //     setShowModalHeat(!showModalHeat);
-  // };
-
   const handleClickRegion = () => {
     setSelectedMapFile((prevMapFile) => {
       console.log(prevMapFile);
@@ -115,10 +99,17 @@ const Map = ({
     }
     return "Invalid Color";
   };
+<<<<<<< HEAD
   useEffect(() => {
     // console.log(inputData);
     // console.log(selectedMapFile);
   }, [inputData]);
+=======
+  // useEffect(() => {
+  //   console.log(inputData);
+  //   console.log(selectedMapFile);
+  // }, [inputData]);
+>>>>>>> 2a85e1efc05b98808d11ed93f988e812de8f8af8
 
   const handleHeatMapData = (datavalue) => {
     const from = Number(selectedMapFile["mapbook_heatrange"]["from"]);
@@ -408,7 +399,7 @@ const Map = ({
     };
 
     const res = await createMapAPIMethod(newMapObj);
-    // console.log("res: ", res);
+    console.log("res: ", res);
     if (res.ok) {
       // const responseMsg = await res.json;
       navigate("/mainpage");
