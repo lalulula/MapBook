@@ -333,21 +333,36 @@ const Map = ({
           if (data === undefined) {
             setHoverData("No data");
           } else {
-            var newData;
-            // JSON.stringify(tempFeature["properties"].mapbook_data)
-            if (
-              selectedMapFile["mapbook_template"] === "Bar Chart" ||
-              "Pie Chart"
-            ) {
-              newData = "PieChart/BarChart";
-            } else if (selectedMapFile["mapbook_template"] === "Circle Map") {
-              newData = "CircleMap";
-            } else if (selectedMapFile["mapbook_template"] === "Heat Map") {
-              newData = "HeatMap";
-            } else if (selectedMapFile["mapbook_template"] === "Thematic Map") {
-              newData = "ThematicMap";
+            var newData = JSON.stringify(
+              tempFeature["properties"].mapbook_data
+            );
+            console.log(newData, typeof newData);
+            try {
+              const data = JSON.parse(newData);
+
+              const formattedData = Object.keys(data)
+                .map((key) => `${key}: ${data[key]}`)
+                .join("\n");
+
+              console.log(formattedData);
+              setHoverData(formattedData);
+            } catch (error) {
+              console.error("Error parsing JSON:", error);
             }
-            setHoverData(newData);
+
+            // // JSON.stringify(tempFeature["properties"].mapbook_data)
+            // if (
+            //   selectedMapFile["mapbook_template"] === "Bar Chart" ||
+            //   "Pie Chart"
+            // ) {
+            //   newData = "PieChart/BarChart";
+            // } else if (selectedMapFile["mapbook_template"] === "Circle Map") {
+            //   newData = "CircleMap";
+            // } else if (selectedMapFile["mapbook_template"] === "Heat Map") {
+            //   newData = "HeatMap";
+            // } else if (selectedMapFile["mapbook_template"] === "Thematic Map") {
+            //   newData = "ThematicMap";
+            // }
           }
         }
       });
