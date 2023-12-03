@@ -50,7 +50,7 @@ const Map = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(selectedMapFile);
+    console.log("selectedMapFile: useEffect: ", selectedMapFile);
   }, [selectedMapFile]);
   // const handleClickRegion = () => {
   //   console.log("clicking");
@@ -68,6 +68,20 @@ const Map = ({
   //     setShowModalHeat(!showModalHeat);
   // };
   const handleClickRegion = () => {
+    // console.log("selectedMapFile: ", selectedMapFile);
+
+    // if (selectedMapFile["mapbook_template"] === "Bar Chart") {
+    //   setShowModalBar(!showModalBar);
+    // } else if (selectedMapFile["mapbook_template"] === "Pie Chart") {
+    //   setShowModalPie(!showModalPie);
+    // } else if (selectedMapFile["mapbook_template"] === "Circle Map") {
+    //   setShowModalCircle(!showModalCircle);
+    // } else if (selectedMapFile["mapbook_template"] === "Thematic Map") {
+    //   setShowModalThematic(!showModalThematic);
+    // } else if (selectedMapFile["mapbook_template"] === "Heat Map") {
+    //   setShowModalHeat(!showModalHeat);
+    // }
+
     setSelectedMapFile((prevMapFile) => {
       console.log(prevMapFile);
       console.log(prevMapFile["mapbook_template"]);
@@ -159,7 +173,7 @@ const Map = ({
 
   const mapContainerRef = useRef(null);
   useEffect(() => {
-    console.log(selectedMapFile);
+    console.log("selectedMapFile: ", selectedMapFile);
     let map;
 
     mapboxgl.accessToken = MAPBOX_TOKEN;
