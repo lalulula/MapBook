@@ -49,9 +49,6 @@ const MapDetails = () => {
                 <h3>{currentMap.topic}</h3>
               </div>
             </div>
-            {/* <div className="map_details_options">
-              <img src={options}></img>
-            </div> */}
             <Menu compact>
               <Dropdown
                 options={options}
@@ -60,9 +57,6 @@ const MapDetails = () => {
                 icon="ellipsis horizontal"
                 style={{
                   padding: "0 5px 0 10px",
-                  // color: "whitesmoke",
-                  // backgroundColor: "#5C5CFF",
-                  // // borderRadius: "5px"
                 }} 
               />
             </Menu>
@@ -73,7 +67,10 @@ const MapDetails = () => {
           </div>
           <Divider section inverted style={{margin: "20px 0"}}/>
           <div className="tools">
-            <MapTools />
+            <MapTools
+              isEdit={false}
+              currentMap={currentMap}
+            />
           </div>
         </div>
       </div>

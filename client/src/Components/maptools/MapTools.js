@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./maptools.css";
 import likes from "../../assets/img/heart.png";
@@ -16,14 +16,30 @@ import visible from "../../assets/img/visible.png";
 import invisible from "../../assets/img/invisible.png";
 import save from "../../assets/img/save.png";
 import dl from "../../assets/img/delete (1).png";
+import liked from "../../assets/img/love.png";
+import { likeMapAPIMethod } from "../../api/map";
 
 
 
 const MapTools = ({ style, isEdit, currentMap }) => {
   const navigate = useNavigate();
   const [isPublic, setIsPublic] = useState(true);
+  const isAuth = useSelector((state) => state.user.isAuthenticated);
   const user = useSelector((state) => state.user.user);
-  // console.log("USER IN MAPTOOLS: ", user);
+  const [isLiked, setIsLiked] = useState(false);
+
+  useEffect(() => {
+    setIsLiked(currentMap.map_users_liked.includes(user._id));
+  }, [currentMap]);
+
+  const likeMap = async () => {
+    const userId = {
+      userId: user._id,
+    }
+    likeMapAPIMethod(currentMap._id, isAuth, userId).catch((err) => {
+      console.error("Error updating user:", err.message);
+    });
+  };
 
 
   return isEdit ?
@@ -79,9 +95,9 @@ const MapTools = ({ style, isEdit, currentMap }) => {
       </div>
     </div> :
     <div className="map_tools" style={style}>
-      <div className="tool">
-        <div className="tool_title">Likes</div>
-        <img src={likes} alt="Likes" />
+      <div className="tool" onClick={likeMap}>
+        <div className="tool_title">{currentMap.map_users_liked.length}</div>
+        {isLiked ? <img src={liked} alt="Likes" /> : <img src={likes} alt="Likes" />}
       </div>
 
       <img src={line} alt="line" />

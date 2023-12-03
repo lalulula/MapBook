@@ -14,12 +14,12 @@ router.get("/getMaps/:userId", /* auth.verifyToken, */ map.getMaps);
 router.get("/getMap/:mapId", map.getMap);
 
 // // CREATE A MAP
-router.post("/createMap", auth.verifyToken, map.createMap);
+router.post("/createMap", map.createMap);
 
 // REMOVE A MAP & FILE FROM FIREBASE
 router.delete("/:id", auth.verifyToken, map.removeMap);
 
 // like and dislike map
-router.put("/likeMap/:sMapId", map.likeMap);
+router.put("/likeMap/:sMapId", auth.verifyToken, map.likeMap);
 
 module.exports = router;

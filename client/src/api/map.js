@@ -79,6 +79,20 @@ export const getMapAPI = (mapId) => {
   return res;
 };
 
+// LIKE A MAP
+export const likeMapAPIMethod = (mapId, isAuth, userId) => {
+  const res = fetch(`${API_BASE_URL}/api/maps/likeMap/${mapId}`, {
+    ...defaultHeaders,
+    method: "PUT",
+    headers: { 
+      Authorization: `Bearer ${isAuth}`,
+      "Content-Type": "application/json; charset=UTF-8", 
+    },
+    body: JSON.stringify(userId),
+  });
+  return res;
+};
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;

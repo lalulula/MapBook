@@ -209,7 +209,7 @@ const likeMap = async (req, res) => {
     const likedUsers = mapObj["map_users_liked"];
 
     const index = likedUsers.indexOf(userId);
-    if (index == -1) {
+    if (index === -1) {
       likedUsers.push(userId);
     } else {
       likedUsers.splice(index, 1);
