@@ -54,15 +54,15 @@ const Map = ({
   const [feature, setFeature] = useState(null);
   const [inputData, setInputData] = useState(null);
   const [hoverData, setHoverData] = useState("Out of range");
-  const [undoState, setUndoState] = useState([]);
-  const [redoState, setRedoState] = useState([]);
-  const [recentState, setRecentState] = useState();
+  const [undoStack, setUndoStack] = useState([]);
+  const [redoStack, setRedoStack] = useState([]);
+
   const userId = useSelector((state) => state.user.id);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("selectedMapFile: useEffect: ", selectedMapFile);
+    // console.log("selectedMapFile: useEffect: ", selectedMapFile);
   }, [selectedMapFile]);
 
   // const handleClickRegion = () => {
@@ -116,8 +116,8 @@ const Map = ({
     return "Invalid Color";
   };
   useEffect(() => {
-    console.log(inputData);
-    console.log(selectedMapFile);
+    // console.log(inputData);
+    // console.log(selectedMapFile);
   }, [inputData]);
 
   const handleHeatMapData = (datavalue) => {
@@ -151,6 +151,10 @@ const Map = ({
 
   const handleAddData = (e) => {
     e.preventDefault();
+
+    // for undo/redo 
+    handleChangeState();
+
     var tempArr = selectedMapFile["features"];
 
     if (tempArr.length <= 0 || feature[0] == null) {
@@ -169,22 +173,73 @@ const Map = ({
         break;
       }
     }
-    console.log("updated selectedmapfile: ", selectedMapFile);
+    // console.log("updated selectedmapfile: ", selectedMapFile);
     handleClickRegion();
+
   };
 
   const handleUndo = () =>{
+    if(undoStack.length != 0){
+      console.log("undo Clicked");
+      // pop {a} from undo stack
+      const popedState = undoStack.pop();
+
+
+      // push current state into redo stack
+      const tempRedoStack = redoStack;
+      const tempSelectedMapFile = structuredClone(selectedMapFile)
+
+      tempRedoStack.push(tempSelectedMapFile);
+      setRedoStack(tempRedoStack);
+
+      // change current state to {a}
+      setSelectedMapFile((popedState) => popedState)
+    
+      console.log("afterUndo: ", selectedMapFile);
+    }
 
   }
+  
   const handleRedo = () =>{
+    if(redoStack.length != 0){
 
+      console.log("redo Clicked");
+
+      // pop {a} from redo stack
+      const popedState = redoStack.pop();
+
+      // push current state into undo stack
+      const tempUndoStack = undoStack;
+      const tempSelectedMapFile = structuredClone(selectedMapFile)
+
+      tempUndoStack.push(tempSelectedMapFile);
+      setUndoStack(tempUndoStack);
+
+      // change current state to {a}
+      setSelectedMapFile((popedState) => popedState)
+
+      console.log("afterRedo: ", selectedMapFile);
+    }
+
+
+  }
+
+  const handleChangeState = () =>{
+    // push the state which is right before current change into undo stack
+    const tempUndoStack = undoStack;
+    const tempSelectedMapFile = structuredClone(selectedMapFile)
+    tempUndoStack.push(tempSelectedMapFile);
+    setUndoStack(tempUndoStack);
+
+    // clear redo stack
+    setRedoStack([]);
   }
   
 
   const mapContainerRef = useRef(null);
 
   useEffect(() => {
-    console.log("selectedMapFile: ", selectedMapFile);
+    // console.log("selectedMapFile: ", selectedMapFile);
     let map;
 
     mapboxgl.accessToken = MAPBOX_TOKEN;
@@ -339,7 +394,7 @@ const Map = ({
       document.querySelector(".mapboxgl-canvas")
     );
 
-    console.log("canvas", canvas);
+    // console.log("canvas", canvas);
     const mapImage = canvas.toDataURL();
 
     const newMapObj = {
@@ -381,9 +436,9 @@ const Map = ({
       </div> */}
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
-          <i className="undo bx bx-undo" />
+          <i className="undo bx bx-undo" disabled={undoStack.length == 0} onClick={handleUndo}/>
           <div className="vertical_line_container">|</div>
-          <i className="redo bx bx-redo" />
+          <i className="redo bx bx-redo" disabled={redoStack.length == 0} onClick={handleRedo}/>
         </div>
 
         <button onClick={handleCreateMap}>Create Map</button>
