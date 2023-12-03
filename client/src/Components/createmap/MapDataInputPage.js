@@ -120,14 +120,15 @@ const MapDataInputPage = ({
             className=""
             onChange={handleTopicClick}
           />
+
           {options.topic === "Other" && (
-            <input
+            <Input
+              sx={{ marginTop: "0.5rem" }}
               value={options.customTopic}
-              placeholder="Enter a custom Topic"
+              placeholder="Enter Custom Topic"
               onChange={(e) => handleCustomTopic(e.target.value)}
             />
           )}
-
           <h3>Templates</h3>
           <Dropdown
             options={templates}

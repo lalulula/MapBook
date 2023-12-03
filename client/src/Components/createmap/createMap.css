@@ -19,7 +19,7 @@
   height: -webkit-fill-available;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 1rem;
 }
 
 .addmapdata_center {
