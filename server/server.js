@@ -59,10 +59,15 @@ app.put(
   upload.array("post_images"),
   socialController.createPost
 );
+
+
 // CREATE MAP
 app.post(
   "/api/map/createMap",
-  fileUpload.single("file"),
+  // fileUpload.single("file"),
+  fileUpload.fields([{name: 'file'}, {name: 'mapPreviewImg'}]),
+
+  
   // auth.verifyToken,
   mapController.createMap
 );

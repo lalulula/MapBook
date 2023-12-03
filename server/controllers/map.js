@@ -1,5 +1,7 @@
 const MapObj = require("../models/MapObj");
 const serviceAccount = require("../mapbook-firebase.json");
+const cloudinary = require("cloudinary").v2;
+
 
 const admin = require("firebase-admin");
 const { URL } = require("url");
@@ -56,15 +58,27 @@ const createMap = async (req, res) => {
       is_visible,
       map_description,
     } = req.body;
-    console.log(req.body);
-    console.log(req.file);
+    // console.log(req.body);
+    console.log("file", req.files["file"][0]);
+    console.log("mapPreviewImg", req.files["mapPreviewImg"][0]);
 
-    const fileBuffer = req.file.buffer;
-    const fileName = req.file.originalname;
+    const fileBuffer = req.files["file"][0].buffer;
+    const fileName = req.files["file"][0].originalname;
     const storageRef = bucket.file(fileName);
     await storageRef.createWriteStream().end(fileBuffer);
 
     const [fileUrl] = await storageRef.getSignedUrl({
+      action: "read",
+      expires: "03-09-2025", // Replace with an expiration date
+    });
+
+    
+    const imgFileBuffer = req.files["mapPreviewImg"][0].buffer;
+    const imgFileName = req.files["mapPreviewImg"][0].originalname;
+    const imgStorageRef = bucket.file(imgFileName);
+    await imgStorageRef.createWriteStream().end(imgFileBuffer);
+
+    const [mapPreviewImgUrl]  = await imgStorageRef.getSignedUrl({
       action: "read",
       expires: "03-09-2025", // Replace with an expiration date
     });
@@ -75,6 +89,7 @@ const createMap = async (req, res) => {
       user_id,
       is_visible,
       map_description,
+      mapPreviewImg: mapPreviewImgUrl,
       file_path: fileUrl,
     });
     const savedMap = await newMap.save();

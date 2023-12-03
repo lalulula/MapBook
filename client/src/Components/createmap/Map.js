@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./createMap.css";
 
+import html2canvas from 'html2canvas';
+
 import PieBarDataInput from "./modals/PieBarDataInput";
 import CircleDataInput from "./modals/CircleDataInput";
 import ThematicDataInput from "./modals/ThematicDataInput";
@@ -54,10 +56,12 @@ const Map = ({
   const [hoverData, setHoverData] = useState("Out of range");
   const userId = useSelector((state) => state.user.id);
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     console.log("selectedMapFile: useEffect: ", selectedMapFile);
+
   }, [selectedMapFile]);
+
   // const handleClickRegion = () => {
   //   console.log("clicking");
   //   console.log(selectedMapFile);
@@ -73,21 +77,8 @@ const Map = ({
   //   else if (selectedMapFile["mapbook_template"] === "Heat Map")
   //     setShowModalHeat(!showModalHeat);
   // };
+
   const handleClickRegion = () => {
-    // console.log("selectedMapFile: ", selectedMapFile);
-
-    // if (selectedMapFile["mapbook_template"] === "Bar Chart") {
-    //   setShowModalBar(!showModalBar);
-    // } else if (selectedMapFile["mapbook_template"] === "Pie Chart") {
-    //   setShowModalPie(!showModalPie);
-    // } else if (selectedMapFile["mapbook_template"] === "Circle Map") {
-    //   setShowModalCircle(!showModalCircle);
-    // } else if (selectedMapFile["mapbook_template"] === "Thematic Map") {
-    //   setShowModalThematic(!showModalThematic);
-    // } else if (selectedMapFile["mapbook_template"] === "Heat Map") {
-    //   setShowModalHeat(!showModalHeat);
-    // }
-
     setSelectedMapFile((prevMapFile) => {
       console.log(prevMapFile);
       console.log(prevMapFile["mapbook_template"]);
@@ -178,6 +169,7 @@ const Map = ({
   };
 
   const mapContainerRef = useRef(null);
+
   useEffect(() => {
     console.log("selectedMapFile: ", selectedMapFile);
     let map;
@@ -189,8 +181,10 @@ const Map = ({
         style: "mapbox://styles/mapbox/streets-v12",
         center: [lng, lat],
         zoom: zoom,
+        preserveDrawingBuffer: true,
       });
     }
+
     map.on("idle", function () {
       map.resize();
     });
@@ -201,6 +195,7 @@ const Map = ({
     });
 
     map.on("load", () => {
+
       // console.log("ON LOAD selectedMapFile: ", selectedMapFile);
       map.addSource("counties", {
         type: "geojson",
@@ -277,6 +272,8 @@ const Map = ({
         setRegionName(names[0]);
         map.setFilter("counties-highlighted", ["in", "name", ...names]);
         handleClickRegion();
+
+
       });
       map.on("mousemove", (event) => {
         const regions = map.queryRenderedFeatures(event.point, {
@@ -298,8 +295,12 @@ const Map = ({
           }
         }
       });
+
     });
+
   }, []);
+
+
 
   // Convert data to GEOJSON //
   function saveGeoJSONToFile(geoJSONObject, filename) {
@@ -328,14 +329,24 @@ const Map = ({
   }
 
   const createMap = async (mapData) => {
+
+
+    const canvas = await html2canvas(document.querySelector(".mapboxgl-canvas"));
+
+    console.log("canvas", canvas)
+    const mapImage = canvas.toDataURL();
+
     const newMapObj = {
       map_name: options.name,
       topic: options.customTopic === "" ? options.topic : options.customTopic,
       is_visible: !options.isPrivate,
       user_id: userId,
       map_description: options.description,
+      mapPreviewImg: mapImage,
       file: mapData,
     };
+
+   
     const res = await createMapAPIMethod(newMapObj);
     // console.log("res: ", res);
     if (res.ok) {
@@ -346,6 +357,9 @@ const Map = ({
       alert(`Error: ${res.status} - ${res.statusText}`);
     }
   };
+
+
+
   // Click Create Map Btn
   const handleCreateMap = async () => {
     const geoJSONObject = selectedMapFile;
