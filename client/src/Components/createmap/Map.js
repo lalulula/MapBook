@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./createMap.css";
 
-import html2canvas from 'html2canvas';
+import html2canvas from "html2canvas";
 
 import PieBarDataInput from "./modals/PieBarDataInput";
 import CircleDataInput from "./modals/CircleDataInput";
@@ -58,11 +58,11 @@ const Map = ({
   const [redoState, setRedoState] = useState([]);
   const [recentState, setRecentState] = useState();
   const userId = useSelector((state) => state.user.id);
+
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     console.log("selectedMapFile: useEffect: ", selectedMapFile);
-
   }, [selectedMapFile]);
 
   // const handleClickRegion = () => {
@@ -113,9 +113,12 @@ const Map = ({
         return colors[i];
       }
     }
-    // TODO Handle the case where the number is outside the defined ranges (make it invalid)
     return "Invalid Color";
   };
+  useEffect(() => {
+    console.log(inputData);
+    console.log(selectedMapFile);
+  }, [inputData]);
 
   const handleHeatMapData = (datavalue) => {
     const from = Number(selectedMapFile["mapbook_heatrange"]["from"]);
@@ -129,7 +132,6 @@ const Map = ({
       from + width * 4,
       to,
     ];
-
     const colors = selectedMapFile["mapbook_heat_selectedcolors"];
     const color = getColor(datavalue, colors, ranges);
 
@@ -206,7 +208,6 @@ const Map = ({
     });
 
     map.on("load", () => {
-
       // console.log("ON LOAD selectedMapFile: ", selectedMapFile);
       map.addSource("counties", {
         type: "geojson",
@@ -283,8 +284,6 @@ const Map = ({
         setRegionName(names[0]);
         map.setFilter("counties-highlighted", ["in", "name", ...names]);
         handleClickRegion();
-
-
       });
       map.on("mousemove", (event) => {
         const regions = map.queryRenderedFeatures(event.point, {
@@ -306,12 +305,8 @@ const Map = ({
           }
         }
       });
-
     });
-
   }, []);
-
-
 
   // Convert data to GEOJSON //
   function saveGeoJSONToFile(geoJSONObject, filename) {
@@ -340,11 +335,11 @@ const Map = ({
   }
 
   const createMap = async (mapData) => {
+    const canvas = await html2canvas(
+      document.querySelector(".mapboxgl-canvas")
+    );
 
-
-    const canvas = await html2canvas(document.querySelector(".mapboxgl-canvas"));
-
-    console.log("canvas", canvas)
+    console.log("canvas", canvas);
     const mapImage = canvas.toDataURL();
 
     const newMapObj = {
@@ -357,7 +352,6 @@ const Map = ({
       file: mapData,
     };
 
-   
     const res = await createMapAPIMethod(newMapObj);
     // console.log("res: ", res);
     if (res.ok) {
@@ -368,8 +362,6 @@ const Map = ({
       alert(`Error: ${res.status} - ${res.statusText}`);
     }
   };
-
-
 
   // Click Create Map Btn
   const handleCreateMap = async () => {
@@ -444,6 +436,7 @@ const Map = ({
             handleHeatMapData={handleHeatMapData}
             options={options}
             regionName={regionName}
+            inputData={inputData}
           />
         )}
       </div>

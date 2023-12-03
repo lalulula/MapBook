@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/joy/Button";
 import FormControl from "@mui/joy/FormControl";
 import Input from "@mui/joy/Input";
@@ -14,7 +14,19 @@ const HeatDataInput = ({
   handleHeatMapData,
   regionName,
   options,
+  inputData,
 }) => {
+  const [renderedColor, setRenderedColor] = useState(null);
+  const [invalidColor, setInvalidColor] = useState(false);
+
+  useEffect(() => {
+    if (inputData && inputData["color"] === "Invalid Color") {
+      setInvalidColor(true);
+    } else {
+      setInvalidColor(false);
+      inputData && setRenderedColor(inputData["color"]);
+    }
+  }, [inputData]);
   return (
     <Modal open={showModalHeat} onClose={() => setShowModalHeat(false)}>
       <ModalDialog>
@@ -24,9 +36,21 @@ const HeatDataInput = ({
             <div className="map_datainput_container">
               {options.circleHeatMapData ? (
                 <>
-                  <h3 style={{ marginBottom: "1rem" }}>
-                    {options.circleHeatMapData}
-                  </h3>
+                  <div className="heatdatainput_label">
+                    <h3 style={{ marginBottom: "1rem" }}>
+                      {options.circleHeatMapData}
+                    </h3>
+                    {inputData && (
+                      <span
+                        style={{
+                          height: "1.2rem",
+                          width: "1.2rem",
+                          borderRadius: "5px",
+                          backgroundColor: renderedColor,
+                        }}
+                      ></span>
+                    )}
+                  </div>
                   <FormControl>
                     <Input
                       sx={{ marginBottom: "1rem" }}
@@ -36,7 +60,11 @@ const HeatDataInput = ({
                     />
                   </FormControl>
 
-                  <Button type="submit">Submit</Button>
+                  {invalidColor ? (
+                    <Button disabled={true}>Enter valid data in range</Button>
+                  ) : (
+                    <Button type="submit">Submit</Button>
+                  )}
                 </>
               ) : (
                 <>

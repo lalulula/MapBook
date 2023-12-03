@@ -1,21 +1,19 @@
+import Map from "./Map";
 import Dropdown from "react-dropdown";
 import PieBar from "./template/PieBar";
 import Heat from "./template/Heat";
 import Thematic from "./template/Thematic";
-import ColorGenerator from "./template/ColorGenerator";
-import Map from "./Map";
-import "./createMap.css";
+import Circle from "./template/Circle";
 import Checkbox from "@mui/material/Checkbox";
 import { grey, blueGrey } from "@mui/material/colors";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { useNavigate } from "react-router-dom";
 import FormControl from "@mui/joy/FormControl";
 import FormHelperText from "@mui/joy/FormHelperText";
 import Textarea from "@mui/joy/Textarea";
 import Input from "@mui/joy/Input";
 import Typography from "@mui/joy/Typography";
+import "./createMap.css";
 import { useEffect } from "react";
-import Circle from "./template/Circle";
 const MapDataInputPage = ({
   options,
   setOptions,
@@ -29,8 +27,6 @@ const MapDataInputPage = ({
   setHeatRange,
   selectedMapFile,
   setSelectedMapFile,
-  showMapEdit,
-  setShowMapEdit,
 }) => {
   const handleMapNameChange = (name) => {
     setOptions({ ...options, name });
@@ -120,14 +116,15 @@ const MapDataInputPage = ({
             className=""
             onChange={handleTopicClick}
           />
+
           {options.topic === "Other" && (
-            <input
+            <Input
+              sx={{ marginTop: "0.5rem" }}
               value={options.customTopic}
-              placeholder="Enter a custom Topic"
+              placeholder="Enter Custom Topic"
               onChange={(e) => handleCustomTopic(e.target.value)}
             />
           )}
-
           <h3>Templates</h3>
           <Dropdown
             options={templates}
