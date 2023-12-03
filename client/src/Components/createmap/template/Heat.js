@@ -13,6 +13,7 @@ const Heat = ({
 }) => {
   const from = Number(selectedMapFile["mapbook_heatrange"]["from"]);
   const to = Number(selectedMapFile["mapbook_heatrange"]["to"]);
+
   const width = (to - from) / 5;
   const ranges = [
     from,
@@ -69,66 +70,72 @@ const Heat = ({
       {/* Render color range */}
       <div>
         <h3>Data Color Range</h3>
-        <div style={{ display: "flex" }}>
-          <div
-            style={{
-              backgroundColor: selectedColors[0],
-              padding: "5px",
-              width: "-webkit-fill-available",
-              height: "2rem",
-            }}
-          >
-            {ranges[0]} - {ranges[1] - 1}
-          </div>
-        </div>
-        <div style={{ display: "flex" }}>
-          <div
-            style={{
-              backgroundColor: selectedColors[1],
-              padding: "5px",
-              width: "-webkit-fill-available",
-              height: "2rem",
-            }}
-          >
-            {ranges[1]} - {ranges[2] - 1}
-          </div>
-        </div>
-        <div style={{ display: "flex" }}>
-          <div
-            style={{
-              backgroundColor: selectedColors[2],
-              padding: "5px",
-              width: "-webkit-fill-available",
-              height: "2rem",
-            }}
-          >
-            {ranges[2]} - {ranges[3] - 1}
-          </div>
-        </div>
-        <div style={{ display: "flex" }}>
-          <div
-            style={{
-              backgroundColor: selectedColors[3],
-              padding: "5px",
-              width: "-webkit-fill-available",
-              height: "2rem",
-            }}
-          >
-            {ranges[3]} - {ranges[4] - 1}
-          </div>
-        </div>
-        <div style={{ display: "flex" }}>
-          <div
-            style={{
-              backgroundColor: selectedColors[4],
-              padding: "5px",
-              width: "-webkit-fill-available",
-              height: "2rem",
-            }}
-          >
-            {ranges[4]} - {ranges[5] - 1}
-          </div>
-        </div>
+        {selectedColors.length !== 0 ? (
+          <>
+            <div style={{ display: "flex" }}>
+              <div
+                style={{
+                  backgroundColor: selectedColors[0],
+                  padding: "5px",
+                  width: "-webkit-fill-available",
+                  height: "2rem",
+                }}
+              >
+                {ranges[0]} - {ranges[1] - 1}
+              </div>
+            </div>
+            <div style={{ display: "flex" }}>
+              <div
+                style={{
+                  backgroundColor: selectedColors[1],
+                  padding: "5px",
+                  width: "-webkit-fill-available",
+                  height: "2rem",
+                }}
+              >
+                {ranges[1]} - {ranges[2] - 1}
+              </div>
+            </div>
+            <div style={{ display: "flex" }}>
+              <div
+                style={{
+                  backgroundColor: selectedColors[2],
+                  padding: "5px",
+                  width: "-webkit-fill-available",
+                  height: "2rem",
+                }}
+              >
+                {ranges[2]} - {ranges[3] - 1}
+              </div>
+            </div>
+            <div style={{ display: "flex" }}>
+              <div
+                style={{
+                  backgroundColor: selectedColors[3],
+                  padding: "5px",
+                  width: "-webkit-fill-available",
+                  height: "2rem",
+                }}
+              >
+                {ranges[3]} - {ranges[4] - 1}
+              </div>
+            </div>
+            <div style={{ display: "flex" }}>
+              <div
+                style={{
+                  backgroundColor: selectedColors[4],
+                  padding: "5px",
+                  width: "-webkit-fill-available",
+                  height: "2rem",
+                }}
+              >
+                {ranges[4]} - {ranges[5] - 1}
+              </div>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
