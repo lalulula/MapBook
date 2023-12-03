@@ -1,4 +1,6 @@
 import React from "react";
+import Input from "@mui/joy/Input";
+import Button from "@mui/joy/Button";
 
 const PieBar = ({ pieBarData, setPieBarData }) => {
   const handleAddPieBarData = () => {
@@ -16,30 +18,37 @@ const PieBar = ({ pieBarData, setPieBarData }) => {
   };
   return (
     <div>
-      {/* <h3>Enter Data Names</h3> */}
       <br />
       <div className="data_container">
         <div style={{ maxHeight: "300px", overflowY: "auto" }}>
           {pieBarData.map((data, index) => (
             <div className="data_input_container" key={index}>
-              <input
+              <Input
                 placeholder="Enter Data"
+                required
                 name={`data_name_${index}`}
                 value={data}
                 onChange={(e) => handlePieBarDataInput(index, e.target.value)}
+                endDecorator={
+                  <Button
+                    variant="solid"
+                    color=""
+                    loading={data.status === "loading"}
+                    onClick={(e) => handleRemovePieBarData(index, e)}
+                    sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+                  >
+                    {/* DELETE */}
+                    <i className="bi bi-x-circle " />
+                  </Button>
+                }
               />
-              <i
-                className="bi bi-x-circle"
-                onClick={(e) => handleRemovePieBarData(index, e)}
-              ></i>
             </div>
           ))}
         </div>
       </div>
       <div>
         <i
-          style={{ display: "flex", justifyContent: "center" }}
-          className="bi bi-plus-circle"
+          className="add_data_btn bi bi-plus-circle"
           onClick={handleAddPieBarData}
         ></i>
       </div>

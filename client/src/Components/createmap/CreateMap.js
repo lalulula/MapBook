@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import InputMapData from "./InputMapData";
+import MapDataInputPage from "./MapDataInputPage";
 import { useState } from "react";
 import "./createMap.css";
 import { useNavigate } from "react-router-dom";
 import Popup from "reactjs-popup";
-import FileDropBox from "./FileDropBox";
+import ImportFilePage from "./ImportFilePage";
 
 const CreateMap = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const CreateMap = () => {
     isPrivate: false,
   });
   const [pieBarData, setPieBarData] = useState([""]); //data names for pie & bar
-  const [themeData, setThemeData] = useState([{ dataName: "", color: "#fff" }]); //Theme: color and dataname
+  const [themeData, setThemeData] = useState([{ dataName: "", color: "#000" }]); //Theme: color and dataname
   const [selectedColors, setSelectedColors] = useState([]); //HEATMAP: color for each range
   const [heatRange, setHeatRange] = useState({ from: 0, to: 0 }); //HEATMAP: range value
   const [importDataOpen, setImportDataOpen] = useState(true);
@@ -60,7 +60,7 @@ const CreateMap = () => {
         closeOnEscape={false}
         onClose={closeImportDataPopup}
       >
-        <FileDropBox
+        <ImportFilePage
           setSelectedMapFile={setSelectedMapFile}
           selectedMapFile={selectedMapFile}
           setImportDataOpen={setImportDataOpen}
@@ -70,7 +70,7 @@ const CreateMap = () => {
       {/* After Inputing Data file */}
       {importDataOpen ? null : (
         <div className="createmap_add_data_container">
-          <InputMapData
+          <MapDataInputPage
             importDataOpen={importDataOpen}
             options={options}
             setOptions={setOptions}

@@ -5,6 +5,9 @@ import "./createsocialpost.css";
 import Dropdown from "react-dropdown";
 import { createSocialPostAPIMethod } from "../../api/social";
 import { useSelector } from "react-redux";
+import ImageIcon from '@mui/icons-material/Image';
+import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
+
 const CreateSocialPost = () => {
   const navigate = useNavigate();
   const userId = useSelector((state) => state.user.id);
@@ -21,6 +24,7 @@ const CreateSocialPost = () => {
 
   const [uploadedImages, setUploadedImages] = useState([]);
   const [uploadedFileObj, setUploadedFileObj] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   // const uploadedFileObj = [];
 
@@ -47,7 +51,7 @@ const CreateSocialPost = () => {
     setOptions({ ...options, customTopic });
   };
 
-  const handleImageUpload =  (event) => {
+  const handleImageUpload = (event) => {
 
     let tempFileArray = uploadedFileObj;
     tempFileArray.push(event.target.files[0])
@@ -69,6 +73,10 @@ const CreateSocialPost = () => {
     }
   };
 
+  const handleRemoveImage = (index) => {
+    let newUploadedImages = [...uploadedImages.slice(0, index), ...uploadedImages.slice(index + 1)];
+    setUploadedImages(newUploadedImages);
+  }
 
   const handleSocialPostCreate = async () => {
     const newPost = { ...options, post_owner: userId };
@@ -82,56 +90,33 @@ const CreateSocialPost = () => {
     }
   };
 
+  const handleClickCancel = () => {
+    setShowModal(true);
+  }
+
+
+
   return (
-    <div className="create_social_post_page">
-      <div className="create_social_post_container">
-        <div className="create_social_post_header">
+    <div className="createsocialpost_page">
+      {showModal && (
+        <div className="createsocialpost_modal_cancel">
+          <div className="createsocialpost_modal_content">
+            <h3>Are You Sure You Want To Cancel?</h3>
+            <h6>(Your draft will not be saved)</h6>
+          </div>
+
+          <div className="createsocialpost_modal_container">
+            <button className="createsocialpost_modal_cancel_btn" onClick={() => navigate('/socialpage')}>Yes</button>
+            <button className="createsocialpost_goback" onClick={() => setShowModal(false)}>Go back</button>
+          </div>
+        </div>
+      )}
+      <div className="createsocialpost_container">
+        <div className="createsocialpost_header">
           <h2>Create Social Post</h2>
         </div>
-        <div className="create_social_post_container_inner">
-          <div>
-            <h3>Title</h3>
-            <input
-              placeholder="Enter title here"
-              value={options.title}
-              onChange={(e) => handleTitleChange(e.target.value)}
-              name="title"
-            />
-          </div>
-          <br />
-          <h3>Description</h3>
-          <div className="social_post_description">
-            <textarea
-              placeholder="Enter discussion here"
-              value={options.post_content}
-              onChange={(e) => handlePostContentChange(e.target.value)}
-              name="post_content"
-            />
-          </div>
-          <br />
-          <div className="social_post_img">
-            <label htmlFor="imageUpload" className="upload-label">
-              Choose an Image
-            </label>
-            <input
-              type="file"
-              id="imageUpload"
-              accept="image/*" // Only image files are allowed
-              onChange={handleImageUpload}
-              className="upload-input"
-            />
-            {uploadedImages.map((img, index) => (
-              <img
-                key={index}
-                src={img.data}
-                alt={`Uploaded ${index}`}
-                className="uploaded-image"
-                style={{ width: "100px", height: "100px" }}
-              />
-            ))}
-          </div>
-          <br></br>
-          <div className="social_post_bottom">
+        <div className="createsocialpost_container_inner">
+          <div className="createsocialpost_top">
             <Dropdown
               options={topics}
               value={options.topic}
@@ -144,14 +129,72 @@ const CreateSocialPost = () => {
                 value={options.customTopic}
                 placeholder="Enter a custom Topic"
                 onChange={(e) => handleCustomTopic(e.target.value)}
+                className="createsocialpost_other_topic_input"
               />
             )}
+          </div>
+          <div className="createsocialpost_title">
+            <input maxLength="100"
+              placeholder="Enter title here"
+              value={options.title}
+              onChange={(e) => handleTitleChange(e.target.value)}
+              name="title"
+              className="createsocialpost_title_input"
+              required
+            />
+            <div className="createsocialpost_title_char_count">
+              {options.title.length}/100
+            </div>
+          </div>
+          <div className="createsocialpost_description">
+            <textarea
+              placeholder="Enter discussion here"
+              value={options.post_content}
+              onChange={(e) => handlePostContentChange(e.target.value)}
+              name="post_content"
+              className="createsocialpost_description_textarea"
+            />
+          </div>
+          <div className="createsocialpost_img">
+            <label htmlFor="imageUpload" className="upload-label">
+              <ImageIcon />
+              Upload Image
+            </label>
+            <input
+              type="file"
+              id="imageUpload"
+              accept="image/*" // Only image files are allowed
+              onChange={handleImageUpload}
+              className="upload-input"
+            />
+            <div className="createsocialpost_images">
+              {uploadedImages.map((img, index) => (
+                <div className="createsocialpost_image_container">
+                  <CancelTwoToneIcon className="remove_uploaded_image" onClick={() => handleRemoveImage(index)} />
+                  <img
+                    key={index}
+                    src={img.data}
+                    alt={`Uploaded ${index}`}
+                    className="uploaded_image"
+                    style={{ width: "100px", height: "100px" }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+          <hr className="createsocialpost_hr"></hr>
+          <div className="social_post_bottom">
+            <button onClick={handleClickCancel} className="createsocialpost_cancel">
+              Cancel
+            </button>
             <button
               onClick={handleSocialPostCreate}
-              className="social_post_button"
+              className="createsocialpost_submit"
+              disabled={options.title.trim() === ''}
             >
               Post
             </button>
+
           </div>
         </div>
       </div>

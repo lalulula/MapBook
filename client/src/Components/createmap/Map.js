@@ -5,6 +5,11 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./createMap.css";
 
+import PieBarDataInput from "./modals/PieBarDataInput";
+import CircleDataInput from "./modals/CircleDataInput";
+import ThematicDataInput from "./modals/ThematicDataInput";
+import HeatDataInput from "./modals/HeatDataInput";
+
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 
 const Map = ({
@@ -17,6 +22,7 @@ const Map = ({
   selectedColors,
   themeData,
 }) => {
+  const [regionName, setRegionName] = useState("");
   useEffect(() => {
     setSelectedMapFile((prevMapFile) => ({
       ...prevMapFile,
@@ -267,7 +273,8 @@ const Map = ({
 
         setFeature(newSelectedFeature);
 
-        // console.log("Selected region name: ", names);
+        // console.log("Selected region name: ", names[0]);
+        setRegionName(names[0]);
         map.setFilter("counties-highlighted", ["in", "name", ...names]);
         handleClickRegion();
       });
@@ -341,16 +348,12 @@ const Map = ({
   };
   // Click Create Map Btn
   const handleCreateMap = async () => {
-    // console.log("clicked");
-    // console.log(mapData);
-    // console.log("saved");
     const geoJSONObject = selectedMapFile;
     const mapFile = saveGeoJSONToFile(
       geoJSONObject,
       `${selectedMapFile["mapbook_mapname"]}.geojson`
     );
     createMap(mapFile);
-    // console.log(mapFile);
   };
 
   return (
@@ -371,98 +374,52 @@ const Map = ({
       <div ref={mapContainerRef} id="map">
         {/* Pie & Bar Modal - DONE*/}
         {(showModalPie || showModalBar) && (
-          <div className="add_map_data_modal">
-            PIEBAR
-            <div
-              className="close_add_map_data_modal"
-              onClick={handleClickRegion}
-            >
-              close
-            </div>
-            <form onSubmit={handleAddData}>
-              {selectedMapFile["mapbook_datanames"].map((dataname, index) => (
-                <label key={index}>
-                  {dataname}:
-                  <input
-                    type="text"
-                    onChange={(e) =>
-                      handlePieBarInputChange(dataname, e.target.value)
-                    }
-                  />
-                </label>
-              ))}
-              <button type="submit">Submit</button>
-            </form>
-          </div>
+          <PieBarDataInput
+            showModalBar={showModalBar}
+            showModalPie={showModalPie}
+            setShowModalBar={setShowModalBar}
+            setShowModalPie={setShowModalPie}
+            handleAddData={handleAddData}
+            selectedMapFile={selectedMapFile}
+            handlePieBarInputChange={handlePieBarInputChange}
+            regionName={regionName}
+          />
         )}
-        {/* Circle Modal - DONE */}
+        {/* Circle Modal */}
         {showModalCircle && (
-          <div className="add_map_data_modal">
-            <div
-              className="close_add_map_data_modal"
-              onClick={handleClickRegion}
-            >
-              close
-            </div>
-            <form onSubmit={handleAddData}>
-              <label>
-                {selectedMapFile["mapbook_circleheatmapdata"]}
-                <input
-                  type="number"
-                  onChange={(e) => setInputData(e.target.value)}
-                />
-              </label>
-              <button type="submit">Submit</button>
-            </form>
-          </div>
+          <CircleDataInput
+            options={options}
+            showModalCircle={showModalCircle}
+            setShowModalCircle={setShowModalCircle}
+            handleAddData={handleAddData}
+            selectedMapFile={selectedMapFile}
+            setInputData={setInputData}
+            regionName={regionName}
+          />
         )}
 
         {/* Thematic Modal */}
         {showModalThematic && (
-          <div className="add_map_data_modal">
-            Theme
-            <div
-              className="close_add_map_data_modal"
-              onClick={handleClickRegion}
-            >
-              close
-            </div>
-            <form onSubmit={handleAddData}>
-              {selectedMapFile["mapbook_themedata"].map((data, index) => (
-                <label key={index}>
-                  {data.dataName}:{data.color}
-                  <input
-                    type="text"
-                    onChange={(e) => handleThematicData(data, e.target.value)}
-                  />
-                </label>
-              ))}
-              <button type="submit">Submit</button>
-            </form>
-          </div>
+          <ThematicDataInput
+            showModalThematic={showModalThematic}
+            setShowModalThematic={setShowModalThematic}
+            handleAddData={handleAddData}
+            selectedMapFile={selectedMapFile}
+            handleThematicData={handleThematicData}
+            regionName={regionName}
+          />
         )}
 
         {/* Heat Modal - Done */}
         {showModalHeat && (
-          <div className="add_map_data_modal">
-            <div
-              className="close_add_map_data_modal"
-              onClick={handleClickRegion}
-            >
-              close
-            </div>
-            Heat
-            <form onSubmit={handleAddData}>
-              <label>
-                {selectedMapFile["mapbook_circleheatmapdata"]}
-                <input
-                  type="number"
-                  onChange={(e) => handleHeatMapData(e.target.value)}
-                />
-              </label>
-              <button type="submit">Submit</button>
-            </form>
-          </div>
+          <HeatDataInput
+            showModalHeat={showModalHeat}
+            setShowModalHeat={setShowModalHeat}
+            handleAddData={handleAddData}
+            handleHeatMapData={handleHeatMapData}
+            options={options}
+            regionName={regionName}
+          />
         )}
       </div>
     </div>

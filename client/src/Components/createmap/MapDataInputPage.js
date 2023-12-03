@@ -15,7 +15,8 @@ import Textarea from "@mui/joy/Textarea";
 import Input from "@mui/joy/Input";
 import Typography from "@mui/joy/Typography";
 import { useEffect } from "react";
-const InputMapData = ({
+import Circle from "./template/Circle";
+const MapDataInputPage = ({
   options,
   setOptions,
   pieBarData,
@@ -31,22 +32,6 @@ const InputMapData = ({
   showMapEdit,
   setShowMapEdit,
 }) => {
-  // useEffect(() => {
-  //   setSelectedMapFile((prevMapFile) => ({
-  //     ...prevMapFile,
-  //     mapbook_mapname: options.name,
-  //     mapbook_description: options.description,
-  //     mapbook_template: options.template,
-  //     mapbook_circleheatmapdata: options.circleHeatMapData,
-  //     mapbook_topic: options.topic,
-  //     mapbook_customtopic: options.customTopic,
-  //     mapbook_visibility: options.isPrivate,
-  //     mapbook_datanames: pieBarData, //piebar
-  //     mapbook_heatrange: heatRange, // heat range
-  //     mapbook_heat_selectedcolors: selectedColors, // heat color
-  //     mapbook_themedata: themeData, //Color + data name
-  //   }));
-  // }, [options, pieBarData, themeData, themeData, heatRange, selectedColors]);
   const handleMapNameChange = (name) => {
     setOptions({ ...options, name });
   };
@@ -151,20 +136,6 @@ const InputMapData = ({
             onChange={handleTemplateClick}
             value={options.template}
           />
-          {options.template === "Circle Map" && (
-            <input
-              value={options.circleHeatMapData}
-              placeholder="Enter CircleMap Data Name"
-              onChange={(e) => handleCircleHeatMapDataChange(e.target.value)}
-            />
-          )}
-          {options.template === "Heat Map" && (
-            <input
-              value={options.circleHeatMapData}
-              placeholder="Enter HeatMap Data Name"
-              onChange={(e) => handleCircleHeatMapDataChange(e.target.value)}
-            />
-          )}
         </div>
 
         <div>
@@ -200,10 +171,15 @@ const InputMapData = ({
         themeData={themeData}
       />
       <div className="addmapdata_right_sidebar">
-        <h3>Map Data</h3>
-        {template && template !== "Circle Map" && <h3>Enter Data Names</h3>}
+        <h3>Data Values</h3>
         {(template === "Pie Chart" || template === "Bar Chart") && (
           <PieBar pieBarData={pieBarData} setPieBarData={setPieBarData} />
+        )}
+        {template === "Circle Map" && (
+          <Circle
+            options={options}
+            handleCircleHeatMapDataChange={handleCircleHeatMapDataChange}
+          />
         )}
         {template === "Thematic Map" && (
           <>
@@ -217,31 +193,15 @@ const InputMapData = ({
               setSelectedColors={setSelectedColors}
               heatRange={heatRange}
               setHeatRange={setHeatRange}
+              options={options}
+              handleCircleHeatMapDataChange={handleCircleHeatMapDataChange}
+              selectedMapFile={selectedMapFile}
             />
-            <ColorGenerator />
           </>
-        )}
-        {template && (
-          <div className="">
-            <span className=""></span>
-            <button
-              className=""
-              disabled={
-                options["topic"] === "" || options["template"] === ""
-                  ? true
-                  : false
-              }
-              onClick={() => setShowMapEdit(true)}
-              topic={options["topic"]}
-              template={options["template"]}
-            >
-              Next
-            </button>
-          </div>
         )}
       </div>
     </>
   );
 };
 
-export default InputMapData;
+export default MapDataInputPage;

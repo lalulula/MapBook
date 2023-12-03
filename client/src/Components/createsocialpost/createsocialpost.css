@@ -1,4 +1,4 @@
-.create_social_post_page {
+.createsocialpost_page {
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -6,16 +6,41 @@
   margin-top: 4rem;
 }
 
-.create_social_post_container {
+.createsocialpost_container {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: rgb(47, 47, 47);
+  background-color: #1a1a1b;
   margin: 0 5rem 0 5rem;
   width: 80%;
   padding: 2rem 2rem 4rem 2rem;
   border-radius: 10px;
+}
+
+.createsocialpost_top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.createsocialpost_other_topic_input {
+  width: 30%;
+  height: 40px;
+  padding: 5px 70px 5px 15px;
+  background-color: #1a1a1b;
+  border: 0.5px solid grey;
+  border-radius: 3px;
+  outline: none;
+  color: white;
+}
+
+.createsocialpost_other_topic_input:focus {
+  border: 1px solid white;
+}
+
+.createsocialpost_other_topic_input::selection {
+  color: white;
+  background-color: #656565;
 }
 
 .create_map_container i {
@@ -47,6 +72,35 @@
 
 .create_map_dropdown {
   width: 300px;
+  margin-bottom: 10px;
+}
+
+.Dropdown-control {
+  background-color: #1a1a1b;
+  color: white;
+  border: 0.5px solid grey;
+  border-radius: 3px;
+}
+
+.Dropdown-menu,
+.Dropdown-option {
+  background-color: #1a1a1b;
+  color: white;
+  border-radius: 5px;
+}
+
+.Dropdown-option:hover {
+  background-color: #2f2f30;
+  color: white;
+}
+
+.Dropdown-menu {
+  border: 0.5px solid grey;
+}
+
+.Dropdown-option.is-selected {
+  background-color: #1a1a1b;
+  color: white;
 }
 
 /* STEP 2 */
@@ -156,43 +210,83 @@
   background: #f4f4f4;
 }
 
-.social_post_description textarea {
-  height: 200px;
-  width: 100%;
-  font-family: Arial, Helvetica, sans-serif;
-  outline: none;
-  padding: 10px;
-}
-
-.social_post_button {
+.createsocialpost_submit {
   background-color: white;
-  padding: 5px 20px 5px 20px;
+  padding: 7px 16px 7px 16px;
   text-decoration: none;
   font-weight: bold;
-  border-radius: 10px;
+  border-radius: 20px;
+  border: none;
+  color: grey;
 }
 
-.create_social_post_container_inner {
+.createsocialpost_submit:disabled {
+  cursor: not-allowed;
+}
+
+.createsocialpost_cancel {
+  background-color: #1a1a1b;
+  padding: 7px 16px 7px 16px;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 20px;
+  border: 1px solid white;
+  color: white;
+  margin-right: 10px;
+}
+
+.createsocialpost_cancel:hover {
+  background-color: #333334;
+}
+
+.createsocialpost_container_inner {
   width: 90%;
+  margin-top: 30px;
 }
 
 .social_post_bottom {
   display: flex;
   justify-content: space-between;
+  float: right;
+  margin-top: 20px;
 }
 
-.social_post_img_upload {
-  padding: 10px;
+.createsocialpost_hr {
+  width: 100%;
+  border: 0.2px solid grey;
 }
 
 .upload-label {
-  background-color: white;
-  color: black;
+  background-color: #1a1a1b;
+  color: white;
   padding: 8px 13px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s ease;
+  border: 0.5px solid grey;
+  display: flex;
+  justify-content: space-between;
+  width: 150px;
+}
+
+.createsocialpost_images {
+  margin: 10px 0 10px 0;
+  display: flex;
+}
+
+.uploaded_image {
+  margin: 10px 10px 0 0;
+}
+
+.remove_uploaded_image {
+  position: absolute;
+  z-index: 100;
+  right: 0;
+}
+
+.createsocialpost_image_container {
+  position: relative;
 }
 
 .upload-label:hover {
@@ -202,4 +296,109 @@
 
 .upload-input {
   display: none;
+}
+
+.createsocialpost_title_input {
+  width: 100%;
+  height: 40px;
+  padding: 5px 70px 5px 15px;
+  background-color: #1a1a1b;
+  border: 0.5px solid grey;
+  border-radius: 3px;
+  outline: none;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.createsocialpost_title_input:focus {
+  border: 1px solid white;
+}
+
+.createsocialpost_title_input::selection {
+  color: white;
+  background-color: #656565;
+}
+
+.createsocialpost_title_char_count {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 100;
+  color: grey;
+  font-size: 12px;
+}
+
+.createsocialpost_description_textarea {
+  height: 200px;
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  outline: none;
+  padding: 10px;
+  background-color: #1a1a1b;
+  border: 0.5px solid grey;
+  border-radius: 3px;
+  color: white;
+  resize: vertical;
+  margin-bottom: 12px;
+}
+
+.createsocialpost_description_textarea::selection {
+  color: white;
+  background-color: #656565;
+}
+
+.createsocialpost_description_textarea:focus {
+  border: 1px solid white;
+}
+
+.createsocialpost_title {
+  position: relative;
+}
+
+/*  */
+.createsocialpost_modal_cancel {
+  position: absolute;
+  top: 40%;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.createsocialpost_modal_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+  font-weight: 500;
+  height: 5rem;
+  padding: 1rem;
+  text-align: center;
+  height: 100%;
+}
+
+.createsocialpost_modal_container {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.createsocialpost_modal_container button {
+  color: black;
+  padding: 8px 15px 8px 15px;
+  border-radius: 5px;
+  border: none;
+
+}
+
+.createsocialpost_modal_container button:hover {
+  color: rgb(47, 85, 120);
+  background-color: rgba(47, 85, 120, 0.141);
+}
+
+.createsocialpost_goback {
+  background-color: #AEC6CF;
 }

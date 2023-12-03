@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { FileInput, Label } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 
-function FileDropBox({ setSelectedMapFile, setImportDataOpen }) {
+function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
   const [backgroundColor, setBackgroundColor] = useState("fff");
   const [textColor, setTextColor] = useState("rgba(128, 128, 128)");
   const [createTextColor, setCreateTextColor] = useState("rgba(128, 128, 128)");
@@ -267,4 +267,4 @@ function FileDropBox({ setSelectedMapFile, setImportDataOpen }) {
   );
 }
 
-export default FileDropBox;
+export default ImportFilePage;

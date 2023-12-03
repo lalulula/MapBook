@@ -86,8 +86,8 @@ function App() {
           <Route path="/editmap/:id" element={<EditMap />} />
           <Route path="/socialpage" element={<SocialPage />} />
           <Route path="/mymap" element={<MyMap />} />
-          <Route path="/mapdetails/:id" element={<MapDetails />} />
-          <Route path="socialpostdetails/:id" element={<SocialPostDetails />} />
+          <Route path="/mapdetails/:mapId" element={<MapDetails />} />
+          <Route path="socialpostdetails/:id" element={<SocialPostDetails />}/>
           <Route path="/mainpage" element={<MainPage />} />
           <Route path="/createsocialpost" element={<CreateSocialPost />} />
           <Route path="/editsocialpost/:id" element={<EditSocialPost />} />
