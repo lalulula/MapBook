@@ -137,8 +137,8 @@ const Map = ({
   const handleAddData = (e) => {
     e.preventDefault();
 
-    // for undo/redo 
-    console.log("before calling handleChangeState: ", selectedMapFile)
+    // for undo/redo
+    console.log("before calling handleChangeState: ", selectedMapFile);
     handleChangeState();
 
     var tempArr = selectedMapFile["features"];
@@ -161,11 +161,10 @@ const Map = ({
     }
     // console.log("updated selectedmapfile: ", selectedMapFile);
     handleClickRegion();
-
   };
 
-  const handleUndo = () =>{
-    if(undoStack.current.length != 0){
+  const handleUndo = () => {
+    if (undoStack.current.length != 0) {
       console.log("undo Clicked");
       // pop {a} from undo stack
       const popedState = undoStack.current.pop();
@@ -175,17 +174,15 @@ const Map = ({
 
       // change current state to {a}
       // setSelectedMapFile(popedState)
-      selectedMapFile = popedState
+      selectedMapFile = popedState;
 
       console.log("popedState: ", popedState);
       console.log("afterUndo: ", selectedMapFile);
     }
+  };
 
-  }
-  
-  const handleRedo = () =>{
-    if(redoStack.current.length != 0){
-
+  const handleRedo = () => {
+    if (redoStack.current.length != 0) {
       console.log("redo Clicked");
 
       // pop {a} from redo stack
@@ -196,24 +193,21 @@ const Map = ({
 
       // change current state to {a}
       // setSelectedMapFile(popedState)
-      selectedMapFile = popedState
+      selectedMapFile = popedState;
 
       console.log("popedState: ", popedState);
       console.log("afterRedo: ", selectedMapFile);
     }
+  };
 
-
-  }
-
-  const handleChangeState = () =>{
+  const handleChangeState = () => {
     // push the state which is right before current change into undo stack
     undoStack.current.push(structuredClone(selectedMapFile));
 
-    console.log("undoStack: ", undoStack)
+    console.log("undoStack: ", undoStack);
     // clear redo stack
-    redoStack.current = []
-  }
-  
+    redoStack.current = [];
+  };
 
   const mapContainerRef = useRef(null);
 
@@ -333,36 +327,34 @@ const Map = ({
           if (data === undefined) {
             setHoverData("No data");
           } else {
+            // JSON.stringify(tempFeature["properties"].mapbook_data)
             var newData = JSON.stringify(
               tempFeature["properties"].mapbook_data
             );
             console.log(newData, typeof newData);
-            try {
-              const data = JSON.parse(newData);
 
-              const formattedData = Object.keys(data)
-                .map((key) => `${key}: ${data[key]}`)
-                .join("\n");
+            if (
+              selectedMapFile["mapbook_template"] === "Bar Chart" ||
+              "Pie Chart" ||
+              "CircleMap"
+            ) {
+              try {
+                const data = JSON.parse(newData);
 
-              console.log(formattedData);
-              setHoverData(formattedData);
-            } catch (error) {
-              console.error("Error parsing JSON:", error);
+                const formattedData = Object.keys(data)
+                  .map((key) => `${key}: ${data[key]}`)
+                  .join("\n");
+
+                console.log(formattedData);
+                setHoverData(formattedData);
+              } catch (error) {
+                console.error("Error parsing JSON:", error);
+              }
+            } else if (selectedMapFile["mapbook_template"] === "Heat Map") {
+              newData = "HeatMap";
+            } else if (selectedMapFile["mapbook_template"] === "Thematic Map") {
+              newData = "ThematicMap";
             }
-
-            // // JSON.stringify(tempFeature["properties"].mapbook_data)
-            // if (
-            //   selectedMapFile["mapbook_template"] === "Bar Chart" ||
-            //   "Pie Chart"
-            // ) {
-            //   newData = "PieChart/BarChart";
-            // } else if (selectedMapFile["mapbook_template"] === "Circle Map") {
-            //   newData = "CircleMap";
-            // } else if (selectedMapFile["mapbook_template"] === "Heat Map") {
-            //   newData = "HeatMap";
-            // } else if (selectedMapFile["mapbook_template"] === "Thematic Map") {
-            //   newData = "ThematicMap";
-            // }
           }
         }
       });
@@ -462,9 +454,17 @@ const Map = ({
 
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
-          <i className="undo bx bx-undo" disabled={undoStack.length == 0} onClick={handleUndo}/>
+          <i
+            className="undo bx bx-undo"
+            disabled={undoStack.length == 0}
+            onClick={handleUndo}
+          />
           <div className="vertical_line_container">|</div>
-          <i className="redo bx bx-redo" disabled={redoStack.length == 0} onClick={handleRedo}/>
+          <i
+            className="redo bx bx-redo"
+            disabled={redoStack.length == 0}
+            onClick={handleRedo}
+          />
         </div>
 
         <button onClick={handleCreateMap}>Create Map</button>
