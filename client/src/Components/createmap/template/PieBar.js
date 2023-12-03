@@ -24,23 +24,25 @@ const PieBar = ({ pieBarData, setPieBarData }) => {
           {pieBarData.map((data, index) => (
             <div className="data_input_container" key={index}>
               <Input
+                className="data_input_value"
                 placeholder="Enter Data"
                 required
                 name={`data_name_${index}`}
                 value={data}
                 onChange={(e) => handlePieBarDataInput(index, e.target.value)}
-                endDecorator={
-                  <Button
-                    variant="solid"
-                    color=""
-                    loading={data.status === "loading"}
-                    onClick={(e) => handleRemovePieBarData(index, e)}
-                    sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
-                  >
-                    {/* DELETE */}
-                    <i className="bi bi-x-circle " />
-                  </Button>
-                }
+                // endDecorator={
+                //   <Button
+                //     color=""
+                //     onClick={(e) => handleRemovePieBarData(index, e)}
+                //     sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+                //   >
+                //     <i className="bi bi-x-circle " />
+                //   </Button>
+                // }
+              />
+              <i
+                className="data_input_delete bi bi-x-circle "
+                onClick={(e) => handleRemovePieBarData(index, e)}
               />
             </div>
           ))}

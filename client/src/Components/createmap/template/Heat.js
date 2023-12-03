@@ -81,7 +81,7 @@ const Heat = ({
                   height: "2rem",
                 }}
               >
-                {ranges[0]} - {ranges[1] - 1}
+                {ranges[0].toFixed(2)} - {(ranges[1] - 1).toFixed(2)}
               </div>
             </div>
             <div style={{ display: "flex" }}>
@@ -93,7 +93,7 @@ const Heat = ({
                   height: "2rem",
                 }}
               >
-                {ranges[1]} - {ranges[2] - 1}
+                {ranges[1].toFixed(2)} - {(ranges[2] - 1).toFixed(2)}
               </div>
             </div>
             <div style={{ display: "flex" }}>
@@ -105,7 +105,7 @@ const Heat = ({
                   height: "2rem",
                 }}
               >
-                {ranges[2]} - {ranges[3] - 1}
+                {ranges[2].toFixed(2)} - {(ranges[3] - 1).toFixed(2)}
               </div>
             </div>
             <div style={{ display: "flex" }}>
@@ -117,7 +117,7 @@ const Heat = ({
                   height: "2rem",
                 }}
               >
-                {ranges[3]} - {ranges[4] - 1}
+                {ranges[3].toFixed(2)} - {(ranges[4] - 1).toFixed(2)}
               </div>
             </div>
             <div style={{ display: "flex" }}>
@@ -129,7 +129,7 @@ const Heat = ({
                   height: "2rem",
                 }}
               >
-                {ranges[4]} - {ranges[5] - 1}
+                {ranges[4].toFixed(2)} - {(ranges[5] - 1).toFixed(2)}
               </div>
             </div>
           </>
