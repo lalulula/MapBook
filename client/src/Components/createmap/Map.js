@@ -327,7 +327,6 @@ const Map = ({
           if (data === undefined) {
             setHoverData("No data");
           } else {
-            // JSON.stringify(tempFeature["properties"].mapbook_data)
             var newData = JSON.stringify(
               tempFeature["properties"].mapbook_data
             );
@@ -351,7 +350,23 @@ const Map = ({
                 console.error("Error parsing JSON:", error);
               }
             } else if (selectedMapFile["mapbook_template"] === "Heat Map") {
-              newData = "HeatMap";
+              newData = {
+                [selectedMapFile["mapbook_circleheatmapdata"]]:
+                  newData["value"],
+                color: newData["color"],
+              };
+              try {
+                const data = JSON.parse(newData);
+
+                const formattedData = Object.keys(data)
+                  .map((key) => `${key}: ${data[key]}`)
+                  .join("\n");
+
+                console.log(formattedData);
+                setHoverData(formattedData);
+              } catch (error) {
+                console.error("Error parsing JSON:", error);
+              }
             } else if (selectedMapFile["mapbook_template"] === "Thematic Map") {
               newData = "ThematicMap";
             }
