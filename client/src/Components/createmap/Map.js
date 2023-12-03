@@ -63,6 +63,7 @@ const Map = ({
   }, [selectedMapFile]);
 
   const handleClickRegion = () => {
+    setShowPopup(false);
     setSelectedMapFile((prevMapFile) => {
       console.log(prevMapFile);
       console.log(prevMapFile["mapbook_template"]);
@@ -272,9 +273,21 @@ const Map = ({
           if (data === undefined) {
             setHoverData("No data");
           } else {
-            setHoverData(
-              JSON.stringify(tempFeature["properties"].mapbook_data)
-            );
+            var newData;
+            // JSON.stringify(tempFeature["properties"].mapbook_data)
+            if (
+              selectedMapFile["mapbook_template"] === "Bar Chart" ||
+              "Pie Chart"
+            ) {
+              newData = "PieChart/BarChart";
+            } else if (selectedMapFile["mapbook_template"] === "Circle Map") {
+              newData = "CircleMap";
+            } else if (selectedMapFile["mapbook_template"] === "Heat Map") {
+              newData = "HeatMap";
+            } else if (selectedMapFile["mapbook_template"] === "Thematic Map") {
+              newData = "ThematicMap";
+            }
+            setHoverData(newData);
           }
         }
       });
@@ -345,13 +358,33 @@ const Map = ({
     );
     createMap(mapFile);
   };
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [showPopup, setShowPopup] = useState(false);
 
+  const handleMouseMove = (e) => {
+    setPosition({ x: e.clientX, y: e.clientY });
+  };
+
+  const handleMouseEnter = () => {
+    setShowPopup(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowPopup(false);
+  };
   return (
-    <div className="addmapdata_center">
-      {/* <div className="map_region_info">
-        <p>Hover over a region!</p>
-        {hoverData}
-      </div> */}
+    <div
+      className="addmapdata_center"
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {hoverData && showPopup && (
+        <div className="popup" style={{ left: position.x, top: position.y }}>
+          {hoverData}
+        </div>
+      )}
+
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
           <i className="undo bx bx-undo" />
