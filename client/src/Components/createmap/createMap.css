@@ -201,3 +201,13 @@
   color: rgba(0, 0, 0, 0.827);
   overflow-wrap: break-word;
 }
+.popup {
+  color: black;
+  position: fixed;
+  background-color: #ffffff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  pointer-events: none;
+}
