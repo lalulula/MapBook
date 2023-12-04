@@ -34,7 +34,7 @@ function App() {
   //Initial Loading Feature For Web
   const [loading, setLoading] = useState(false);
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-  console.log(isAuthenticated);
+  // console.log(isAuthenticated);
 
   // TODO:
   // get current user

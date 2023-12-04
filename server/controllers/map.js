@@ -63,7 +63,7 @@ const createMap = async (req, res) => {
     console.log("mapPreviewImg", req.files["mapPreviewImg"][0]);
 
     const randomString = (new Date().getTime() + Math.random()).toString(36).substring(2)
-    console.log("randomString :", randomString)
+    // console.log("randomString :", randomString)
 
     const fileBuffer = req.files["file"][0].buffer;
     const fileName = randomString + req.files["file"][0].originalname;
