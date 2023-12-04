@@ -32,15 +32,6 @@ const MapComments = () => {
     { _id: 5, user: 'haneul', reply: 'another reply to comment 2', commentId: 2 },
   ])
 
-  /* const handleAddComment = () => {
-    if (newComment.trim() !== "") {
-      setComments([...comments, newComment]);
-      setNewComment("");
-    }
-  };
-  //   https://react.semantic-ui.com/views/comment/#content-reply-form
-  //will call get all comments api and then filter based on the mapId */
-
   const handleAddComment = () => {
     if (newComment.trim() !== '') {
       const newCommentObject = {

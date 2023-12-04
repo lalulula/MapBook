@@ -138,6 +138,17 @@ export const likeMapAPIMethod = (mapId, isAuth, userId) => {
   return res;
 };
 
+// Get All Map Comments
+export const getAllMapCommentsAPIMethod = (mapPostId) => {
+  const res = fetch(`${API_BASE_URL}/api/mapComment/mapComments/${mapPostId}`, {
+    ...defaultHeaders,
+    method: "GET",
+  })
+    .then(checkStatus)
+    .then(parseJSON);
+  return res;
+};
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
