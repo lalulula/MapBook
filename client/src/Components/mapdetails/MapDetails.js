@@ -86,129 +86,113 @@ const MapDetails = () => {
 
   //////////////////////////////////////////
   
-  // const mapContainerRef = useRef(null);
-
   // useEffect(() => {
-  //   let map;
+  //   console.log("selectedMapFile: useEffect: ", selectedMapFile);
+  // }, [selectedMapFile]);
 
-  //   mapboxgl.accessToken = MAPBOX_TOKEN;
-  //   if (mapContainerRef.current) {
-  //     map = new mapboxgl.Map({
-  //       container: mapContainerRef.current,
-  //       style: "mapbox://styles/mapbox/streets-v12",
-  //       center: [lng, lat],
-  //       zoom: zoom,
-  //       preserveDrawingBuffer: true,
-  //     });
-  //   }
+  const mapContainerRef = useRef(null);
 
-  //   map.on("idle", function () {
-  //     map.resize();
-  //   });
-  //   map.on("move", () => {
-  //     setLng(map.getCenter().lng.toFixed(4));
-  //     setLat(map.getCenter().lat.toFixed(4));
-  //     setZoom(map.getZoom().toFixed(2));
-  //   });
+  useEffect(() => {
+    console.log("selectedMapFile: useEffect: ", selectedMapFile);
+    let map;
 
-  //   map.on("load", () => {
+    mapboxgl.accessToken = MAPBOX_TOKEN;
+    if (mapContainerRef.current) {
+      map = new mapboxgl.Map({
+        container: mapContainerRef.current,
+        style: "mapbox://styles/mapbox/streets-v12",
+        center: [lng, lat],
+        zoom: zoom,
+        preserveDrawingBuffer: true,
+      });
+    }
+    if(map != null){
 
-  //     map.addSource("counties", {
-  //       type: "geojson",
-  //       data: currentMap.file,
-  //     });
+    
+      map.on("idle", function () {
+        map.resize();
+      });
 
-  //     map.addLayer(
-  //       {
-  //         id: "counties",
-  //         type: "fill",
-  //         source: "counties",
-  //         // "source-layer": "original",
-  //         paint: {
-  //           // "fill-color": "rgba(0.5,0.5,0,0.4)",
-  //           "fill-color": "#ff0088",
-  //           "fill-opacity": 0.4,
-  //           "fill-outline-color": "#000000",
-  //           // "fill-outline-opacity": 0.8
-  //         },
-  //       }
-  //       // "building"
-  //     );
+      map.on("move", () => {
+        setLng(map.getCenter().lng.toFixed(4));
+        setLat(map.getCenter().lat.toFixed(4));
+        setZoom(map.getZoom().toFixed(2));
+      });
 
-  //     map.addLayer(
-  //       {
-  //         id: "counties-highlighted",
-  //         type: "fill",
-  //         source: "counties",
-  //         // "source-layer": "original",
-  //         paint: {
-  //           "fill-outline-color": "#484896",
-  //           "fill-color": "#6e599f",
-  //           "fill-opacity": 0.75,
-  //         },
-  //         filter: ["in", "name", ""],
-  //       }
-  //       // "building"
-  //     );
+      map.on("load", () => {
 
-  //     map.addLayer({
-  //       id: "data-labels",
-  //       type: "symbol",
-  //       source: "counties",
-  //       layout: {
-  //         "text-field": ["get", "name"],
-  //         "text-size": 15,
-  //       },
-  //     });
+        map.addSource("counties", {
+          type: "geojson",
+          data: selectedMapFile,
+        });
 
-  //     // map.on("click", (e) => {
-  //     //   // console.log("this is e: ", e);
-  //     //   const bbox = [
-  //     //     [e.point.x, e.point.y],
-  //     //     [e.point.x, e.point.y],
-  //     //   ];
+        map.addLayer(
+          {
+            id: "counties",
+            type: "fill",
+            source: "counties",
+            // "source-layer": "original",
+            paint: {
+              // "fill-color": "rgba(0.5,0.5,0,0.4)",
+              "fill-color": "#ff0088",
+              "fill-opacity": 0.4,
+              "fill-outline-color": "#000000",
+              // "fill-outline-opacity": 0.8
+            },
+          }
+          // "building"
+        );
 
-  //     //   const selectedFeatures = map.queryRenderedFeatures(bbox, {
-  //     //     layers: ["counties"],
-  //     //   });
+        map.addLayer(
+          {
+            id: "counties-highlighted",
+            type: "fill",
+            source: "counties",
+            // "source-layer": "original",
+            paint: {
+              "fill-outline-color": "#484896",
+              "fill-color": "#6e599f",
+              "fill-opacity": 0.75,
+            },
+            filter: ["in", "name", ""],
+          }
+          // "building"
+        );
 
-  //     //   const names = selectedFeatures.map(
-  //     //     (feature) => feature.properties.name
-  //     //   );
+        map.addLayer({
+          id: "data-labels",
+          type: "symbol",
+          source: "counties",
+          layout: {
+            "text-field": ["get", "name"],
+            "text-size": 15,
+          },
+        });
 
-  //     //   const newSelectedFeature = selectedMapFile["features"].filter(
-  //     //     (f) => f["properties"].name === names[0]
-  //     //   );
 
-  //     //   setFeature(newSelectedFeature);
+        map.on("mousemove", (event) => {
+          const regions = map.queryRenderedFeatures(event.point, {
+            layers: ["counties"],
+          });
 
-  //     //   setRegionName(names[0]);
-  //     //   map.setFilter("counties-highlighted", ["in", "name", ...names]);
-  //     //   handleClickRegion();
-  //     // });
-
-  //     map.on("mousemove", (event) => {
-  //       const regions = map.queryRenderedFeatures(event.point, {
-  //         layers: ["counties"],
-  //       });
-
-  //       if (regions.length > 0) {
-  //         const tempFeature = selectedMapFile["features"].find(
-  //           (m) => m["properties"].name === regions[0]["properties"].name
-  //         );
-  //         //console.log("tempFeature: ", tempFeature);
-  //         var data = tempFeature["properties"].mapbook_data;
-  //         if (data === undefined) {
-  //           setHoverData("No data");
-  //         } else {
-  //           setHoverData(
-  //             JSON.stringify(tempFeature["properties"].mapbook_data)
-  //           );
-  //         }
-  //       }
-  //     });
-  //   });
-  // }, []);
+          if (regions.length > 0) {
+            const tempFeature = selectedMapFile["features"].find(
+              (m) => m["properties"].name === regions[0]["properties"].name
+            );
+            //console.log("tempFeature: ", tempFeature);
+            var data = tempFeature["properties"].mapbook_data;
+            if (data === undefined) {
+              setHoverData("No data");
+            } else {
+              setHoverData(
+                JSON.stringify(tempFeature["properties"].mapbook_data)
+              );
+            }
+          }
+        });
+      });
+    }
+  }, [selectedMapFile]);
 
   /////////////////////////////////////////
 
@@ -269,9 +253,11 @@ const MapDetails = () => {
             </div>
           </div>
           <div className="map_image_comments">
-            <div className="map_details_image">
-              <img src={currentMap.mapPreviewImg} />
+            <div ref={mapContainerRef} id="map" style={{width : '800px', height : '500px'}} >
             </div>
+            {/* <div className="map_details_image">
+              <img src={currentMap.mapPreviewImg} />
+            </div> */}
             <div className="map_details_comments">
               <div className="comment_title">Comments</div>
               <div className="comment_content">

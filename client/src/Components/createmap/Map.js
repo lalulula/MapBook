@@ -237,6 +237,7 @@ const Map = ({
     map.on("idle", function () {
       map.resize();
     });
+    
     map.on("move", () => {
       setLng(map.getCenter().lng.toFixed(4));
       setLat(map.getCenter().lat.toFixed(4));
