@@ -1,0 +1,28 @@
+.footer hr {
+  width: 100%;
+  /* z-index: var(--z-fixed); */
+}
+.footer_txt {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+.footer_details {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  font-weight: 100;
+}
+.footer_modal_text {
+  cursor: pointer;
+}
+.footer_modal_text:hover {
+  color: #1f6baf;
+  font-weight: 300;
+  transform: transform 0.5s ease-in;
+}
