@@ -47,12 +47,3 @@
   justify-content: center;
   align-items: center;
 }
-
-.footer hr {
-  width: 100%;
-  /* z-index: var(--z-fixed); */
-}
-.footer_txt {
-  display: flex;
-  justify-content: center;
-}
