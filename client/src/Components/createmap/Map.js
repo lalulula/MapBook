@@ -338,6 +338,7 @@ const Map = ({
           const names = selectedFeatures.map(
             (feature) => feature.properties.name
           );
+          map.setFilter("counties-highlighted", ["in", "name", []]);
 
           if(names.length > 0){
             const newSelectedFeature = mapFileData.current["features"].filter(
@@ -352,6 +353,10 @@ const Map = ({
             setRegionName(names[0]);
             map.setFilter("counties-highlighted", ["in", "name", ...names]);
             handleClickRegion();
+          }
+          else{
+            setFeature([]);
+            map.setFilter("counties-highlighted", ["in", "name", ...names]);
           }
         });
         map.on("mousemove", (event) => {
