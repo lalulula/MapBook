@@ -56,6 +56,7 @@ const MainPage = () => {
           {filteredMaps.length != 0 && filteredMaps.map((item, index) => (
             <MapPreview key={index} data={item} />
           ))}
+          {console.log("filteredMaps:", filteredMaps)}
         </div>
 
         {filteredMaps.length == 0 && (

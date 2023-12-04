@@ -62,9 +62,12 @@ const createMap = async (req, res) => {
     console.log("file", req.files["file"][0]);
     console.log("mapPreviewImg", req.files["mapPreviewImg"][0]);
 
+    const randomString = (new Date().getTime() + Math.random()).toString(36).substring(2)
+    console.log("randomString :", randomString)
+
     const fileBuffer = req.files["file"][0].buffer;
-    const fileName = req.files["file"][0].originalname;
-    const storageRef = bucket.file(fileName);
+    const fileName = randomString + req.files["file"][0].originalname;
+    const storageRef =  bucket.file(fileName);
     await storageRef.createWriteStream().end(fileBuffer);
 
     const [fileUrl] = await storageRef.getSignedUrl({
@@ -72,9 +75,10 @@ const createMap = async (req, res) => {
       expires: "03-09-2025", // Replace with an expiration date
     });
 
+
     
     const imgFileBuffer = req.files["mapPreviewImg"][0].buffer;
-    const imgFileName = req.files["mapPreviewImg"][0].originalname;
+    const imgFileName = randomString + req.files["mapPreviewImg"][0].originalname;
     const imgStorageRef = bucket.file(imgFileName);
     await imgStorageRef.createWriteStream().end(imgFileBuffer);
 

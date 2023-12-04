@@ -130,7 +130,7 @@ const MapPreview = ({ data }) => {
         className="bi bi-three-dots-vertical"
         style={{ color: "black" }}
       ></i>
-      <img className="mappreview_img" src={dumImg} alt={data.map_name} />
+      <img className="mappreview_img" src={data.mapPreviewImg} alt={data.map_name} />
       <div className="mappreview_content">
         <div className="mappreview_name_container">
           <div className="mappreview_name">{data.map_name}</div>
