@@ -9,10 +9,24 @@ const defaultHeaders = {
   },
 };
 
+
+const processFile = file =>{
+  return new Promise(resolve=>{
+    const reader = new FileReader();
+    reader.onload = () =>{
+        const result = reader.result;
+        console.log(result); //올바른 결과 출력(화상이미지 바이너리)
+        resolve(result); 
+    }
+    reader.readAsArrayBuffer(file);
+  })
+}
+
+
 // Create Map
 export const createMapAPIMethod = async (mapData) => {
   var keys = Object.keys(mapData);
-  console.log(keys);
+  // console.log(keys);
 
   const formData = new FormData();
   formData.append("file", mapData["file"]);
@@ -20,35 +34,65 @@ export const createMapAPIMethod = async (mapData) => {
   const keyLen = keys.length;
   for (var i = 0; i < keyLen; i++) {
     if (keys[i] == "mapPreviewImg") {
-      console.log(mapData[keys[i]]);
-      const isImageFile = /\.(jpg|png)$/i.test(mapData[keys[i]]);
-      console.log(isImageFile);
+      // console.log("mapData[keys[i]]: ", mapData[keys[i]]);
+      // console.log("typeof: ", typeof(mapData[keys[i]]))
+      const isImageFile = typeof(mapData[keys[i]]) == "object";
+      // console.log(isImageFile);
       var dataName = keys[i];
 
-      var imgDataUrl = mapData[keys[i]];
-      var blobBin = atob(imgDataUrl.split(",")[1]); // base64 데이터 디코딩
-      var array = [];
-      for (var i = 0; i < blobBin.length; i++) {
-        array.push(blobBin.charCodeAt(i));
+      if(isImageFile){
+        // read binary data
+
+        const imageReadResult = await processFile(mapData[dataName]); 
+
+
+        console.log("reader.result: ", imageReadResult)
+        // var bitmap = fs.readFileSync(mapData[dataName]);
+        
+        // var imgDataUrl = new Buffer(bitmap).toString('base64');
+        // var blobBin = atob(imgDataUrl.split(",")[1]); // base64 데이터 디코딩
+        // var array = [];
+        // for (var i = 0; i < blobBin.length; i++) {
+        //   array.push(blobBin.charCodeAt(i));
+        // }
+
+        var file = new File([imageReadResult], "mapPreviewImg.png", {
+          type: "image/png",
+        }); // Blob 생성
+
+        formData.append(dataName, file); // file data 추가
+        
       }
-      var file = new File([new Uint8Array(array)], "mapPreviewImg.png", {
-        type: "image/png",
-      }); // Blob 생성
-      // console.log(file)
-      formData.append(dataName, file); // file data 추가
+      else{
+
+        var imgDataUrl = mapData[dataName];
+        var blobBin = atob(imgDataUrl.split(",")[1]); // base64 데이터 디코딩
+        var array = [];
+        for (var i = 0; i < blobBin.length; i++) {
+          array.push(blobBin.charCodeAt(i));
+        }
+        var file = new File([new Uint8Array(array)], "mapPreviewImg.png", {
+          type: "image/png",
+        }); // Blob 생성
+        // console.log(file)
+        formData.append(dataName, file); // file data 추가
+      }
+
+
+
     } else {
-      console.log(keys[i]);
+      // console.log(keys[i]);
       formData.append(keys[i], mapData[keys[i]]);
     }
   }
   console.log("done for loop");
 
-  // const response = await fetch(`${API_BASE_URL}/api/map/createMap`, {
-  //   // ...defaultHeaders,
-  //   method: "POST",
-  //   body: formData,
-  // });
-  // return response;
+  const response = await fetch(`${API_BASE_URL}/api/map/createMap`, {
+    // ...defaultHeaders,
+    method: "POST",
+    body: formData,
+  });
+  return response;
 };
 
 // GET ALL MAPS
