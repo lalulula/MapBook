@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { Menu, Dropdown, Divider } from "semantic-ui-react";
@@ -11,6 +11,8 @@ import { getMapAPI, getAllMapCommentsAPIMethod } from "../../api/map";
 import { getAllUsersAPIMethod } from "../../api/user";
 import gallery from "../../assets/img/gallery.png";
 import optionsIcon from "../../assets/img/options.png";
+import { fb, storage } from"../../firebase";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 import mapboxgl from "mapbox-gl"; // Import mapboxgl
 
@@ -55,27 +57,29 @@ const MapDetails = () => {
 
     if(currentMap != null){
       let url = currentMap.file_path;
-      url = url.replaceAll("&", "&amp;")
-      console.log(url)
-      // let url = "https://storage.googleapis.com/mapbook-6abbc.appspot.com/PIEBAR%20TEST.geojson"
-      let settings = { 
-        mode: 'cors', 
-        method: "GET", 
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      };
-      const res = await fetch(url, settings)
-      console.log("res: ", res.text())
-      // var json = await res.json();
-     
+      // get file name from url
+      let fileName = url.substring( 57, url.indexOf("geojson") + 7).replaceAll('%20', ' ');
+      // console.log(fileName)
+      getDownloadURL(ref(storage, fileName))
+      .then((url) => {
+    
+        // This can be downloaded directly:
+        const xhr = new XMLHttpRequest();
+        xhr.responseType = 'json';
+        xhr.onload = (event) => {
+          // console.log("response: ", xhr.response);
+          setSelectedMapFile(xhr.response)
+        };
+        xhr.open('GET', url);
+        xhr.send();
+    
 
-
-      // console.log("json: ", json)
+      })
+      .catch((error) => {
+        console.log("error: ", error)
+      });
+    
       
-      // setSelectedMapFile()
       setIsMapLoaded(true);
     }
   };
