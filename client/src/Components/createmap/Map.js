@@ -348,38 +348,60 @@ const Map = ({
           const regions = map.queryRenderedFeatures(event.point, {
             layers: ["counties"],
           });
+          
+          if(regions.length == 0)
+          {
+            handleMouseLeave();
+          }
+          else{
+            handleMouseEnter();
+          }
 
           if (regions.length > 0) {
             const tempFeature = selectedMapFile["features"].find(
               (m) => m["properties"].name === regions[0]["properties"].name
             );
-            console.log("regions ", tempFeature["properties"]["mapbook_data"])
+            
+
+            // console.log("regions ", tempFeature["properties"]["mapbook_data"])
             // var data = tempFeature["properties"].mapbook_data;
             var data = tempFeature["properties"]["mapbook_data"];
-            console.log("data: ", data)
-            console.log("onhover", templateHoverType.current);
+            // console.log("data: ", data)
+            // console.log("onhover", templateHoverType.current);
             if (data === undefined) {
-              console.log("No data")
-              setHoverData("No data");
+              // console.log("No data")
+              setHoverData( regions[0]["properties"].name + "\nNo data" );
             } else {
               const formattedData = Object.keys(data)
                 .map((key) => `${key}: ${data[key]}`)
                 .join("\n");
+              console.log(regions[0]["properties"].name + "\n" + formattedData);
+
               if (templateHoverType.current === "Pie Chart") {
                 console.log("Calling PIE");
                 setTemplateHoverData((prevState) => ({
                   ...prevState, // Spread the previous state to keep other properties
                   pieData: formattedData,
                 }));
-                setHoverData(templateHoverData["pieData"]);
+                // setHoverData(templateHoverData["pieData"]);
+                setHoverData(regions[0]["properties"].name + "\n" + formattedData);
+
               } else if (templateHoverType.current === "Bar Chart") {
                 console.log("Calling BAR");
+                setHoverData(regions[0]["properties"].name + "\n" + formattedData);
+
               } else if (templateHoverType.current === "Heat Map") {
                 console.log("Calling HEAT");
+                setHoverData(regions[0]["properties"].name + "\n" + formattedData);
+
               } else if (templateHoverType.current === "Thematic Map") {
                 console.log("Calling THEMATIC");
+                setHoverData(regions[0]["properties"].name + "\n" + formattedData);
+
               } else if (templateHoverType.current === "Circle Map") {
                 console.log("Calling CIRCLE");
+                setHoverData(regions[0]["properties"].name + "\n" + formattedData);
+
               }
               // setHoverData(
               //   JSON.stringify(tempFeature["properties"].mapbook_data)
@@ -475,12 +497,14 @@ const Map = ({
     <div
       className="addmapdata_center"
       onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      // onMouseEnter={handleMouseEnter}
+      // onMouseLeave={handleMouseLeave}
     >
       {hoverData && showPopup && (
         <div className="popup" style={{ left: position.x, top: position.y }}>
-          {hoverData}
+          <pre>
+            {hoverData}
+          </pre>
         </div>
       )}
 
