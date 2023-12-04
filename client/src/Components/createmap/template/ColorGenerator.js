@@ -44,7 +44,12 @@ const ColorGenerator = ({ selectedColors, setSelectedColors }) => {
 
   return (
     <div style={{ display: "flex" }}>
-      <input type="color" value={baseColor} onChange={handleBaseColorChange} />
+      <input
+        type="color"
+        className="createMap_color_picker"
+        value={baseColor}
+        onChange={handleBaseColorChange}
+      />
     </div>
   );
 };

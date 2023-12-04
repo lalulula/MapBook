@@ -102,48 +102,6 @@
 }
 /* END*/
 
-/* Modal-Return to main */
-/* .popup-content {
-  padding: 1rem !important;
-  border-radius: 10px;
-  width: 40rem !important;
-}
-
-.back2main_modal {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.back2main_modal_content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  color: black;
-  font-weight: 500;
-  height: 5rem;
-  padding: 1rem;
-  text-align: center;
-}
-
-.modal_btn_container {
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-}
-
-.modal_btn_container button {
-  color: black;
-  border: white;
-  padding: 8px 15px 8px 15px;
-  border-radius: 5px;
-}
-
-.modal_btn_container button:hover {
-  color: rgb(47, 85, 120);
-  background-color: rgba(47, 85, 120, 0.14);
-} */
 /* RIGHT SIDEBAR DATA IMPUT */
 .data_input_container {
   display: flex;
@@ -153,9 +111,13 @@
 }
 .data_input_delete {
 }
-.data_input_container_heat {
+
+.data_input_container_thematic {
+  max-height: 27rem;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
+  margin-bottom: 2rem;
 }
 .add_data_btn {
   display: flex;
@@ -170,8 +132,28 @@
 }
 .heat_data_tooltip {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+}
+
+.createMap_color_picker {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 4rem;
+  height: 4rem;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  /* border: 1px whitesmoke solid; */
+}
+.createMap_color_picker::-webkit-color-swatch {
+  border-radius: 15px;
+  border: 1px rgba(245, 245, 245, 0.333) solid;
+}
+.createMap_color_picker::-moz-color-swatch {
+  border-radius: 15px;
+  border: 1px rgba(245, 245, 245, 0.333) solid;
 }
 
 /* data input modal */
