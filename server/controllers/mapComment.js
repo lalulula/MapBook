@@ -2,17 +2,15 @@ const MapPost = require("../models/MapObj");
 const MapComment = require("../models/MapComment");
 
 
-// Get all map post comment
-// return comment ids of post
+// Get all map comments of a target map post
 const getAllMapComments = async (req, res) => {
   try {
     const { sPostId } = req.params;
-    const mapPost = await MapPost.findById(sPostId);
-    const mapPostComments = mapPost["map_comments"];
-    console.log("mappostcomments backend: ", mapPostComments);
-    console.log("mappost: ", mapPost);
+    // const mapPost = await MapPost.findById(sPostId);
+    // const mapPostComments = mapPost["map_comments"];
+    const mapComments = await MapComment.find({ "map_id": sPostId })
 
-    res.status(200).json(mapPostComments);
+    res.status(200).json(mapComments);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
