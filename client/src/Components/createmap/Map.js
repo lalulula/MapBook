@@ -23,9 +23,10 @@ const Map = ({
   heatRange,
   selectedColors,
   themeData,
+  template,
 }) => {
   const [regionName, setRegionName] = useState("");
-  const [template, setTemplate] = useState("");
+  // const [template, setTemplate] = useState("");
   const [templateHoverData, setTemplateHoverData] = useState({
     pieData: null,
     barData: null,
@@ -77,6 +78,7 @@ const Map = ({
   const [hoverData, setHoverData] = useState("Out of range");
   const undoStack = useRef([]);
   const redoStack = useRef([]);
+  const templateHoverType = useRef([]);
 
   const userId = useSelector((state) => state.user.id);
 
@@ -85,6 +87,7 @@ const Map = ({
   useEffect(() => {
     // console.log("selectedMapFile: useEffect: ", selectedMapFile);
     console.log("TEmplate", template);
+    templateHoverType.current = template;
   }, [template]);
 
   const handleClickRegion = () => {
@@ -92,19 +95,19 @@ const Map = ({
     setSelectedMapFile((prevMapFile) => {
       // console.log(prevMapFile);
       if (prevMapFile["mapbook_template"] === "Bar Chart") {
-        setTemplate("Bar Chart");
+        // setTemplate("Bar Chart");
         setShowModalBar(!showModalBar);
       } else if (prevMapFile["mapbook_template"] === "Pie Chart") {
-        setTemplate("Pie Chart");
+        // setTemplate("Pie Chart");
         setShowModalPie(!showModalPie);
       } else if (prevMapFile["mapbook_template"] === "Circle Map") {
-        setTemplate("Circle Map");
+        // setTemplate("Circle Map");
         setShowModalCircle(!showModalCircle);
       } else if (prevMapFile["mapbook_template"] === "Thematic Map") {
-        setTemplate("Thematic Map");
+        // setTemplate("Thematic Map");
         setShowModalThematic(!showModalThematic);
       } else if (prevMapFile["mapbook_template"] === "Heat Map") {
-        setTemplate("Heat Map");
+        // setTemplate("Heat Map");
         setShowModalHeat(!showModalHeat);
       }
 
@@ -238,6 +241,8 @@ const Map = ({
 
   useEffect(() => {
     // console.log("selectedMapFile: ", selectedMapFile);
+    // console.log("onhover: useEffect:", templateHoverType.current);
+
     let map;
 
     mapboxgl.accessToken = MAPBOX_TOKEN;
@@ -250,137 +255,142 @@ const Map = ({
         preserveDrawingBuffer: true,
       });
     }
+    if(map != null){
 
-    map.on("idle", function () {
-      map.resize();
-    });
-    map.on("move", () => {
-      setLng(map.getCenter().lng.toFixed(4));
-      setLat(map.getCenter().lat.toFixed(4));
-      setZoom(map.getZoom().toFixed(2));
-    });
-
-    map.on("load", () => {
-      // console.log("ON LOAD selectedMapFile: ", selectedMapFile);
-      map.addSource("counties", {
-        type: "geojson",
-        data: selectedMapFile,
+      map.on("idle", function () {
+        map.resize();
+      });
+      map.on("move", () => {
+        setLng(map.getCenter().lng.toFixed(4));
+        setLat(map.getCenter().lat.toFixed(4));
+        setZoom(map.getZoom().toFixed(2));
       });
 
-      map.addLayer(
-        {
-          id: "counties",
-          type: "fill",
-          source: "counties",
-          // "source-layer": "original",
-          paint: {
-            // "fill-color": "rgba(0.5,0.5,0,0.4)",
-            "fill-color": "#ff0088",
-            "fill-opacity": 0.4,
-            "fill-outline-color": "#000000",
-            // "fill-outline-opacity": 0.8
-          },
-        }
-        // "building"
-      );
-
-      map.addLayer(
-        {
-          id: "counties-highlighted",
-          type: "fill",
-          source: "counties",
-          // "source-layer": "original",
-          paint: {
-            "fill-outline-color": "#484896",
-            "fill-color": "#6e599f",
-            "fill-opacity": 0.75,
-          },
-          filter: ["in", "name", ""],
-        }
-        // "building"
-      );
-
-      map.addLayer({
-        id: "data-labels",
-        type: "symbol",
-        source: "counties",
-        layout: {
-          "text-field": ["get", "name"],
-          "text-size": 15,
-        },
-      });
-
-      map.on("click", (e) => {
-        // console.log("this is e: ", e);
-        const bbox = [
-          [e.point.x, e.point.y],
-          [e.point.x, e.point.y],
-        ];
-
-        const selectedFeatures = map.queryRenderedFeatures(bbox, {
-          layers: ["counties"],
+      map.on("load", () => {
+        // console.log("ON LOAD selectedMapFile: ", selectedMapFile);
+        map.addSource("counties", {
+          type: "geojson",
+          data: selectedMapFile,
         });
 
-        const names = selectedFeatures.map(
-          (feature) => feature.properties.name
+        map.addLayer(
+          {
+            id: "counties",
+            type: "fill",
+            source: "counties",
+            // "source-layer": "original",
+            paint: {
+              // "fill-color": "rgba(0.5,0.5,0,0.4)",
+              "fill-color": "#ff0088",
+              "fill-opacity": 0.4,
+              "fill-outline-color": "#000000",
+              // "fill-outline-opacity": 0.8
+            },
+          }
+          // "building"
         );
 
-        const newSelectedFeature = selectedMapFile["features"].filter(
-          (f) => f["properties"].name === names[0]
+        map.addLayer(
+          {
+            id: "counties-highlighted",
+            type: "fill",
+            source: "counties",
+            // "source-layer": "original",
+            paint: {
+              "fill-outline-color": "#484896",
+              "fill-color": "#6e599f",
+              "fill-opacity": 0.75,
+            },
+            filter: ["in", "name", ""],
+          }
+          // "building"
         );
 
-        // console.log("selectedfeatures: ", newSelectedFeature);
-
-        setFeature(newSelectedFeature);
-
-        // console.log("Selected region name: ", names[0]);
-        setRegionName(names[0]);
-        map.setFilter("counties-highlighted", ["in", "name", ...names]);
-        handleClickRegion();
-      });
-      map.on("mousemove", (event) => {
-        const regions = map.queryRenderedFeatures(event.point, {
-          layers: ["counties"],
+        map.addLayer({
+          id: "data-labels",
+          type: "symbol",
+          source: "counties",
+          layout: {
+            "text-field": ["get", "name"],
+            "text-size": 15,
+          },
         });
 
-        if (regions.length > 0) {
-          const tempFeature = selectedMapFile["features"].find(
-            (m) => m["properties"].name === regions[0]["properties"].name
+        map.on("click", (e) => {
+          // console.log("this is e: ", e);
+          const bbox = [
+            [e.point.x, e.point.y],
+            [e.point.x, e.point.y],
+          ];
+
+          const selectedFeatures = map.queryRenderedFeatures(bbox, {
+            layers: ["counties"],
+          });
+
+          const names = selectedFeatures.map(
+            (feature) => feature.properties.name
           );
 
-          var data = tempFeature["properties"].mapbook_data;
-          console.log("onhover", template);
-          if (data === undefined) {
-            setHoverData("No data");
-          } else {
-            const formattedData = Object.keys(data)
-              .map((key) => `${key}: ${data[key]}`)
-              .join("\n");
-            if (template === "Pie Chart") {
-              console.log("Calling PIE");
-              setTemplateHoverData((prevState) => ({
-                ...prevState, // Spread the previous state to keep other properties
-                pieData: formattedData,
-              }));
-              setHoverData(templateHoverData["pieData"]);
-            } else if (template === "Bar Chart") {
-              console.log("Calling BAR");
-            } else if (template === "Heat Map") {
-              console.log("Calling HEAT");
-            } else if (template === "Thematic Map") {
-              console.log("Calling THEMATIC");
-            } else if (template === "Circle Map") {
-              console.log("Calling CIRCLE");
+          const newSelectedFeature = selectedMapFile["features"].filter(
+            (f) => f["properties"].name === names[0]
+          );
+
+          // console.log("selectedfeatures: ", newSelectedFeature);
+
+          setFeature(newSelectedFeature);
+
+          // console.log("Selected region name: ", names[0]);
+          setRegionName(names[0]);
+          map.setFilter("counties-highlighted", ["in", "name", ...names]);
+          handleClickRegion();
+        });
+        map.on("mousemove", (event) => {
+          const regions = map.queryRenderedFeatures(event.point, {
+            layers: ["counties"],
+          });
+
+          if (regions.length > 0) {
+            const tempFeature = selectedMapFile["features"].find(
+              (m) => m["properties"].name === regions[0]["properties"].name
+            );
+            console.log("regions ", tempFeature["properties"]["mapbook_data"])
+            // var data = tempFeature["properties"].mapbook_data;
+            var data = tempFeature["properties"]["mapbook_data"];
+            console.log("data: ", data)
+            console.log("onhover", templateHoverType.current);
+            if (data === undefined) {
+              console.log("No data")
+              setHoverData("No data");
+            } else {
+              const formattedData = Object.keys(data)
+                .map((key) => `${key}: ${data[key]}`)
+                .join("\n");
+              if (templateHoverType.current === "Pie Chart") {
+                console.log("Calling PIE");
+                setTemplateHoverData((prevState) => ({
+                  ...prevState, // Spread the previous state to keep other properties
+                  pieData: formattedData,
+                }));
+                setHoverData(templateHoverData["pieData"]);
+              } else if (templateHoverType.current === "Bar Chart") {
+                console.log("Calling BAR");
+              } else if (templateHoverType.current === "Heat Map") {
+                console.log("Calling HEAT");
+              } else if (templateHoverType.current === "Thematic Map") {
+                console.log("Calling THEMATIC");
+              } else if (templateHoverType.current === "Circle Map") {
+                console.log("Calling CIRCLE");
+              }
+              // setHoverData(
+              //   JSON.stringify(tempFeature["properties"].mapbook_data)
+              // );
+              // console.log(formattedData);
+              // setHoverData(formattedData);
             }
-            // setHoverData(
-            //   JSON.stringify(tempFeature["properties"].mapbook_data)
-            // );
-            // console.log(formattedData);
-            // setHoverData(formattedData);
           }
-        }
+        });
       });
-    });
+    }
   }, []);
 
   // Convert data to GEOJSON //

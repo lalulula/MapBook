@@ -30,6 +30,7 @@ const MapDataInputPage = ({
   selectedMapFile,
   setSelectedMapFile,
 }) => {
+
   const handleMapNameChange = (name) => {
     setOptions({ ...options, name });
   };
@@ -171,6 +172,7 @@ const MapDataInputPage = ({
         themeData={themeData}
         setMapImage={setMapImage}
         mapImage={mapImage}
+        template={template}
       />
       <div className="addmapdata_right_sidebar">
         <h3>Data Values</h3>
