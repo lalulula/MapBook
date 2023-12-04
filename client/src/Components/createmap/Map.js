@@ -23,16 +23,21 @@ const Map = ({
   heatRange,
   selectedColors,
   themeData,
-  setMapImage,
-  mapImage,
 }) => {
   const [regionName, setRegionName] = useState("");
-  const [templateChange, setTemplateChange] = useState(false);
+  const [template, setTemplate] = useState("");
+  const [templateHoverData, setTemplateHoverData] = useState({
+    pieData: null,
+    barData: null,
+    themeData: null,
+    heatData: null,
+    circleData: null,
+  });
+
   useEffect(() => {
-    setHoverData("No Data");
-    setTemplateChange(true);
-    console.log("Template changed");
-  }, [selectedMapFile["mapbook_template"]]);
+    console.log(templateHoverData);
+  }, [templateHoverData]);
+
   useEffect(() => {
     setSelectedMapFile((prevMapFile) => ({
       ...prevMapFile,
@@ -48,7 +53,15 @@ const Map = ({
       mapbook_heat_selectedcolors: selectedColors, // heat color
       mapbook_themedata: themeData, //Color + data name
     }));
-  }, [options, pieBarData, themeData, themeData, heatRange, selectedColors]);
+  }, [
+    options,
+    pieBarData,
+    themeData,
+    themeData,
+    heatRange,
+    selectedColors,
+    selectedMapFile,
+  ]);
   const MAPBOX_TOKEN =
     "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
   const [lng, setLng] = useState(-122.48);
@@ -71,23 +84,27 @@ const Map = ({
 
   useEffect(() => {
     // console.log("selectedMapFile: useEffect: ", selectedMapFile);
-  }, [selectedMapFile]);
+    console.log("TEmplate", template);
+  }, [template]);
 
   const handleClickRegion = () => {
     setShowPopup(false);
     setSelectedMapFile((prevMapFile) => {
-      console.log(prevMapFile);
-      console.log(prevMapFile["mapbook_template"]);
-
+      // console.log(prevMapFile);
       if (prevMapFile["mapbook_template"] === "Bar Chart") {
+        setTemplate("Bar Chart");
         setShowModalBar(!showModalBar);
       } else if (prevMapFile["mapbook_template"] === "Pie Chart") {
+        setTemplate("Pie Chart");
         setShowModalPie(!showModalPie);
       } else if (prevMapFile["mapbook_template"] === "Circle Map") {
+        setTemplate("Circle Map");
         setShowModalCircle(!showModalCircle);
       } else if (prevMapFile["mapbook_template"] === "Thematic Map") {
+        setTemplate("Thematic Map");
         setShowModalThematic(!showModalThematic);
       } else if (prevMapFile["mapbook_template"] === "Heat Map") {
+        setTemplate("Heat Map");
         setShowModalHeat(!showModalHeat);
       }
 
@@ -237,7 +254,6 @@ const Map = ({
     map.on("idle", function () {
       map.resize();
     });
-    
     map.on("move", () => {
       setLng(map.getCenter().lng.toFixed(4));
       setLat(map.getCenter().lat.toFixed(4));
@@ -313,8 +329,11 @@ const Map = ({
           (f) => f["properties"].name === names[0]
         );
 
+        // console.log("selectedfeatures: ", newSelectedFeature);
+
         setFeature(newSelectedFeature);
 
+        // console.log("Selected region name: ", names[0]);
         setRegionName(names[0]);
         map.setFilter("counties-highlighted", ["in", "name", ...names]);
         handleClickRegion();
@@ -328,14 +347,36 @@ const Map = ({
           const tempFeature = selectedMapFile["features"].find(
             (m) => m["properties"].name === regions[0]["properties"].name
           );
-          //console.log("tempFeature: ", tempFeature);
+
           var data = tempFeature["properties"].mapbook_data;
+          console.log("onhover", template);
           if (data === undefined) {
             setHoverData("No data");
           } else {
-            setHoverData(
-              JSON.stringify(tempFeature["properties"].mapbook_data)
-            );
+            const formattedData = Object.keys(data)
+              .map((key) => `${key}: ${data[key]}`)
+              .join("\n");
+            if (template === "Pie Chart") {
+              console.log("Calling PIE");
+              setTemplateHoverData((prevState) => ({
+                ...prevState, // Spread the previous state to keep other properties
+                pieData: formattedData,
+              }));
+              setHoverData(templateHoverData["pieData"]);
+            } else if (template === "Bar Chart") {
+              console.log("Calling BAR");
+            } else if (template === "Heat Map") {
+              console.log("Calling HEAT");
+            } else if (template === "Thematic Map") {
+              console.log("Calling THEMATIC");
+            } else if (template === "Circle Map") {
+              console.log("Calling CIRCLE");
+            }
+            // setHoverData(
+            //   JSON.stringify(tempFeature["properties"].mapbook_data)
+            // );
+            // console.log(formattedData);
+            // setHoverData(formattedData);
           }
         }
       });
@@ -369,15 +410,12 @@ const Map = ({
   }
 
   const createMap = async (mapData) => {
-    var mapImageLink;
-    if (mapImage === null) {
-      const canvas = await html2canvas(
-        document.querySelector(".mapboxgl-canvas")
-      );
-      // console.log("canvas", canvas);
-      mapImageLink = canvas.toDataURL();
-      // setMapImage(canvas.toDataURL());
-    }
+    const canvas = await html2canvas(
+      document.querySelector(".mapboxgl-canvas")
+    );
+
+    // console.log("canvas", canvas);
+    const mapImage = canvas.toDataURL();
 
     const newMapObj = {
       map_name: options.name,
@@ -385,7 +423,7 @@ const Map = ({
       is_visible: !options.isPrivate,
       user_id: userId,
       map_description: options.description,
-      mapPreviewImg: mapImage ? mapImage : mapImageLink,
+      mapPreviewImg: mapImage,
       file: mapData,
     };
 
