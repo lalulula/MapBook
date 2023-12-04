@@ -12,42 +12,43 @@ const defaultHeaders = {
 // Create Map
 export const createMapAPIMethod = async (mapData) => {
   var keys = Object.keys(mapData);
-  console.log(keys)
+  console.log(keys);
 
   const formData = new FormData();
   formData.append("file", mapData["file"]);
 
   const keyLen = keys.length;
   for (var i = 0; i < keyLen; i++) {
+    if (keys[i] == "mapPreviewImg") {
+      console.log(mapData[keys[i]]);
+      const isImageFile = /\.(jpg|png)$/i.test(mapData[keys[i]]);
+      console.log(isImageFile);
+      var dataName = keys[i];
 
-    if(keys[i] == "mapPreviewImg"){
-      var dataName = keys[i]
-
-      var imgDataUrl = mapData[keys[i]]
-      var blobBin = atob(imgDataUrl.split(',')[1]);	// base64 데이터 디코딩
+      var imgDataUrl = mapData[keys[i]];
+      var blobBin = atob(imgDataUrl.split(",")[1]); // base64 데이터 디코딩
       var array = [];
       for (var i = 0; i < blobBin.length; i++) {
-          array.push(blobBin.charCodeAt(i));
+        array.push(blobBin.charCodeAt(i));
       }
-      var file = new File([new Uint8Array(array)], "mapPreviewImg.png", {type: 'image/png'});	// Blob 생성
+      var file = new File([new Uint8Array(array)], "mapPreviewImg.png", {
+        type: "image/png",
+      }); // Blob 생성
       // console.log(file)
-      formData.append(dataName, file);	// file data 추가
-  
-    }
-    else{
-      console.log(keys[i])
+      formData.append(dataName, file); // file data 추가
+    } else {
+      console.log(keys[i]);
       formData.append(keys[i], mapData[keys[i]]);
     }
   }
-  console.log("done for loop")
+  console.log("done for loop");
 
-  const response = await fetch(`${API_BASE_URL}/api/map/createMap`, {
-    // ...defaultHeaders,
-    method: "POST",
-    body: formData,
-  });
-  return response;
-
+  // const response = await fetch(`${API_BASE_URL}/api/map/createMap`, {
+  //   // ...defaultHeaders,
+  //   method: "POST",
+  //   body: formData,
+  // });
+  // return response;
 };
 
 // GET ALL MAPS
@@ -84,9 +85,9 @@ export const likeMapAPIMethod = (mapId, isAuth, userId) => {
   const res = fetch(`${API_BASE_URL}/api/maps/likeMap/${mapId}`, {
     ...defaultHeaders,
     method: "PUT",
-    headers: { 
+    headers: {
       Authorization: `Bearer ${isAuth}`,
-      "Content-Type": "application/json; charset=UTF-8", 
+      "Content-Type": "application/json; charset=UTF-8",
     },
     body: JSON.stringify(userId),
   });

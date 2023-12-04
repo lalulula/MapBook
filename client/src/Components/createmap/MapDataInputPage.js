@@ -13,7 +13,9 @@ import Textarea from "@mui/joy/Textarea";
 import Input from "@mui/joy/Input";
 import Typography from "@mui/joy/Typography";
 import "./createMap.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import ImportFilePage from "./ImportFilePage";
+import MapPrevImgDropBox from "./MapPrevImgDropBox";
 const MapDataInputPage = ({
   options,
   setOptions,
@@ -72,7 +74,7 @@ const MapDataInputPage = ({
     "Thematic Map",
   ];
   const template = options["template"];
-
+  const [mapImage, setMapImage] = useState(null);
   return (
     <>
       <div className="addmapdata_left_sidebar">
@@ -166,36 +168,44 @@ const MapDataInputPage = ({
         heatRange={heatRange}
         selectedColors={selectedColors}
         themeData={themeData}
+        setMapImage={setMapImage}
+        mapImage={mapImage}
       />
       <div className="addmapdata_right_sidebar">
         <h3>Data Values</h3>
-        {(template === "Pie Chart" || template === "Bar Chart") && (
-          <PieBar pieBarData={pieBarData} setPieBarData={setPieBarData} />
-        )}
-        {template === "Circle Map" && (
-          <Circle
-            options={options}
-            handleCircleHeatMapDataChange={handleCircleHeatMapDataChange}
-          />
-        )}
-        {template === "Thematic Map" && (
-          <>
-            <Thematic themeData={themeData} setThemeData={setThemeData} />
-          </>
-        )}
-        {template === "Heat Map" && (
-          <>
-            <Heat
-              selectedColors={selectedColors}
-              setSelectedColors={setSelectedColors}
-              heatRange={heatRange}
-              setHeatRange={setHeatRange}
+        <div className="addmapdata_templates">
+          {(template === "Pie Chart" || template === "Bar Chart") && (
+            <PieBar pieBarData={pieBarData} setPieBarData={setPieBarData} />
+          )}
+          {template === "Circle Map" && (
+            <Circle
               options={options}
               handleCircleHeatMapDataChange={handleCircleHeatMapDataChange}
-              selectedMapFile={selectedMapFile}
             />
-          </>
-        )}
+          )}
+          {template === "Thematic Map" && (
+            <>
+              <Thematic themeData={themeData} setThemeData={setThemeData} />
+            </>
+          )}
+          {template === "Heat Map" && (
+            <>
+              <Heat
+                selectedColors={selectedColors}
+                setSelectedColors={setSelectedColors}
+                heatRange={heatRange}
+                setHeatRange={setHeatRange}
+                options={options}
+                handleCircleHeatMapDataChange={handleCircleHeatMapDataChange}
+                selectedMapFile={selectedMapFile}
+              />
+            </>
+          )}
+        </div>
+        <div className="addmapdata_image_drop">
+          <h3>Map Preview Image</h3>
+          <MapPrevImgDropBox setMapImage={setMapImage} mapImage={mapImage} />
+        </div>
       </div>
     </>
   );
