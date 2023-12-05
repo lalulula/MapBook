@@ -1,3 +1,5 @@
+import "cypress-file-upload";
+
 describe("CreateMap-File Import Page", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/login");
