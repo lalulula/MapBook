@@ -58,60 +58,88 @@ const createMap = async (req, res) => {
       is_visible,
       map_description,
     } = req.body;
-    // console.log(req.body);
-    console.log("file", req.files["file"][0]);
-    console.log("mapPreviewImg", req.files["mapPreviewImg"][0]);
+    // console.log(req.files);
+    if(req.files !== undefined){
+      console.log("file", req.files["file"][0]);
+      console.log("mapPreviewImg", req.files["mapPreviewImg"][0]);
 
-    const randomString = (new Date().getTime() + Math.random()).toString(36).substring(2)
-    // console.log("randomString :", randomString)
+      const randomString = (new Date().getTime() + Math.random()).toString(36).substring(2)
+      // console.log("randomString :", randomString)
 
-    const fileBuffer = req.files["file"][0].buffer;
-    const fileName = randomString + req.files["file"][0].originalname;
-    const storageRef =  bucket.file(fileName);
-    await storageRef.createWriteStream().end(fileBuffer);
+      const fileBuffer = req.files["file"][0].buffer;
+      const fileName = randomString + req.files["file"][0].originalname;
+      const storageRef =  bucket.file(fileName);
+      await storageRef.createWriteStream().end(fileBuffer);
 
-    const [fileUrl] = await storageRef.getSignedUrl({
-      action: "read",
-      expires: "03-09-2025", // Replace with an expiration date
-    });
+      const [fileUrl] = await storageRef.getSignedUrl({
+        action: "read",
+        expires: "03-09-2025", // Replace with an expiration date
+      });
 
 
-    
-    const imgFileBuffer = req.files["mapPreviewImg"][0].buffer;
-    const imgFileName = randomString + req.files["mapPreviewImg"][0].originalname;
-    const imgStorageRef = bucket.file(imgFileName);
-    await imgStorageRef.createWriteStream().end(imgFileBuffer);
+      
+      const imgFileBuffer = req.files["mapPreviewImg"][0].buffer;
+      const imgFileName = randomString + req.files["mapPreviewImg"][0].originalname;
+      const imgStorageRef = bucket.file(imgFileName);
+      await imgStorageRef.createWriteStream().end(imgFileBuffer);
 
-    const [mapPreviewImgUrl]  = await imgStorageRef.getSignedUrl({
-      action: "read",
-      expires: "03-09-2025", // Replace with an expiration date
-    });
+      const [mapPreviewImgUrl]  = await imgStorageRef.getSignedUrl({
+        action: "read",
+        expires: "03-09-2025", // Replace with an expiration date
+      });
 
-    const newMap = new MapObj({
-      map_name,
-      topic,
-      user_id,
-      is_visible,
-      map_description,
-      mapPreviewImg: mapPreviewImgUrl,
-      file_path: fileUrl,
-    });
-    const savedMap = await newMap.save();
+      const newMap = new MapObj({
+        map_name,
+        topic,
+        user_id,
+        is_visible,
+        map_description,
+        mapPreviewImg: mapPreviewImgUrl,
+        file_path: fileUrl,
+      });
+      const savedMap = await newMap.save();
 
-    const user = await User.findById(user_id);
-    const mapsCreated = user["maps_created"];
-    mapsCreated.push(savedMap["_id"]);
-    await User.findByIdAndUpdate(
-      user_id,
-      {
-        maps_created: mapsCreated,
-      },
-      { new: true }
-    )
+      const user = await User.findById(user_id);
+      const mapsCreated = user["maps_created"];
+      mapsCreated.push(savedMap["_id"]);
+      await User.findByIdAndUpdate(
+        user_id,
+        {
+          maps_created: mapsCreated,
+        },
+        { new: true }
+      )
 
-    // Respond with success message
-    // return res.status(201).json({ success: true, message: "Map created successfully!" });
-    return res.status(201).json(savedMap);
+      // Respond with success message
+      // return res.status(201).json({ success: true, message: "Map created successfully!" });
+      return res.status(201).json(savedMap);
+    }
+    else{
+      const newMap = new MapObj({
+        map_name,
+        topic,
+        user_id,
+        is_visible,
+        map_description,
+      });
+      // console.log(newMap)
+      const savedMap = await newMap.save();
+
+      const user = await User.findById(user_id);
+      const mapsCreated = user["maps_created"];
+      mapsCreated.push(savedMap["_id"]);
+      await User.findByIdAndUpdate(
+        user_id,
+        {
+          maps_created: mapsCreated,
+        },
+        { new: true }
+      )
+
+      // Respond with success message
+      // return res.status(201).json({ success: true, message: "Map created successfully!" });
+      return res.status(201).json(savedMap);
+    }
 
   } catch (error) {
     // console.error("Error creating map:", error);
