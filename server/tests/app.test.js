@@ -1,5 +1,6 @@
 const request = require("supertest");
 const mongoose = require("mongoose");
+const { SHA256, enc } = require("crypto-js");
 
 const app = require("../server");
 
@@ -17,34 +18,15 @@ describe("MapBook API tests:", () => {
     mongoose.connection.close()
   })
 
-  // Test for login
-  let userToken;
-  describe('POST /api/auth/login', () => {
-    test('should return 200 and a valid token for existing user', async () => {
-      const response = await request(app)
-        .post('/api/auth/login')
-        .send({ username: 'sam', password: '008c70392e3abfbd0fa47bbc2ed96aa99bd49e159727fcba0f2e6abeb3a9d601' /* sent hashed pw */ });
-
-      expect(response.statusCode).toBe(200);
-      expect(response.body).toHaveProperty('token');
-      userToken = response.body.token;
-    });
-
-    test('should return 404 for non-existing user', async () => {
-      const response = await request(app)
-        .post('/api/auth/login')
-        .send({ username: 'nonExistingUser', password: 'nonExistingPassword' });
-
-      expect(response.statusCode).toBe(404);
-    });
-  });
-
+  // Auth
   // Test for register
+  let loggedInAuthToken;
+  let loggedInUserId;
   describe('POST /api/auth/register', () => {
     test('should create a new user and return a created user', async () => {
       const response = await request(app)
         .post('/api/auth/register')
-        .send({ username: 'newUser', password: 'newPassword', email: 'newuser@example.com' });
+        .send({ username: 'newUser', password: SHA256("Password123").toString(enc.Hex), email: 'newuser@example.com' });
 
       expect(response.statusCode).toBe(201);
       expect(response.body).toHaveProperty('username');
@@ -53,9 +35,31 @@ describe("MapBook API tests:", () => {
     test('should return 400 for duplicate username', async () => {
       const response = await request(app)
         .post('/api/auth/register')
-        .send({ username: 'newUser', password: 'newPassword', email: 'newuser@example.com' });
+        .send({ username: 'newUser', password: 'Password123', email: 'newuser@example.com' });
 
       expect(response.statusCode).toBe(400);
+    });
+  });
+
+  // Test for login
+  describe('POST /api/auth/login', () => {
+    test('should return 200 and a valid token for existing user', async () => {
+      const response = await request(app)
+        .post('/api/auth/login')
+        .send({ username: 'newUser', password: SHA256("Password123").toString(enc.Hex) });
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveProperty('token');
+      loggedInAuthToken = response.body.token;
+      loggedInUserId = response.body.user._id;
+    });
+
+    test('should return 404 for non-existing user', async () => {
+      const response = await request(app)
+        .post('/api/auth/login')
+        .send({ username: 'nonExistingUser', password: 'nonExistingPassword' });
+
+      expect(response.statusCode).toBe(404);
     });
   });
 
@@ -123,4 +127,105 @@ describe("MapBook API tests:", () => {
       expect(response.statusCode).toBe(404);
     });
   });
+
+  // Users
+  // Test for getCurrentUser
+  describe('GET /api/users/:id', () => {
+    test('should return the current logged in user', async () => {
+      const response = await request(app)
+        .get(`/api/users/${loggedInUserId}`)
+        .set('Authorization', `Bearer ${loggedInAuthToken}`);
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveProperty('_id', loggedInUserId.toString());
+    });
+
+    test('should return 404 for non-existing user', async () => {
+      const response = await request(app)
+        .get('/api/users/nonExistingUserId')
+        .set('Authorization', `Bearer ${loggedInAuthToken}`);
+
+      expect(response.statusCode).toBe(404);
+    });
+  });
+
+  // Test for getAllUsers
+  describe('GET /api/users', () => {
+    test('should return all users', async () => {
+      const response = await request(app)
+        .get('/api/users');
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toBeInstanceOf(Array);
+    });
+  });
+
+  // Test for getUserById
+  describe('GET /api/users/getUser/:id', () => {
+    test('should return user by ID', async () => {
+      const response = await request(app)
+        .get(`/api/users/getUser/${loggedInUserId}`);
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveProperty('_id', loggedInUserId.toString());
+    });
+
+    test('should return 404 for non-existing user', async () => {
+      const response = await request(app)
+        .get('/api/users/getUser/nonExistingUserId');
+
+      expect(response.statusCode).toBe(404);
+    });
+  });
+
+  // Test for updateUser
+  describe('PUT /api/users/:id', () => {
+    test('should update user information', async () => {
+      const response = await request(app)
+        .put(`/api/users/${loggedInUserId}`)
+        .set('Authorization', `Bearer ${loggedInAuthToken}`)
+        .field('username', 'newUserUpdated')
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveProperty('username', "newUserUpdated");
+    });
+  });
+
+  // Test for removeUser
+  describe('DELETE /api/users/:id', () => {
+    test('should delete the user', async () => {
+      const response = await request(app)
+        .delete(`/api/users/${loggedInUserId}`)
+        .set('Authorization', `Bearer ${loggedInAuthToken}`);
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toBe('User deleted successfully');
+    });
+
+    test('should return 404 for non-existing user', async () => {
+      const response = await request(app)
+        .delete('/api/users/nonExistingUserId')
+        .set('Authorization', `Bearer ${loggedInAuthToken}`);
+
+      expect(response.statusCode).toBe(404);
+    });
+  });
+
+  // Test for adminRemoveUser
+  // describe('DELETE /api/users/admin/:id', () => {
+  //   test('should delete a user by an admin', async () => {
+  //     const response = await request(app)
+  //       .delete('/api/users/admin/656ea11c1c108ae5fe4986d3');
+
+  //     expect(response.statusCode).toBe(200);
+  //     expect(response.body).toHaveProperty('success', true);
+  //   });
+
+  //   test('should return 404 for non-existing user', async () => {
+  //     const response = await request(app)
+  //       .delete('/api/users/admin/nonExistingUserId');
+
+  //     expect(response.statusCode).toBe(404);
+  //   });
+  // });
 });
