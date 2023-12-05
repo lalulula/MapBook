@@ -79,8 +79,6 @@ import React, { useState } from "react";
 import "./mapPreview.css";
 import dumImg from "../../assets/img/dum.jpg";
 import { useNavigate } from "react-router-dom";
-/* import { Popover, Text, Button, Portal } from '@mantine/core';
-import '@mantine/core/styles.css'; */
 
 const MapPreview = ({ data }) => {
   // console.log("data: ", data);

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./maptools.css";
@@ -22,15 +22,18 @@ import { likeMapAPIMethod } from "../../api/map";
 
 
 const MapTools = ({ style, isEdit, currentMap }) => {
+  const { mapId } = useParams();
   const navigate = useNavigate();
   const [isPublic, setIsPublic] = useState(true);
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const user = useSelector((state) => state.user.user);
   const [isLiked, setIsLiked] = useState(false);
 
-  useEffect(() => {
-    setIsLiked(currentMap.map_users_liked.includes(user._id));
-  }, [currentMap]);
+  /* useEffect(() => {
+    if (currentMap) {
+      setIsLiked(currentMap.map_users_liked.includes(user._id));
+    }
+  }, [currentMap]); */
 
   const likeMap = async () => {
     const userId = {
@@ -41,6 +44,9 @@ const MapTools = ({ style, isEdit, currentMap }) => {
     });
   };
 
+  const handleClickEdit = () => {
+    navigate(`/editmap/${mapId}`);
+  }
 
   return isEdit ?
     <div className="map_tools" style={style}>
@@ -116,8 +122,7 @@ const MapTools = ({ style, isEdit, currentMap }) => {
 
       <img src={line} alt="line" />
 
-
-      <div className="tool" onClick={() => navigate(`/editmap/${currentMap._id}`)}>
+      <div className="tool" onClick={handleClickEdit}>
         <div className="tool_title">Edit</div>
         <img src={edit} alt="Edit" />
       </div>
