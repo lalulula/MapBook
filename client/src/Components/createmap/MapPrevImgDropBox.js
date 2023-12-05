@@ -27,7 +27,20 @@ function MapPrevImgDropBox({
       console.log("Invalid file type. Please select an image file (jpg, png).");
     }
   };
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    setBackgroundColor("rgba(128, 128, 128, 0.3)");
+    setCursor("pointer");
+  };
 
+  const handleDragLeave = () => {
+    setBackgroundColor("#fff");
+    setCursor("auto");
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (isValidImageType(file)) {
@@ -71,6 +84,9 @@ function MapPrevImgDropBox({
         setCursor("auto");
       }}
       onDrop={handleDrop}
+      onDragEnter={handleDragEnter}
+      onDragLeave={handleDragLeave}
+      onDragOver={handleDragOver}
     >
       <Label
         onMouseOver={() => {
