@@ -28,18 +28,10 @@ const Map = ({
   const mapFileData = useRef(selectedMapFile);
 
   const [regionName, setRegionName] = useState("");
-  // const [template, setTemplate] = useState("");
-  const [templateHoverData, setTemplateHoverData] = useState({
-    pieData: null,
-    barData: null,
-    themeData: null,
-    heatData: null,
-    circleData: null,
-  });
 
-  useEffect(() => {
-    console.log(templateHoverData);
-  }, [templateHoverData]);
+  // useEffect(() => {
+  //   console.log(templateHoverData);
+  // }, [templateHoverData]);
 
   useEffect(() => {
     setSelectedMapFile((prevMapFile) => ({
@@ -93,7 +85,6 @@ const Map = ({
     templateHoverType.current = template;
   }, [template]);
 
-
   const handleClickRegion = () => {
     setShowPopup(false);
     setSelectedMapFile((prevMapFile) => {
@@ -132,10 +123,6 @@ const Map = ({
     }
     return "Invalid Color";
   };
-  // useEffect(() => {
-  //   console.log(inputData);
-  //   console.log(selectedMapFile);
-  // }, [inputData]);
 
   const handleHeatMapData = (datavalue) => {
     const from = Number(mapFileData.current["mapbook_heatrange"]["from"]);
@@ -233,7 +220,6 @@ const Map = ({
       console.log("afterRedo: ", mapFileData.current);
 
       setSelectedMapFile(mapFileData.current);
-
     }
   };
 
@@ -264,8 +250,7 @@ const Map = ({
         preserveDrawingBuffer: true,
       });
     }
-    if(map != null){
-
+    if (map != null) {
       map.on("idle", function () {
         map.resize();
       });
@@ -340,7 +325,7 @@ const Map = ({
           );
           map.setFilter("counties-highlighted", ["in", "name", []]);
 
-          if(names.length > 0){
+          if (names.length > 0) {
             const newSelectedFeature = mapFileData.current["features"].filter(
               (f) => f["properties"].name === names[0]
             );
@@ -353,8 +338,7 @@ const Map = ({
             setRegionName(names[0]);
             map.setFilter("counties-highlighted", ["in", "name", ...names]);
             handleClickRegion();
-          }
-          else{
+          } else {
             setFeature([]);
             map.setFilter("counties-highlighted", ["in", "name", ...names]);
           }
@@ -363,12 +347,10 @@ const Map = ({
           const regions = map.queryRenderedFeatures(event.point, {
             layers: ["counties"],
           });
-          
-          if(regions.length == 0)
-          {
+
+          if (regions.length === 0) {
             handleMouseLeave();
-          }
-          else{
+          } else {
             handleMouseEnter();
           }
 
@@ -376,47 +358,45 @@ const Map = ({
             const tempFeature = mapFileData.current["features"].find(
               (m) => m["properties"].name === regions[0]["properties"].name
             );
-            
 
-            // console.log("regions ", tempFeature["properties"]["mapbook_data"])
-            // var data = tempFeature["properties"].mapbook_data;
             var data = tempFeature["properties"]["mapbook_data"];
-            // console.log("data: ", data)
-            // console.log("onhover", templateHoverType.current);
+
             if (data === undefined) {
-              // console.log("No data")
-              setHoverData( regions[0]["properties"].name + "\nNo data" );
+              setHoverData(regions[0]["properties"].name + "\nNo data");
             } else {
               const formattedData = Object.keys(data)
                 .map((key) => `${key}: ${data[key]}`)
                 .join("\n");
-              console.log(regions[0]["properties"].name + "\n" + formattedData);
+              console.log(data);
+              // console.log(regions[0]["properties"].name + "\n" + formattedData);
 
               if (templateHoverType.current === "Pie Chart") {
+                //ok
                 console.log("Calling PIE");
-                setTemplateHoverData((prevState) => ({
-                  ...prevState, // Spread the previous state to keep other properties
-                  pieData: formattedData,
-                }));
-                // setHoverData(templateHoverData["pieData"]);
-                setHoverData(regions[0]["properties"].name + "\n" + formattedData);
-
+                setHoverData(
+                  regions[0]["properties"].name + "\n" + formattedData
+                );
               } else if (templateHoverType.current === "Bar Chart") {
+                //ok
                 console.log("Calling BAR");
-                setHoverData(regions[0]["properties"].name + "\n" + formattedData);
-
+                setHoverData(
+                  regions[0]["properties"].name + "\n" + formattedData
+                );
               } else if (templateHoverType.current === "Heat Map") {
                 console.log("Calling HEAT");
-                setHoverData(regions[0]["properties"].name + "\n" + formattedData);
-
+                setHoverData(
+                  regions[0]["properties"].name + "\n" + formattedData
+                );
               } else if (templateHoverType.current === "Thematic Map") {
                 console.log("Calling THEMATIC");
-                setHoverData(regions[0]["properties"].name + "\n" + formattedData);
-
+                setHoverData(
+                  regions[0]["properties"].name + "\n" + formattedData
+                );
               } else if (templateHoverType.current === "Circle Map") {
                 console.log("Calling CIRCLE");
-                setHoverData(regions[0]["properties"].name + "\n" + formattedData);
-
+                setHoverData(
+                  regions[0]["properties"].name + "\n" + formattedData
+                );
               }
               // setHoverData(
               //   JSON.stringify(tempFeature["properties"].mapbook_data)
@@ -517,9 +497,7 @@ const Map = ({
     >
       {hoverData && showPopup && (
         <div className="popup" style={{ left: position.x, top: position.y }}>
-          <pre>
-            {hoverData}
-          </pre>
+          <pre>{hoverData}</pre>
         </div>
       )}
 
