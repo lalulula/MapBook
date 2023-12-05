@@ -388,10 +388,23 @@ const Map = ({
             if (data === undefined) {
               setHoverData(regions[0]["properties"].name + "\nNo data");
             } else {
-              const formattedData = Object.keys(data)
-                .map((key) => `${key}: ${data[key]}`)
-                .join("\n");
-              console.log(data);
+              const formattedData =
+                templateHoverType.current === "Thematic Map"
+                  ? Object.keys(data)
+                      .map((key) => {
+                        const nestedProperties = Object.keys(data[key])
+                          .map(
+                            (nestedKey) =>
+                              `${nestedKey}: ${data[key][nestedKey]}`
+                          )
+                          .join(", ");
+                        return `${key}: ${nestedProperties}`;
+                      })
+                      .join("\n")
+                  : Object.keys(data)
+                      .map((key) => `${key}: ${data[key]}`)
+                      .join("\n");
+              console.log(data, formattedData);
               // console.log(regions[0]["properties"].name + "\n" + formattedData);
 
               if (templateHoverType.current === "Pie Chart") {
