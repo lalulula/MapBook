@@ -57,10 +57,13 @@ const Heat = ({
       />
       <br />
       <div className="heat_data_tooltip">
-        <h3>
+        <h3 style={{ display: "flex", alignItems: "center" }}>
           Select color{" "}
           <Tooltip title="Corresponding colors will be chosen automatically">
-            <i className="bi bi-info-circle" style={{ marginLeft: "1rem" }}></i>
+            <i
+              className="bi bi-info-circle"
+              style={{ marginLeft: "0.3rem" }}
+            ></i>
           </Tooltip>
         </h3>
         <ColorGenerator

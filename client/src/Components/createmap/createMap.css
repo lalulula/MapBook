@@ -133,7 +133,7 @@
 .heat_data_tooltip {
   display: flex;
   align-items: flex-end;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .createMap_color_picker {
