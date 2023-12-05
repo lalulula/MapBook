@@ -264,6 +264,7 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
           </span>
           <br />
           <div
+            className="cypress_click_create"
             style={{
               color: createTextColor,
               marginTop: "1rem",

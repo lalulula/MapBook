@@ -10,28 +10,26 @@ describe("CreateMap-File Import Page", () => {
     cy.url().should("eq", "http://localhost:3000/mainpage");
   });
 
-  // it("should handle file upload and processing", () => {
-  //   cy.visit("http://localhost:3000/createmap");
-  //   const fileName = "sample.geojson";
-  //   cy.get(".input_container").click();
-  //   cy.wait(1000);
-  //   cy.fixture(fileName).then((fileContent) => {
-  //     cy.get('input[type="file"]').attachFile({
-  //       fileContent: fileContent,
-  //       fileName: fileName,
-  //       mimeType: "application/geojson",
-  //     });
+  it("should import a file and create a map", () => {
+    // Visit the page
+    cy.visit("http://localhost:3000/createmap");
 
-  //     cy.wait(5000);
+    // Click the element with class "cypress_click"
+    cy.get(".cypress_click").click();
 
-  //     cy.get("[data-cy=selected-file]").should("contain", "sample.geojso");
+    // Upload a file using the file input
+    const fileName = "sample.geojson";
+    cy.fixture(fileName).then((fileContent) => {
+      cy.get('input[type="file"]').attachFile({
+        fileContent: fileContent,
+        fileName: fileName,
+        mimeType: "application/json",
+      });
+    });
 
-  //     cy.contains("Create Map").click();
+    cy.get(".cypress_click_create").click();
 
-  //     cy.wait(5000);
-  //     cy.window()
-  //       .its("selectedMapFile.mapbook_template")
-  //       .should("not.be.empty");
-  //   });
-  // });
+    cy.url().should("include", "/createmap");
+    cy.pause();
+  });
 });
