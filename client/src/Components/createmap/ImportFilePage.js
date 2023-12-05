@@ -236,7 +236,6 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
           style={{ display: "none" }}
           onClick={console.log("clicked")}
           onChange={handleFileChange}
-          className="importfilepage_fileInput"
         />
       </Label>
       {selectedFile && (

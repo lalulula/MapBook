@@ -22,7 +22,7 @@ describe("CreateMap-File Import Page", () => {
 
   //     cy.wait(5000);
 
-  //     cy.get("[data-cy=selected-file]").should("contain", "sample.geojso");
+  //     cy.get("[data-cy=selected-file]").should("contain", "sample.geojson");
 
   //     cy.contains("Create Map").click();
 
@@ -33,4 +33,3 @@ describe("CreateMap-File Import Page", () => {
   //   });
   // });
 });
- * /

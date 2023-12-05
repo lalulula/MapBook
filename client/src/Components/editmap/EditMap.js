@@ -1,18 +1,24 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import "./editmap.css";
-import MapTools from "../maptools/MapTools";
-import Header from "../header/Header";
 import { getMapAPI } from "../../api/map";
-import Map from "../createmap/Map";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase";
 import mapboxgl from "mapbox-gl"; // Import mapboxgl
-
+import optionsIcon from "../../assets/img/options.png";
+import { Divider } from "semantic-ui-react";
+import Dropdown from "react-dropdown";
+import Checkbox from "@mui/material/Checkbox";
+import { grey, blueGrey } from "@mui/material/colors";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/joy/FormControl";
+import FormHelperText from "@mui/joy/FormHelperText";
+import Textarea from "@mui/joy/Textarea";
+import Input from "@mui/joy/Input";
+import Typography from "@mui/joy/Typography";
 
 const EditMap = () => {
-  const { mapId } = useParams();
-  console.log("MAP ID IN EDIT: ", mapId);
+  const { id } = useParams();
   const [currentMap, setCurrentMap] = useState(null);
   const [options, setOptions] = useState({});
   const [pieBarData, setPieBarData] = useState([""]); //data names for pie & bar
@@ -29,39 +35,18 @@ const EditMap = () => {
   const [zoom, setZoom] = useState(3);
   const [hoverData, setHoverData] = useState("Out of range");
   const [selectedMapFile, setSelectedMapFile] = useState();
+  const [optionsMenuVisible, setOptionsMenuVisible] = useState(false);
+
   const MAPBOX_TOKEN =
     "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
 
-  // const [selectedMapFile, setSelectedMapFile] = useState(null);
-
-  /* useEffect(() => {
-    // console.log("useEffect: selectedMapFile: ", selectedMapFile);
-    const newGeojsonData = {
-      ...selectedMapFile,
-      mapbook_mapname: options.name,
-      mapbook_description: options.description,
-      mapbook_template: options.template,
-      mapbook_circleheatmapdata: options.circleHeatMapData,
-      mapbook_topic: options.topic,
-      mapbook_customtopic: options.customTopic,
-      mapbook_visibility: options.isPrivate,
-      mapbook_datanames: pieBarData, //piebar
-      mapbook_heatrange: heatRange, // heat range
-      mapbook_heat_selectedcolors: selectedColors, // heat color
-      mapbook_themedata: themeData, //Color + data name
-    };
-    setSelectedMapFile(newGeojsonData);
-  }, [options, pieBarData, heatRange, selectedColors, themeData]); */
-
   const getMap = async () => {
-    const data = await getMapAPI(mapId);
+    const data = await getMapAPI(id);
     setCurrentMap(data);
 
     if (currentMap != null) {
       let url = currentMap.file_path;
-      // get file name from url
       let fileName = url.substring(57, url.indexOf("geojson") + 7).replaceAll('%20', ' ');
-      // console.log(fileName)
       getDownloadURL(ref(storage, fileName))
         .then((url) => {
 
@@ -82,8 +67,60 @@ const EditMap = () => {
     }
   };
 
+  const handleToggleOptions = (e) => {
+    // e.stopPropagation();
+    // setOptionsMenuVisible(!optionsMenuVisible);
+  };
+
+  const handleMapNameChange = (name) => {
+    //setOptions({ ...options, name });
+  };
+  const handleMapDescriptionChange = (description) => {
+    //setOptions({ ...options, description });
+  };
+  const handleTopicClick = (topic) => {
+    // const newVal = topic.value;
+    // setOptions({ ...options, topic: newVal });
+  };
+  const handleCustomTopic = (customTopic) => {
+    // setOptions({ ...options, customTopic });
+  };
+
+  const handleTemplateClick = (template) => {
+    // const newVal = template.value;
+
+    // setOptions({ ...options, template: newVal });
+  };
+  const handleCircleHeatMapDataChange = (circleData) => {
+    const newVal = circleData;
+    setOptions({ ...options, circleHeatMapData: newVal });
+  };
+  const handlePrivacy = (e) => {
+    // setOptions({ ...options, isPrivate: e.target.checked });
+  };
+  const topics = [
+    "Economy",
+    "Education",
+    "Environmental",
+    "Geography",
+    "Health",
+    "History",
+    "Social",
+    "Other",
+  ];
+
+  const templates = [
+    "Bar Chart",
+    "Circle Map",
+    "Heat Map",
+    "Pie Chart",
+    "Thematic Map",
+  ];
+  const template = options["template"];
+  const [mapImage, setMapImage] = useState(null);
+
   useEffect(() => {
-    if (!isMapLoaded && mapId != undefined) {
+    if (!isMapLoaded && id != undefined) {
       getMap();
     }
   }, [currentMap]);
@@ -193,19 +230,131 @@ const EditMap = () => {
   }, [selectedMapFile]);
 
   return (
-    <div className="editmap">
+    <div className="editmap_details">
       {currentMap && (
-        <div className="editmap_container">
-          <div className="editmap_title">
-            <h1>{currentMap.map_name}</h1>
+        <div className="editmap_details_container">
+          <div className="editmap_left">
+            <div className="addmapdata_left_sidebar">
+              <div>
+                <FormControl>
+                  <h3>Map Name</h3>
+                  <Input
+                    value={options.name}
+                    onChange={(e) => handleMapNameChange(e.target.value)}
+                    name="map_name"
+                    placeholder="Enter Map Name"
+                  />
+                </FormControl>
+              </div>
+              <div>
+                <FormControl>
+                  <h3>Description</h3>
+                  <Textarea
+                    value={options.description}
+                    onChange={(e) => handleMapDescriptionChange(e.target.value)}
+                    name="map_description"
+                    placeholder="Enter Map Description"
+                    minRows={4}
+                    maxRows={4}
+                    endDecorator={
+                      <Typography level="body-xs" sx={{ ml: "auto" }}>
+                        {/* {options.description.length} character(s) */}
+                      </Typography>
+                    }
+                  />
+                  <FormHelperText>Brief Description of the Map</FormHelperText>
+                </FormControl>
+              </div>
+
+              <div>
+                <h3>Topic</h3>
+                <Dropdown
+                  options={topics}
+                  value={options.topic}
+                  placeholder="Select Topic"
+                  className=""
+                  onChange={handleTopicClick}
+                />
+
+                {options.topic === "Other" && (
+                  <Input
+                    sx={{ marginTop: "0.5rem" }}
+                    value={options.customTopic}
+                    placeholder="Enter Custom Topic"
+                    onChange={(e) => handleCustomTopic(e.target.value)}
+                  />
+                )}
+                <h3>Templates</h3>
+                <Dropdown
+                  options={templates}
+                  placeholder="Select Template"
+                  className=""
+                  onChange={handleTemplateClick}
+                  value={options.template}
+                />
+              </div>
+
+              <div>
+                <h3>Visibility</h3>
+                <FormControlLabel
+                  value="private"
+                  control={
+                    <Checkbox
+                      onChange={handlePrivacy}
+                      sx={{
+                        color: grey[800],
+                        "&.Mui-checked": {
+                          color: blueGrey[600],
+                        },
+                      }}
+                    />
+                  }
+                  label="Private"
+                  labelPlacement="end"
+                  color="white"
+                />
+              </div>
+            </div>
           </div>
-          <MapTools style={{ width: "70%" }} isEdit={true} />
-          {/* <div className="editmap_map">
-            <Map selectedMapFile={currentMap} options={options} setOptions={setOptions} setSelectedMapFile={setSelectedMapFile} pieBarData={currentMap.datanames} />
-          </div> */}
+          <div className="editmap_middle">
+            <div className="editmap_name_options">
+              <div className="editmap_name_topic">
+                <div className="editmap_details_name">
+                  <h1>{currentMap.map_name}</h1>
+                </div>
+                <div className="editmap_details_topic">
+                  <h3>{currentMap.topic}</h3>
+                </div>
+                <div className="editmap_details_name" style={{ color: "#b8c5c9" }}>
+                  <h5>Posted by {currentMap.user_id}</h5>
+                </div>
+              </div>
+              <div className="editmap_options_icon">
+                <img style={{ width: "30px", height: "30px" }} src={optionsIcon} onClick={handleToggleOptions} />
+                {optionsMenuVisible && (
+                  <div className="mappreview_options_menu">
+                    <ul>
+                      <li>Fork Map</li>
+                      <Divider style={{ margin: "0" }} />
+                      <li>Share Map</li>
+                      <Divider style={{ margin: "0" }} />
+                      <li>Export Map</li>
+                      <Divider style={{ margin: "0" }} />
+                      <li>Edit Map</li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="editmap_map">
+              <div ref={mapContainerRef} id="map" style={{ width: '800px', height: '500px', float: 'right' }} ></div>
+            </div>
+          </div>
+          <div className="editmap_right">
+            this is the right
+          </div>
         </div>
       )}
-
     </div>
   );
 };
