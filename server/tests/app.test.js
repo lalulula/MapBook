@@ -191,6 +191,202 @@ describe("MapBook API tests:", () => {
     });
   });
 
+  // Test for adminRemoveUser
+  // describe('DELETE /api/users/admin/:id', () => {
+  //   test('should delete a user by an admin', async () => {
+  //     const response = await request(app)
+  //       .delete('/api/users/admin/656ea11c1c108ae5fe4986d3');
+
+  //     expect(response.statusCode).toBe(200);
+  //     expect(response.body).toHaveProperty('success', true);
+  //   });
+
+  //   test('should return 404 for non-existing user', async () => {
+  //     const response = await request(app)
+  //       .delete('/api/users/admin/nonExistingUserId');
+
+  //     expect(response.statusCode).toBe(404);
+  //   });
+  // });
+
+  // create a test map to test all API for mapComment and MapReply
+  let createdMapId;
+  describe('POST /api/map/createMap', () => {
+    test("should create new map", async () => {
+      const response = await request(app)
+      .post("/api/map/createMap")
+      .send({
+          "map_name": "This is test map",
+          "topic": "test Topic",
+          "is_visible": true,
+          "user_id": "655fd58b2b0e9ff49fe19154",
+          "map_description": "This is test map description"
+      })
+      expect(response.statusCode).toBe(201);
+      createdMapId = response.body._id;
+    });
+  });
+
+  // MapComment
+  // Test for getAllMapComments
+  describe('GET /api/mapComment/mapComments/:sPostId', () => {
+    test('should return all map comments of a target map post', async () => {
+      const response = await request(app)
+        .get(`/api/mapComment/mapComments/${createdMapId}`);
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toBeInstanceOf(Array);
+    });
+  });
+
+  // Test for getAllExistingMapComments
+  describe('GET /api/mapComment/existingMapComments', () => {
+    test('should return all existing map comments', async () => {
+      const response = await request(app)
+        .get('/api/mapComment/existingMapComments');
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toBeInstanceOf(Array);
+    });
+  });
+
+  // Test for createMapComment
+  let createdMapCommentId;
+  describe('POST /api/mapComment/createMapComment', () => {
+    test('should create a new map comment', async () => {
+      const response = await request(app)
+        .post('/api/mapComment/createMapComment')
+        .send({
+          map_comment_content: 'New Map Comment',
+          map_comment_owner: loggedInUserId,
+          map_id: createdMapId,
+        });
+
+      expect(response.statusCode).toBe(201);
+      expect(response.body).toHaveProperty('map_comment_content', 'New Map Comment');
+      createdMapCommentId = response.body._id;
+    });
+  });
+
+  // Test for getMapComment
+  describe('GET /api/mapComment/:sCommentId', () => {
+    test('should return map comment by ID', async () => {
+      const response = await request(app)
+        .get(`/api/mapComment/${createdMapCommentId}`);
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveProperty('_id', createdMapCommentId.toString());
+    });
+  });
+
+  // Test for editMapComment
+  describe('PUT /api/mapComment/editMapComment/:sCommentId', () => {
+    test('should edit map comment content by Id', async () => {
+      const response = await request(app)
+        .put(`/api/mapComment/editMapComment/${createdMapCommentId}`)
+        .send({ map_comment_content: 'Updated Comment' });
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveProperty('map_comment_content', 'Updated Comment');
+    });
+  });
+
+  // mapReply
+  // Test for getAllMapPostReplies
+  describe('GET /api/mapReply/mapReplies/:sCommentId', () => {
+    test('should return all replies of a target map comment', async () => {
+      const response = await request(app)
+        .get(`/api/mapReply/mapReplies/${createdMapCommentId}`);
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toBeInstanceOf(Array);
+    });
+  });
+
+  // Test for getAllExistingMapPostReplies
+  describe('GET /api/mapReply/existingMapReplies', () => {
+    test('should return all existing map post replies', async () => {
+      const response = await request(app)
+        .get('/api/mapReply/existingMapReplies');
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toBeInstanceOf(Array);
+    });
+  });
+
+  // Test for createMapPostReply
+  let createdMapReplyId;
+  describe('POST /api/mapReply/createMapReply', () => {
+    test('should create a new map post reply', async () => {
+      const response = await request(app)
+        .post('/api/mapReply/createMapReply')
+        .send({
+          map_reply_content: 'New Reply',
+          map_reply_owner: loggedInUserId,
+          map_comment_id: createdMapCommentId,
+        });
+
+      expect(response.statusCode).toBe(201);
+      expect(response.body).toHaveProperty('map_reply_content', 'New Reply');
+      createdMapReplyId = response.body._id;
+    });
+  });
+
+  // Test for getMapPostReply
+  describe('GET /api/mapReply/:sReplyId', () => {
+    test('should return map post reply by ID', async () => {
+      const response = await request(app)
+        .get(`/api/mapReply/${createdMapReplyId}`);
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveProperty('_id', createdMapReplyId.toString());
+    });
+  });
+
+  // Test for editMapPostReply
+  describe('PUT /api/mapReply/editMapReply/:sReplyId', () => {
+    test('should edit map post reply content', async () => {
+      const response = await request(app)
+        .put(`/api/mapReply/editMapReply/${createdMapReplyId}`)
+        .send({ map_reply_content: 'Updated Reply' });
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveProperty('map_reply_content', 'Updated Reply');
+    });
+  });
+
+  // Test for deleteMapPostReply
+  describe('DELETE /api/mapReply/deleteMapReply/:sReplyId', () => {
+    test('should delete a map post reply by Id', async () => {
+      const response = await request(app)
+        .delete(`/api/mapReply/deleteMapReply/${createdMapReplyId}`);
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveProperty('success', true);
+    });
+  });
+
+  // Test for deleteMapComment
+  describe('DELETE /api/mapComment/deleteMapComment/:sCommentId', () => {
+    test('should delete a map comment', async () => {
+      const response = await request(app)
+        .delete(`/api/mapComment/deleteMapComment/${createdMapCommentId}`);
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toHaveProperty('success', true);
+    });
+  });
+
+  // delete the create map from the database after testing every API
+  describe('DELETE /api/maps/:id', () => {
+    test("should delete map with a map id", async () => {
+      const response = await request(app)
+      .delete(`/api/maps/${createdMapId}` )
+
+    expect(response.statusCode).toBe(200);
+    });
+  });
+
   // Test for removeUser
   describe('DELETE /api/users/:id', () => {
     test('should delete the user', async () => {
@@ -210,23 +406,5 @@ describe("MapBook API tests:", () => {
       expect(response.statusCode).toBe(404);
     });
   });
-
-  // Test for adminRemoveUser
-  // describe('DELETE /api/users/admin/:id', () => {
-  //   test('should delete a user by an admin', async () => {
-  //     const response = await request(app)
-  //       .delete('/api/users/admin/656ea11c1c108ae5fe4986d3');
-
-  //     expect(response.statusCode).toBe(200);
-  //     expect(response.body).toHaveProperty('success', true);
-  //   });
-
-  //   test('should return 404 for non-existing user', async () => {
-  //     const response = await request(app)
-  //       .delete('/api/users/admin/nonExistingUserId');
-
-  //     expect(response.statusCode).toBe(404);
-  //   });
-  // });
 
 });
