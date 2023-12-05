@@ -29,9 +29,9 @@ const Map = ({
 
   const [regionName, setRegionName] = useState("");
 
-  // useEffect(() => {
-  //   console.log(templateHoverData);
-  // }, [templateHoverData]);
+  useEffect(() => {
+    console.log(template);
+  }, [template]);
 
   useEffect(() => {
     setSelectedMapFile((prevMapFile) => ({
@@ -75,14 +75,40 @@ const Map = ({
   const undoStack = useRef([]);
   const redoStack = useRef([]);
   const templateHoverType = useRef([]);
-
+  const mapContainerRef = useRef(null);
   const userId = useSelector((state) => state.user.id);
 
   const navigate = useNavigate();
 
+  const resetMap = () => {
+    setSelectedMapFile((prevState) => {
+      const newState = { ...prevState };
+      newState.features = newState.features.map((feature) => {
+        const newFeature = { ...feature };
+        newState.mapbook_circleheatmapdata = "";
+        newState.mapbook_customtopic = "";
+        newState.mapbook_datanames = [""];
+        newState.mapbook_description = "";
+        newState.mapbook_heat_selectedcolors = [];
+        newState.mapbook_heatrange = { from: 0, to: 0 };
+        newState.mapbook_mapname = "";
+        newState.mapbook_topic = "";
+        newState.mapbook_visibility = false;
+
+        newState.mapbook_template = template;
+        if (newFeature.properties && newFeature.properties.mapbook_data) {
+          delete newFeature.properties.mapbook_data;
+        }
+        return newFeature;
+      });
+      return newState;
+    });
+  };
+
   useEffect(() => {
-    console.log("TEmplate", template);
     templateHoverType.current = template;
+    resetMap();
+    console.log(selectedMapFile);
   }, [template]);
 
   const handleClickRegion = () => {
@@ -231,8 +257,6 @@ const Map = ({
     // clear redo stack
     redoStack.current = [];
   };
-
-  const mapContainerRef = useRef(null);
 
   useEffect(() => {
     // console.log("selectedMapFile: ", selectedMapFile);
