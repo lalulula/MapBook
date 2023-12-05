@@ -136,7 +136,7 @@ describe("Test example", () => {
           .send({
               "social_reply_content": "This is test reply",
               "social_reply_owner": "6557f2a91c72d20d1def274e",
-              "social_comment_id": createdCommentId
+              "social_comment_id": createdCommentId 
           })
           expect(response.statusCode).toBe(201);
           createdReplyId = response.body._id;
