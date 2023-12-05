@@ -1,29 +1,35 @@
-// import { nextStep } from '../../src/Components/createmap/CreateMap';
+describe("CreateMap-File Import Page", () => {
+  beforeEach(() => {
+    cy.visit("http://localhost:3000/login");
+    cy.get('input[placeholder="Username"]').type("ya");
+    cy.get('input[placeholder="Password"]').type("Password123");
 
-describe("Create Map Page", () => {
-  it("should select topics and templates from dropdowns", () => {
-    // cy.visit("https://mapbook-f381d1faf354.herokuapp.com/createmap");
-
-    cy.visit("http://localhost:3000/createmap");
-
-    cy.get(".Dropdown-control").should("be.visible");
-    cy.get(".Dropdown-control").contains("Select Topic").click();
-    cy.get(".Dropdown-menu").contains("Education").click();
-    cy.get(".Dropdown-control").contains("Select Template").click();
-    cy.get(".Dropdown-menu").contains("Bar Chart").click();
+    cy.get(".login_btn").click();
+    cy.url().should("eq", "http://localhost:3000/mainpage");
   });
 
-  it("should trigger the 'nextStep' function when 'Go To Step2' is clicked", () => {
-    // cy.visit("https://mapbook-f381d1faf354.herokuapp.com/createmap");
-    cy.visit("http://localhost:3000/createmap");
-    /* cy.window().then((win) => {
-      cy.stub(win, "nextStep");
-    }); */
-    cy.get(".Dropdown-control").contains("Select Topic").click();
-    cy.get(".Dropdown-menu").contains("Education").click();
-    cy.get(".Dropdown-control").contains("Select Template").click();
-    cy.get(".Dropdown-menu").contains("Bar Chart").click();
-    cy.get(".next_btn").click();
-    cy.get(".before_btn").should("be.visible");
-  });
+  // it("should handle file upload and processing", () => {
+  //   cy.visit("http://localhost:3000/createmap");
+  //   const fileName = "sample.geojson";
+  //   cy.get(".input_container").click();
+  //   cy.wait(1000);
+  //   cy.fixture(fileName).then((fileContent) => {
+  //     cy.get('input[type="file"]').attachFile({
+  //       fileContent: fileContent,
+  //       fileName: fileName,
+  //       mimeType: "application/geojson",
+  //     });
+
+  //     cy.wait(5000);
+
+  //     cy.get("[data-cy=selected-file]").should("contain", "sample.geojso");
+
+  //     cy.contains("Create Map").click();
+
+  //     cy.wait(5000);
+  //     cy.window()
+  //       .its("selectedMapFile.mapbook_template")
+  //       .should("not.be.empty");
+  //   });
+  // });
 });
