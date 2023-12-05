@@ -13,21 +13,9 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const userId = useSelector((state) => state.user.id);
   const navigate = useNavigate();
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setBackgroundColor("#fff");
-    setCursor("auto");
-    const files = e.dataTransfer.files;
-    setSelectedFile(files[0]);
-    console.log(files);
-  };
-
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    setSelectedFile(file);
+  const processFile = async (file) => {
     try {
-      const file = e.target.files[0];
+      console.log(file);
       const texts = await file.text();
       let parsedData;
 
@@ -70,15 +58,14 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
                 break;
               }
             }
-            var feature_name = geojson.features[data].properties[name + i]
+            var feature_name = geojson.features[data].properties[name + i];
 
             const keys = Object.keys(geojson.features[data].properties);
             // console.log("keys: ", keys);
             // console.log(keys.length)
-            for(let j = 0; j < keys.length; j++){
+            for (let j = 0; j < keys.length; j++) {
               // console.log("keys[j]: ", keys[j])
               delete geojson.features[data].properties[keys[j]];
-              
             }
 
             geojson.features[data].properties["name"] = feature_name;
@@ -125,6 +112,35 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
       console.error("Error loading GeoJSON file:", error);
     }
   };
+  const handleDrop = async (e) => {
+    e.preventDefault();
+    setBackgroundColor("#fff");
+    setCursor("auto");
+    const files = e.dataTransfer.files;
+    setSelectedFile(files[0]);
+    await processFile(files[0]);
+  };
+
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    setBackgroundColor("rgba(128, 128, 128, 0.3)");
+    setCursor("pointer");
+  };
+
+  const handleDragLeave = () => {
+    setBackgroundColor("#fff");
+    setCursor("auto");
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+    await processFile(file);
+  };
   return (
     <div
       style={{
@@ -142,6 +158,9 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
         setBackgroundColor("#fff");
         setCursor("auto");
       }}
+      onDragEnter={handleDragEnter}
+      onDragLeave={handleDragLeave}
+      onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
       <Label
