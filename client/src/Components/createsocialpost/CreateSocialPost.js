@@ -190,7 +190,7 @@ const CreateSocialPost = () => {
             <button
               onClick={handleSocialPostCreate}
               className="createsocialpost_submit"
-              disabled={options.title.trim() === ''}
+            /* disabled={options.title.trim() === ''} */
             >
               Post
             </button>

@@ -1,10 +1,9 @@
 describe("SocialPostCommentRender Component", () => {
-    const baseUrl = Cypress.env('https://mapbook-f381d1faf354.herokuapp.com/') || 'http://localhost:3000';
+    const baseUrl = Cypress.env('https://mapbook-f381d1faf354.herokuapp.com') || 'http://localhost:3000';
     const sampleSocialPostUrl = "socialpostdetails/655cbd12b9e4fe50471a0f83";
 
-    it("Logins in sam, navigates to social page, and creates a comment", () => {
-        // cy.visit("https://localhost:3000/login");
-        cy.visit("http://localhost:3000/login");
+    beforeEach(() => {
+        cy.visit(`${baseUrl}/login`);
 
         // Fill out the login form
         cy.get('input[placeholder="Username"]').type("sam");
@@ -12,16 +11,18 @@ describe("SocialPostCommentRender Component", () => {
         //  Submit the form
         cy.get(".login_btn").click();
         // Ensure the registration was successful (you might need to assert the URL or page content)
-        cy.url().should("eq", "http://localhost:3000/mainpage");
+        cy.url().should("eq", `${baseUrl}/mainpage`);
+    });
 
+    it("Logins in sam, navigates to social page, and creates a comment", () => {
         // Navigate to social page
-        cy.visit("http://localhost:3000/socialpage");
+        cy.visit(`${baseUrl}/socialpage`);
 
         // click the first social post
         cy.get('.social_post_preview_container').eq(0).click();
 
         //check if the proper social post was clicked
-        cy.url().should("eq", "http://localhost:3000/socialpostdetails/655cbd12b9e4fe50471a0f83");
+        cy.url().should("eq", `${baseUrl}/${sampleSocialPostUrl}`);
 
         cy.get('.show_post_comments').click();
 
@@ -34,23 +35,14 @@ describe("SocialPostCommentRender Component", () => {
     });
 
     it("Logins in sam, navigates to social page, and deletes the comment just created", () => {
-        cy.visit("http://localhost:3000/login");
-
-        // Fill out the login form
-        cy.get('input[placeholder="Username"]').type("sam");
-        cy.get('input[placeholder="Password"]').type("Password123");
-        //  Submit the form
-        cy.get(".login_btn").click();
-        cy.url().should("eq", "http://localhost:3000/mainpage");
-
         // Navigate to social page
-        cy.visit("http://localhost:3000/socialpage");
+        cy.visit(`${baseUrl}/socialpage`);
 
         // click the first social post
         cy.get('.social_post_preview_container').eq(0).click();
 
         //check if the proper social post was clicked
-        cy.url().should("eq", "http://localhost:3000/socialpostdetails/655cbd12b9e4fe50471a0f83");
+        cy.url().should("eq", `${baseUrl}/${sampleSocialPostUrl}`);
 
         cy.get('.show_post_comments').click();
 

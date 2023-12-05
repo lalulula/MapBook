@@ -22,14 +22,6 @@ describe("CreateSocialPost Component", () => {
   it("should create a social post using UI", () => {
 
     // Assuming your elements have specific class names
-    cy.get('.create_social_post_container_inner input[name="title"]').type(
-      "Test Title"
-    );
-
-    cy.visit("http://localhost:3000/createsocialpost");
-    cy.get('.social_post_description textarea[name="post_content"]').type(
-      "Test Description"
-    );
 
     // Click on the dropdown to open it
     cy.get(".Dropdown-control").click();
@@ -37,12 +29,16 @@ describe("CreateSocialPost Component", () => {
     // Select a topic from the dropdown
     cy.get(".Dropdown-menu").contains("Economy").click();
 
+    cy.get('.createsocialpost_title_input').type('Test Title');
+    cy.get('.createsocialpost_description_textarea').type("Test Description");
+
     // Click on the Post button
-    cy.get(".social_post_button").click();
+    cy.get(".createsocialpost_submit").click();
+
+    cy.wait(2000);
 
     // Assuming the navigation takes some time, wait for the destination page to load
-    // cy.url().should("eq", "http://localhost:3000/socialpage");
-
+    cy.url().should("eq", "http://localhost:3000/socialpage");
   });
 });
 
@@ -67,10 +63,10 @@ describe("CreateSocialPost API Test", () => {
     // Make a request to your component's URL (assuming it's http://localhost:3000)
     cy.visit("http://localhost:3000/createsocialpost");
     // Assuming your elements have specific class names
-    cy.get('.create_social_post_container_inner input[name="title"]').type(
+    cy.get('.createsocialpost_container_inner input[name="title"]').type(
       "Test Title"
     );
-    cy.get('.social_post_description textarea[name="post_content"]').type(
+    cy.get('.createsocialpost_description textarea[name="post_content"]').type(
       "Test Description"
     );
 
@@ -88,7 +84,7 @@ describe("CreateSocialPost API Test", () => {
 
     cy.get(".Dropdown-menu").contains("Economy").click();
     // Click on the Post button
-    cy.get('.social_post_button').click();
+    cy.get('.createsocialpost_submit').click();
 
     // Wait for the API request to complete
     cy.wait("@createPost").then((interception) => {
