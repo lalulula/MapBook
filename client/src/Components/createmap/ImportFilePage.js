@@ -226,6 +226,7 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
           id="dropzone-file"
           style={{ display: "none" }}
           onChange={handleFileChange}
+          className="importfilepage_fileInput"
         />
       </Label>
       {selectedFile && (
@@ -237,6 +238,7 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
             fontSize: "15px",
             textAlign: "center",
           }}
+          className="importfilepage_container"
         >
           Selected File :{" "}
           <span
