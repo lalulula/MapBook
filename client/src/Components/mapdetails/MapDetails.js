@@ -11,7 +11,7 @@ import { getMapAPI, getAllMapCommentsAPIMethod } from "../../api/map";
 import { getAllUsersAPIMethod } from "../../api/user";
 import gallery from "../../assets/img/gallery.png";
 import optionsIcon from "../../assets/img/options.png";
-import { fb, storage } from"../../firebase";
+import { fb, storage } from "../../firebase";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 import mapboxgl from "mapbox-gl"; // Import mapboxgl
@@ -22,6 +22,7 @@ export const HOME_URL = process.env.REACT_APP_HOME_URL;
 
 const MapDetails = () => {
   const { mapId } = useParams();
+  console.log("MAPDETAILS ID: ", mapId);
   const [currentMap, setCurrentMap] = useState(null);
   const [users, setUsers] = useState([]);
   const [mapComments, setMapComments] = useState([]);
@@ -55,37 +56,35 @@ const MapDetails = () => {
     setCurrentMap(data);
 
 
-    if(currentMap != null){
+    if (currentMap != null) {
       let url = currentMap.file_path;
       // get file name from url
-      let fileName = url.substring( 57, url.indexOf("geojson") + 7).replaceAll('%20', ' ');
+      let fileName = url.substring(57, url.indexOf("geojson") + 7).replaceAll('%20', ' ');
       // console.log(fileName)
       getDownloadURL(ref(storage, fileName))
-      .then((url) => {
-    
-        // This can be downloaded directly:
-        const xhr = new XMLHttpRequest();
-        xhr.responseType = 'json';
-        xhr.onload = (event) => {
-          // console.log("response: ", xhr.response);
-          setSelectedMapFile(xhr.response)
-        };
-        xhr.open('GET', url);
-        xhr.send();
-    
+        .then((url) => {
 
-      })
-      .catch((error) => {
-        console.log("error: ", error)
-      });
-    
-      
+          // This can be downloaded directly:
+          const xhr = new XMLHttpRequest();
+          xhr.responseType = 'json';
+          xhr.onload = (event) => {
+            // console.log("response: ", xhr.response);
+            setSelectedMapFile(xhr.response)
+          };
+          xhr.open('GET', url);
+          xhr.send();
+        })
+        .catch((error) => {
+          console.log("error: ", error)
+        });
+
+
       setIsMapLoaded(true);
     }
   };
 
   //////////////////////////////////////////
-  
+
   // useEffect(() => {
   //   console.log("selectedMapFile: useEffect: ", selectedMapFile);
   // }, [selectedMapFile]);
@@ -106,9 +105,9 @@ const MapDetails = () => {
         preserveDrawingBuffer: true,
       });
     }
-    if(map != null){
+    if (map != null) {
 
-    
+
       map.on("idle", function () {
         map.resize();
       });
@@ -197,18 +196,18 @@ const MapDetails = () => {
   /////////////////////////////////////////
 
   useEffect(() => {
-    if(!isMapLoaded){
+    if (!isMapLoaded) {
       getMap();
     }
   }, [currentMap]);
 
   useEffect(() => {
     getUsers();
-  }, [users]);
+  }, []/* [users] */);
 
   useEffect(() => {
     getMapComments();
-  }, [mapComments]);
+  }, []/* [mapComments] */);
 
   const handleToggleOptions = (e) => {
     e.stopPropagation();
@@ -231,21 +230,21 @@ const MapDetails = () => {
               <div className="map_details_topic">
                 <h3>{currentMap.topic}</h3>
               </div>
-              <div className="map_details_name" style={{color: "#b8c5c9"}}>
+              <div className="map_details_name" style={{ color: "#b8c5c9" }}>
                 <h5>Posted by {currentMap.user_id}</h5>
               </div>
             </div>
             <div className="options_icon">
-              <img style={{width: "30px", height: "30px"}} src={optionsIcon} onClick={handleToggleOptions}/>
+              <img style={{ width: "30px", height: "30px" }} src={optionsIcon} onClick={handleToggleOptions} />
               {optionsMenuVisible && (
                 <div className="mappreview_options_menu">
                   <ul>
                     <li>Fork Map</li>
-                    <Divider style={{margin: "0"}} />
+                    <Divider style={{ margin: "0" }} />
                     <li>Share Map</li>
-                    <Divider style={{margin: "0"}} />
+                    <Divider style={{ margin: "0" }} />
                     <li>Export Map</li>
-                    <Divider style={{margin: "0"}} />
+                    <Divider style={{ margin: "0" }} />
                     <li>Edit Map</li>
                   </ul>
                 </div>
@@ -253,7 +252,7 @@ const MapDetails = () => {
             </div>
           </div>
           <div className="map_image_comments">
-            <div ref={mapContainerRef} id="map" style={{width : '800px', height : '500px'}} >
+            <div ref={mapContainerRef} id="map" style={{ width: '800px', height: '500px' }} >
             </div>
             {/* <div className="map_details_image">
               <img src={currentMap.mapPreviewImg} />
@@ -263,7 +262,7 @@ const MapDetails = () => {
               <div className="comment_content">
                 {/* <Box mt="0.5rem"> */}
                 {mapComments.map((comment, i) => (
-                  <Comment key={i} comment={comment}/>
+                  <Comment key={i} comment={comment} />
                 ))}
                 {/* </Box> */}
               </div>
@@ -272,7 +271,7 @@ const MapDetails = () => {
                   <>
                     <div className="comment_box_profile">
                       {users.filter(user => user._id === currentUserId).map(user => (
-                        <img key={user._id} style={{marginTop: "4px"}} className="profile_img" src={user.profile_img}></img>
+                        <img key={user._id} style={{ marginTop: "4px" }} className="profile_img" src={user.profile_img}></img>
                       ))}
                     </div>
                     <div className="comment_box_input">
@@ -280,15 +279,15 @@ const MapDetails = () => {
                         className="input_comment"
                         type="text"
                         placeholder="Add a comment..."
-                        // value={newComment}
-                        // onChange={(e) => setNewComment(e.target.value)}
+                      // value={newComment}
+                      // onChange={(e) => setNewComment(e.target.value)}
                       />
                       <div class="wrapper">
-                        <img className="btnimg" src={gallery}/>
+                        <img className="btnimg" src={gallery} />
                         <input type="file" />
                       </div>
                     </div>
-                    </>
+                  </>
                 ) : (
                   <h4>Please sign in/sign up to comment.</h4>
                 )}
@@ -298,7 +297,7 @@ const MapDetails = () => {
               ))} */}
             </div>
           </div>
-          <Divider section inverted style={{margin: "20px 0"}}/>
+          <Divider section inverted style={{ margin: "20px 0" }} />
           <div className="tools">
             <MapTools
               isEdit={false}
