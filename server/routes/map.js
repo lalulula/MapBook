@@ -17,7 +17,7 @@ router.get("/getMap/:mapId", map.getMap);
 router.post("/createMap", map.createMap);
 
 // REMOVE A MAP & FILE FROM FIREBASE
-router.delete("/:id", auth.verifyToken, map.removeMap);
+router.delete("/:id", /*auth.verifyToken, */ map.removeMap);
 
 // like and dislike map
 router.put("/likeMap/:sMapId", auth.verifyToken, map.likeMap);

@@ -15,6 +15,7 @@ const MapObjSchema = new mongoose.Schema({
   file_path: {
     type: String,
     // required: true,
+    default: "https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/us-income.geojson",
   },
   is_visible: {
     type: Boolean,

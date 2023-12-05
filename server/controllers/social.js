@@ -41,7 +41,7 @@ const createPost = async (req, res) => {
 
     const { title, post_content, post_images, topic, customTopic, post_owner } =
       req.body;
-    if (req.files.length == 0) {
+    if (req.files == null ||req.files.length == 0) {
       // if not, continue
       const newPost = new SocialPost({
         title,
