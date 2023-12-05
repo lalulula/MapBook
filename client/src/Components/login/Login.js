@@ -36,7 +36,7 @@ const Login = () => {
   const onSubmit2 = async (user) => {
     setLoginIsLoading(true);
     user.password = SHA256(user.password).toString(enc.Hex);
-    console.log(user);
+    console.log(user.password);
 
     loginUserAPIMethod(user)
       .then((res) => {
