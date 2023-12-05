@@ -145,10 +145,9 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
     <div
       style={{
         border: "1px gray dashed",
-        padding: "4rem 4rem 2rem 4rem",
+        // padding: "4rem 4rem 2rem 4rem",
         backgroundColor,
         transition: "background-color 0.2s ease",
-        cursor,
       }}
       onMouseOver={() => {
         setBackgroundColor("rgba(128, 128, 128, 0.3)");
@@ -164,16 +163,22 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
       onDrop={handleDrop}
     >
       <Label
+        data-cy="dropzone-label"
         onMouseOver={() => {
           setCursor("pointer");
         }}
         htmlFor="dropzone-file"
-        style={{ color: "#000", borderColor: "#000" }}
+        style={{
+          color: "#000",
+          borderColor: "#000",
+          cursor: "pointer",
+        }}
       >
         <div
           style={{
             display: " flex",
             justifyContent: " space-evenly",
+            margin: "2rem 2rem 0 2rem",
           }}
         >
           <svg
@@ -203,7 +208,10 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
           }}
         >
           <span style={{ color: "rgba(128, 128, 128)" }}>
-            <span style={{ fontWeight: "bold", fontSize: "20px" }}>
+            <span
+              data-cy="dropzone" //for cypress
+              style={{ fontWeight: "bold", fontSize: "20px" }}
+            >
               Click to upload
             </span>{" "}
             or{" "}
@@ -223,14 +231,17 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
           </span>
         </div>
         <FileInput
+          className="dropzone"
           id="dropzone-file"
           style={{ display: "none" }}
+          onClick={console.log("clicked")}
           onChange={handleFileChange}
           className="importfilepage_fileInput"
         />
       </Label>
       {selectedFile && (
         <div
+          data-cy="selected-file" //cypress
           style={{
             color: "rgba(128, 128, 128)",
             marginTop: "10px",
@@ -284,6 +295,7 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
           textAlign: "center",
           textDecoration: "underline",
           cursor,
+          marginBottom: "1rem ",
         }}
         onMouseOver={() => {
           setCursor("pointer");
