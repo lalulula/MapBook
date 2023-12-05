@@ -27,7 +27,9 @@ describe("Login Page", () => {
     //  Submit the form
     cy.get(".login_btn").click();
 
-    cy.get(".invalid_credentials_error_message").should(
+    cy.wait(2000);
+
+    cy.get(".pwd_err").should(
       "contain",
       "Incorrect username or"
     );
