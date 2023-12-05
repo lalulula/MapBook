@@ -98,55 +98,60 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tem
                 <div className="social_comment_replies">
                     {allReplies.length > 0 && allReplies.map((reply, i) => (
                         <div className="social_comment_reply" key={i}>
-                            <div className="social_comment_header">
-                                <img className="social_comment_profile_img" src={(allUsers.length > 0 && allUsers.find((u) => u._id == reply.social_reply_owner)).profile_img} />
-                                <p className="user">{(allUsers.length > 0 && allUsers.find((u) => u._id == reply.social_reply_owner)).username}</p>
-                            </div>
-                            <p className="social_comment_content">
-                                {editingReplyId === reply._id ? (
-                                    <div className="social_comment_content_textarea">
-                                        <textarea className="social_comment_reply_input" value={replyText} onChange={(e) => setReplyText(e.target.value)} />
-                                        <button className="save_reply_changes" onClick={() => handleEditRepliesave(reply._id)}>
-                                            save
-                                        </button>
+                            {allUsers.find((u) => u._id == reply.social_reply_owner) && (
+                                <div>
+                                    <div className="social_comment_header">
+                                        <img className="social_comment_profile_img" src={(allUsers.length > 0 && allUsers.find((u) => u._id == reply.social_reply_owner)).profile_img} />
+                                        <p className="user">{(allUsers.length > 0 && allUsers.find((u) => u._id == reply.social_reply_owner)).username}</p>
                                     </div>
-                                ) : (
-                                    <div>
-                                        {showDeleteConfirmationModal == reply._id && (
-                                            <div className="delete_confirmation_modal">
-                                                <div className="delete_confirmation_modal_top">
-                                                    Are you sure you want to delete this comment?
-                                                </div>
-                                                <div className="delete_confirmation_modal_bottom">
-                                                    <button className="delete_comment_confirm" onClick={() => handleDeleteReply(reply._id)}>
-                                                        Yes
-                                                    </button>
-                                                    <button className="cancel_delete_comment" onClick={() => setShowDeleteConfirmationModal(false)}>
-                                                        No
-                                                    </button>
-                                                </div>
+                                    <p className="social_comment_content">
+                                        {editingReplyId === reply._id ? (
+                                            <div className="social_comment_content_textarea">
+                                                <textarea className="social_comment_reply_input" value={replyText} onChange={(e) => setReplyText(e.target.value)} />
+                                                <button className="save_reply_changes" onClick={() => handleEditRepliesave(reply._id)}>
+                                                    save
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                {showDeleteConfirmationModal == reply._id && (
+                                                    <div className="delete_confirmation_modal">
+                                                        <div className="delete_confirmation_modal_top">
+                                                            Are you sure you want to delete this comment?
+                                                        </div>
+                                                        <div className="delete_confirmation_modal_bottom">
+                                                            <button className="delete_comment_confirm" onClick={() => handleDeleteReply(reply._id)}>
+                                                                Yes
+                                                            </button>
+                                                            <button className="cancel_delete_comment" onClick={() => setShowDeleteConfirmationModal(false)}>
+                                                                No
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                {reply.social_reply_content}
+                                                {reply.social_reply_owner == currentUserId && (
+                                                    <div className="social_reply_dotted_menu" onClick={() => handleClickDottedMenu(reply._id)}>
+                                                        ...
+                                                    </div>
+                                                )}
+                                                {dropdownVisible === reply._id && (
+                                                    <div className="social_reply_dropdown">
+                                                        <div className="edit_reply_btn" onClick={() => handleClickEditReply(reply._id)}>
+                                                            Edit
+                                                        </div>
+                                                        <hr style={{ "width": "100%" }}></hr>
+                                                        <div className="delete_reply_btn" onClick={() => handleClickDeleteReply(reply._id)}>
+                                                            Delete
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         )}
-                                        {reply.social_reply_content}
-                                        {reply.social_reply_owner == currentUserId && (
-                                            <div className="social_reply_dotted_menu" onClick={() => handleClickDottedMenu(reply._id)}>
-                                                ...
-                                            </div>
-                                        )}
-                                        {dropdownVisible === reply._id && (
-                                            <div className="social_reply_dropdown">
-                                                <div className="edit_reply_btn" onClick={() => handleClickEditReply(reply._id)}>
-                                                    Edit
-                                                </div>
-                                                <hr style={{ "width": "100%" }}></hr>
-                                                <div className="delete_reply_btn" onClick={() => handleClickDeleteReply(reply._id)}>
-                                                    Delete
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
-                            </p>
+                                    </p>
+                                </div>
+                            )}
+
                         </div>
                     ))}
                     {replyingCommentId == commentId && (
