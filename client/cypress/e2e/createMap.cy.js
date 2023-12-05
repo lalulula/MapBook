@@ -30,6 +30,5 @@ describe("CreateMap-File Import Page", () => {
     cy.get(".cypress_click_create").click();
 
     cy.url().should("include", "/createmap");
-    cy.pause();
   });
 });
