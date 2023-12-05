@@ -175,6 +175,8 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
         }}
       >
         <div
+          className="cypress_click"
+          onClick={() => console.log("cks")}
           style={{
             display: " flex",
             justifyContent: " space-evenly",
@@ -234,8 +236,8 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
           className="dropzone"
           id="dropzone-file"
           style={{ display: "none" }}
-          onClick={console.log("clicked")}
           onChange={handleFileChange}
+        // className="importfilepage_fileInput"
         />
       </Label>
       {selectedFile && (
@@ -248,7 +250,7 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
             fontSize: "15px",
             textAlign: "center",
           }}
-          className="importfilepage_container"
+        // className="importfilepage_container"
         >
           Selected File :{" "}
           <span
@@ -262,6 +264,7 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
           </span>
           <br />
           <div
+            className="cypress_click_create"
             style={{
               color: createTextColor,
               marginTop: "1rem",
