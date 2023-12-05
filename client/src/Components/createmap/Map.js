@@ -81,6 +81,8 @@ const Map = ({
   const navigate = useNavigate();
 
   const resetMap = () => {
+    undoStack.current = [];
+    redoStack.current = [];
     setSelectedMapFile((prevState) => {
       const newState = { ...prevState };
       newState.features = newState.features.map((feature) => {
