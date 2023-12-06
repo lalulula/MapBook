@@ -61,6 +61,7 @@ const editMapPostReply = async (req, res) => {
   try {
     const { sReplyId } = req.params;
     const { map_reply_content } = req.body;
+    console.log(sReplyId);
 
     const updatedPostReply = await MapPostReply.findByIdAndUpdate(
       sReplyId,
