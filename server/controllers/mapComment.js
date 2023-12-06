@@ -92,7 +92,7 @@ const editMapComment = async (req, res) => {
 };
 
 
-// Update Comment by map comment id
+// Delete Comment by map comment id
 const deleteMapComment = async (req, res) => {
   console.log(req.params);
   try {

@@ -1,15 +1,21 @@
 import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import { Menu, Dropdown, Divider } from "semantic-ui-react";
-import { Box, Typography } from "@mui/material";
+import { useParams } from "react-router-dom";
+import { Divider } from "semantic-ui-react";
 
 import "./mapdetails.css";
 import MapTools from "../maptools/MapTools";
 import Comment from "./Comment";
-import { getMapAPI, getAllMapCommentsAPIMethod } from "../../api/map";
+import { 
+  getMapAPI, 
+  getAllMapCommentsAPIMethod, 
+  createMapCommentAPIMethod, 
+  updateMapCommentAPIMethod, 
+  deleteMapCommentAPIMethod,
+  getAllMapPostRepliesAPIMethod
+} from "../../api/map";
 import { getAllUsersAPIMethod } from "../../api/user";
-import gallery from "../../assets/img/gallery.png";
+import sendMessage from "../../assets/img/sendMessage.png";
 import optionsIcon from "../../assets/img/options.png";
 import { fb, storage } from "../../firebase";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
@@ -22,10 +28,10 @@ export const HOME_URL = process.env.REACT_APP_HOME_URL;
 
 const MapDetails = () => {
   const { mapId } = useParams();
-  console.log("MAPDETAILS ID: ", mapId);
   const [currentMap, setCurrentMap] = useState(null);
   const [users, setUsers] = useState([]);
   const [mapComments, setMapComments] = useState([]);
+  const [newMapComment, setNewMapComment] = useState("");
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const currentUserId = useSelector((state) => state.user.id);
   const [optionsMenuVisible, setOptionsMenuVisible] = useState(false);
@@ -37,7 +43,9 @@ const MapDetails = () => {
 
   const getMapComments = async () => {
     const data = await getAllMapCommentsAPIMethod(mapId);
-    setMapComments(data);
+    if (data !== mapComments) {
+      setMapComments(data);
+    }
   };
 
 
@@ -214,7 +222,34 @@ const MapDetails = () => {
     setOptionsMenuVisible(!optionsMenuVisible);
   };
 
-  if (!currentMap || !users) {
+  const handleAddMapComment = () => {
+    const newComment = {
+      map_comment_content: newMapComment,
+      map_comment_owner: currentUserId,
+      map_id: mapId
+    };
+    createMapCommentAPIMethod(newComment);
+    setMapComments([...mapComments, newComment])
+  };
+
+  const handleEditMapComment = (mapCommentId, editedComment) => {
+    updateMapCommentAPIMethod(mapCommentId, editedComment);
+    const updatedMapComments = mapComments.map(mapComment => {
+      if (mapComment._id === mapCommentId) {
+        return { ...mapComment, map_comment_content: editedComment.map_comment_content };
+      }
+      return mapComment;
+    });
+    setMapComments(updatedMapComments);
+  };
+
+  const handleDeleteMapComment = (mapCommentId) => {
+    const updatedMapComments = mapComments.filter((mapComment) => mapComment._id !== mapCommentId);
+    setMapComments(updatedMapComments);
+    deleteMapCommentAPIMethod(mapCommentId);
+  }
+
+  if (!currentMap || !users || !mapComments) {
     return (
       <></>
     )
@@ -254,15 +289,18 @@ const MapDetails = () => {
           <div className="map_image_comments">
             <div ref={mapContainerRef} id="map" style={{ width: '800px', height: '500px' }} >
             </div>
-            {/* <div className="map_details_image">
-              <img src={currentMap.mapPreviewImg} />
-            </div> */}
             <div className="map_details_comments">
               <div className="comment_title">Comments</div>
               <div className="comment_content">
                 {/* <Box mt="0.5rem"> */}
                 {mapComments.map((comment, i) => (
-                  <Comment key={i} comment={comment} />
+                  <Comment 
+                    key={i}
+                    isRelpy={false}
+                    comment={comment}
+                    handleDeleteMapComment={handleDeleteMapComment}
+                    handleEditMapComment={handleEditMapComment}
+                  />
                 ))}
                 {/* </Box> */}
               </div>
@@ -279,12 +317,11 @@ const MapDetails = () => {
                         className="input_comment"
                         type="text"
                         placeholder="Add a comment..."
-                      // value={newComment}
-                      // onChange={(e) => setNewComment(e.target.value)}
+                      // value={newMapComment}
+                      onChange={(e) => setNewMapComment(e.target.value)}
                       />
-                      <div class="wrapper">
-                        <img className="btnimg" src={gallery} />
-                        <input type="file" />
+                      <div class="wrapper" onClick={handleAddMapComment}>
+                        <img className="btnimg" src={sendMessage} />
                       </div>
                     </div>
                   </>

@@ -149,6 +149,73 @@ export const getAllMapCommentsAPIMethod = (mapPostId) => {
   return res;
 };
 
+export const createMapCommentAPIMethod = (comment) => {
+  return fetch(`${API_BASE_URL}/api/mapComment/createMapComment`, {
+    ...defaultHeaders,
+    method: 'POST',
+    body: JSON.stringify(comment),
+  }).then(parseJSON);
+}
+
+export const updateMapCommentAPIMethod = (id, newComment) => {
+  return fetch(
+    `${API_BASE_URL}/api/mapComment/editMapComment/${id}`,
+    {
+      ...defaultHeaders,
+      method: "PUT", // The method defaults to GET
+      body: JSON.stringify(newComment),
+    }
+  );
+};
+
+export const deleteMapCommentAPIMethod = (mapCommentId) => {
+  return fetch(
+    `${API_BASE_URL}/api/mapComment/deleteMapComment/${mapCommentId}`,
+    {
+      ...defaultHeaders,
+      method: "DELETE",
+    }
+  ).then(parseJSON);
+};
+
+export const getAllMapPostRepliesAPIMethod = (id) => {
+  return fetch(`${API_BASE_URL}/api/mapReply/mapReplies/${id}`,
+    {
+      ...defaultHeaders,
+      method: "GET",
+    }
+  ).then(parseJSON);
+};
+
+export const createMapPostReplyAPIMethod = (reply) => {
+  return fetch(`${API_BASE_URL}/api/mapReply/createMapReply`, {
+    ...defaultHeaders,
+    method: 'POST',
+    body: JSON.stringify(reply),
+  }).then(parseJSON);
+}
+
+export const updateMapPostReplyAPIMethod = (id, newReply) => {
+  return fetch(
+    `${API_BASE_URL}/api/mapReply/editMapReply/${id}`,
+    {
+      ...defaultHeaders,
+      method: "PUT", // The method defaults to GET
+      body: JSON.stringify(newReply),
+    }
+  );
+};
+
+export const deleteMapPostReplyAPIMethod = (replyId) => {
+  return fetch(
+    `${API_BASE_URL}/api/mapReply/deleteMapReply/${replyId}`,
+    {
+      ...defaultHeaders,
+      method: "DELETE",
+    }
+  ).then(parseJSON);
+};
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;

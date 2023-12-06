@@ -1,5 +1,7 @@
 describe("SocialPostCommentRender Component", () => {
-    const baseUrl = Cypress.env('https://mapbook-f381d1faf354.herokuapp.com') || 'http://localhost:3000';
+    //const baseUrl = Cypress.env('http://localhost:3000' || 'https://mapbook-f381d1faf354.herokuapp.com');
+    //const baseUrl = 'http://localhost:3000';
+    const baseUrl = 'https://mapbook-f381d1faf354.herokuapp.com';
     const sampleSocialPostUrl = "socialpostdetails/655cbd12b9e4fe50471a0f83";
 
     beforeEach(() => {
@@ -10,6 +12,7 @@ describe("SocialPostCommentRender Component", () => {
         cy.get('input[placeholder="Password"]').type("Password123");
         //  Submit the form
         cy.get(".login_btn").click();
+        cy.wait(1000);
         // Ensure the registration was successful (you might need to assert the URL or page content)
         cy.url().should("eq", `${baseUrl}/mainpage`);
     });
@@ -45,6 +48,7 @@ describe("SocialPostCommentRender Component", () => {
         cy.url().should("eq", `${baseUrl}/${sampleSocialPostUrl}`);
 
         cy.get('.show_post_comments').click();
+        cy.wait(1000);
 
         const sampleComment = 'This is a sample comment.';
         cy.get('.social_comments_container').should('contain', sampleComment)
