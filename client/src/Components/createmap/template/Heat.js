@@ -72,76 +72,29 @@ const Heat = ({
         />
       </div>
 
-      {/* Render color range */}
-      <div>
-        <h3>Data Color Range</h3>
-        {selectedColors.length !== 0 ? (
-          <>
-            <div style={{ display: "flex" }}>
+      {/* Render color range*/}
+      <h3>Data Color Range</h3>
+      {selectedColors.length !== 0 && (
+        <div style={{ display: "flex" }}>
+          {selectedColors.map((color, index) => (
+            <div key={index} style={{ display: "flex" }}>
               <div
                 style={{
-                  backgroundColor: selectedColors[0],
+                  backgroundColor: color,
                   padding: "5px",
                   width: "-webkit-fill-available",
-                  height: "2rem",
+                  // height: "2rem",
+                  height: "max-content",
+                  textAlign: "center",
                 }}
               >
-                {ranges[0].toFixed(2)} - {(ranges[1] - 1).toFixed(2)}
+                {ranges[index].toFixed(2)} to{" "}
+                {(ranges[index + 1] - 1).toFixed(2)}
               </div>
             </div>
-            <div style={{ display: "flex" }}>
-              <div
-                style={{
-                  backgroundColor: selectedColors[1],
-                  padding: "5px",
-                  width: "-webkit-fill-available",
-                  height: "2rem",
-                }}
-              >
-                {ranges[1].toFixed(2)} - {(ranges[2] - 1).toFixed(2)}
-              </div>
-            </div>
-            <div style={{ display: "flex" }}>
-              <div
-                style={{
-                  backgroundColor: selectedColors[2],
-                  padding: "5px",
-                  width: "-webkit-fill-available",
-                  height: "2rem",
-                }}
-              >
-                {ranges[2].toFixed(2)} - {(ranges[3] - 1).toFixed(2)}
-              </div>
-            </div>
-            <div style={{ display: "flex" }}>
-              <div
-                style={{
-                  backgroundColor: selectedColors[3],
-                  padding: "5px",
-                  width: "-webkit-fill-available",
-                  height: "2rem",
-                }}
-              >
-                {ranges[3].toFixed(2)} - {(ranges[4] - 1).toFixed(2)}
-              </div>
-            </div>
-            <div style={{ display: "flex" }}>
-              <div
-                style={{
-                  backgroundColor: selectedColors[4],
-                  padding: "5px",
-                  width: "-webkit-fill-available",
-                  height: "2rem",
-                }}
-              >
-                {ranges[4].toFixed(2)} - {(ranges[5] - 1).toFixed(2)}
-              </div>
-            </div>
-          </>
-        ) : (
-          <></>
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

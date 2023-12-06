@@ -115,7 +115,7 @@ const Map = ({
   }, [template]);
 
   const handleClickRegion = () => {
-    setShowPopup(false);
+    // setShowPopup(false);
     setSelectedMapFile((prevMapFile) => {
       // console.log(prevMapFile);
       if (prevMapFile["mapbook_template"] === "Bar Chart") {
@@ -375,11 +375,11 @@ const Map = ({
             layers: ["counties"],
           });
 
-          if (regions.length === 0) {
-            handleMouseLeave();
-          } else {
-            handleMouseEnter();
-          }
+          // if (regions.length === 0) {
+          //   handleMouseLeave();
+          // } else {
+          //   handleMouseEnter();
+          // }
 
           if (regions.length > 0) {
             const tempFeature = mapFileData.current["features"].find(
@@ -389,7 +389,7 @@ const Map = ({
             var data = tempFeature["properties"]["mapbook_data"];
 
             if (data === undefined) {
-              setHoverData(regions[0]["properties"].name + "\n\nNo data");
+              setHoverData(regions[0]["properties"].name + "No data");
             } else {
               const formattedData =
                 templateHoverType.current === "Thematic Map"
@@ -398,14 +398,14 @@ const Map = ({
                         const nestedProperties = Object.keys(data[key])
                           .map(
                             (nestedKey) =>
-                              `${nestedKey}: ${data[key][nestedKey]}`
+                              `${nestedKey}:${data[key][nestedKey]}`
                           )
-                          .join(", ");
-                        return `${key}: ${nestedProperties}`;
+                          .join("\n");
+                        return `${key}: \n${nestedProperties}`;
                       })
                       .join("\n")
                   : Object.keys(data)
-                      .map((key) => `${key}: ${data[key]}`)
+                      .map((key) => `${key}:${data[key]}`)
                       .join("\n");
               console.log(data, formattedData);
               // console.log(regions[0]["properties"].name + "\n" + formattedData);
@@ -414,23 +414,23 @@ const Map = ({
                 //ok
                 console.log("Calling PIE");
                 setHoverData(
-                  regions[0]["properties"].name + "\n\n" + formattedData
+                  regions[0]["properties"].name + "\n" + formattedData
                 );
               } else if (templateHoverType.current === "Bar Chart") {
                 //ok
                 console.log("Calling BAR");
                 setHoverData(
-                  regions[0]["properties"].name + "\n\n" + formattedData
+                  regions[0]["properties"].name + "\n" + formattedData
                 );
               } else if (templateHoverType.current === "Heat Map") {
                 console.log("Calling HEAT");
                 setHoverData(
-                  regions[0]["properties"].name + "\n\n" + formattedData
+                  regions[0]["properties"].name + "\n" + formattedData
                 );
               } else if (templateHoverType.current === "Thematic Map") {
                 console.log("Calling THEMATIC");
                 setHoverData(
-                  regions[0]["properties"].name + "\n\n" + formattedData
+                  regions[0]["properties"].name + "\n" + formattedData
                 );
               } else if (templateHoverType.current === "Circle Map") {
                 console.log("Calling CIRCLE");
@@ -514,24 +514,24 @@ const Map = ({
     );
     createMap(mapFile);
   };
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [showPopup, setShowPopup] = useState(false);
+  // const [position, setPosition] = useState({ x: 0, y: 0 });
+  // const [showPopup, setShowPopup] = useState(false);
 
   const handleMouseMove = (e) => {
-    setPosition({ x: e.clientX, y: e.clientY });
+    // setPosition({ x: e.clientX, y: e.clientY });
   };
 
   const handleMouseEnter = () => {
-    setShowPopup(true);
+    // setShowPopup(true);
   };
 
   const handleMouseLeave = () => {
-    setShowPopup(false);
+    // setShowPopup(false);
   };
   return (
     <div
       className="addmapdata_center"
-      onMouseMove={handleMouseMove}
+      // onMouseMove={handleMouseMove}
       // onMouseEnter={handleMouseEnter}
       // onMouseLeave={handleMouseLeave}
     >
