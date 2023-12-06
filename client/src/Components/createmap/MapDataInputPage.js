@@ -12,9 +12,9 @@ import FormHelperText from "@mui/joy/FormHelperText";
 import Textarea from "@mui/joy/Textarea";
 import Input from "@mui/joy/Input";
 import Typography from "@mui/joy/Typography";
+import CustomSwitch from "../widgets/CustomSwitch";
 import "./createMap.css";
 import { useEffect, useState } from "react";
-import ImportFilePage from "./ImportFilePage";
 import MapPrevImgDropBox from "./MapPrevImgDropBox";
 const MapDataInputPage = ({
   options,
@@ -30,7 +30,12 @@ const MapDataInputPage = ({
   selectedMapFile,
   setSelectedMapFile,
 }) => {
-
+  const [mapImage, setMapImage] = useState(null);
+  const [hoverData, setHoverData] = useState("Out of range");
+  const [showHoverData, setShowHoverData] = useState(false);
+  useEffect(() => {
+    console.log(showHoverData);
+  }, [showHoverData]);
   const handleMapNameChange = (name) => {
     setOptions({ ...options, name });
   };
@@ -76,7 +81,6 @@ const MapDataInputPage = ({
     "Thematic Map",
   ];
   const template = options["template"];
-  const [mapImage, setMapImage] = useState(null);
   return (
     <>
       <div className="addmapdata_left_sidebar">
@@ -173,10 +177,12 @@ const MapDataInputPage = ({
         setMapImage={setMapImage}
         mapImage={mapImage}
         template={template}
+        hoverData={hoverData}
+        setHoverData={setHoverData}
       />
-      <div className="addmapdata_right_sidebar">
-        <h3>Data Values</h3>
-        <div className="addmapdata_templates">
+      <div className="mapdatainput_right_sidebar">
+        <h3>Data Names</h3>
+        <div className="mapdatainput_templates">
           {(template === "Pie Chart" || template === "Bar Chart") && (
             <PieBar pieBarData={pieBarData} setPieBarData={setPieBarData} />
           )}
@@ -205,9 +211,37 @@ const MapDataInputPage = ({
             </>
           )}
         </div>
-        <div className="addmapdata_image_drop">
+
+        <div className="mapdatainput_image_drop">
           <h3>Map Preview Image</h3>
           <MapPrevImgDropBox setMapImage={setMapImage} mapImage={mapImage} />
+        </div>
+
+        <div className="mapdatainput_hovered_data_container">
+          <div className="mapdatainput_hovered_data_header">
+            <h4 style={{ display: "inline-block", margin: 0 }}>Map Data</h4>
+            <CustomSwitch
+              showHoverData={showHoverData}
+              setShowHoverData={setShowHoverData}
+            />
+          </div>
+          <div className="mapdatainput_hovered_data">
+            {showHoverData ? (
+              <div>{hoverData}</div>
+            ) : (
+              <div
+                style={{
+                  textAlign: "center",
+                  fontSize: "1rem",
+                  fontWeight: 200,
+                }}
+              >
+                <b>Swipe</b> the option to <b>"Show"</b> and hover over a region
+                <br />
+                to check the data names and values
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </>

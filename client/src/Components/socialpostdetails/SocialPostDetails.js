@@ -10,10 +10,10 @@ import {
   editSocialPostAPIMethod,
 } from "../../api/social";
 import { getUserById } from "../../api/user";
-import LikeButton from "../buttons/LikeButton";
+import LikeButton from "../widgets/LikeButton";
 import defaultUserImg from "../../assets/img/user.png";
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const SocialPostDetails = () => {
   const { id } = useParams();
@@ -25,11 +25,17 @@ const SocialPostDetails = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextImage = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % currentPost.post_images.length);
+    setCurrentIndex(
+      (prevIndex) => (prevIndex + 1) % currentPost.post_images.length
+    );
   };
 
   const prevImage = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + currentPost.post_images.length) % currentPost.post_images.length);
+    setCurrentIndex(
+      (prevIndex) =>
+        (prevIndex - 1 + currentPost.post_images.length) %
+        currentPost.post_images.length
+    );
   };
 
   useEffect(() => {
@@ -84,13 +90,7 @@ const SocialPostDetails = () => {
   function renderImages(images) {
     let arr = [];
     for (let i = 0; i < images.length; i++) {
-      arr.push(
-        <img
-          id="post_details_img"
-          src={images[i]}
-          alt=""
-        />
-      )
+      arr.push(<img id="post_details_img" src={images[i]} alt="" />);
     }
     return arr;
   }
@@ -179,11 +179,23 @@ const SocialPostDetails = () => {
             {currentPost.post_images && currentPost.post_images.length > 0 ? (
               //renderImages(currentPost.post_images)
               <div className="post_details_img_container">
-                {currentPost.post_images.length > 1 && <ArrowBackIosNewIcon onClick={nextImage} className="nextImg" />}
-                <img id="post_details_img" src={currentPost.post_images[currentIndex]} />
-                {currentPost.post_images.length > 1 && <ArrowForwardIosIcon onClick={prevImage} className="prevImg" />}
+                {currentPost.post_images.length > 1 && (
+                  <ArrowBackIosNewIcon
+                    onClick={nextImage}
+                    className="nextImg"
+                  />
+                )}
+                <img
+                  id="post_details_img"
+                  src={currentPost.post_images[currentIndex]}
+                />
+                {currentPost.post_images.length > 1 && (
+                  <ArrowForwardIosIcon
+                    onClick={prevImage}
+                    className="prevImg"
+                  />
+                )}
               </div>
-
             ) : (
               <div></div>
             )}

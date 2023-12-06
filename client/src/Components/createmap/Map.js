@@ -17,13 +17,14 @@ export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 const Map = ({
   selectedMapFile,
   options,
-  setOptions,
   setSelectedMapFile,
   pieBarData,
   heatRange,
   selectedColors,
   themeData,
   template,
+  hoverData,
+  setHoverData,
 }) => {
   const mapFileData = useRef(selectedMapFile);
 
@@ -71,7 +72,7 @@ const Map = ({
   const [showModalHeat, setShowModalHeat] = useState(false);
   const [feature, setFeature] = useState(null);
   const [inputData, setInputData] = useState(null);
-  const [hoverData, setHoverData] = useState("Out of range");
+  // const [hoverData, setHoverData] = useState("Out of range");
   const undoStack = useRef([]);
   const redoStack = useRef([]);
   const templateHoverType = useRef([]);
@@ -388,7 +389,7 @@ const Map = ({
             var data = tempFeature["properties"]["mapbook_data"];
 
             if (data === undefined) {
-              setHoverData(regions[0]["properties"].name + "\nNo data");
+              setHoverData(regions[0]["properties"].name + "\n\nNo data");
             } else {
               const formattedData =
                 templateHoverType.current === "Thematic Map"
@@ -413,23 +414,23 @@ const Map = ({
                 //ok
                 console.log("Calling PIE");
                 setHoverData(
-                  regions[0]["properties"].name + "\n" + formattedData
+                  regions[0]["properties"].name + "\n\n" + formattedData
                 );
               } else if (templateHoverType.current === "Bar Chart") {
                 //ok
                 console.log("Calling BAR");
                 setHoverData(
-                  regions[0]["properties"].name + "\n" + formattedData
+                  regions[0]["properties"].name + "\n\n" + formattedData
                 );
               } else if (templateHoverType.current === "Heat Map") {
                 console.log("Calling HEAT");
                 setHoverData(
-                  regions[0]["properties"].name + "\n" + formattedData
+                  regions[0]["properties"].name + "\n\n" + formattedData
                 );
               } else if (templateHoverType.current === "Thematic Map") {
                 console.log("Calling THEMATIC");
                 setHoverData(
-                  regions[0]["properties"].name + "\n" + formattedData
+                  regions[0]["properties"].name + "\n\n" + formattedData
                 );
               } else if (templateHoverType.current === "Circle Map") {
                 console.log("Calling CIRCLE");
@@ -534,23 +535,23 @@ const Map = ({
       // onMouseEnter={handleMouseEnter}
       // onMouseLeave={handleMouseLeave}
     >
-      {hoverData && showPopup && (
+      {/* {hoverData && showPopup && (
         <div className="popup" style={{ left: position.x, top: position.y }}>
           <pre>{hoverData}</pre>
         </div>
-      )}
+      )} */}
 
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
           <i
             className="undo bx bx-undo"
-            disabled={undoStack.length == 0}
+            disabled={undoStack.length === 0}
             onClick={handleUndo}
           />
           <div className="vertical_line_container">|</div>
           <i
             className="redo bx bx-redo"
-            disabled={redoStack.length == 0}
+            disabled={redoStack.length === 0}
             onClick={handleRedo}
           />
         </div>
