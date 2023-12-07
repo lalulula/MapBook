@@ -98,6 +98,7 @@ const createMap = async (req, res) => {
         file_path: fileUrl,
       });
       const savedMap = await newMap.save();
+      console.log("newMap: ", newMap);
 
       console.log("before findById: run ok");
       const user = await User.findById(user_id);
