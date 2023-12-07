@@ -104,20 +104,22 @@ const createMap = async (req, res) => {
       const user = await User.findById(user_id);
       console.log("after findById: run ok");
 
+      console.log("user: ", user)
+
       const mapsCreated = user["maps_created"];
       console.log("mapsCreated: run ok");
 
       mapsCreated.push(savedMap["_id"]);
       console.log("mapsCreated pushed: run ok");
 
-      await User.findByIdAndUpdate(
+      const userSave = await User.findByIdAndUpdate(
         user_id,
         {
           maps_created: mapsCreated,
         },
         { new: true }
       )
-      console.log("findByIdAndUpdate: run ok");
+      console.log("findByIdAndUpdate: run ok", userSave);
 
       // Respond with success message
       // return res.status(201).json({ success: true, message: "Map created successfully!" });
