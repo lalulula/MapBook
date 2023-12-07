@@ -65,7 +65,6 @@ const createMap = async (req, res) => {
 
       const randomString = (new Date().getTime() + Math.random()).toString(36).substring(2)
       // console.log("randomString :", randomString)
-      console.log("11111111");
 
       const fileBuffer = req.files["file"][0].buffer;
       const fileName = randomString + req.files["file"][0].originalname;
@@ -78,7 +77,6 @@ const createMap = async (req, res) => {
       });
 
 
-      console.log("22222222");
 
       const imgFileBuffer = req.files["mapPreviewImg"][0].buffer;
       const imgFileName = randomString + req.files["mapPreviewImg"][0].originalname;
@@ -89,7 +87,6 @@ const createMap = async (req, res) => {
         action: "read",
         expires: "03-09-2025", // Replace with an expiration date
       });
-      console.log("33333333");
 
       const newMap = new MapObj({
         map_name,
@@ -101,11 +98,17 @@ const createMap = async (req, res) => {
         file_path: fileUrl,
       });
       const savedMap = await newMap.save();
-      console.log("44444444");
 
+      console.log("before findById: run ok");
       const user = await User.findById(user_id);
+      console.log("after findById: run ok");
+
       const mapsCreated = user["maps_created"];
+      console.log("mapsCreated: run ok");
+
       mapsCreated.push(savedMap["_id"]);
+      console.log("mapsCreated pushed: run ok");
+
       await User.findByIdAndUpdate(
         user_id,
         {
@@ -113,7 +116,7 @@ const createMap = async (req, res) => {
         },
         { new: true }
       )
-      console.log("55555555");
+      console.log("findByIdAndUpdate: run ok");
 
       // Respond with success message
       // return res.status(201).json({ success: true, message: "Map created successfully!" });
