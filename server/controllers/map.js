@@ -98,28 +98,25 @@ const createMap = async (req, res) => {
         file_path: fileUrl,
       });
       const savedMap = await newMap.save();
-      console.log("newMap: ", newMap);
 
-      console.log("before findById: run ok");
       const user = await User.findById(user_id);
-      console.log("after findById: run ok");
 
-      console.log("user: ", user)
+      if(user != null){
+        const mapsCreated = user["maps_created"];
 
-      const mapsCreated = user["maps_created"];
-      console.log("mapsCreated: run ok");
+        mapsCreated.push(savedMap["_id"]);
 
-      mapsCreated.push(savedMap["_id"]);
-      console.log("mapsCreated pushed: run ok");
-
-      const userSave = await User.findByIdAndUpdate(
-        user_id,
-        {
-          maps_created: mapsCreated,
-        },
-        { new: true }
-      )
-      console.log("findByIdAndUpdate: run ok", userSave);
+        const userSave = await User.findByIdAndUpdate(
+          user_id,
+          {
+            maps_created: mapsCreated,
+          },
+          { new: true }
+        )
+      }
+      else{
+        console.log("user not found")
+      }
 
       // Respond with success message
       // return res.status(201).json({ success: true, message: "Map created successfully!" });
