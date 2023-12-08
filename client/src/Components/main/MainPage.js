@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import dumMapJsonData from "./dum_data.json";
 import "./main.css";
 import MapPreview from "../mappreview/MapPreview";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -8,7 +7,6 @@ import Dropdown from "react-dropdown";
 import Lottie from "lottie-react";
 import NoMapAni from "../../assets/Lottie/NoMaps.json";
 import { getAllMapsAPI } from "../../api/map";
-
 
 const MainPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,21 +20,25 @@ const MainPage = () => {
     // console.log(searchFilterOption);
   }, [searchFilterOption]);
 
-  const filteredMaps = allMaps.filter((map) => { //change to allMaps.filter
-    console.log("search filter option: ", searchFilterOption);
-    return (searchFilterOption === "Map Name" || searchFilterOption === "Search by")
-      ? map.map_name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredMaps = allMaps.filter((map) => {
+    // Check if map is visible
+    const isVisible = map.is_visible === true;
+    // Check search filter conditions and visibility
+    return searchFilterOption === "Map Name" ||
+      searchFilterOption === "Search by"
+      ? isVisible &&
+          map.map_name.toLowerCase().includes(searchTerm.toLowerCase())
       : searchFilterOption === "Topics"
-        ? map.topic.toLowerCase().includes(searchTerm.toLowerCase())
-        : map.map_description.toLowerCase().includes(searchTerm.toLowerCase());
+      ? isVisible && map.topic.toLowerCase().includes(searchTerm.toLowerCase())
+      : isVisible &&
+        map.map_description.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   useEffect(() => {
     getAllMapsAPI().then((m) => {
       setAllMaps(m);
-    })
-  }, [])
-
+    });
+  }, []);
 
   return (
     <div className="mainpage_container">
@@ -53,19 +55,18 @@ const MainPage = () => {
 
       <div className="mainpage_maps_container">
         <div className="mainpage_maps">
-          {filteredMaps.length != 0 && filteredMaps.map((item, index) => (
-            <MapPreview key={index} data={item} />
-          ))}
+          {filteredMaps.length !== 0 &&
+            filteredMaps.map((item, index) => (
+              <MapPreview key={index} data={item} />
+            ))}
           {console.log("filteredMaps:", filteredMaps)}
         </div>
 
-        {filteredMaps.length == 0 && (
+        {filteredMaps.length === 0 && (
           <div className="mainpage_maps_no_search_container">
             <div className="mainpage_maps_no_search">
               <br />
-              <h1>
-                No search results for '{searchTerm}'
-              </h1>
+              <h1>No search results for '{searchTerm}'</h1>
               <br />
             </div>
             <Lottie
@@ -73,7 +74,7 @@ const MainPage = () => {
               style={{
                 height: 300,
                 width: 300,
-                position: "absolute"
+                position: "absolute",
               }}
             />
           </div>
