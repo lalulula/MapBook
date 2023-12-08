@@ -201,10 +201,10 @@ const editMap = async (req, res) => {
 
 // REMOVE A MAP
 const removeMap = async (req, res) => {
-  console.log(req.params);
   try {
-    const { id } = req.params;
-    const map = await MapObj.findByIdAndDelete(id);
+    const { mapId } = req.params;
+    // console.log(mapId);
+    const map = await MapObj.findByIdAndDelete(mapId);
 
     if (!map) {
       return res.status(400).json("Map not found");

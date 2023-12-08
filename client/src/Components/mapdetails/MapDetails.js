@@ -300,9 +300,10 @@ const MapDetails = () => {
   };
   const navigate = useNavigate();
   const handleDeleteMapPost = async (mapId) => {
+    console.log(mapId);
     try {
       console.log("removing map post");
-      const res = await deleteMapPostAPIMethod(currentMap._id);
+      const res = await deleteMapPostAPIMethod(mapId);
       if (res) {
         navigate("/mainpage");
       } else {
@@ -378,7 +379,9 @@ const MapDetails = () => {
             <div className="map_details_options_container">
               {isOwner && (
                 <>
-                  <DeleteButton onClick={handleDeleteMapPost} />
+                  <DeleteButton
+                    onClick={() => handleDeleteMapPost(currentMap._id)}
+                  />
                   <EditButton />
                 </>
               )}

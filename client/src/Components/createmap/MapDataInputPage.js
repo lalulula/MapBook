@@ -92,6 +92,7 @@ const MapDataInputPage = ({
               onChange={(e) => handleMapNameChange(e.target.value)}
               name="map_name"
               placeholder="Enter Map Name"
+              required
             />
           </FormControl>
         </div>
