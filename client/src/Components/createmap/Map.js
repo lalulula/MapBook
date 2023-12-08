@@ -207,12 +207,38 @@ const Map = ({
         break;
       }
     }
+
+    // const selectedRegionName = feature[0]?.properties.name;
+    // if (selectedRegionName) {
+    //   const selectedMapData = mapFileData.current.features.find(
+    //     (feature) => feature.properties.name === selectedRegionName
+    //   );
+
+    //   if (selectedMapData) {
+    //     const mapbookDataProperties = selectedMapData.properties.mapbook_data;
+    //     console.log(mapContainerRef.current);
+
+    //     if (mapbookDataProperties) {
+    //       const newDataColor = inputData?.color;
+
+    //       console.log(selectedRegionName, mapbookDataProperties, newDataColor);
+    //       if (newDataColor) {
+    //         // Update the fill-color property for the selected region
+    //         mapContainerRef.current.setPaintProperty(
+    //           "counties-highlighted",
+    //           "fill-color",
+    //           newDataColor
+    //         );
+    //       }
+    //     }
+    //   }
+    // }
     // console.log("updated selectedmapfile: ", selectedMapFile);
     handleClickRegion();
   };
 
   const handleUndo = () => {
-    if (undoStack.current.length != 0) {
+    if (undoStack.current.length !== 0) {
       console.log("undo Clicked");
       // pop {a} from undo stack
       const popedState = undoStack.current.pop();
@@ -232,7 +258,7 @@ const Map = ({
   };
 
   const handleRedo = () => {
-    if (redoStack.current.length != 0) {
+    if (redoStack.current.length !== 0) {
       console.log("redo Clicked");
 
       // pop {a} from redo stack
@@ -302,7 +328,7 @@ const Map = ({
             // "source-layer": "original",
             paint: {
               // "fill-color": "rgba(0.5,0.5,0,0.4)",
-              "fill-color": "#ff0088",
+              "fill-color": "#ff0088", //default map color
               "fill-opacity": 0.4,
               "fill-outline-color": "#000000",
               // "fill-outline-opacity": 0.8
@@ -318,8 +344,8 @@ const Map = ({
             source: "counties",
             // "source-layer": "original",
             paint: {
-              "fill-outline-color": "#484896",
-              "fill-color": "#6e599f",
+              "fill-outline-color": "#484896", //Fill color
+              "fill-color": "#6e599f", //Fill color onclick
               "fill-opacity": 0.75,
             },
             filter: ["in", "name", ""],
@@ -327,15 +353,16 @@ const Map = ({
           // "building"
         );
 
-        map.addLayer({
-          id: "data-labels",
-          type: "symbol",
-          source: "counties",
-          layout: {
-            "text-field": ["get", "name"],
-            "text-size": 15,
-          },
-        });
+        // UGLY NAME LABELS
+        // map.addLayer({
+        //   id: "data-labels",
+        //   type: "symbol",
+        //   source: "counties",
+        //   layout: {
+        //     "text-field": ["get", "name"],
+        //     "text-size": 15,
+        //   },
+        // });
 
         map.on("click", (e) => {
           // console.log("this is e: ", e);
@@ -357,11 +384,10 @@ const Map = ({
               (f) => f["properties"].name === names[0]
             );
 
-            // console.log("selectedfeatures: ", newSelectedFeature);
+            console.log("selectedfeatures: ", newSelectedFeature);
 
             setFeature(newSelectedFeature);
 
-            // console.log("Selected region name: ", names[0]);
             setRegionName(names[0]);
             map.setFilter("counties-highlighted", ["in", "name", ...names]);
             handleClickRegion();
@@ -370,6 +396,7 @@ const Map = ({
             map.setFilter("counties-highlighted", ["in", "name", ...names]);
           }
         });
+
         map.on("mousemove", (event) => {
           const regions = map.queryRenderedFeatures(event.point, {
             layers: ["counties"],
