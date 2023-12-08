@@ -78,8 +78,13 @@ const Map = ({
   const templateHoverType = useRef([]);
   const mapContainerRef = useRef(null);
   const userId = useSelector((state) => state.user.id);
+  const [rerenderFlag, setRerenderFlag] = useState(false);
 
   const navigate = useNavigate();
+
+  const handleRerender = () => {
+    setRerenderFlag(!rerenderFlag);
+  };
 
   const resetMap = () => {
     undoStack.current = [];
@@ -234,6 +239,8 @@ const Map = ({
     //   }
     // }
     // console.log("updated selectedmapfile: ", selectedMapFile);
+
+
     handleClickRegion();
   };
 
@@ -364,6 +371,30 @@ const Map = ({
         //   },
         // });
 
+        // circles? no mapbook_data tho
+        /* map.addLayer({
+          id: 'csvData',
+          type: 'circle',
+          source: {
+            type: 'geojson',
+            data: mapFileData.current,
+          },
+          paint: {
+            'circle-color': '#dd502c',
+            'circle-stroke-width': 1,
+            'circle-stroke-color': '#dd502c',
+            'circle-opacity': 0.5,
+            "circle-radius": {
+              property: 'value',
+              stops: [
+                [2, 5],
+                [1000, 10],
+                [8000, 20],
+              ]
+            }
+          }
+        }); */
+
         map.on("click", (e) => {
           // console.log("this is e: ", e);
           const bbox = [
@@ -391,6 +422,10 @@ const Map = ({
             setRegionName(names[0]);
             map.setFilter("counties-highlighted", ["in", "name", ...names]);
             handleClickRegion();
+
+            //ADDED
+            console.log("mapfiledata.current: ", mapFileData.current.features);
+            map.getSource("counties").setData(mapFileData.current.features);
           } else {
             setFeature([]);
             map.setFilter("counties-highlighted", ["in", "name", ...names]);
@@ -421,20 +456,20 @@ const Map = ({
               const formattedData =
                 templateHoverType.current === "Thematic Map"
                   ? Object.keys(data)
-                      .map((key) => {
-                        const nestedProperties = Object.keys(data[key])
-                          .map(
-                            (nestedKey) =>
-                              `${nestedKey}:${data[key][nestedKey]}`
-                          )
-                          .join("\n");
-                        return `${key}: \n${nestedProperties}`;
-                      })
-                      .join("\n")
+                    .map((key) => {
+                      const nestedProperties = Object.keys(data[key])
+                        .map(
+                          (nestedKey) =>
+                            `${nestedKey}:${data[key][nestedKey]}`
+                        )
+                        .join("\n");
+                      return `${key}: \n${nestedProperties}`;
+                    })
+                    .join("\n")
                   : Object.keys(data)
-                      .map((key) => `${key}:${data[key]}`)
-                      .join("\n");
-              console.log(data, formattedData);
+                    .map((key) => `${key}:${data[key]}`)
+                    .join("\n");
+              //console.log(data, formattedData);
               // console.log(regions[0]["properties"].name + "\n" + formattedData);
 
               if (templateHoverType.current === "Pie Chart") {
@@ -558,9 +593,9 @@ const Map = ({
   return (
     <div
       className="addmapdata_center"
-      // onMouseMove={handleMouseMove}
-      // onMouseEnter={handleMouseEnter}
-      // onMouseLeave={handleMouseLeave}
+    // onMouseMove={handleMouseMove}
+    // onMouseEnter={handleMouseEnter}
+    // onMouseLeave={handleMouseLeave}
     >
       {/* {hoverData && showPopup && (
         <div className="popup" style={{ left: position.x, top: position.y }}>
@@ -609,6 +644,7 @@ const Map = ({
             selectedMapFile={mapFileData.current}
             setInputData={setInputData}
             regionName={regionName}
+            handleRerender={handleRerender}
           />
         )}
 

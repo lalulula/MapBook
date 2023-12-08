@@ -15,7 +15,13 @@ const CircleDataInput = ({
   setInputData,
   regionName,
   options,
+  handleRerender,
 }) => {
+  const handleCircleDataSubmit = () => {
+    // Call the callback function to trigger a rerender in the parent
+    console.log("ONRENDER");
+    handleRerender();
+  };
   return (
     <Modal open={showModalCircle} onClose={() => setShowModalCircle(false)}>
       <ModalDialog>
@@ -37,7 +43,7 @@ const CircleDataInput = ({
                     />
                   </FormControl>
 
-                  <Button type="submit">Submit</Button>
+                  <Button type="submit" onClick={handleCircleDataSubmit}>Submit</Button>
                 </>
               ) : (
                 <>
