@@ -44,7 +44,7 @@
 }
 .map_details_options_container {
   display: flex;
-  gap: 2rem;
+  gap: 2;
 }
 .options_icon {
   position: relative;
