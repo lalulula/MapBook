@@ -13,6 +13,9 @@ router.get("/getMaps/:userId", /* auth.verifyToken, */ map.getMaps);
 // GET A MAP BY A MAP ID
 router.get("/getMap/:mapId", map.getMap);
 
+// REMOVE A MAP BY A MAP ID
+router.delete("/removeMap/:mapId", map.removeMap);
+
 // // CREATE A MAP
 router.post("/createMap", map.createMap);
 

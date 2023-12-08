@@ -14,6 +14,8 @@ import LikeButton from "../widgets/LikeButton";
 import defaultUserImg from "../../assets/img/user.png";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import DeleteButton from "../widgets/DeleteButton";
+import EditButton from "../widgets/EditButton";
 
 const SocialPostDetails = () => {
   const { id } = useParams();
@@ -150,19 +152,20 @@ const SocialPostDetails = () => {
           <div className="socialpostdetails_top_right_container">
             {isOwner && (
               <>
-                <button
+                {/* <button
                   className="social_edit_btn"
                   onClick={() => handleEditSocialPost()}
                 >
                   edit
-                </button>
-                <button
+                </button> */}
+                {/* <button
                   className="social_edit_btn"
                   onClick={() => handleDeleteSocialPost()}
-                >
+                  >
                   delete
-                </button>
-                {/* <LikeButton id={id} currentPost={currentPost} /> */}
+                </button> */}
+                <EditButton onClick={handleEditSocialPost} />
+                <DeleteButton onClick={handleDeleteSocialPost} />
               </>
             )}
             <LikeButton id={id} currentPost={currentPost} />

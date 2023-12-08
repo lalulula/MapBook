@@ -2,7 +2,6 @@ const MapObj = require("../models/MapObj");
 const serviceAccount = require("../mapbook-firebase.json");
 const cloudinary = require("cloudinary").v2;
 
-
 const admin = require("firebase-admin");
 const { URL } = require("url");
 const path = require("path");
@@ -22,9 +21,9 @@ const getAllMaps = async (req, res) => {
     const map = await MapObj.find();
     res.status(200).json(map);
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: error.message });
   }
-}
+};
 
 // GET ALL MAPS CREATED BY A USER
 const getMaps = async (req, res) => {
@@ -51,24 +50,20 @@ const getMap = async (req, res) => {
 // Create map
 const createMap = async (req, res) => {
   try {
-    const {
-      map_name,
-      topic,
-      user_id,
-      is_visible,
-      map_description,
-    } = req.body;
+    const { map_name, topic, user_id, is_visible, map_description } = req.body;
     // console.log(req.files);
-    if(req.files !== undefined){
+    if (req.files !== undefined) {
       console.log("file", req.files["file"][0]);
       console.log("mapPreviewImg", req.files["mapPreviewImg"][0]);
 
-      const randomString = (new Date().getTime() + Math.random()).toString(36).substring(2)
+      const randomString = (new Date().getTime() + Math.random())
+        .toString(36)
+        .substring(2);
       // console.log("randomString :", randomString)
 
       const fileBuffer = req.files["file"][0].buffer;
       const fileName = randomString + req.files["file"][0].originalname;
-      const storageRef =  bucket.file(fileName);
+      const storageRef = bucket.file(fileName);
       await storageRef.createWriteStream().end(fileBuffer);
 
       const [fileUrl] = await storageRef.getSignedUrl({
@@ -76,14 +71,13 @@ const createMap = async (req, res) => {
         expires: "03-09-2025", // Replace with an expiration date
       });
 
-
-
       const imgFileBuffer = req.files["mapPreviewImg"][0].buffer;
-      const imgFileName = randomString + req.files["mapPreviewImg"][0].originalname;
+      const imgFileName =
+        randomString + req.files["mapPreviewImg"][0].originalname;
       const imgStorageRef = bucket.file(imgFileName);
       await imgStorageRef.createWriteStream().end(imgFileBuffer);
 
-      const [mapPreviewImgUrl]  = await imgStorageRef.getSignedUrl({
+      const [mapPreviewImgUrl] = await imgStorageRef.getSignedUrl({
         action: "read",
         expires: "03-09-2025", // Replace with an expiration date
       });
@@ -101,7 +95,7 @@ const createMap = async (req, res) => {
 
       const user = await User.findById(user_id);
 
-      if(user != null){
+      if (user != null) {
         const mapsCreated = user["maps_created"];
 
         mapsCreated.push(savedMap["_id"]);
@@ -112,17 +106,15 @@ const createMap = async (req, res) => {
             maps_created: mapsCreated,
           },
           { new: true }
-        )
-      }
-      else{
-        console.log("user not found")
+        );
+      } else {
+        console.log("user not found");
       }
 
       // Respond with success message
       // return res.status(201).json({ success: true, message: "Map created successfully!" });
       return res.status(201).json(savedMap);
-    }
-    else{
+    } else {
       const newMap = new MapObj({
         map_name,
         topic,
@@ -142,18 +134,16 @@ const createMap = async (req, res) => {
           maps_created: mapsCreated,
         },
         { new: true }
-      )
+      );
 
       // Respond with success message
       // return res.status(201).json({ success: true, message: "Map created successfully!" });
       return res.status(201).json(savedMap);
     }
-
   } catch (error) {
     // console.error("Error creating map:", error);
     // return res.status(500).json({ success: false, error: error.message });
     return res.status(500).json({ error: error.message });
-
   }
 };
 
@@ -211,6 +201,7 @@ const editMap = async (req, res) => {
 
 // REMOVE A MAP
 const removeMap = async (req, res) => {
+  console.log(req.params);
   try {
     const { id } = req.params;
     const map = await MapObj.findByIdAndDelete(id);

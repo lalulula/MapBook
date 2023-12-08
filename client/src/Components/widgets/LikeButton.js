@@ -4,7 +4,7 @@ import {
   getSocialPostAPIMethod,
   likeSocialPostAPIMethod,
 } from "../../api/social";
-import "./likebutton.css";
+import "./buttons.css";
 
 function LikeButton({ id, currentPost }) {
   const currentUserId = useSelector((state) => state.user.id);
