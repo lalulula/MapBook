@@ -24,6 +24,43 @@
   color: rgba(105, 163, 255, 0.901);
   border-color: rgba(105, 163, 255, 0.901);
 }
+
+.social_delete_btn {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  padding: 5px 10px;
+  border: 2px solid #333;
+}
+
+.social_delete_btn:hover {
+  color: #fff;
+  background-color: #333;
+}
+
+.social_edit_btn {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  padding: 5px 10px;
+  border: 2px solid #333;
+}
+
+.social_edit_btn:hover {
+  color: #fff;
+  background-color: #333;
+}
+
 @media (max-width: 768px) {
   .like-button-container {
     flex-direction: column;

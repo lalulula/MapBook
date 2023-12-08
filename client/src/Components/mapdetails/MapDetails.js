@@ -1,27 +1,30 @@
 import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Divider } from "semantic-ui-react";
 
 import "./mapdetails.css";
 import MapTools from "../maptools/MapTools";
 import Comment from "./Comment";
-import { 
-  getMapAPI, 
-  getAllMapCommentsAPIMethod, 
-  createMapCommentAPIMethod, 
-  updateMapCommentAPIMethod, 
+import {
+  getMapAPI,
+  getAllMapCommentsAPIMethod,
+  createMapCommentAPIMethod,
+  updateMapCommentAPIMethod,
   deleteMapCommentAPIMethod,
-  getAllMapPostRepliesAPIMethod
+  getAllMapPostRepliesAPIMethod,
+  deleteMapPostAPIMethod,
 } from "../../api/map";
-import { getAllUsersAPIMethod } from "../../api/user";
+import { getAllUsersAPIMethod, getUserById } from "../../api/user";
 import sendMessage from "../../assets/img/sendMessage.png";
 import optionsIcon from "../../assets/img/options.png";
 import { fb, storage } from "../../firebase";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 import mapboxgl from "mapbox-gl"; // Import mapboxgl
-
+import DeleteButton from "../widgets/DeleteButton";
+import EditButton from "../widgets/EditButton";
+import { async } from "@firebase/util";
 
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
@@ -35,6 +38,17 @@ const MapDetails = () => {
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const currentUserId = useSelector((state) => state.user.id);
   const [optionsMenuVisible, setOptionsMenuVisible] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
+  const [postOwner, setPostOwner] = useState(null);
+  const MAPBOX_TOKEN =
+    "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
+  const [lng, setLng] = useState(-122.48);
+  const [lat, setLat] = useState(37.84);
+  const [zoom, setZoom] = useState(3);
+  const [hoverData, setHoverData] = useState("Out of range");
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [selectedMapFile, setSelectedMapFile] = useState();
+  const user = useSelector((state) => state.user.user);
 
   const getUsers = async () => {
     const data = await getAllUsersAPIMethod();
@@ -47,49 +61,86 @@ const MapDetails = () => {
       setMapComments(data);
     }
   };
-
-
-  const MAPBOX_TOKEN =
-    "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
-  const [lng, setLng] = useState(-122.48);
-  const [lat, setLat] = useState(37.84);
-  const [zoom, setZoom] = useState(3);
-  const [hoverData, setHoverData] = useState("Out of range");
-  const [isMapLoaded, setIsMapLoaded] = useState(false);
-  const [selectedMapFile, setSelectedMapFile] = useState();
-
   const getMap = async () => {
-    console.log("getMap called")
-    const data = await getMapAPI(mapId);
-    setCurrentMap(data);
+    try {
+      console.log("getMap called");
+      const data = await getMapAPI(mapId);
+      const post_owner_data = await getUserById(data.user_id);
+      setCurrentMap(data);
+      console.log(currentMap);
+      setPostOwner(post_owner_data);
+      // console.log(postOwner, user._id);
+      if (postOwner._id === user._id) {
+        setIsOwner(true);
+      }
 
+      if (currentMap != null) {
+        let url = currentMap.file_path;
+        // get file name from url
+        let fileName = url
+          .substring(57, url.indexOf("geojson") + 7)
+          .replaceAll("%20", " ");
+        // console.log(fileName)
+        const mapUrl = await getDownloadURL(ref(storage, fileName));
 
-    if (currentMap != null) {
-      let url = currentMap.file_path;
-      // get file name from url
-      let fileName = url.substring(57, url.indexOf("geojson") + 7).replaceAll('%20', ' ');
-      // console.log(fileName)
-      getDownloadURL(ref(storage, fileName))
-        .then((url) => {
+        // This can be downloaded directly:
+        const xhr = new XMLHttpRequest();
+        xhr.responseType = "json";
+        xhr.onload = (event) => {
+          // console.log("response: ", xhr.response);
+          setSelectedMapFile(xhr.response);
+        };
+        xhr.open("GET", mapUrl);
+        xhr.send();
 
-          // This can be downloaded directly:
-          const xhr = new XMLHttpRequest();
-          xhr.responseType = 'json';
-          xhr.onload = (event) => {
-            // console.log("response: ", xhr.response);
-            setSelectedMapFile(xhr.response)
-          };
-          xhr.open('GET', url);
-          xhr.send();
-        })
-        .catch((error) => {
-          console.log("error: ", error)
-        });
-
-
-      setIsMapLoaded(true);
+        setIsMapLoaded(true);
+      }
+    } catch (error) {
+      console.error("Error fetching map:", error);
     }
   };
+
+  useEffect(() => {
+    getMap();
+  }, [mapId, user._id]);
+
+  // const getMap = async () => {
+  //   console.log("getMap called");
+  //   const data = await getMapAPI(mapId);
+  //   const post_owner_data = await getUserById(data.user_id);
+  //   setCurrentMap(data);
+  //   setPostOwner(post_owner_data);
+  //   console.log(postOwner, user._id);
+  //   if (data.post_owner._id === user._id) {
+  //     setIsOwner(true);
+  //   }
+
+  //   if (currentMap != null) {
+  //     let url = currentMap.file_path;
+  //     // get file name from url
+  //     let fileName = url
+  //       .substring(57, url.indexOf("geojson") + 7)
+  //       .replaceAll("%20", " ");
+  //     // console.log(fileName)
+  //     getDownloadURL(ref(storage, fileName))
+  //       .then((url) => {
+  //         // This can be downloaded directly:
+  //         const xhr = new XMLHttpRequest();
+  //         xhr.responseType = "json";
+  //         xhr.onload = (event) => {
+  //           // console.log("response: ", xhr.response);
+  //           setSelectedMapFile(xhr.response);
+  //         };
+  //         xhr.open("GET", url);
+  //         xhr.send();
+  //       })
+  //       .catch((error) => {
+  //         console.log("error: ", error);
+  //       });
+
+  //     setIsMapLoaded(true);
+  //   }
+  // };
 
   //////////////////////////////////////////
 
@@ -114,8 +165,6 @@ const MapDetails = () => {
       });
     }
     if (map != null) {
-
-
       map.on("idle", function () {
         map.resize();
       });
@@ -127,7 +176,6 @@ const MapDetails = () => {
       });
 
       map.on("load", () => {
-
         map.addSource("counties", {
           type: "geojson",
           data: selectedMapFile,
@@ -176,7 +224,6 @@ const MapDetails = () => {
           },
         });
 
-
         map.on("mousemove", (event) => {
           const regions = map.queryRenderedFeatures(event.point, {
             layers: ["counties"],
@@ -209,13 +256,19 @@ const MapDetails = () => {
     }
   }, [currentMap]);
 
-  useEffect(() => {
-    getUsers();
-  }, []/* [users] */);
+  useEffect(
+    () => {
+      getUsers();
+    },
+    [] /* [users] */
+  );
 
-  useEffect(() => {
-    getMapComments();
-  }, []/* [mapComments] */);
+  useEffect(
+    () => {
+      getMapComments();
+    },
+    [] /* [mapComments] */
+  );
 
   const handleToggleOptions = (e) => {
     e.stopPropagation();
@@ -226,33 +279,86 @@ const MapDetails = () => {
     const newComment = {
       map_comment_content: newMapComment,
       map_comment_owner: currentUserId,
-      map_id: mapId
+      map_id: mapId,
     };
     createMapCommentAPIMethod(newComment);
-    setMapComments([...mapComments, newComment])
+    setMapComments([...mapComments, newComment]);
   };
 
   const handleEditMapComment = (mapCommentId, editedComment) => {
     updateMapCommentAPIMethod(mapCommentId, editedComment);
-    const updatedMapComments = mapComments.map(mapComment => {
+    const updatedMapComments = mapComments.map((mapComment) => {
       if (mapComment._id === mapCommentId) {
-        return { ...mapComment, map_comment_content: editedComment.map_comment_content };
+        return {
+          ...mapComment,
+          map_comment_content: editedComment.map_comment_content,
+        };
       }
       return mapComment;
     });
     setMapComments(updatedMapComments);
   };
+  const navigate = useNavigate();
+  const handleDeleteMapPost = async (mapId) => {
+    try {
+      console.log("removing map post");
+      const res = await deleteMapPostAPIMethod(currentMap._id);
+      if (res) {
+        navigate("/mainpage");
+      } else {
+        alert("Error deleting post", res);
+      }
+    } catch (error) {
+      console.error("Error handling delete operation:", error);
+    }
+  };
 
   const handleDeleteMapComment = (mapCommentId) => {
-    const updatedMapComments = mapComments.filter((mapComment) => mapComment._id !== mapCommentId);
+    const updatedMapComments = mapComments.filter(
+      (mapComment) => mapComment._id !== mapCommentId
+    );
     setMapComments(updatedMapComments);
     deleteMapCommentAPIMethod(mapCommentId);
-  }
+  };
+
+  // Export- download GeoJson
+
+  // const handleExport = () => {
+  //   const geoJSONObject = currentMap;
+  //   const mapFile = saveGeoJSONToFile(
+  //     geoJSONObject,
+  //     `${currentMap["mapbook_mapname"]}.geojson`
+  //   );
+  // };
+
+  // Convert data to GEOJSON //
+  // function saveGeoJSONToFile(geoJSONObject, filename) {
+  //   const geoJSONString = JSON.stringify(geoJSONObject);
+  //   // console.log("geoJSONString: ", geoJSONString)
+  //   const newGeoJson = new File([geoJSONString], filename, {
+  //     type: "application/json",
+  //   });
+  //   return newGeoJson;
+  // }
+
+  // function downloadGeoJSON(geoJSONObject, filename) {
+  //   const newGeoJson = saveGeoJSONToFile(geoJSONObject, filename);
+  //   // console.log(newGeoJson)
+  //   // Create a download link
+  //   const link = document.createElement("a");
+  //   link.href = URL.createObjectURL(newGeoJson);
+  //   link.download = filename;
+  //   // Append the link to the body -> trigger click event to start the download
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   // RM link from DOM
+  //   document.body.removeChild(link);
+  //   // console.log(`GeoJSON saved as ${filename}`);
+  //   return newGeoJson;
+  // }
 
   if (!currentMap || !users || !mapComments) {
-    return (
-      <></>
-    )
+    return <></>;
   } else {
     return (
       <div className="map_details">
@@ -269,32 +375,48 @@ const MapDetails = () => {
                 <h5>Posted by {currentMap.user_id}</h5>
               </div>
             </div>
-            <div className="options_icon">
-              <img style={{ width: "30px", height: "30px" }} src={optionsIcon} onClick={handleToggleOptions} />
-              {optionsMenuVisible && (
-                <div className="mappreview_options_menu">
-                  <ul>
-                    <li>Fork Map</li>
-                    <Divider style={{ margin: "0" }} />
-                    <li>Share Map</li>
-                    <Divider style={{ margin: "0" }} />
-                    <li>Export Map</li>
-                    <Divider style={{ margin: "0" }} />
-                    <li>Edit Map</li>
-                  </ul>
-                </div>
+            <div className="map_details_options_container">
+              {isOwner && (
+                <>
+                  <DeleteButton onClick={handleDeleteMapPost} />
+                  <EditButton />
+                </>
               )}
+              <div className="options_icon">
+                <img
+                  alt=""
+                  style={{ width: "30px", height: "30px" }}
+                  src={optionsIcon}
+                  onClick={handleToggleOptions}
+                />
+                {optionsMenuVisible && (
+                  <div className="mappreview_options_menu">
+                    <ul>
+                      <li>Fork Map</li>
+                      <Divider style={{ margin: "0" }} />
+                      <li>Share Map</li>
+                      <Divider style={{ margin: "0" }} />
+                      <li>Export Map</li>
+                      <Divider style={{ margin: "0" }} />
+                      <li>Edit Map</li>
+                    </ul>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           <div className="map_image_comments">
-            <div ref={mapContainerRef} id="map" style={{ width: '800px', height: '500px' }} >
-            </div>
+            <div
+              ref={mapContainerRef}
+              id="map"
+              style={{ width: "800px", height: "500px" }}
+            ></div>
             <div className="map_details_comments">
               <div className="comment_title">Comments</div>
               <div className="comment_content">
                 {/* <Box mt="0.5rem"> */}
                 {mapComments.map((comment, i) => (
-                  <Comment 
+                  <Comment
                     key={i}
                     isRelpy={false}
                     comment={comment}
@@ -308,17 +430,24 @@ const MapDetails = () => {
                 {isAuth ? (
                   <>
                     <div className="comment_box_profile">
-                      {users.filter(user => user._id === currentUserId).map(user => (
-                        <img key={user._id} style={{ marginTop: "4px" }} className="profile_img" src={user.profile_img}></img>
-                      ))}
+                      {users
+                        .filter((user) => user._id === currentUserId)
+                        .map((user) => (
+                          <img
+                            key={user._id}
+                            style={{ marginTop: "4px" }}
+                            className="profile_img"
+                            src={user.profile_img}
+                          ></img>
+                        ))}
                     </div>
                     <div className="comment_box_input">
                       <input
                         className="input_comment"
                         type="text"
                         placeholder="Add a comment..."
-                      // value={newMapComment}
-                      onChange={(e) => setNewMapComment(e.target.value)}
+                        // value={newMapComment}
+                        onChange={(e) => setNewMapComment(e.target.value)}
                       />
                       <div class="wrapper" onClick={handleAddMapComment}>
                         <img className="btnimg" src={sendMessage} />
@@ -336,15 +465,12 @@ const MapDetails = () => {
           </div>
           <Divider section inverted style={{ margin: "20px 0" }} />
           <div className="tools">
-            <MapTools
-              isEdit={false}
-              currentMap={currentMap}
-            />
+            <MapTools isEdit={false} currentMap={currentMap} />
           </div>
         </div>
       </div>
     );
-  };
+  }
 };
 
 export default MapDetails;

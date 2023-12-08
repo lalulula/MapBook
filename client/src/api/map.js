@@ -9,19 +9,17 @@ const defaultHeaders = {
   },
 };
 
-
-const processFile = file =>{
-  return new Promise(resolve=>{
+const processFile = (file) => {
+  return new Promise((resolve) => {
     const reader = new FileReader();
-    reader.onload = () =>{
-        const result = reader.result;
-        console.log(result); //올바른 결과 출력(화상이미지 바이너리)
-        resolve(result); 
-    }
+    reader.onload = () => {
+      const result = reader.result;
+      console.log(result); //올바른 결과 출력(화상이미지 바이너리)
+      resolve(result);
+    };
     reader.readAsArrayBuffer(file);
-  })
-}
-
+  });
+};
 
 // Create Map
 export const createMapAPIMethod = async (mapData) => {
@@ -36,19 +34,18 @@ export const createMapAPIMethod = async (mapData) => {
     if (keys[i] == "mapPreviewImg") {
       // console.log("mapData[keys[i]]: ", mapData[keys[i]]);
       // console.log("typeof: ", typeof(mapData[keys[i]]))
-      const isImageFile = typeof(mapData[keys[i]]) == "object";
+      const isImageFile = typeof mapData[keys[i]] == "object";
       // console.log(isImageFile);
       var dataName = keys[i];
 
-      if(isImageFile){
+      if (isImageFile) {
         // read binary data
 
-        const imageReadResult = await processFile(mapData[dataName]); 
+        const imageReadResult = await processFile(mapData[dataName]);
 
-
-        console.log("reader.result: ", imageReadResult)
+        console.log("reader.result: ", imageReadResult);
         // var bitmap = fs.readFileSync(mapData[dataName]);
-        
+
         // var imgDataUrl = new Buffer(bitmap).toString('base64');
         // var blobBin = atob(imgDataUrl.split(",")[1]); // base64 데이터 디코딩
         // var array = [];
@@ -61,10 +58,7 @@ export const createMapAPIMethod = async (mapData) => {
         }); // Blob 생성
 
         formData.append(dataName, file); // file data 추가
-        
-      }
-      else{
-
+      } else {
         var imgDataUrl = mapData[dataName];
         var blobBin = atob(imgDataUrl.split(",")[1]); // base64 데이터 디코딩
         var array = [];
@@ -77,9 +71,6 @@ export const createMapAPIMethod = async (mapData) => {
         // console.log(file)
         formData.append(dataName, file); // file data 추가
       }
-
-
-
     } else {
       // console.log(keys[i]);
       formData.append(keys[i], mapData[keys[i]]);
@@ -124,6 +115,14 @@ export const getMapAPI = (mapId) => {
   return res;
 };
 
+export const deleteMapPostAPIMethod = (mapId) => {
+  console.log(mapId);
+  return fetch(`${API_BASE_URL}/api/maps/removeMap/${mapId}`, {
+    ...defaultHeaders,
+    method: "DELETE",
+  }).then(parseJSON);
+};
+
 // LIKE A MAP
 export const likeMapAPIMethod = (mapId, isAuth, userId) => {
   const res = fetch(`${API_BASE_URL}/api/maps/likeMap/${mapId}`, {
@@ -152,20 +151,17 @@ export const getAllMapCommentsAPIMethod = (mapPostId) => {
 export const createMapCommentAPIMethod = (comment) => {
   return fetch(`${API_BASE_URL}/api/mapComment/createMapComment`, {
     ...defaultHeaders,
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify(comment),
   }).then(parseJSON);
-}
+};
 
 export const updateMapCommentAPIMethod = (id, newComment) => {
-  return fetch(
-    `${API_BASE_URL}/api/mapComment/editMapComment/${id}`,
-    {
-      ...defaultHeaders,
-      method: "PUT", // The method defaults to GET
-      body: JSON.stringify(newComment),
-    }
-  );
+  return fetch(`${API_BASE_URL}/api/mapComment/editMapComment/${id}`, {
+    ...defaultHeaders,
+    method: "PUT", // The method defaults to GET
+    body: JSON.stringify(newComment),
+  });
 };
 
 export const deleteMapCommentAPIMethod = (mapCommentId) => {
@@ -179,41 +175,33 @@ export const deleteMapCommentAPIMethod = (mapCommentId) => {
 };
 
 export const getAllMapPostRepliesAPIMethod = (id) => {
-  return fetch(`${API_BASE_URL}/api/mapReply/mapReplies/${id}`,
-    {
-      ...defaultHeaders,
-      method: "GET",
-    }
-  ).then(parseJSON);
+  return fetch(`${API_BASE_URL}/api/mapReply/mapReplies/${id}`, {
+    ...defaultHeaders,
+    method: "GET",
+  }).then(parseJSON);
 };
 
 export const createMapPostReplyAPIMethod = (reply) => {
   return fetch(`${API_BASE_URL}/api/mapReply/createMapReply`, {
     ...defaultHeaders,
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify(reply),
   }).then(parseJSON);
-}
+};
 
 export const updateMapPostReplyAPIMethod = (id, newReply) => {
-  return fetch(
-    `${API_BASE_URL}/api/mapReply/editMapReply/${id}`,
-    {
-      ...defaultHeaders,
-      method: "PUT", // The method defaults to GET
-      body: JSON.stringify(newReply),
-    }
-  );
+  return fetch(`${API_BASE_URL}/api/mapReply/editMapReply/${id}`, {
+    ...defaultHeaders,
+    method: "PUT", // The method defaults to GET
+    body: JSON.stringify(newReply),
+  });
 };
 
 export const deleteMapPostReplyAPIMethod = (replyId) => {
-  return fetch(
-    `${API_BASE_URL}/api/mapReply/deleteMapReply/${replyId}`,
-    {
-      ...defaultHeaders,
-      method: "DELETE",
-    }
-  ).then(parseJSON);
+  return fetch(`${API_BASE_URL}/api/mapReply/deleteMapReply/${replyId}`, {
+    ...defaultHeaders,
+    method: "DELETE",
+  }).then(parseJSON);
 };
 
 function checkStatus(response) {
