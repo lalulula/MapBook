@@ -314,7 +314,6 @@ const Map = ({
     // }
     // console.log("updated selectedmapfile: ", selectedMapFile);
 
-
     handleClickRegion();
     redrawThematicData();
   };
@@ -344,10 +343,8 @@ const Map = ({
   const handleRedo = () => {
     if (redoStack.current.length !== 0) {
       console.log("redo Clicked");
-
       // pop {a} from redo stack
       const popedState = redoStack.current.pop();
-
       // push current state into undo stack
       undoStack.current.push(mapFileData.current);
 
@@ -402,45 +399,34 @@ const Map = ({
       });
 
       map.on("load", () => {
-        // console.log("ON LOAD selectedMapFile: ", selectedMapFile);
+        console.log("ON LOAD selectedMapFile: ", selectedMapFile);
         map.addSource("counties", {
           type: "geojson",
           data: mapFileData.current,
         });
 
-        map.addLayer(
-          {
-            id: "counties",
-            type: "fill",
-            source: "counties",
-            // "source-layer": "original",
-            paint: {
-              // "fill-color": "rgba(0.5,0.5,0,0.4)",
-              "fill-color": "#ff0088", //default map color
-              "fill-opacity": 0.4,
-              "fill-outline-color": "#000000",
-              // "fill-outline-opacity": 0.8
-            },
-          }
-          // "building"
-        );
+        map.addLayer({
+          id: "counties",
+          type: "fill",
+          source: "counties",
+          paint: {
+            "fill-color": "#ff0088", //default map color
+            "fill-opacity": 0.4,
+            "fill-outline-color": "#000000",
+          },
+        });
 
-        map.addLayer(
-          {
-            id: `counties-highlighted`,
-            type: "fill",
-            source: "counties",
-            // "source-layer": "original",
-            paint: {
-              "fill-outline-color": "#484896", //Fill color
-              "fill-color": `#6e599f`, //Fill color onclick
-              "fill-opacity": 0.75,
-            },
-            filter: ["in", "name", ""],
-          }
-          // "building"
-        );
-        
+        map.addLayer({
+          id: "counties-highlighted",
+          type: "fill",
+          source: "counties",
+          paint: {
+            "fill-outline-color": "#484896", //Fill color
+            "fill-color": "#6e599f", //Fill color onclick
+            "fill-opacity": 0.75,
+          },
+          filter: ["in", "name", ""],
+        });
 
         ////// HANEUL
         map.addLayer(
@@ -461,7 +447,7 @@ const Map = ({
           // "building"
         );
         
-        
+  
 
         // UGLY NAME LABELS
         // map.addLayer({
@@ -471,6 +457,28 @@ const Map = ({
         //   layout: {
         //     "text-field": ["get", "name"],
         //     "text-size": 15,
+        //   },
+        // });
+        // /////////////////////////////////// HEAT///////////////////////////////////
+        // // const zoomThreshold = 4;
+        // console.log("mapbook_data:current", mapFileData.current);
+        // map.addLayer({
+        //   id: "heat-data",
+        //   source: "counties",
+        //   // maxzoom: zoomThreshold,
+        //   type: "fill",
+        //   filter: ["in", "mapbook_data", ""],
+        //   paint: {
+        //     "fill-color": [
+        //       "case",
+        //       ["has", ["get", "mapbook_data"]],
+        //       [
+        //         "get",
+        //         ["get", ["get", "mapbook_data", ["literal", ["color"]]], 0],
+        //       ],
+        //       "#000000", // Default color if mapbook_data or color is not present
+        //     ],
+        //     "fill-opacity": 0.75,
         //   },
         // });
 
@@ -499,7 +507,6 @@ const Map = ({
         }); */
 
         map.on("click", (e) => {
-          // console.log("this is e: ", e);
           const bbox = [
             [e.point.x, e.point.y],
             [e.point.x, e.point.y],
@@ -518,8 +525,7 @@ const Map = ({
               (f) => f["properties"].name === names[0]
             );
 
-            console.log("selectedfeatures: ", newSelectedFeature);
-
+            console.log("newSelectedFeature: ", newSelectedFeature);
             setFeature(newSelectedFeature);
 
             setRegionName(names[0]);
@@ -529,6 +535,7 @@ const Map = ({
             //ADDED
             console.log("mapfiledata.current: ", mapFileData.current.features);
             map.getSource("counties").setData(mapFileData.current.features);
+            map.setPaintProperty("counties", "fill-color");
           } else {
             setFeature([]);
             map.setFilter("counties-highlighted", ["in", "name", ...names]);
@@ -539,12 +546,6 @@ const Map = ({
           const regions = map.queryRenderedFeatures(event.point, {
             layers: ["counties"],
           });
-
-          // if (regions.length === 0) {
-          //   handleMouseLeave();
-          // } else {
-          //   handleMouseEnter();
-          // }
 
           if (regions.length > 0) {
             const tempFeature = mapFileData.current["features"].find(
@@ -559,20 +560,20 @@ const Map = ({
               const formattedData =
                 templateHoverType.current === "Thematic Map"
                   ? Object.keys(data)
-                    .map((key) => {
-                      const nestedProperties = Object.keys(data[key])
-                        .map(
-                          (nestedKey) =>
-                            `${nestedKey}:${data[key][nestedKey]}`
-                        )
-                        .join("\n");
-                      return `${key}: \n${nestedProperties}`;
-                    })
-                    .join("\n")
+                      .map((key) => {
+                        const nestedProperties = Object.keys(data[key])
+                          .map(
+                            (nestedKey) =>
+                              `${nestedKey}:${data[key][nestedKey]}`
+                          )
+                          .join("\n");
+                        return `${key}: \n${nestedProperties}`;
+                      })
+                      .join("\n")
                   : Object.keys(data)
-                    .map((key) => `${key}:${data[key]}`)
-                    .join("\n");
-              //console.log(data, formattedData);
+                      .map((key) => `${key}:${data[key]}`)
+                      .join("\n");
+              // console.log(data, formattedData);
               // console.log(regions[0]["properties"].name + "\n" + formattedData);
 
               if (templateHoverType.current === "Pie Chart") {
@@ -666,9 +667,9 @@ const Map = ({
     if (res.ok) {
       // const responseMsg = await res.json;
       navigate("/mainpage");
-      // console.log("create map success!");
     } else {
-      alert(`Error: ${res.status} - ${res.statusText}`);
+      // alert(`Error: ${res.status} - ${res.statusText}`);
+      alert("Check that all input fields have values");
     }
   };
 
@@ -681,33 +682,9 @@ const Map = ({
     );
     createMap(mapFile);
   };
-  // const [position, setPosition] = useState({ x: 0, y: 0 });
-  // const [showPopup, setShowPopup] = useState(false);
 
-  const handleMouseMove = (e) => {
-    // setPosition({ x: e.clientX, y: e.clientY });
-  };
-
-  const handleMouseEnter = () => {
-    // setShowPopup(true);
-  };
-
-  const handleMouseLeave = () => {
-    // setShowPopup(false);
-  };
   return (
-    <div
-      className="addmapdata_center"
-    // onMouseMove={handleMouseMove}
-    // onMouseEnter={handleMouseEnter}
-    // onMouseLeave={handleMouseLeave}
-    >
-      {/* {hoverData && showPopup && (
-        <div className="popup" style={{ left: position.x, top: position.y }}>
-          <pre>{hoverData}</pre>
-        </div>
-      )} */}
-
+    <div className="addmapdata_center">
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
           <i
