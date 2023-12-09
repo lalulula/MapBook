@@ -193,39 +193,40 @@ const Map = ({
   };
   // THEMATIC
   const redrawThematicData = () => {
-    //////// HANEUL
-    if (mapRef.current.getLayer("counties-thematic")) {
-      mapRef.current.removeLayer("counties-thematic");
-    }
-    if (mapRef.current.getSource("thematic")) {
-      mapRef.current.removeSource("thematic");
-    }
-
-    mapRef.current.addSource("thematic", {
-      type: "geojson",
-      data: mapFileData.current,
-    });
-
-    ////// HANEUL
-    mapRef.current.addLayer(
-      {
-        id: `counties-thematic`,
-        type: "fill",
-        source: "thematic",
-        layout: {
-          // Make the layer visible by default.
-          visibility: "none",
-        },
-        paint: {
-          "fill-outline-color": "#484896", //Fill color
-          "fill-color": "#faafee",
-          "fill-opacity": 1,
-        },
-      }
-      // "building"
-    );
-
     if (templateHoverType.current === "Thematic Map") {
+      //////// HANEUL
+      if (mapRef.current.getLayer("counties-thematic")) {
+        mapRef.current.removeLayer("counties-thematic");
+      }
+      if (mapRef.current.getSource("thematic")) {
+        mapRef.current.removeSource("thematic");
+      }
+
+      mapRef.current.addSource("thematic", {
+        type: "geojson",
+        data: mapFileData.current,
+      });
+
+      ////// HANEUL
+      mapRef.current.addLayer(
+        {
+          id: `counties-thematic`,
+          type: "fill",
+          source: "thematic",
+          layout: {
+            // Make the layer visible by default.
+            visibility: "none",
+          },
+          paint: {
+            "fill-outline-color": "#484896", //Fill color
+            "fill-color": "#faafee",
+            "fill-opacity": 1,
+          },
+        }
+        // "building"
+      );
+
+    
       console.log("Calling THEMATIC AFTER CLICK");
 
       const featureDataAdded = mapFileData.current["features"].filter(
@@ -302,33 +303,35 @@ const Map = ({
   };
   // HEAT
   const redrawHeatData = () => {
-    if (mapRef.current.getLayer("counties-heat")) {
-      mapRef.current.removeLayer("counties-heat");
-    }
-    if (mapRef.current.getSource("heat")) {
-      mapRef.current.removeSource("haet");
-    }
-
-    mapRef.current.addSource("heat", {
-      type: "geojson",
-      data: mapFileData.current,
-    });
-
-    mapRef.current.addLayer({
-      id: `counties-heat`,
-      type: "fill",
-      source: "heat",
-      layout: {
-        visibility: "none",
-      },
-      paint: {
-        "fill-outline-color": "#484896",
-        "fill-color": "#faafee",
-        "fill-opacity": 1,
-      },
-    });
-
     if (templateHoverType.current === "Heat Map") {
+
+      if (mapRef.current.getLayer("counties-heat")) {
+        mapRef.current.removeLayer("counties-heat");
+      }
+      if (mapRef.current.getSource("heat")) {
+        mapRef.current.removeSource("heat");
+      }
+
+      mapRef.current.addSource("heat", {
+        type: "geojson",
+        data: mapFileData.current,
+      });
+
+      mapRef.current.addLayer({
+        id: `counties-heat`,
+        type: "fill",
+        source: "heat",
+        layout: {
+          visibility: "none",
+        },
+        paint: {
+          "fill-outline-color": "#484896",
+          "fill-color": "#faafee",
+          "fill-opacity": 1,
+        },
+      });
+
+  
       console.log("Calling HEAT AFTER CLICK");
 
       const featureDataAdded = mapFileData.current["features"].filter(
