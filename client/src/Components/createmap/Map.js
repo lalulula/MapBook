@@ -194,7 +194,6 @@ const Map = ({
   // THEMATIC
   const redrawThematicData = () => {
     //////// HANEUL
-    // mapRef.current.removeSource('counties');
     if (mapRef.current.getLayer("counties-thematic")) {
       mapRef.current.removeLayer("counties-thematic");
     }
@@ -337,7 +336,7 @@ const Map = ({
       );
       var namesDataAdded = [];
       featureDataAdded.forEach((element) => {
-        // console.log(element);
+        console.log("featureDataAdded", element);
         namesDataAdded.push(element["properties"].name);
       });
 
@@ -408,7 +407,7 @@ const Map = ({
       console.log("afterUndo: ", mapFileData.current);
 
       setSelectedMapFile(mapFileData.current);
-
+      redrawHeatData();
       redrawThematicData();
     }
   };
@@ -431,6 +430,7 @@ const Map = ({
       setSelectedMapFile(mapFileData.current);
 
       redrawThematicData();
+      redrawHeatData();
     }
   };
 
