@@ -191,7 +191,7 @@ const Map = ({
       [data["dataName"]]: { color: data["color"], value: value },
     }));
   };
-
+  // THEMATIC
   const redrawThematicData = () => {
     //////// HANEUL
     // mapRef.current.removeSource('counties');
@@ -301,43 +301,36 @@ const Map = ({
       ]);
     }
   };
-
+  // HEAT
   const redrawHeatData = () => {
-    //////// HANEUL
-    // mapRef.current.removeSource('counties');
-    if (mapRef.current.getLayer("counties-thematic")) {
-      mapRef.current.removeLayer("counties-thematic");
+    if (mapRef.current.getLayer("counties-heat")) {
+      mapRef.current.removeLayer("counties-heat");
     }
-    if (mapRef.current.getSource("thematic")) {
-      mapRef.current.removeSource("thematic");
+    if (mapRef.current.getSource("heat")) {
+      mapRef.current.removeSource("haet");
     }
 
-    mapRef.current.addSource("thematic", {
+    mapRef.current.addSource("heat", {
       type: "geojson",
       data: mapFileData.current,
     });
 
-    ////// HANEUL
-    mapRef.current.addLayer(
-      {
-        id: `counties-thematic`,
-        type: "fill",
-        source: "thematic",
-        layout: {
-          // Make the layer visible by default.
-          visibility: "none",
-        },
-        paint: {
-          "fill-outline-color": "#484896", //Fill color
-          "fill-color": "#faafee",
-          "fill-opacity": 1,
-        },
-      }
-      // "building"
-    );
+    mapRef.current.addLayer({
+      id: `counties-heat`,
+      type: "fill",
+      source: "heat",
+      layout: {
+        visibility: "none",
+      },
+      paint: {
+        "fill-outline-color": "#484896",
+        "fill-color": "#faafee",
+        "fill-opacity": 1,
+      },
+    });
 
-    if (templateHoverType.current === "Thematic Map") {
-      console.log("Calling THEMATIC AFTER CLICK");
+    if (templateHoverType.current === "Heat Map") {
+      console.log("Calling HEAT AFTER CLICK");
 
       const featureDataAdded = mapFileData.current["features"].filter(
         (f) => f["properties"].mapbook_data != null
@@ -348,69 +341,25 @@ const Map = ({
         namesDataAdded.push(element["properties"].name);
       });
 
-      console.log("themeData", themeData);
+      console.log("heatData", inputData, "namesdata", namesDataAdded);
 
-      let dataNames = [];
-      themeData.forEach((data) => {
-        dataNames.push(data.dataName);
-      });
-      console.log("dataNames", dataNames);
-
-      let expMaximumValue = ["max"];
-      let values = [];
-      let colors = [];
-      dataNames.forEach((dataName) => {
-        const expValue = [
-          "to-number",
-          ["get", "value", ["get", dataName, ["get", "mapbook_data"]]],
-        ];
-        const expColor = [
-          "get",
-          "color",
-          ["get", dataName, ["get", "mapbook_data"]],
-        ];
-
-        values.push(expValue);
-        colors.push(expColor);
-        expMaximumValue.push(expValue);
-      });
-      console.log("values", values);
-      console.log("colors", colors);
-      console.log("expMaximumValue", expMaximumValue);
-
-      let expGetMaximumColor = ["case"];
-      for (let i = 0; i < values.length; i++) {
-        const statement = ["==", values[i], expMaximumValue];
-        expGetMaximumColor.push(statement);
-        expGetMaximumColor.push(mapFileData.current.mapbook_themedata[i].color);
-      }
-      expGetMaximumColor.push("#000000");
-
-      console.log("expGetMaximumColor", expGetMaximumColor);
-
-      console.log("mapFileData.current", mapFileData.current);
-      console.log("mapRef.getSource(): ", mapRef.current.getSource("counties"));
-
+      let value = inputData["value"];
+      let color = inputData["color"];
+      console.log(value, color);
       mapRef.current.setLayoutProperty(
-        "counties-thematic",
+        "counties-heat",
         "visibility",
         "visible"
       );
-      mapRef.current.setPaintProperty(
-        "counties-thematic",
-        "fill-color",
-        expGetMaximumColor
-      );
-      // mapRef.current.setPaintProperty('counties-thematic', 'fill-color', ['case', ['==',  ['to-number', ['get', 'value', ['get', 'aa', ['get', 'mapbook_data']]]] , 10], '#ffffff', '#123123']);
-
-      // mapRef.current.setPaintProperty('counties-thematic', 'fill-color', mapFileData.current.mapbook_themedata[0].color);
-      mapRef.current.setFilter("counties-thematic", [
+      mapRef.current.setPaintProperty("counties-heat", "fill-color", color);
+      mapRef.current.setFilter("counties-heat", [
         "in",
         "name",
         ...namesDataAdded,
       ]);
     }
   };
+
   const handleAddData = (e) => {
     e.preventDefault();
 
@@ -436,33 +385,6 @@ const Map = ({
         break;
       }
     }
-
-    // const selectedRegionName = feature[0]?.properties.name;
-    // if (selectedRegionName) {
-    //   const selectedMapData = mapFileData.current.features.find(
-    //     (feature) => feature.properties.name === selectedRegionName
-    //   );
-
-    //   if (selectedMapData) {
-    //     const mapbookDataProperties = selectedMapData.properties.mapbook_data;
-    //     console.log(mapContainerRef.current);
-
-    //     if (mapbookDataProperties) {
-    //       const newDataColor = inputData?.color;
-
-    //       console.log(selectedRegionName, mapbookDataProperties, newDataColor);
-    //       if (newDataColor) {
-    //         // Update the fill-color property for the selected region
-    //         mapContainerRef.current.setPaintProperty(
-    //           "counties-highlighted",
-    //           "fill-color",
-    //           newDataColor
-    //         );
-    //       }
-    //     }
-    //   }
-    // }
-    // console.log("updated selectedmapfile: ", selectedMapFile);
 
     handleClickRegion();
     redrawThematicData();
@@ -586,28 +508,6 @@ const Map = ({
         //   layout: {
         //     "text-field": ["get", "name"],
         //     "text-size": 15,
-        //   },
-        // });
-        // /////////////////////////////////// HEAT///////////////////////////////////
-        // // const zoomThreshold = 4;
-        // console.log("mapbook_data:current", mapFileData.current);
-        // map.addLayer({
-        //   id: "heat-data",
-        //   source: "counties",
-        //   // maxzoom: zoomThreshold,
-        //   type: "fill",
-        //   filter: ["in", "mapbook_data", ""],
-        //   paint: {
-        //     "fill-color": [
-        //       "case",
-        //       ["has", ["get", "mapbook_data"]],
-        //       [
-        //         "get",
-        //         ["get", ["get", "mapbook_data", ["literal", ["color"]]], 0],
-        //       ],
-        //       "#000000", // Default color if mapbook_data or color is not present
-        //     ],
-        //     "fill-opacity": 0.75,
         //   },
         // });
 
