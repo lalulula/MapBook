@@ -114,10 +114,9 @@ const Map = ({
     });
   };
 
-
   const handleThematicMapLayer = (map, data) => {
     console.log("handleThematicMapLayer: ", data);
-  }
+  };
 
   useEffect(() => {
     templateHoverType.current = template;
@@ -141,7 +140,6 @@ const Map = ({
       } else if (prevMapFile["mapbook_template"] === "Thematic Map") {
         // setTemplate("Thematic Map");
         setShowModalThematic(!showModalThematic);
-
       } else if (prevMapFile["mapbook_template"] === "Heat Map") {
         // setTemplate("Heat Map");
         setShowModalHeat(!showModalHeat);
@@ -197,110 +195,222 @@ const Map = ({
   const redrawThematicData = () => {
     //////// HANEUL
     // mapRef.current.removeSource('counties');
-    if (mapRef.current.getLayer('counties-thematic')) {
-      mapRef.current.removeLayer('counties-thematic');
+    if (mapRef.current.getLayer("counties-thematic")) {
+      mapRef.current.removeLayer("counties-thematic");
     }
-    if(mapRef.current.getSource('thematic')){
-      mapRef.current.removeSource('thematic');
-
+    if (mapRef.current.getSource("thematic")) {
+      mapRef.current.removeSource("thematic");
     }
-  
 
     mapRef.current.addSource("thematic", {
       type: "geojson",
       data: mapFileData.current,
     });
-    
+
     ////// HANEUL
     mapRef.current.addLayer(
       {
         id: `counties-thematic`,
         type: "fill",
         source: "thematic",
-        'layout': {
-        // Make the layer visible by default.
-        'visibility': 'none'
+        layout: {
+          // Make the layer visible by default.
+          visibility: "none",
         },
         paint: {
           "fill-outline-color": "#484896", //Fill color
-          'fill-color': '#faafee',
+          "fill-color": "#faafee",
           "fill-opacity": 1,
         },
       }
       // "building"
     );
-    
 
     if (templateHoverType.current === "Thematic Map") {
       console.log("Calling THEMATIC AFTER CLICK");
-      
 
       const featureDataAdded = mapFileData.current["features"].filter(
         (f) => f["properties"].mapbook_data != null
       );
       var namesDataAdded = [];
-      featureDataAdded.forEach(element => { 
-        // console.log(element); 
-        namesDataAdded.push(element["properties"].name)
-      }); 
+      featureDataAdded.forEach((element) => {
+        // console.log(element);
+        namesDataAdded.push(element["properties"].name);
+      });
 
-      console.log("themeData", themeData)
-
-      // get maximum 
-      // ["max", number, number, ...]
-      //properties:{
-      //  mapbook_data:{
-      //    aa: {color: ooo, value: ooo}
-      //    bb: {color: ooo, value: ooo}
-      //  }
-      //}
-
+      console.log("themeData", themeData);
 
       let dataNames = [];
-      themeData.forEach(data => {
+      themeData.forEach((data) => {
         dataNames.push(data.dataName);
       });
       console.log("dataNames", dataNames);
 
-
-      let expMaximumValue = ['max'];
+      let expMaximumValue = ["max"];
       let values = [];
-      let colors = []
-      dataNames.forEach(dataName => {
-        const expValue = ['to-number', ['get', 'value', ['get', dataName, ['get', 'mapbook_data']]]];
-        const expColor = ['get', 'color', ['get', dataName, ['get', 'mapbook_data']]];
+      let colors = [];
+      dataNames.forEach((dataName) => {
+        const expValue = [
+          "to-number",
+          ["get", "value", ["get", dataName, ["get", "mapbook_data"]]],
+        ];
+        const expColor = [
+          "get",
+          "color",
+          ["get", dataName, ["get", "mapbook_data"]],
+        ];
 
         values.push(expValue);
-        colors.push(expColor)
+        colors.push(expColor);
         expMaximumValue.push(expValue);
       });
       console.log("values", values);
       console.log("colors", colors);
       console.log("expMaximumValue", expMaximumValue);
 
-
-      let expGetMaximumColor = ['case'];
-      for(let i = 0; i < values.length; i++){
-        const statement = ['==', values[i], expMaximumValue];
+      let expGetMaximumColor = ["case"];
+      for (let i = 0; i < values.length; i++) {
+        const statement = ["==", values[i], expMaximumValue];
         expGetMaximumColor.push(statement);
         expGetMaximumColor.push(mapFileData.current.mapbook_themedata[i].color);
       }
-      expGetMaximumColor.push('#000000')
- 
+      expGetMaximumColor.push("#000000");
+
       console.log("expGetMaximumColor", expGetMaximumColor);
 
       console.log("mapFileData.current", mapFileData.current);
       console.log("mapRef.getSource(): ", mapRef.current.getSource("counties"));
 
-      mapRef.current.setLayoutProperty('counties-thematic', 'visibility', 'visible');
-      mapRef.current.setPaintProperty('counties-thematic', 'fill-color', expGetMaximumColor);
+      mapRef.current.setLayoutProperty(
+        "counties-thematic",
+        "visibility",
+        "visible"
+      );
+      mapRef.current.setPaintProperty(
+        "counties-thematic",
+        "fill-color",
+        expGetMaximumColor
+      );
       // mapRef.current.setPaintProperty('counties-thematic', 'fill-color', ['case', ['==',  ['to-number', ['get', 'value', ['get', 'aa', ['get', 'mapbook_data']]]] , 10], '#ffffff', '#123123']);
 
       // mapRef.current.setPaintProperty('counties-thematic', 'fill-color', mapFileData.current.mapbook_themedata[0].color);
-      mapRef.current.setFilter("counties-thematic", ["in", "name", ...namesDataAdded]);
-
+      mapRef.current.setFilter("counties-thematic", [
+        "in",
+        "name",
+        ...namesDataAdded,
+      ]);
     }
-  }
+  };
+
+  const redrawHeatData = () => {
+    //////// HANEUL
+    // mapRef.current.removeSource('counties');
+    if (mapRef.current.getLayer("counties-thematic")) {
+      mapRef.current.removeLayer("counties-thematic");
+    }
+    if (mapRef.current.getSource("thematic")) {
+      mapRef.current.removeSource("thematic");
+    }
+
+    mapRef.current.addSource("thematic", {
+      type: "geojson",
+      data: mapFileData.current,
+    });
+
+    ////// HANEUL
+    mapRef.current.addLayer(
+      {
+        id: `counties-thematic`,
+        type: "fill",
+        source: "thematic",
+        layout: {
+          // Make the layer visible by default.
+          visibility: "none",
+        },
+        paint: {
+          "fill-outline-color": "#484896", //Fill color
+          "fill-color": "#faafee",
+          "fill-opacity": 1,
+        },
+      }
+      // "building"
+    );
+
+    if (templateHoverType.current === "Thematic Map") {
+      console.log("Calling THEMATIC AFTER CLICK");
+
+      const featureDataAdded = mapFileData.current["features"].filter(
+        (f) => f["properties"].mapbook_data != null
+      );
+      var namesDataAdded = [];
+      featureDataAdded.forEach((element) => {
+        // console.log(element);
+        namesDataAdded.push(element["properties"].name);
+      });
+
+      console.log("themeData", themeData);
+
+      let dataNames = [];
+      themeData.forEach((data) => {
+        dataNames.push(data.dataName);
+      });
+      console.log("dataNames", dataNames);
+
+      let expMaximumValue = ["max"];
+      let values = [];
+      let colors = [];
+      dataNames.forEach((dataName) => {
+        const expValue = [
+          "to-number",
+          ["get", "value", ["get", dataName, ["get", "mapbook_data"]]],
+        ];
+        const expColor = [
+          "get",
+          "color",
+          ["get", dataName, ["get", "mapbook_data"]],
+        ];
+
+        values.push(expValue);
+        colors.push(expColor);
+        expMaximumValue.push(expValue);
+      });
+      console.log("values", values);
+      console.log("colors", colors);
+      console.log("expMaximumValue", expMaximumValue);
+
+      let expGetMaximumColor = ["case"];
+      for (let i = 0; i < values.length; i++) {
+        const statement = ["==", values[i], expMaximumValue];
+        expGetMaximumColor.push(statement);
+        expGetMaximumColor.push(mapFileData.current.mapbook_themedata[i].color);
+      }
+      expGetMaximumColor.push("#000000");
+
+      console.log("expGetMaximumColor", expGetMaximumColor);
+
+      console.log("mapFileData.current", mapFileData.current);
+      console.log("mapRef.getSource(): ", mapRef.current.getSource("counties"));
+
+      mapRef.current.setLayoutProperty(
+        "counties-thematic",
+        "visibility",
+        "visible"
+      );
+      mapRef.current.setPaintProperty(
+        "counties-thematic",
+        "fill-color",
+        expGetMaximumColor
+      );
+      // mapRef.current.setPaintProperty('counties-thematic', 'fill-color', ['case', ['==',  ['to-number', ['get', 'value', ['get', 'aa', ['get', 'mapbook_data']]]] , 10], '#ffffff', '#123123']);
+
+      // mapRef.current.setPaintProperty('counties-thematic', 'fill-color', mapFileData.current.mapbook_themedata[0].color);
+      mapRef.current.setFilter("counties-thematic", [
+        "in",
+        "name",
+        ...namesDataAdded,
+      ]);
+    }
+  };
   const handleAddData = (e) => {
     e.preventDefault();
 
@@ -356,6 +466,7 @@ const Map = ({
 
     handleClickRegion();
     redrawThematicData();
+    redrawHeatData();
   };
 
   const handleUndo = () => {
@@ -427,7 +538,6 @@ const Map = ({
       });
     }
 
-    
     if (map != null) {
       map.on("idle", function () {
         map.resize();
@@ -467,9 +577,6 @@ const Map = ({
           },
           filter: ["in", "name", ""],
         });
-
-       
-  
 
         // UGLY NAME LABELS
         // map.addLayer({
@@ -553,7 +660,7 @@ const Map = ({
             setRegionName(names[0]);
             map.setFilter("counties-highlighted", ["in", "name", ...names]);
             handleClickRegion();
-         
+
             //ADDED
             console.log("mapfiledata.current: ", mapFileData.current.features);
             map.getSource("counties").setData(mapFileData.current.features);
@@ -635,8 +742,6 @@ const Map = ({
           }
         });
       });
-
-      
     }
 
     mapRef.current = map;
