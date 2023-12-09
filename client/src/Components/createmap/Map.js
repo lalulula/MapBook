@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import mapboxgl from "mapbox-gl"; // Import mapboxgl
 import { createMapAPIMethod } from "../../api/map";
 import { useSelector } from "react-redux";
@@ -27,6 +27,7 @@ const Map = ({
   setHoverData,
 }) => {
   const mapFileData = useRef(selectedMapFile);
+  const mapRef = useRef();
 
   const [regionName, setRegionName] = useState("");
 
@@ -113,6 +114,11 @@ const Map = ({
     });
   };
 
+
+  const handleThematicMapLayer = (map, data) => {
+    console.log("handleThematicMapLayer: ", data);
+  }
+
   useEffect(() => {
     templateHoverType.current = template;
     resetMap();
@@ -135,6 +141,7 @@ const Map = ({
       } else if (prevMapFile["mapbook_template"] === "Thematic Map") {
         // setTemplate("Thematic Map");
         setShowModalThematic(!showModalThematic);
+
       } else if (prevMapFile["mapbook_template"] === "Heat Map") {
         // setTemplate("Heat Map");
         setShowModalHeat(!showModalHeat);
@@ -187,6 +194,73 @@ const Map = ({
     }));
   };
 
+  const redrawThematicData = () => {
+    //////// HANEUL
+    if (templateHoverType.current === "Thematic Map") {
+      console.log("Calling THEMATIC AFTER CLICK");
+      
+
+      const featureDataAdded = mapFileData.current["features"].filter(
+        (f) => f["properties"].mapbook_data != null
+      );
+      var namesDataAdded = [];
+      featureDataAdded.forEach(element => { 
+        // console.log(element); 
+        namesDataAdded.push(element["properties"].name)
+      }); 
+
+      console.log("themeData", themeData)
+
+      // get maximum 
+      // ["max", number, number, ...]
+      //properties:{
+      //  mapbook_data:{
+      //    aa: {color: ooo, value: ooo}
+      //    bb: {color: ooo, value: ooo}
+      //  }
+      //}
+
+
+      let dataNames = [];
+      themeData.forEach(data => {
+        dataNames.push(data.dataName);
+      });
+      console.log("dataNames", dataNames);
+
+
+      let expMaximumValue = ['max'];
+      let values = [];
+      let colors = []
+      dataNames.forEach(dataName => {
+        const expValue = ['get', 'value', ['get', dataName, ["object", ['get', 'mapbook_data']]]];
+        const expColor = ['get', 'color', ['get', dataName, ["object", ['get', 'mapbook_data']]]];
+
+        values.push(expValue);
+        colors.push(expColor)
+        expMaximumValue.push(expValue);
+      });
+      console.log("values", values);
+      console.log("colors", colors);
+      console.log("expMaximumValue", expMaximumValue);
+
+
+      let expGetMaximumColor = ['case'];
+      for(let i = 0; i < values.length; i++){
+        const statement = ['==', values[i], expMaximumValue];
+        expGetMaximumColor.push(statement);
+        expGetMaximumColor.push(colors[i]);
+      }
+      expGetMaximumColor.push('#000000')
+ 
+      console.log("expGetMaximumColor", expGetMaximumColor);
+
+
+      mapRef.current.setLayoutProperty('counties-thematic', 'visibility', 'visible');
+      mapRef.current.setPaintProperty('counties-thematic', 'fill-color', expGetMaximumColor);
+      mapRef.current.setFilter("counties-thematic", ["in", "name", ...namesDataAdded]);
+
+    }
+  }
   const handleAddData = (e) => {
     e.preventDefault();
 
@@ -242,6 +316,7 @@ const Map = ({
 
 
     handleClickRegion();
+    redrawThematicData();
   };
 
   const handleUndo = () => {
@@ -261,6 +336,8 @@ const Map = ({
       console.log("afterUndo: ", mapFileData.current);
 
       setSelectedMapFile(mapFileData.current);
+
+      redrawThematicData();
     }
   };
 
@@ -282,6 +359,8 @@ const Map = ({
       console.log("afterRedo: ", mapFileData.current);
 
       setSelectedMapFile(mapFileData.current);
+
+      redrawThematicData();
     }
   };
 
@@ -296,7 +375,7 @@ const Map = ({
 
   useEffect(() => {
     // console.log("selectedMapFile: ", selectedMapFile);
-    // console.log("onhover: useEffect:", templateHoverType.current);
+    console.log("onhover: useEffect:", templateHoverType.current);
 
     let map;
 
@@ -310,6 +389,8 @@ const Map = ({
         preserveDrawingBuffer: true,
       });
     }
+
+    
     if (map != null) {
       map.on("idle", function () {
         map.resize();
@@ -346,19 +427,41 @@ const Map = ({
 
         map.addLayer(
           {
-            id: "counties-highlighted",
+            id: `counties-highlighted`,
             type: "fill",
             source: "counties",
             // "source-layer": "original",
             paint: {
               "fill-outline-color": "#484896", //Fill color
-              "fill-color": "#6e599f", //Fill color onclick
+              "fill-color": `#6e599f`, //Fill color onclick
               "fill-opacity": 0.75,
             },
             filter: ["in", "name", ""],
           }
           // "building"
         );
+        
+
+        ////// HANEUL
+        map.addLayer(
+          {
+            id: `counties-thematic`,
+            type: "fill",
+            source: "counties",
+            'layout': {
+            // Make the layer visible by default.
+            'visibility': 'none'
+            },
+            paint: {
+              "fill-outline-color": "#484896", //Fill color
+              'fill-color': '#faafee',
+              "fill-opacity": 1,
+            },
+          }
+          // "building"
+        );
+        
+        
 
         // UGLY NAME LABELS
         // map.addLayer({
@@ -422,7 +525,7 @@ const Map = ({
             setRegionName(names[0]);
             map.setFilter("counties-highlighted", ["in", "name", ...names]);
             handleClickRegion();
-
+         
             //ADDED
             console.log("mapfiledata.current: ", mapFileData.current.features);
             map.getSource("counties").setData(mapFileData.current.features);
@@ -510,6 +613,8 @@ const Map = ({
         });
       });
     }
+
+    mapRef.current = map;
   }, []);
 
   // Convert data to GEOJSON //

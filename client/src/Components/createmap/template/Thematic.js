@@ -4,7 +4,7 @@ import Input from "@mui/joy/Input";
 const Thematic = ({ themeData, setThemeData }) => {
   const [selectedDataIndexes, setSelectedDataIndexes] = useState([]);
   const handleAddThemeData = () => {
-    setThemeData([...themeData, { dataName: "", color: "#000" }]);
+    setThemeData([...themeData, { dataName: "", color: "#000000" }]);
     setSelectedDataIndexes([...selectedDataIndexes, null]);
   };
   const handleThemeDataInput = (index, newData) => {
