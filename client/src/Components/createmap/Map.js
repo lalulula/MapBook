@@ -342,7 +342,10 @@ const Map = ({
         console.log("featureDataAdded", element);
         namesDataAdded.push(element["properties"].name);
       });
-
+      const expValue = [
+        "to-number",
+        ["get", "value",  ["get", "mapbook_data"]],
+      ];
       console.log("heatData", inputData, "namesdata", namesDataAdded);
 
       let value = inputData["value"];
