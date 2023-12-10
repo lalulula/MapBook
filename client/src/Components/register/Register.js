@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { Button, Form } from "semantic-ui-react";
 import { SHA256, enc } from "crypto-js";
 import Lottie from "lottie-react";
-import landingData1 from "../../assets/Lottie/processIndic.json";
+import landingData1 from "../../assets/Lottie/ProcessIndicator.json";
 
 import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
@@ -89,7 +89,7 @@ const Register = () => {
     const req = {
       googleCredential: res.credential,
       clientId: process.env.REACT_APP_CLIENT_ID,
-    }
+    };
 
     createUserAPIMethod(req)
       .then((response) => {
@@ -209,9 +209,15 @@ const Register = () => {
           </Button>
         )}
 
-        <div className="google_divider" >OR</div>
+        <div className="google_divider">OR</div>
         {/* Google Sign-Up Button */}
-        <div style={{display: "flex", justifyContent: "center", paddingTop: "10px"}}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            paddingTop: "10px",
+          }}
+        >
           <GoogleLogin
             onSuccess={googleSuccess}
             onFailure={googleFailure}
@@ -222,7 +228,8 @@ const Register = () => {
         </div>
         {failed && (
           <p className="ui negative mini message">
-            Registration failed. Please check your information and make sure that the account has not been created.
+            Registration failed. Please check your information and make sure
+            that the account has not been created.
           </p>
         )}
       </Form>
