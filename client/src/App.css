@@ -6,19 +6,11 @@
 
 .App {
   min-height: 100vh;
-  /* Minimum height of the viewport */
 }
 
 body {
-  background-color: #15141A;
+  background-color: #000000;
   color: #ffffff;
-  /* background: rgba(0, 0, 0, 0.901); */
-  /* padding: 70px 0 0 0;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0; */
 }
 
 .loading_screen {

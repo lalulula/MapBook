@@ -226,7 +226,6 @@ const Map = ({
         // "building"
       );
 
-    
       console.log("Calling THEMATIC AFTER CLICK");
 
       const featureDataAdded = mapFileData.current["features"].filter(
@@ -304,7 +303,6 @@ const Map = ({
   // HEAT
   const redrawHeatData = () => {
     if (templateHoverType.current === "Heat Map") {
-
       if (mapRef.current.getLayer("counties-heat")) {
         mapRef.current.removeLayer("counties-heat");
       }
@@ -331,7 +329,6 @@ const Map = ({
         },
       });
 
-  
       console.log("Calling HEAT AFTER CLICK");
 
       const featureDataAdded = mapFileData.current["features"].filter(
@@ -695,6 +692,7 @@ const Map = ({
       map_description: options.description,
       mapPreviewImg: mapImage,
       file: mapData,
+      view_count: 1,
     };
 
     const res = await createMapAPIMethod(newMapObj);

@@ -124,22 +124,20 @@ export const editSocialPostAPIMethod = async (sPostId, socialpost) => {
     const response = await fetch(
       `${API_BASE_URL}/api/social/editSocialPost/${sPostId}`,
       {
+        ...defaultHeaders,
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(socialpost),
       }
     );
 
     if (!response.ok) {
-      throw new Error(`Error updating user: ${response.statusText}`);
+      throw new Error(`Error updating post: ${response.statusText}`);
     }
 
     const responseData = await response.json();
-    console.log("User updated successfully:", responseData.message);
+    console.log("POST updated successfully:", responseData.message);
   } catch (error) {
-    console.error("Error updating user:", error.message);
+    console.error("Error updating post:", error.message);
   }
 };
 function checkStatus(response) {

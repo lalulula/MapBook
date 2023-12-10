@@ -26,7 +26,9 @@ const SocialPage = () => {
   const handleSeachFilter = (e) => {
     setSearchFilterOption(e.value);
   };
-
+  useEffect(() => {
+    console.log(currentUserId);
+  }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -46,8 +48,8 @@ const SocialPage = () => {
     return searchFilterOption === "Title"
       ? post.title.toLowerCase().includes(searchTerm.toLowerCase())
       : searchFilterOption === "Topics"
-        ? post.topic.toLowerCase().includes(searchTerm.toLowerCase())
-        : post.post_content.toLowerCase().includes(searchTerm.toLowerCase());
+      ? post.topic.toLowerCase().includes(searchTerm.toLowerCase())
+      : post.post_content.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   const handleShowMySocialPosts = async () => {
@@ -65,7 +67,12 @@ const SocialPage = () => {
             <div className="create_new_post">
               <Button
                 className="create_post_btn"
-                onClick={() => navigate("/createsocialpost")}
+                onClick={
+                  currentUserId
+                    ? () => navigate("/createsocialpost")
+                    : () =>
+                        window.alert("You need to Register/Login to continue!")
+                }
                 variant="outlined"
                 style={{
                   borderColor: "white",

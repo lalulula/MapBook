@@ -6,12 +6,15 @@ import SearchBar from "../searchbar/SearchBar";
 import Dropdown from "react-dropdown";
 import Lottie from "lottie-react";
 import NoMapAni from "../../assets/Lottie/NoMaps.json";
+import MainPageLoading from "../../assets/Lottie/MainPageLoading.json";
 import { getAllMapsAPI } from "../../api/map";
+import Typewriter from "typewriter-effect";
 
 const MainPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchFilterOption, setSearchFilterOption] = useState("");
   const [allMaps, setAllMaps] = useState([]);
+  const [mainPageLoading, setMainPageLoading] = useState(true);
   const searchFilterOps = ["Map Name", "Topics", "Description"];
   const handleSeachFilter = (e) => {
     setSearchFilterOption(e.value);
@@ -35,9 +38,15 @@ const MainPage = () => {
   });
 
   useEffect(() => {
-    getAllMapsAPI().then((m) => {
-      setAllMaps(m);
-    });
+    getAllMapsAPI()
+      .then((m) => {
+        setAllMaps(m);
+      })
+      .finally(() => {
+        setTimeout(() => {
+          setMainPageLoading(false);
+        }, 3000);
+      });
   }, []);
 
   return (
@@ -52,34 +61,53 @@ const MainPage = () => {
           onChange={handleSeachFilter}
         />
       </div>
-
-      <div className="mainpage_maps_container">
-        <div className="mainpage_maps">
-          {filteredMaps.length !== 0 &&
-            filteredMaps.map((item, index) => (
-              <MapPreview key={index} data={item} />
-            ))}
-          {console.log("filteredMaps:", filteredMaps)}
-        </div>
-
-        {filteredMaps.length === 0 && (
-          <div className="mainpage_maps_no_search_container">
-            <div className="mainpage_maps_no_search">
-              <br />
-              <h1>No search results for '{searchTerm}'</h1>
-              <br />
-            </div>
-            <Lottie
-              animationData={NoMapAni}
-              style={{
-                height: 300,
-                width: 300,
-                position: "absolute",
+      {mainPageLoading ? (
+        <div style={{ textAlign: "center" }}>
+          <div>
+            <Typewriter
+              onInit={(typewriter) => {
+                typewriter.typeString("Loading all maps..").start();
               }}
             />
           </div>
-        )}
-      </div>
+          <Lottie
+            animationData={MainPageLoading}
+            style={{
+              height: 350,
+              width: 350,
+              opacity: 0.6,
+            }}
+          />
+        </div>
+      ) : (
+        <div className="mainpage_maps_container">
+          <div className="mainpage_maps">
+            {filteredMaps.length !== 0 &&
+              filteredMaps.map((item, index) => (
+                <MapPreview key={index} data={item} />
+              ))}
+            {console.log("filteredMaps:", filteredMaps)}
+          </div>
+
+          {filteredMaps.length === 0 && (
+            <div className="mainpage_maps_no_search_container">
+              <div className="mainpage_maps_no_search">
+                <br />
+                <h1>No search results for '{searchTerm}'</h1>
+                <br />
+              </div>
+              <Lottie
+                animationData={NoMapAni}
+                style={{
+                  height: 300,
+                  width: 300,
+                  position: "absolute",
+                }}
+              />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

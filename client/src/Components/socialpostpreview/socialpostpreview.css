@@ -18,8 +18,8 @@
 }
 
 .social_post_preview_img {
-  width: 10%;
-  height: 10%;
+  width: 80%;
+  height: 80%;
 }
 
 .social_post_preview_container_left {
@@ -54,10 +54,10 @@
   margin-bottom: 5px;
 }
 
-.social_post_preview_img {
+/* .social_post_preview_img {
   height: 100%;
   width: 100%;
-}
+} */
 
 @media all and (max-width: 1000px) {
 }

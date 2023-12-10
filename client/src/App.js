@@ -6,7 +6,7 @@ import LandingPage from "./Components/landing/LandingPage";
 import Login from "./Components/login/Login";
 import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
-import loadingMap from "./assets/Lottie/loadingMap.json";
+import LoadWebApp from "./assets/Lottie/LoadWebApp.json";
 import Register from "./Components/register/Register";
 import Header from "./Components/header/Header";
 import MainPage from "./Components/main/MainPage";
@@ -29,10 +29,9 @@ import ResetPassword from "./Components/resetPassword/ResetPassword";
 
 import "reactjs-popup/dist/index.css";
 
-
 function App() {
   //Initial Loading Feature For Web
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   // console.log(isAuthenticated);
 
@@ -49,14 +48,14 @@ function App() {
     // console.log(isAuthenticated);
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 2500);
     return () => clearTimeout(timer);
   }, []);
 
   if (loading) {
     return (
       <div className="App loading_screen">
-        <Lottie animationData={loadingMap} />
+        <Lottie animationData={LoadWebApp} />
       </div>
     );
   }
@@ -72,9 +71,18 @@ function App() {
           />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/resetPasswordRequest" element={<ResetPasswordRequest />} />
-          <Route path="/resetPasswordRequest/:userId" element={<ResetPasswordRequestToken />} />
-          <Route path="/resetPassword/:resetToken/:userId" element={<ResetPassword />} />
+          <Route
+            path="/resetPasswordRequest"
+            element={<ResetPasswordRequest />}
+          />
+          <Route
+            path="/resetPasswordRequest/:userId"
+            element={<ResetPasswordRequestToken />}
+          />
+          <Route
+            path="/resetPassword/:resetToken/:userId"
+            element={<ResetPassword />}
+          />
           <Route
             path="/createmap"
             element={isAuthenticated ? <CreateMap /> : <LandingPage />}
@@ -87,7 +95,7 @@ function App() {
           <Route path="/socialpage" element={<SocialPage />} />
           <Route path="/mymap" element={<MyMap />} />
           <Route path="/mapdetails/:mapId" element={<MapDetails />} />
-          <Route path="socialpostdetails/:id" element={<SocialPostDetails />}/>
+          <Route path="socialpostdetails/:id" element={<SocialPostDetails />} />
           <Route path="/mainpage" element={<MainPage />} />
           <Route path="/createsocialpost" element={<CreateSocialPost />} />
           <Route path="/editsocialpost/:id" element={<EditSocialPost />} />

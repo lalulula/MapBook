@@ -32,7 +32,7 @@ h4:hover {
 /* header shadow */
 .scroll_header {
   background-color: #000000;
-  box-shadow: 0 -1px 15px rgb(198, 184, 184);
+  box-shadow: 0 -1px 15px rgb(98, 98, 98);
 }
 
 .modal_content {

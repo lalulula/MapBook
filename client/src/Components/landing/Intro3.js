@@ -29,17 +29,6 @@ const Intro3 = () => {
     transition: "transform 0.3s",
   };
 
-  const animationText = {
-    position: "absolute",
-    top: "45%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    display: "none",
-    color: "black",
-    fontSize: "20px",
-    fontWeight: "bold",
-  };
-
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -86,9 +75,7 @@ const Intro3 = () => {
             <CustomModal isOpen={isModalOpen} closeModal={closeModal} />
           </div>
           <Lottie animationData={Network} style={style} onClick={openModal} />
-          <div id="animationText" style={animationText}>
-            Get Started
-          </div>
+          <div id="animationText">Get Started</div>
         </div>
         <h4 style={{ textAlign: "center" }}>
           Your journey in mapping begins here!

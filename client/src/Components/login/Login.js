@@ -7,9 +7,9 @@ import { useForm } from "react-hook-form";
 import { Button, Form } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 import Lottie from "lottie-react";
-import landingData1 from "../../assets/Lottie/processIndic.json";
+import landingData1 from "../../assets/Lottie/ProcessIndicator.json";
 
-import { GoogleLogin} from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
 
 import { SHA256, enc } from "crypto-js";
 
@@ -74,7 +74,7 @@ const Login = () => {
     const req = {
       googleCredential: res.credential,
       clientId: process.env.REACT_APP_CLIENT_ID,
-    }
+    };
 
     setLoginIsLoading(true);
 
@@ -88,7 +88,9 @@ const Login = () => {
           });
         } else {
           // if a user sign in with a valid google acc but hasn't been existed in the DB yet, it will automatically signs that google account up and sign in
-          console.log("This Google account hasn't been signed up yet. This Google account will be signed up automatically.");
+          console.log(
+            "This Google account hasn't been signed up yet. This Google account will be signed up automatically."
+          );
           createUserAPIMethod(req)
             .then((response) => {
               if (response.ok) {
@@ -105,7 +107,7 @@ const Login = () => {
               console.error("Error signing in with Google:", err);
               setIsLoggedIn(false);
               setErrorMessage("Google sign in failed. Please try again.");
-            })
+            });
         }
       })
       .catch((err) => {
@@ -165,7 +167,10 @@ const Login = () => {
             </p>
           )}
         </Form.Field>
-        <a href="/resetPasswordRequest" style={{ marginBottom: "15px", alignSelf: "end" }}>
+        <a
+          href="/resetPasswordRequest"
+          style={{ marginBottom: "15px", alignSelf: "end" }}
+        >
           Forgot Password?
         </a>
 
@@ -190,7 +195,13 @@ const Login = () => {
 
         <div className="google_divider">OR</div>
         {/* Google Sign-In Button */}
-        <div style={{display: "flex", justifyContent: "center", paddingTop: "10px"}}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            paddingTop: "10px",
+          }}
+        >
           <GoogleLogin
             onSuccess={googleSuccess}
             onFailure={googleFailure}
@@ -200,11 +211,17 @@ const Login = () => {
           />
         </div>
 
-        <div className="no_account" style={{ marginTop: "40px", alignSelf: "center", display: "flex" }}>
+        <div
+          className="no_account"
+          style={{ marginTop: "40px", alignSelf: "center", display: "flex" }}
+        >
           <a href="/register" style={{ marginRight: "10px" }}>
             Don't have an account?
           </a>
-          <a href="/register" style={{ color: "whitesmoke", fontWeight: "bold" }}>
+          <a
+            href="/register"
+            style={{ color: "whitesmoke", fontWeight: "bold" }}
+          >
             Sign Up
           </a>
         </div>

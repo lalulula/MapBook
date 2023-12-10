@@ -36,7 +36,7 @@ const getMaps = async (req, res) => {
   }
 };
 
-// GET A MAP BY A MAP ID
+// GET A MAP BY: MAP ID
 const getMap = async (req, res) => {
   try {
     const { mapId } = req.params;
@@ -162,6 +162,7 @@ const editMap = async (req, res) => {
       data_names,
       data_values,
       heat_range,
+      view_count,
     } = req.body;
 
     const fileBuffer = req.file.buffer;
@@ -187,6 +188,7 @@ const editMap = async (req, res) => {
         data_names: data_names,
         data_values: data_values,
         heat_range: heat_range,
+        view_count: view_count,
       },
       { new: true }
     );

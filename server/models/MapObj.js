@@ -15,7 +15,8 @@ const MapObjSchema = new mongoose.Schema({
   file_path: {
     type: String,
     // required: true,
-    default: "https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/us-income.geojson",
+    default:
+      "https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/us-income.geojson",
   },
   is_visible: {
     type: Boolean,
@@ -29,7 +30,7 @@ const MapObjSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  mapPreviewImg:{
+  mapPreviewImg: {
     type: String,
     // you can change default image
     default: "https://i.stack.imgur.com/fdKJ3.png",
@@ -46,7 +47,10 @@ const MapObjSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-
+  view_count: {
+    type: Number,
+    default: 0,
+  },
 });
 const MapObj = mongoose.model("MapObj", MapObjSchema);
 module.exports = MapObj;
