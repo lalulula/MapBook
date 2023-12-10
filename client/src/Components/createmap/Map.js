@@ -341,7 +341,7 @@ const Map = ({
 
       const expValue = [
         "to-number",
-        ["get", "value",  ["get", "mapbook_data"]],
+        ["get", "value", ["get", "mapbook_data"]],
       ];
 
       console.log("mapFileData.current: ", mapFileData.current);
@@ -351,9 +351,9 @@ const Map = ({
       var range = ((heatRangeTo - heatRangeFrom) / 5);
       // console.log(heatRangeFrom, heatRangeTo, range)
       // console.log(typeof(heatRangeFrom), typeof(heatRangeTo), typeof(range), typeof(heatRangeFrom + range))
-      
+
       let expHeatColorByValue = ["case"];
-      for(var i = 0; i<5; i++){
+      for (var i = 0; i < 5; i++) {
         expHeatColorByValue.push(['all', ['>=', expValue, heatRangeFrom], ['<', expValue, heatRangeFrom + range]])
         expHeatColorByValue.push(mapFileData.current.mapbook_heat_selectedcolors[i]);
         heatRangeFrom = heatRangeFrom + range;
@@ -377,7 +377,13 @@ const Map = ({
         ...namesDataAdded,
       ]);
     }
-  };
+  }
+
+
+  const redrawCircleMap = () => {
+
+  }
+
 
   const handleAddData = (e) => {
     e.preventDefault();
@@ -520,6 +526,27 @@ const Map = ({
           filter: ["in", "name", ""],
         });
 
+        ////// HANEUL
+        map.addLayer(
+          {
+            id: `counties-thematic`,
+            type: "fill",
+            source: "counties",
+            'layout': {
+              // Make the layer visible by default.
+              'visibility': 'none'
+            },
+            paint: {
+              "fill-outline-color": "#484896", //Fill color
+              'fill-color': '#faafee',
+              "fill-opacity": 1,
+            },
+          }
+          // "building"
+        );
+
+
+
         // UGLY NAME LABELS
         // map.addLayer({
         //   id: "data-labels",
@@ -609,19 +636,19 @@ const Map = ({
               const formattedData =
                 templateHoverType.current === "Thematic Map"
                   ? Object.keys(data)
-                      .map((key) => {
-                        const nestedProperties = Object.keys(data[key])
-                          .map(
-                            (nestedKey) =>
-                              `${nestedKey}:${data[key][nestedKey]}`
-                          )
-                          .join("\n");
-                        return `${key}: \n${nestedProperties}`;
-                      })
-                      .join("\n")
+                    .map((key) => {
+                      const nestedProperties = Object.keys(data[key])
+                        .map(
+                          (nestedKey) =>
+                            `${nestedKey}:${data[key][nestedKey]}`
+                        )
+                        .join("\n");
+                      return `${key}: \n${nestedProperties}`;
+                    })
+                    .join("\n")
                   : Object.keys(data)
-                      .map((key) => `${key}:${data[key]}`)
-                      .join("\n");
+                    .map((key) => `${key}:${data[key]}`)
+                    .join("\n");
               // console.log(data, formattedData);
               // console.log(regions[0]["properties"].name + "\n" + formattedData);
 
