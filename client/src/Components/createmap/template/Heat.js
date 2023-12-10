@@ -88,8 +88,8 @@ const Heat = ({
                   textAlign: "center",
                 }}
               >
-                {ranges[index].toFixed(2)} to{" "}
-                {(ranges[index + 1] - 1).toFixed(2)}
+                {ranges[index].toFixed(2)}
+                <br /> to {(ranges[index + 1] - 1).toFixed(2)}
               </div>
             </div>
           ))}
