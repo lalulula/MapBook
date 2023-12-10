@@ -88,9 +88,7 @@ const Header = () => {
                       <div onClick={() => navigate("/managesocials")}>
                         Social Posts
                       </div>
-                      <div onClick={() => navigate("/manageusers")}>
-                        Users
-                      </div>
+                      <div onClick={() => navigate("/manageusers")}>Users</div>
                     </div>
                   </div>
                 )}
@@ -119,10 +117,10 @@ const Header = () => {
                   <h4>Register</h4>
                 </div>
               </>
-            ) : route === "/login" || 
-                route === "/register" || 
-                route === "/resetPasswordRequest" || 
-                staticRoutes.includes(route.split("/")[1]) ? (
+            ) : route === "/login" ||
+              route === "/register" ||
+              route === "/resetPasswordRequest" ||
+              staticRoutes.includes(route.split("/")[1]) ? (
               <>
                 <div onClick={() => navigate("/login")}>
                   <h4>Login</h4>
@@ -135,7 +133,7 @@ const Header = () => {
               <>
                 <div
                   onClick={() =>
-                    window.alert("You need to Register to continue!")
+                    window.alert("You need to Register/Login to continue!")
                   }
                 >
                   <h4>CreateMaps</h4>
@@ -145,7 +143,7 @@ const Header = () => {
                 </div>
                 <div
                   onClick={() =>
-                    window.alert("You need to Register to continue!")
+                    window.alert("You need to Register/Login to continue!")
                   }
                 >
                   <h4>MyMaps</h4>
@@ -223,10 +221,10 @@ const Header = () => {
                     <h4>Register</h4>
                   </div>
                 </>
-              ) : route === "/login" || 
-                  route === "/register" || 
-                  route === "/resetPasswordRequest" || 
-                  staticRoutes.includes(route.split("/")[1]) ? (
+              ) : route === "/login" ||
+                route === "/register" ||
+                route === "/resetPasswordRequest" ||
+                staticRoutes.includes(route.split("/")[1]) ? (
                 <>
                   <div onClick={() => navigate("/login")}>
                     <h4>Login</h4>

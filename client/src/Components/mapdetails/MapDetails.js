@@ -14,6 +14,7 @@ import {
   deleteMapCommentAPIMethod,
   getAllMapPostRepliesAPIMethod,
   deleteMapPostAPIMethod,
+  editMapPostAPIMethod,
 } from "../../api/map";
 import { getAllUsersAPIMethod, getUserById } from "../../api/user";
 import sendMessage from "../../assets/img/sendMessage.png";
@@ -49,7 +50,19 @@ const MapDetails = () => {
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [selectedMapFile, setSelectedMapFile] = useState();
   const user = useSelector((state) => state.user.user);
+  const mapContainerRef = useRef(null);
+  const navigate = useNavigate();
+  const formatDate = (createdAt) => {
+    const date = new Date(createdAt);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const formattedDateTime = `${year}-${month}-${day}\n${hours}:${minutes}`;
 
+    return formattedDateTime;
+  };
   const getUsers = async () => {
     const data = await getAllUsersAPIMethod();
     setUsers(data);
@@ -67,8 +80,11 @@ const MapDetails = () => {
       const data = await getMapAPI(mapId);
       const post_owner_data = await getUserById(data.user_id);
       setCurrentMap(data);
-      console.log(currentMap);
+      console.log("VIEW COUNT", currentMap.viewCount && currentMap.view_count);
       setPostOwner(post_owner_data);
+      const updatedViewCount = currentMap.view_count + 1;
+      const updatedMap = { ...currentMap, view_count: updatedViewCount };
+      await editMapPostAPIMethod(currentMap._id, updatedMap);
       // console.log(postOwner, user._id);
       if (postOwner._id === user._id) {
         setIsOwner(true);
@@ -103,52 +119,6 @@ const MapDetails = () => {
   useEffect(() => {
     getMap();
   }, [mapId, user._id]);
-
-  // const getMap = async () => {
-  //   console.log("getMap called");
-  //   const data = await getMapAPI(mapId);
-  //   const post_owner_data = await getUserById(data.user_id);
-  //   setCurrentMap(data);
-  //   setPostOwner(post_owner_data);
-  //   console.log(postOwner, user._id);
-  //   if (data.post_owner._id === user._id) {
-  //     setIsOwner(true);
-  //   }
-
-  //   if (currentMap != null) {
-  //     let url = currentMap.file_path;
-  //     // get file name from url
-  //     let fileName = url
-  //       .substring(57, url.indexOf("geojson") + 7)
-  //       .replaceAll("%20", " ");
-  //     // console.log(fileName)
-  //     getDownloadURL(ref(storage, fileName))
-  //       .then((url) => {
-  //         // This can be downloaded directly:
-  //         const xhr = new XMLHttpRequest();
-  //         xhr.responseType = "json";
-  //         xhr.onload = (event) => {
-  //           // console.log("response: ", xhr.response);
-  //           setSelectedMapFile(xhr.response);
-  //         };
-  //         xhr.open("GET", url);
-  //         xhr.send();
-  //       })
-  //       .catch((error) => {
-  //         console.log("error: ", error);
-  //       });
-
-  //     setIsMapLoaded(true);
-  //   }
-  // };
-
-  //////////////////////////////////////////
-
-  // useEffect(() => {
-  //   console.log("selectedMapFile: useEffect: ", selectedMapFile);
-  // }, [selectedMapFile]);
-
-  const mapContainerRef = useRef(null);
 
   useEffect(() => {
     console.log("selectedMapFile: useEffect: ", selectedMapFile);
@@ -298,7 +268,7 @@ const MapDetails = () => {
     });
     setMapComments(updatedMapComments);
   };
-  const navigate = useNavigate();
+
   const handleDeleteMapPost = async (mapId) => {
     console.log(mapId);
     try {
@@ -374,6 +344,11 @@ const MapDetails = () => {
               </div>
               <div className="map_details_name" style={{ color: "#b8c5c9" }}>
                 <h5>Posted by {currentMap.user_id}</h5>
+                <h6>{formatDate(currentMap.created_at)}</h6>
+                <div>
+                  <i className="bi bi-eye" /> &nbsp;
+                  {currentMap.view_count + 1}
+                </div>
               </div>
             </div>
             <div className="map_details_options_container">

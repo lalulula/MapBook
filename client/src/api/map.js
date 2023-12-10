@@ -115,6 +115,23 @@ export const getMapAPI = (mapId) => {
   return res;
 };
 
+export const editMapPostAPIMethod = async (mapId, updateMapPost) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/maps/editMap/${mapId}`, {
+      ...defaultHeaders,
+      method: "PUT",
+      body: JSON.stringify(updateMapPost),
+    });
+    if (!response.ok) {
+      throw new Error(`Error updating post: ${response.statusText}`);
+    }
+    const responseData = await response.json();
+    console.log("POST updated successfully:", responseData.message);
+  } catch (error) {
+    console.error("Error updating post:", error.message);
+  }
+};
+
 export const deleteMapPostAPIMethod = (mapId) => {
   console.log(mapId);
   return fetch(`${API_BASE_URL}/api/maps/removeMap/${mapId}`, {
