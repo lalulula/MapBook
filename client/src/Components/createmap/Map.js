@@ -339,11 +339,29 @@ const Map = ({
         console.log("featureDataAdded", element);
         namesDataAdded.push(element["properties"].name);
       });
+
       const expValue = [
         "to-number",
         ["get", "value",  ["get", "mapbook_data"]],
       ];
-      console.log("heatData", inputData, "namesdata", namesDataAdded);
+
+      console.log("mapFileData.current: ", mapFileData.current);
+
+      var heatRangeFrom = Number(mapFileData.current.mapbook_heatrange.from);
+      var heatRangeTo = Number(mapFileData.current.mapbook_heatrange.to);
+      var range = ((heatRangeTo - heatRangeFrom) / 5);
+      // console.log(heatRangeFrom, heatRangeTo, range)
+      // console.log(typeof(heatRangeFrom), typeof(heatRangeTo), typeof(range), typeof(heatRangeFrom + range))
+      
+      let expHeatColorByValue = ["case"];
+      for(var i = 0; i<5; i++){
+        expHeatColorByValue.push(['all', ['>=', expValue, heatRangeFrom], ['<', expValue, heatRangeFrom + range]])
+        expHeatColorByValue.push(mapFileData.current.mapbook_heat_selectedcolors[i]);
+        heatRangeFrom = heatRangeFrom + range;
+      }
+      expHeatColorByValue.push("#000000");
+
+      // console.log("heatData", inputData, "namesdata", namesDataAdded);
 
       let value = inputData["value"];
       let color = inputData["color"];
@@ -353,7 +371,7 @@ const Map = ({
         "visibility",
         "visible"
       );
-      mapRef.current.setPaintProperty("counties-heat", "fill-color", color);
+      mapRef.current.setPaintProperty("counties-heat", "fill-color", expHeatColorByValue);
       mapRef.current.setFilter("counties-heat", [
         "in",
         "name",
