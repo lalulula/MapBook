@@ -194,6 +194,163 @@ const MapDetails = () => {
           },
         });
 
+
+
+        ////////////// map visualization display //////////// 
+        console.log("selectedMapFile.mapbook_template", selectedMapFile.mapbook_template);
+
+        if(selectedMapFile.mapbook_template === "Thematic Map"){
+          map.addLayer(
+            {
+              id: `counties-thematic`,
+              type: "fill",
+              source: "counties",
+              layout: {
+                // Make the layer visible by default.
+                visibility: "none",
+              },
+              paint: {
+                "fill-outline-color": "#484896", //Fill color
+                "fill-color": "#faafee",
+                "fill-opacity": 1,
+              },
+            }
+            // "building"
+          );
+    
+    
+          const featureDataAdded = selectedMapFile["features"].filter(
+            (f) => f["properties"].mapbook_data != null
+          );
+          var namesDataAdded = [];
+          featureDataAdded.forEach((element) => {
+            // console.log(element);
+            namesDataAdded.push(element["properties"].name);
+          });
+    
+    
+          let dataNames = [];
+          for(let i = 0; i < selectedMapFile.mapbook_themedata.length; i++){
+            dataNames.push(selectedMapFile.mapbook_themedata[i].dataName);
+          }
+    
+          let expMaximumValue = ["max"];
+          let values = [];
+          let colors = [];
+          dataNames.forEach((dataName) => {
+            const expValue = [
+              "to-number",
+              ["get", "value", ["get", dataName, ["get", "mapbook_data"]]],
+            ];
+            const expColor = [
+              "get",
+              "color",
+              ["get", dataName, ["get", "mapbook_data"]],
+            ];
+    
+            values.push(expValue);
+            colors.push(expColor);
+            expMaximumValue.push(expValue);
+          });
+
+          let expGetMaximumColor = ["case"];
+          for (let i = 0; i < values.length; i++) {
+            const statement = ["==", values[i], expMaximumValue];
+            expGetMaximumColor.push(statement);
+            expGetMaximumColor.push(selectedMapFile.mapbook_themedata[i].color);
+          }
+          expGetMaximumColor.push("#000000");
+    
+   
+    
+          map.setLayoutProperty(
+            "counties-thematic",
+            "visibility",
+            "visible"
+          );
+          map.setPaintProperty(
+            "counties-thematic",
+            "fill-color",
+            expGetMaximumColor
+          );
+          // mapRef.current.setPaintProperty('counties-thematic', 'fill-color', ['case', ['==',  ['to-number', ['get', 'value', ['get', 'aa', ['get', 'mapbook_data']]]] , 10], '#ffffff', '#123123']);
+    
+          // mapRef.current.setPaintProperty('counties-thematic', 'fill-color', mapFileData.current.mapbook_themedata[0].color);
+          map.setFilter("counties-thematic", [
+            "in",
+            "name",
+            ...namesDataAdded,
+          ]);
+        }
+        else if(selectedMapFile.mapbook_template === "Heat Map"){
+          map.addLayer({
+            id: `counties-heat`,
+            type: "fill",
+            source: "counties",
+            layout: {
+              visibility: "none",
+            },
+            paint: {
+              "fill-outline-color": "#484896",
+              "fill-color": "#faafee",
+              "fill-opacity": 1,
+            },
+          });
+
+
+          const featureDataAdded = selectedMapFile["features"].filter(
+            (f) => f["properties"].mapbook_data != null
+          );
+          var namesDataAdded = [];
+          featureDataAdded.forEach((element) => {
+            console.log("featureDataAdded", element);
+            namesDataAdded.push(element["properties"].name);
+          });
+
+          const expValue = [
+            "to-number",
+            ["get", "value",  ["get", "mapbook_data"]],
+          ];
+
+
+          var heatRangeFrom = Number(selectedMapFile.mapbook_heatrange.from);
+          var heatRangeTo = Number(selectedMapFile.mapbook_heatrange.to);
+          var range = ((heatRangeTo - heatRangeFrom) / 5);
+          // console.log(heatRangeFrom, heatRangeTo, range)
+          // console.log(typeof(heatRangeFrom), typeof(heatRangeTo), typeof(range), typeof(heatRangeFrom + range))
+          
+          let expHeatColorByValue = ["case"];
+          for(var i = 0; i<5; i++){
+            expHeatColorByValue.push(['all', ['>=', expValue, heatRangeFrom], ['<', expValue, heatRangeFrom + range]])
+            expHeatColorByValue.push(selectedMapFile.mapbook_heat_selectedcolors[i]);
+            heatRangeFrom = heatRangeFrom + range;
+          }
+          expHeatColorByValue.push("#000000");
+
+          // console.log("heatData", inputData, "namesdata", namesDataAdded);
+
+          map.setLayoutProperty(
+            "counties-heat",
+            "visibility",
+            "visible"
+          );
+          map.setPaintProperty("counties-heat", "fill-color", expHeatColorByValue);
+          map.setFilter("counties-heat", [
+            "in",
+            "name",
+            ...namesDataAdded,
+          ]);
+        }
+        else if(selectedMapFile.mapbook_template === "Circle Map"){
+
+        }
+        else if(selectedMapFile.mapbook_template === "Bar Chart"){
+
+        }
+        else if(selectedMapFile.mapbook_template === "Pie Chart"){
+
+        }
+
         map.on("mousemove", (event) => {
           const regions = map.queryRenderedFeatures(event.point, {
             layers: ["counties"],

@@ -226,7 +226,6 @@ const Map = ({
         // "building"
       );
 
-      console.log("Calling THEMATIC AFTER CLICK");
 
       const featureDataAdded = mapFileData.current["features"].filter(
         (f) => f["properties"].mapbook_data != null
