@@ -384,14 +384,14 @@ const MapDetails = () => {
     setOptionsMenuVisible(!optionsMenuVisible);
   };
 
-  const handleAddMapComment = () => {
+  const handleAddMapComment = async () => {
     const newComment = {
       map_comment_content: newMapComment,
       map_comment_owner: currentUserId,
       map_id: mapId,
     };
-    createMapCommentAPIMethod(newComment);
-    setMapComments([...mapComments, newComment]);
+    const result  = await createMapCommentAPIMethod(newComment);
+    setMapComments([...mapComments, result]);
   };
 
   const handleEditMapComment = (mapCommentId, editedComment) => {
@@ -566,69 +566,64 @@ const MapDetails = () => {
               )}
             </div>
           </div>
-          <div className="map_image_comments">
-            <div
-              ref={mapContainerRef}
-              id="map"
-              style={{ width: "800px", height: "500px" }}
-            ></div>
-            <div className="map_details_comments">
-              <div className="comment_title">Comments</div>
-              <div className="comment_content">
-                {/* <Box mt="0.5rem"> */}
-                {mapComments.map((comment, i) => (
-                  <Comment
-                    key={i}
-                    isRelpy={false}
-                    comment={comment}
-                    handleDeleteMapComment={handleDeleteMapComment}
-                    handleEditMapComment={handleEditMapComment}
-                  />
-                ))}
-                {/* </Box> */}
-              </div>
-              <div className="comment_box">
-                {isAuth ? (
-                  <>
-                    <div className="comment_box_profile">
-                      {users
-                        .filter((user) => user._id === currentUserId)
-                        .map((user) => (
-                          <img
-                            alt=""
-                            key={user._id}
-                            style={{ marginTop: "4px" }}
-                            className="profile_img"
-                            src={user.profile_img}
-                          ></img>
-                        ))}
+
+          <div
+            ref={mapContainerRef}
+            id="map"
+            style={{ overflow: "hidden" }}
+          ></div>
+
+          <div className="map_details_comments">
+            <div className="comment_title">Comments</div>
+            <div className="comment_content">
+              {mapComments.map((comment, i) => (
+                <Comment
+                  key={i}
+                  isRelpy={false}
+                  comment={comment}
+                  handleDeleteMapComment={handleDeleteMapComment}
+                  handleEditMapComment={handleEditMapComment}
+                />
+              ))}
+            </div>
+            <div className="comment_box">
+              {isAuth ? (
+                <>
+                  <div className="comment_box_profile">
+                    {users
+                      .filter((user) => user._id === currentUserId)
+                      .map((user) => (
+                        <img
+                          alt=""
+                          key={user._id}
+                          style={{ marginTop: "4px" }}
+                          className="profile_img"
+                          src={user.profile_img}
+                        ></img>
+                      ))}
+                  </div>
+                  <div className="comment_box_input">
+                    <input
+                      className="input_comment"
+                      type="text"
+                      placeholder="Add a comment..."
+                      // value={newMapComment}
+                      onChange={(e) => setNewMapComment(e.target.value)}
+                    />
+                    <div class="wrapper" onClick={handleAddMapComment}>
+                      <img className="btnimg" src={sendMessage} />
                     </div>
-                    <div className="comment_box_input">
-                      <input
-                        className="input_comment"
-                        type="text"
-                        placeholder="Add a comment..."
-                        // value={newMapComment}
-                        onChange={(e) => setNewMapComment(e.target.value)}
-                      />
-                      <div class="wrapper" onClick={handleAddMapComment}>
-                        <img className="btnimg" src={sendMessage} />
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <div>Please Login/Register to Comment.</div>
-                )}
-              </div>
-              {/* {currentMap.map_comments.map((comment) => (
-                <MapComments />
-              ))} */}
+                  </div>
+                </>
+              ) : (
+                <div>Please Login/Register to Comment.</div>
+              )}
             </div>
           </div>
           <Divider section inverted style={{ margin: "20px 0" }} />
-          <div className="tools">
+          {/* <div className="tools">
             <MapTools isEdit={false} currentMap={currentMap} />
-          </div>
+          </div> */}
         </div>
       </div>
     );
