@@ -449,6 +449,41 @@ const MapDetails = () => {
     deleteMapCommentAPIMethod(mapCommentId);
   };
 
+  
+  const handleShare = () => {
+    // Handle share action
+    navigator.clipboard.writeText(HOME_URL+'/mapdetails/' + currentMap._id);
+    // TODO: copyed popup 
+    
+    console.log("Share clicked");
+  };
+
+
+  // Convert data to GEOJSON //
+  function saveGeoJSONToFile(geoJSONObject, filename) {
+    const geoJSONString = JSON.stringify(geoJSONObject);
+    // console.log("geoJSONString: ", geoJSONString)
+    const newGeoJson = new File([geoJSONString], filename, {
+      type: "application/json",
+    });
+    return newGeoJson;
+  }
+
+  function downloadGeoJSON(geoJSONObject, filename) {
+    const newGeoJson = saveGeoJSONToFile(geoJSONObject, filename);
+    // console.log(newGeoJson)
+    // Create a download link
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(newGeoJson);
+    link.download = filename;
+    // Append the link to the body -> trigger click event to start the download
+    document.body.appendChild(link);
+    link.click();
+    // RM link from DOM
+    document.body.removeChild(link);
+    // console.log(`GeoJSON saved as ${filename}`);
+    return newGeoJson;
+  }
   // Export- download GeoJson
 
   // const handleExport = () => {
@@ -529,9 +564,9 @@ const MapDetails = () => {
                     <ul>
                       <li>Fork Map</li>
                       <Divider style={{ margin: "0" }} />
-                      <li>Share Map</li>
+                      <li onClick={() => handleShare()}>Share Map</li>
                       <Divider style={{ margin: "0" }} />
-                      <li>Export Map</li>
+                      <li onClick={() => downloadGeoJSON(selectedMapFile, currentMap.map_name+".geojson")}>Export Map</li>
                       <Divider style={{ margin: "0" }} />
                       <li>Edit Map</li>
                     </ul>

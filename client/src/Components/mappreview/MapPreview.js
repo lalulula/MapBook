@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import "./mapPreview.css";
 import { useNavigate } from "react-router-dom";
+import { fb, storage } from "../../firebase";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+export const HOME_URL = process.env.REACT_APP_HOME_URL;
+
 
 const MapPreview = ({ data }) => {
   // console.log("data: ", data);
@@ -26,12 +30,69 @@ const MapPreview = ({ data }) => {
   const handleShare = (e) => {
     // Handle share action
     e.stopPropagation();
+    console.log(HOME_URL+'/mapdetails/' + data._id);
+    navigator.clipboard.writeText(HOME_URL+'/mapdetails/' + data._id);
+    // TODO: copyed popup 
+    
     console.log("Share clicked");
   };
 
-  const handleExport = (e) => {
+
+
+
+
+  // Convert data to GEOJSON //
+  function saveGeoJSONToFile(geoJSONObject, filename) {
+    const geoJSONString = JSON.stringify(geoJSONObject);
+    // console.log("geoJSONString: ", geoJSONString)
+    const newGeoJson = new File([geoJSONString], filename, {
+      type: "application/json",
+    });
+    return newGeoJson;
+  }
+
+  function downloadGeoJSON(geoJSONObject, filename) {
+    const newGeoJson = saveGeoJSONToFile(geoJSONObject, filename);
+    // console.log(newGeoJson)
+    // Create a download link
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(newGeoJson);
+    link.download = filename;
+    // Append the link to the body -> trigger click event to start the download
+    document.body.appendChild(link);
+    link.click();
+    // RM link from DOM
+    document.body.removeChild(link);
+    // console.log(`GeoJSON saved as ${filename}`);
+    return newGeoJson;
+  }
+
+  const handleExport = async (e) => {
     // Handle export action
     e.stopPropagation();
+
+
+    let url = data.file_path;
+    // get file name from url
+    let fileName = url
+      .substring(57, url.indexOf("geojson") + 7)
+      .replaceAll("%20", " ");
+    // console.log(fileName)
+    const mapUrl = await getDownloadURL(ref(storage, fileName));
+
+    // This can be downloaded directly:
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = "json";
+    xhr.onload = (event) => {
+      // console.log("response: ", xhr.response);
+      downloadGeoJSON(xhr.response, data.map_name + ".geojson")
+      // setSelectedMapFile(xhr.response);
+
+
+    };
+    xhr.open("GET", mapUrl);
+    xhr.send();
+
     console.log("Export clicked");
   };
 
