@@ -23,6 +23,7 @@ const SocialPage = () => {
   const [socialPosts, setSocialPosts] = useState([]);
   const searchFilterOps = ["Title", "Topics", "Description"];
   const currentUserId = useSelector((state) => state.user.id);
+  const isAuth = useSelector((state) => state.user.isAuthenticates);
   // useEffect(() => {
   //   console.log(currentUserId);
   // }, []);
@@ -82,7 +83,7 @@ const SocialPage = () => {
                   transition: "transform 0.3s ease",
                 }}
               >
-                Create new post
+                Create New Post
               </Button>
             </div>
             <div className="socialpage_search_container">
@@ -102,24 +103,26 @@ const SocialPage = () => {
           </div>
         </div>
         <div className="socialpage_middle">
-          <FormControlLabel
-            style={{ alignSelf: "self-end", marginBottom: "1rem" }}
-            value="showMySocial"
-            control={
-              <Checkbox
-                onChange={handleShowMySocialPosts}
-                sx={{
-                  color: grey[800],
-                  "&.Mui-checked": {
-                    color: blueGrey[600],
-                  },
-                }}
-              />
-            }
-            label="My Posts"
-            labelPlacement="end"
-            color="white"
-          />
+          {isAuth && (
+            <FormControlLabel
+              style={{ alignSelf: "self-end", marginBottom: "1rem" }}
+              value="showMySocial"
+              control={
+                <Checkbox
+                  onChange={handleShowMySocialPosts}
+                  sx={{
+                    color: grey[800],
+                    "&.Mui-checked": {
+                      color: blueGrey[600],
+                    },
+                  }}
+                />
+              }
+              label="My Posts"
+              labelPlacement="end"
+              color="white"
+            />
+          )}
           {filteredPosts.map((item, index) => (
             <SocialPostPreview key={index} data={item} />
           ))}

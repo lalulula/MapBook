@@ -25,6 +25,7 @@ const SocialPostDetails = () => {
   const navigate = useNavigate();
   const [postOwner, setPostOwner] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const isAuth = useSelector((state) => state.user.isAuthenticated);
 
   const nextImage = () => {
     setCurrentIndex(
@@ -168,7 +169,7 @@ const SocialPostDetails = () => {
                 <DeleteButton onClick={handleDeleteSocialPost} />
               </>
             )}
-            <LikeButton id={id} currentPost={currentPost} />
+            <LikeButton isAuth={isAuth} id={id} currentPost={currentPost} />
           </div>
         </div>
         <div className="socialpostdetails_middle">
@@ -189,6 +190,7 @@ const SocialPostDetails = () => {
                   />
                 )}
                 <img
+                  alt=""
                   id="post_details_img"
                   src={currentPost.post_images[currentIndex]}
                 />
@@ -212,7 +214,6 @@ const SocialPostDetails = () => {
         <div className="socialpostdetails_bottom">
           {/* NOTE) loop through currentPost.social_comments (will contain ID) */}
           <SocialComments id={id} />
-          {/* <SocialCommentSection /> */}
         </div>
       </div>
     </div>

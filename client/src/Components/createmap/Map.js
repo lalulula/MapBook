@@ -61,7 +61,8 @@ const Map = ({
     selectedColors,
     mapFileData.current,
   ]);
-  const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN;
+  const MAPBOX_TOKEN =
+    "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
   const [lng, setLng] = useState(-122.48);
   const [lat, setLat] = useState(37.84);
   const [zoom, setZoom] = useState(3);
@@ -469,6 +470,7 @@ const Map = ({
   };
 
   useEffect(() => {
+    // console.log("selectedMapFile: ", selectedMapFile);
     console.log("onhover: useEffect:", templateHoverType.current);
 
     let map;

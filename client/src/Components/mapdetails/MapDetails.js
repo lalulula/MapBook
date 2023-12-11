@@ -41,7 +41,8 @@ const MapDetails = () => {
   const [optionsMenuVisible, setOptionsMenuVisible] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [postOwner, setPostOwner] = useState(null);
-  const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN;
+  const MAPBOX_TOKEN =
+    "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
   const [lng, setLng] = useState(-122.48);
   const [lat, setLat] = useState(37.84);
   const [zoom, setZoom] = useState(3);
@@ -531,36 +532,38 @@ const MapDetails = () => {
                   <EditButton />
                 </>
               )}
-              <div className="options_icon">
-                <img
-                  alt=""
-                  style={{ width: "30px", height: "30px" }}
-                  src={optionsIcon}
-                  onClick={handleToggleOptions}
-                />
-                {optionsMenuVisible && (
-                  <div className="mappreview_options_menu">
-                    <ul>
-                      <li>Fork Map</li>
-                      <Divider style={{ margin: "0" }} />
-                      <li onClick={() => handleShare()}>Share Map</li>
-                      <Divider style={{ margin: "0" }} />
-                      <li
-                        onClick={() =>
-                          downloadGeoJSON(
-                            selectedMapFile,
-                            currentMap.map_name + ".geojson"
-                          )
-                        }
-                      >
-                        Export Map
-                      </li>
-                      <Divider style={{ margin: "0" }} />
-                      <li>Edit Map</li>
-                    </ul>
-                  </div>
-                )}
-              </div>
+              {isAuth && (
+                <div className="options_icon">
+                  <img
+                    alt=""
+                    style={{ width: "30px", height: "30px" }}
+                    src={optionsIcon}
+                    onClick={handleToggleOptions}
+                  />
+                  {optionsMenuVisible && (
+                    <div className="mappreview_options_menu">
+                      <ul>
+                        <li>Fork Map</li>
+                        <Divider style={{ margin: "0" }} />
+                        <li onClick={() => handleShare()}>Share Map</li>
+                        <Divider style={{ margin: "0" }} />
+                        <li
+                          onClick={() =>
+                            downloadGeoJSON(
+                              selectedMapFile,
+                              currentMap.map_name + ".geojson"
+                            )
+                          }
+                        >
+                          Export Map
+                        </li>
+                        <Divider style={{ margin: "0" }} />
+                        <li>Edit Map</li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
           <div className="map_image_comments">
@@ -592,6 +595,7 @@ const MapDetails = () => {
                         .filter((user) => user._id === currentUserId)
                         .map((user) => (
                           <img
+                            alt=""
                             key={user._id}
                             style={{ marginTop: "4px" }}
                             className="profile_img"
@@ -613,7 +617,7 @@ const MapDetails = () => {
                     </div>
                   </>
                 ) : (
-                  <h4>Please sign in/sign up to comment.</h4>
+                  <div>Please Login/Register to Comment.</div>
                 )}
               </div>
               {/* {currentMap.map_comments.map((comment) => (
