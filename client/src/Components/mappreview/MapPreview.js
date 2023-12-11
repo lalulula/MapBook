@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./mapPreview.css";
 import { useNavigate } from "react-router-dom";
 import { fb, storage } from "../../firebase";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { useSelector } from "react-redux";
+import Lottie from "lottie-react";
+import ImageLoader from "../../assets/Lottie/ImageLoader.json";
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
 
 const MapPreview = ({ data }) => {
@@ -11,7 +13,19 @@ const MapPreview = ({ data }) => {
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const navigate = useNavigate();
   const [optionsMenuVisible, setOptionsMenuVisible] = useState(false);
-
+  const [imageLoaded, setImageLoaded] = useState(false); // New state to track image loading
+  useEffect(() => {
+    console.log(data);
+    if (data.mapPreviewImg) {
+      setTimeout(() => {
+        handleImageLoad();
+      }, 2000);
+    }
+  }, []);
+  const handleImageLoad = () => {
+    // Called when the image has finished loading
+    setImageLoaded(true);
+  };
   const handleEdit = (id) => {
     console.log("CLICKED ON MAP PREVIEW");
     navigate(`/mapdetails/${id}`);
@@ -110,11 +124,22 @@ const MapPreview = ({ data }) => {
           style={{ color: "black" }}
         ></i>
       )}
-      <img
-        className="mappreview_img"
-        src={data.mapPreviewImg}
-        alt={data.map_name}
-      />
+      {data.mapPreviewImg && imageLoaded ? (
+        <img
+          className="mappreview_img"
+          src={data.mapPreviewImg}
+          alt={data.map_name}
+          onLoad={handleImageLoad}
+        />
+      ) : (
+        <div className="mappreview_img">
+          <Lottie
+            animationData={ImageLoader}
+            style={{ width: "100%", height: "100%", alignSelf: "center" }}
+          />
+        </div>
+      )}
+
       <div className="mappreview_content">
         <div className="mappreview_name_container">
           <div className="mappreview_name">{data.map_name}</div>
