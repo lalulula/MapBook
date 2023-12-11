@@ -60,6 +60,49 @@
   color: #fff;
   background-color: #333;
 }
+.edit_profile_btn {
+  cursor: pointer;
+}
+.edit_profile_btn:hover {
+  color: rgba(105, 163, 255, 0.901);
+  border-color: rgba(105, 163, 255, 0.901);
+}
+.change_profileImg_btn {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  padding: 5px 10px;
+  border: 2px solid #333;
+}
+.change_profileImg_btn:hover {
+  color: rgba(105, 163, 255, 0.901);
+  border-color: rgba(105, 163, 255, 0.901);
+}
+.update_user_btn_container {
+  align-self: center;
+  margin-top: 2rem;
+}
+.update_user_btn {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  padding: 5px 10px;
+  border: 2px solid #333;
+}
+.update_user_btn:hover {
+  color: rgba(105, 163, 255, 0.901);
+  border-color: rgba(105, 163, 255, 0.901);
+}
 
 @media (max-width: 768px) {
   .like-button-container {

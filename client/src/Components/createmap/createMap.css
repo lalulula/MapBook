@@ -41,6 +41,7 @@
   height: -webkit-fill-available;
   width: fit-content;
   gap: 1rem;
+  overflow: scroll;
 }
 .mapdatainput_templates {
   flex: 4;
@@ -149,7 +150,7 @@
 }
 .heat_data_tooltip {
   display: flex;
-  align-items: flex-end;
+  align-items: stretch;
   gap: 1rem;
 }
 

@@ -75,9 +75,15 @@ const Heat = ({
       {/* Render color range*/}
       <h3>Data Color Range</h3>
       {selectedColors.length !== 0 && (
-        <div style={{ display: "flex" }}>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "nowrap",
+            flexDirection: "column",
+          }}
+        >
           {selectedColors.map((color, index) => (
-            <div key={index} style={{ display: "flex" }}>
+            <div key={index}>
               <div
                 style={{
                   backgroundColor: color,

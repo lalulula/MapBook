@@ -1,42 +1,25 @@
 import React, { useEffect, useState } from "react";
-import "./main.css";
 import MapPreview from "../mappreview/MapPreview";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import SearchBar from "../searchbar/SearchBar";
 import Dropdown from "react-dropdown";
 import Lottie from "lottie-react";
 import NoMapAni from "../../assets/Lottie/NoMaps.json";
 import MainPageLoading from "../../assets/Lottie/MainPageLoading.json";
-import { getAllMapsAPI } from "../../api/map";
 import Typewriter from "typewriter-effect";
+import { getAllMapsAPI } from "../../api/map";
+import "./main.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 const MainPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchFilterOption, setSearchFilterOption] = useState("");
   const [allMaps, setAllMaps] = useState([]);
   const [mainPageLoading, setMainPageLoading] = useState(true);
+  // const [noMaps, setNoMaps] = useState(false);
   const searchFilterOps = ["Map Name", "Topics", "Description"];
   const handleSeachFilter = (e) => {
     setSearchFilterOption(e.value);
   };
-  useEffect(() => {
-    // console.log(searchFilterOption);
-  }, [searchFilterOption]);
-
-  const filteredMaps = allMaps.filter((map) => {
-    // Check if map is visible
-    const isVisible = map.is_visible === true;
-    // Check search filter conditions and visibility
-    return searchFilterOption === "Map Name" ||
-      searchFilterOption === "Search by"
-      ? isVisible &&
-          map.map_name.toLowerCase().includes(searchTerm.toLowerCase())
-      : searchFilterOption === "Topics"
-      ? isVisible && map.topic.toLowerCase().includes(searchTerm.toLowerCase())
-      : isVisible &&
-        map.map_description.toLowerCase().includes(searchTerm.toLowerCase());
-  });
-
   useEffect(() => {
     getAllMapsAPI()
       .then((m) => {
@@ -48,6 +31,27 @@ const MainPage = () => {
         }, 3000);
       });
   }, []);
+
+  useEffect(() => {}, [searchFilterOption]);
+
+  // useEffect(() => {
+  //   console.log(allMaps);
+  //   if (allMaps.length === 0) {
+  //     setNoMaps(true);
+  //   }
+  // }, [allMaps]);
+
+  const filteredMaps = allMaps.filter((map) => {
+    const isVisible = map.is_visible === true;
+    return searchFilterOption === "Map Name" ||
+      searchFilterOption === "Search by"
+      ? isVisible &&
+          map.map_name.toLowerCase().includes(searchTerm.toLowerCase())
+      : searchFilterOption === "Topics"
+      ? isVisible && map.topic.toLowerCase().includes(searchTerm.toLowerCase())
+      : isVisible &&
+        map.map_description.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   return (
     <div className="mainpage_container">
@@ -62,7 +66,7 @@ const MainPage = () => {
         />
       </div>
       {mainPageLoading ? (
-        <div style={{ textAlign: "center" }}>
+        <div style={{ textAlign: "center", marginTop: "8rem" }}>
           <div>
             <Typewriter
               onInit={(typewriter) => {
@@ -75,7 +79,7 @@ const MainPage = () => {
             style={{
               height: 350,
               width: 350,
-              opacity: 0.6,
+              opacity: 0.3,
             }}
           />
         </div>
@@ -86,7 +90,6 @@ const MainPage = () => {
               filteredMaps.map((item, index) => (
                 <MapPreview key={index} data={item} />
               ))}
-            {console.log("filteredMaps:", filteredMaps)}
           </div>
 
           {filteredMaps.length === 0 && (

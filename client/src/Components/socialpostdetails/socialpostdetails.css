@@ -108,6 +108,7 @@
 .socialpostdetails_middle_right {
   flex: 1;
   padding: 10px;
+  overflow: scroll;
 }
 
 #post_details_img {

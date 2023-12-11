@@ -25,7 +25,8 @@
 }
 
 .nomap_txt_btn:hover {
-  color: rgb(85, 85, 85);
+  font-weight: 400;
+  color: rgba(153, 198, 237, 0.365);
 }
 
 .mymaps_top {
