@@ -17,6 +17,14 @@
   padding: 2rem 2rem 4rem 2rem;
   border-radius: 10px;
 }
+.back_btn_mainpage {
+  align-self: flex-start;
+  cursor: pointer;
+}
+.back_btn_mainpage:hover {
+  font-weight: 400;
+  color: rgba(153, 198, 237, 0.365);
+}
 
 .createsocialpost_top {
   display: flex;
@@ -391,7 +399,6 @@
   padding: 8px 15px 8px 15px;
   border-radius: 5px;
   border: none;
-
 }
 
 .createsocialpost_modal_container button:hover {
@@ -400,5 +407,5 @@
 }
 
 .createsocialpost_goback {
-  background-color: #AEC6CF;
+  background-color: #aec6cf;
 }

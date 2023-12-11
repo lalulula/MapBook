@@ -1,19 +1,19 @@
+import { useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
-import "./socialpage.css";
-import SocialPostPreview from "../socialpostpreview/SocialPostPreview";
-import SearchBar from "../searchbar/SearchBar";
-import Dropdown from "react-dropdown";
-import "react-dropdown/style.css";
-import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import {
   getAllSocialPostsAPIMethod,
   getMySocialPostAPIMethod,
 } from "../../api/social";
+import SocialPostPreview from "../socialpostpreview/SocialPostPreview";
+import SearchBar from "../searchbar/SearchBar";
+import Dropdown from "react-dropdown";
+import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { grey, blueGrey } from "@mui/material/colors";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { useSelector } from "react-redux";
+import "./socialpage.css";
+import "react-dropdown/style.css";
 
 const SocialPage = () => {
   const navigate = useNavigate();
@@ -23,12 +23,10 @@ const SocialPage = () => {
   const [socialPosts, setSocialPosts] = useState([]);
   const searchFilterOps = ["Title", "Topics", "Description"];
   const currentUserId = useSelector((state) => state.user.id);
-  const handleSeachFilter = (e) => {
-    setSearchFilterOption(e.value);
-  };
-  useEffect(() => {
-    console.log(currentUserId);
-  }, []);
+  // useEffect(() => {
+  //   console.log(currentUserId);
+  // }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -43,7 +41,9 @@ const SocialPage = () => {
     };
     fetchData();
   }, [displayMyPosts, currentUserId]);
-
+  const handleSeachFilter = (e) => {
+    setSearchFilterOption(e.value);
+  };
   const filteredPosts = socialPosts.filter((post) => {
     return searchFilterOption === "Title"
       ? post.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -85,17 +85,19 @@ const SocialPage = () => {
                 Create new post
               </Button>
             </div>
-            <div className="searchbar">
-              <SearchBar onSearchChange={(term) => setSearchTerm(term)} />
-            </div>
-            <div className="sort_by">
-              <Dropdown
-                options={searchFilterOps}
-                value={searchFilterOption}
-                placeholder="Search By.."
-                className="social_page_dropdown"
-                onChange={handleSeachFilter}
-              />
+            <div className="socialpage_search_container">
+              <div className="socialpage_searchbar">
+                <SearchBar onSearchChange={(term) => setSearchTerm(term)} />
+              </div>
+              <div className="socialpage_sort_by">
+                <Dropdown
+                  options={searchFilterOps}
+                  value={searchFilterOption}
+                  placeholder="Search By.."
+                  className="social_page_dropdown"
+                  onChange={handleSeachFilter}
+                />
+              </div>
             </div>
           </div>
         </div>

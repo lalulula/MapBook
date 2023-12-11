@@ -87,7 +87,7 @@ const MainPage = () => {
         <div className="mainpage_maps_container">
           <div className="mainpage_maps">
             {filteredMaps.length !== 0 &&
-              filteredMaps.reverse.map((item, index) => (
+              filteredMaps.map((item, index) => (
                 <MapPreview key={index} data={item} />
               ))}
           </div>

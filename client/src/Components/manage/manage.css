@@ -1,11 +1,11 @@
 /* Manage Socials */
-.socialpage {
+.manage_social {
   display: flex;
   justify-content: center;
   margin-top: 6rem;
 }
 
-.socialpage_container {
+.manage_social_container {
   height: 80%;
   width: 70%;
   display: flex;
@@ -13,24 +13,24 @@
   align-items: center;
 }
 
-.socialpage_top {
+.manage_social_top {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.socialpostdetails_top_left h1 {
+.manage_socialpostdetails_top_left h1 {
   width: 100%;
 }
 
-.socialpage_top_right {
+.manage_social_top_right {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
 }
 
-.socialpage_middle {
+.manage_social_middle {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -38,34 +38,34 @@
   padding: 0 2rem;
 }
 
-.create_post_btn:hover {
+.manage_create_post_btn:hover {
   transform: scale(1.05);
   background-color: rgba(119, 119, 119, 0.284) important !;
 }
 
-.socialpage_top_left {
+.manage_social_top_left {
   display: flex;
 }
 
-.create_new_post {
+.manage_create_new_post {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.social_post {
+.manage_social_post {
   margin-bottom: 20px;
 }
 
-.searchbar {
+.manage_searchbar {
   width: 50%;
 }
 
-.social_page_dropdown {
+.manage_social__dropdown {
   width: 120px;
 }
 
-.sort_by {
+.manage_sort_by {
   font-size: 10px;
 }
 

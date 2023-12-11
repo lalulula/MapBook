@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./createsocialpost.css";
 import Dropdown from "react-dropdown";
 import { createSocialPostAPIMethod } from "../../api/social";
 import { useSelector } from "react-redux";
-import ImageIcon from '@mui/icons-material/Image';
-import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
+import ImageIcon from "@mui/icons-material/Image";
+import CancelTwoToneIcon from "@mui/icons-material/CancelTwoTone";
+import "./createsocialpost.css";
 
 const CreateSocialPost = () => {
   const navigate = useNavigate();
@@ -26,14 +26,11 @@ const CreateSocialPost = () => {
   const [uploadedFileObj, setUploadedFileObj] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
-  // const uploadedFileObj = [];
-
   const [options, setOptions] = useState({
     title: "",
     post_content: "",
     topic: "",
     customTopic: "",
-    // post_images: "",
     post_owner: "",
     view_count: 1,
   });
@@ -52,9 +49,8 @@ const CreateSocialPost = () => {
   };
 
   const handleImageUpload = (event) => {
-
     let tempFileArray = uploadedFileObj;
-    tempFileArray.push(event.target.files[0])
+    tempFileArray.push(event.target.files[0]);
     setUploadedFileObj(tempFileArray);
 
     setOptions({
@@ -74,9 +70,12 @@ const CreateSocialPost = () => {
   };
 
   const handleRemoveImage = (index) => {
-    let newUploadedImages = [...uploadedImages.slice(0, index), ...uploadedImages.slice(index + 1)];
+    let newUploadedImages = [
+      ...uploadedImages.slice(0, index),
+      ...uploadedImages.slice(index + 1),
+    ];
     setUploadedImages(newUploadedImages);
-  }
+  };
 
   const handleSocialPostCreate = async () => {
     const newPost = { ...options, post_owner: userId };
@@ -92,9 +91,7 @@ const CreateSocialPost = () => {
 
   const handleClickCancel = () => {
     setShowModal(true);
-  }
-
-
+  };
 
   return (
     <div className="createsocialpost_page">
@@ -106,12 +103,29 @@ const CreateSocialPost = () => {
           </div>
 
           <div className="createsocialpost_modal_container">
-            <button className="createsocialpost_modal_cancel_btn" onClick={() => navigate('/socialpage')}>Yes</button>
-            <button className="createsocialpost_goback" onClick={() => setShowModal(false)}>Go back</button>
+            <button
+              className="createsocialpost_modal_cancel_btn"
+              onClick={() => navigate("/socialpage")}
+            >
+              Yes
+            </button>
+            <button
+              className="createsocialpost_goback"
+              onClick={() => setShowModal(false)}
+            >
+              Go back
+            </button>
           </div>
         </div>
       )}
       <div className="createsocialpost_container">
+        <span
+          className="back_btn_mainpage"
+          onClick={() => navigate("/mainpage")}
+        >
+          <i className="bi bi-arrow-left" />
+          &nbsp;&nbsp;Return to Main Page
+        </span>
         <div className="createsocialpost_header">
           <h2>Create Social Post</h2>
         </div>
@@ -134,7 +148,8 @@ const CreateSocialPost = () => {
             )}
           </div>
           <div className="createsocialpost_title">
-            <input maxLength="100"
+            <input
+              maxLength="100"
               placeholder="Enter title here"
               value={options.title}
               onChange={(e) => handleTitleChange(e.target.value)}
@@ -170,7 +185,10 @@ const CreateSocialPost = () => {
             <div className="createsocialpost_images">
               {uploadedImages.map((img, index) => (
                 <div className="createsocialpost_image_container">
-                  <CancelTwoToneIcon className="remove_uploaded_image" onClick={() => handleRemoveImage(index)} />
+                  <CancelTwoToneIcon
+                    className="remove_uploaded_image"
+                    onClick={() => handleRemoveImage(index)}
+                  />
                   <img
                     key={index}
                     src={img.data}
@@ -184,17 +202,19 @@ const CreateSocialPost = () => {
           </div>
           <hr className="createsocialpost_hr"></hr>
           <div className="social_post_bottom">
-            <button onClick={handleClickCancel} className="createsocialpost_cancel">
+            <button
+              onClick={handleClickCancel}
+              className="createsocialpost_cancel"
+            >
               Cancel
             </button>
             <button
               onClick={handleSocialPostCreate}
               className="createsocialpost_submit"
-            /* disabled={options.title.trim() === ''} */
+              /* disabled={options.title.trim() === ''} */
             >
               Post
             </button>
-
           </div>
         </div>
       </div>
