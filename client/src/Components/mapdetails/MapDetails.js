@@ -453,7 +453,8 @@ const MapDetails = () => {
   const handleShare = () => {
     // Handle share action
     navigator.clipboard.writeText(HOME_URL+'/mapdetails/' + currentMap._id);
-    // TODO: copyed popup 
+    alert("Link Copied!");
+
     
     console.log("Share clicked");
   };

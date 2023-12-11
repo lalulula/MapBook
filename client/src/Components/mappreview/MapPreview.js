@@ -32,7 +32,7 @@ const MapPreview = ({ data }) => {
     e.stopPropagation();
     console.log(HOME_URL+'/mapdetails/' + data._id);
     navigator.clipboard.writeText(HOME_URL+'/mapdetails/' + data._id);
-    // TODO: copyed popup 
+    alert("Link Copied!");
     
     console.log("Share clicked");
   };
