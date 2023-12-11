@@ -3,11 +3,12 @@ import "./mapPreview.css";
 import { useNavigate } from "react-router-dom";
 import { fb, storage } from "../../firebase";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { useSelector } from "react-redux";
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
-
 
 const MapPreview = ({ data }) => {
   // console.log("data: ", data);
+  const isAuth = useSelector((state) => state.user.isAuthenticated);
   const navigate = useNavigate();
   const [optionsMenuVisible, setOptionsMenuVisible] = useState(false);
 
@@ -30,16 +31,12 @@ const MapPreview = ({ data }) => {
   const handleShare = (e) => {
     // Handle share action
     e.stopPropagation();
-    console.log(HOME_URL+'/mapdetails/' + data._id);
-    navigator.clipboard.writeText(HOME_URL+'/mapdetails/' + data._id);
+    console.log(HOME_URL + "/mapdetails/" + data._id);
+    navigator.clipboard.writeText(HOME_URL + "/mapdetails/" + data._id);
     alert("Link Copied!");
-    
+
     console.log("Share clicked");
   };
-
-
-
-
 
   // Convert data to GEOJSON //
   function saveGeoJSONToFile(geoJSONObject, filename) {
@@ -71,7 +68,6 @@ const MapPreview = ({ data }) => {
     // Handle export action
     e.stopPropagation();
 
-
     let url = data.file_path;
     // get file name from url
     let fileName = url
@@ -85,10 +81,8 @@ const MapPreview = ({ data }) => {
     xhr.responseType = "json";
     xhr.onload = (event) => {
       // console.log("response: ", xhr.response);
-      downloadGeoJSON(xhr.response, data.map_name + ".geojson")
+      downloadGeoJSON(xhr.response, data.map_name + ".geojson");
       // setSelectedMapFile(xhr.response);
-
-
     };
     xhr.open("GET", mapUrl);
     xhr.send();
@@ -109,11 +103,13 @@ const MapPreview = ({ data }) => {
           </ul>
         </div>
       )}
-      <i
-        onClick={toggleOptionsMenu}
-        className="bi bi-three-dots-vertical"
-        style={{ color: "black" }}
-      ></i>
+      {isAuth && (
+        <i
+          onClick={toggleOptionsMenu}
+          className="bi bi-three-dots-vertical"
+          style={{ color: "black" }}
+        ></i>
+      )}
       <img
         className="mappreview_img"
         src={data.mapPreviewImg}
