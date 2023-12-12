@@ -543,24 +543,63 @@ const Map = ({
   // }
 
 
-
-
   // CLUSTER APPROACH
   const redrawCircleData = () => {
-
     if (templateHoverType.current === "Circle Map") {
-      if (mapRef.current.getLayer("counties-circles")) {
-        mapRef.current.removeLayer("counties-circles");
+      if (mapRef.current.getLayer("clusters")) {
+        mapRef.current.removeLayer("clusters");
+      }
+      if (mapRef.current.getLayer("cluster-count")) {
+        mapRef.current.removeLayer("cluster-count");
+      }
+      if (mapRef.current.getLayer("unclustered-point")) {
+        mapRef.current.removeLayer("unclustered-point");
       }
       if (mapRef.current.getSource("circles")) {
+        console.log("circle source remove")
         mapRef.current.removeSource("circles");
       }
 
       console.log("mapfile.current: ", mapFileData.current);
 
+      let dataName = mapFileData.current["mapbook_circleheatmapdata"];
+
+      console.log(dataName)
+      const expValue = [
+        "to-number",
+        ["get", dataName, ["get", "mapbook_data"]],
+      ];
+
       const featureDataAdded = mapFileData.current["features"].filter(
         (f) => f["properties"].mapbook_data != null
       );
+      
+      var namesDataAdded = [];
+      featureDataAdded.forEach((element) => { //adding mapbook data to each feature
+        namesDataAdded.push(element["properties"].name);
+      });
+
+
+
+
+      var JsonBasedOnPoint = structuredClone(mapFileData.current);
+      for(var i = 0; i < mapFileData.current["features"].length; i++ ){
+        var centerX = 0;
+        var canterY = 0;
+        var pointCount = 0;
+        for(var j = 0; j < mapFileData.current["features"][i].geometry.coordinates.length; j++){
+          for(var k = 0; k < mapFileData.current["features"][i].geometry.coordinates[j].length; k++){
+            centerX = centerX + mapFileData.current["features"][i].geometry.coordinates[j][k][0];
+            canterY = canterY + mapFileData.current["features"][i].geometry.coordinates[j][k][1];
+            pointCount++;
+          }
+        }
+        centerX = centerX / pointCount;
+        canterY = canterY / pointCount;
+        var newGeometry = { "type": "Point", "coordinates": [ centerX, canterY ] }
+        JsonBasedOnPoint["features"][i].geometry = newGeometry;
+        // mapFileData.current["features"][i].geometry
+      }
 
       mapRef.current.addSource('circles', {
         type: 'geojson',
@@ -568,41 +607,25 @@ const Map = ({
         // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
         //data: mapFileData.current,
         // data: 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson',
-        data: mapFileData.current,
-        cluster: true,
-        clusterMaxZoom: 14, // Max zoom to cluster points on
-        clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
-      });
+        data: JsonBasedOnPoint,
+        // cluster: true,
+        // clusterMaxZoom: 14, // Max zoom to cluster points on
+        // clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
+        // clusterProperties: {
+        //   // keep separate counts for each magnitude category in a cluster
+        //   'mag1': ['+', ['case', ['<', expValue, 100], 1, 0]],
+        //   'mag2': ['+', ['case', ['all', ['>=', expValue, 100] , ['<', expValue, 750]], 1, 0]],
+        //   'mag3': ['+', ['case', ['>=', expValue, 750], 1, 0]],
 
+        //   }
+      });
+      
       mapRef.current.addLayer({
         id: 'clusters',
         type: 'circle',
         source: 'circles',
-        filter: ['has', 'point_count'],
         paint: {
-          // Use step expressions (https://docs.mapbox.com/style-spec/reference/expressions/#step)
-          // with three steps to implement three types of circles:
-          //   * Blue, 20px circles when point count is less than 100
-          //   * Yellow, 30px circles when point count is between 100 and 750
-          //   * Pink, 40px circles when point count is greater than or equal to 750
-          'circle-color': [
-            'step',
-            ['get', 'point_count'],
-            '#51bbd6',
-            100,
-            '#f1f075',
-            750,
-            '#f28cb1'
-          ],
-          'circle-radius': [
-            'step',
-            ['get', 'point_count'],
-            20,
-            100,
-            30,
-            750,
-            40
-          ]
+          'circle-translate': [0,0]
         }
       });
 
@@ -610,239 +633,69 @@ const Map = ({
         id: 'cluster-count',
         type: 'symbol',
         source: 'circles',
-        filter: ['has', 'point_count'],
         layout: {
-          'text-field': ['get', 'point_count_abbreviated'],
           'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
           'text-size': 12
         }
       });
 
-      mapRef.current.addLayer({
-        id: 'unclustered-point',
-        type: 'circle',
-        source: 'circles',
-        filter: ['!', ['has', 'point_count']],
-        paint: {
-          'circle-color': '#11b4da',
-          'circle-radius': 4,
-          'circle-stroke-width': 1,
-          'circle-stroke-color': '#fff'
-        }
-      });
+      
+
+
+      
+ 
+
+      mapRef.current.setFilter("clusters", [
+        "in",
+        "name",
+        ...namesDataAdded,
+      ]); 
+
+      mapRef.current.setFilter("cluster-count", [
+        "in",
+        "name",
+        ...namesDataAdded,
+      ]); 
+
+      mapRef.current.setLayoutProperty(
+        "cluster-count",
+        "text-field",
+        ['to-string', expValue]
+      );
+
+      //   * Blue, 20px circles when point count is less than 100
+      //   * Yellow, 30px circles when point count is between 100 and 750
+      //   * Pink, 40px circles when point count is greater than or equal to 750
+      mapRef.current.setPaintProperty(
+        "clusters",
+        "circle-color",
+        ['case',
+          ['<', expValue, 100],
+          '#51bbd6',
+          ['all', ['>=', expValue, 100] , ['<', expValue, 750]],
+          '#f1f075',
+          '#f28cb1'
+        ]
+      );
+
+      mapRef.current.setPaintProperty(
+        "clusters",
+        "circle-radius",
+        ['case',
+          ['<', expValue, 100],
+          20,
+          ['all', ['>=', expValue, 100] , ['<', expValue, 750]],
+          30,
+          40
+        ]
+      );
+
+      console.log("mapRef.current.getPaintProperty:", mapRef.current.getPaintProperty("clusters", "circle-color"))
+
+
     }
-    /* const featureDataAdded = mapFileData.current["features"].filter(
-      (f) => f["properties"].mapbook_data != null
-    );
-    var namesDataAdded = [];
-    featureDataAdded.forEach((element) => { //adding mapbook data to each feature
-      namesDataAdded.push(element["properties"].name);
-    });
-    mapRef.current.setFilter("counties-circles", [
-      "in",
-      "name",
-      ...namesDataAdded,
-    ]); */
   }
 
-
-
-
-  // ATTEMPT 2 -------------------------------
-  /* const redrawCircleData = () => {
-    const mag1 = ['<', ['get', 'mag'], 2];
-    const mag2 = ['all', ['>=', ['get', 'mag'], 2], ['<', ['get', 'mag'], 3]];
-    const mag3 = ['all', ['>=', ['get', 'mag'], 3], ['<', ['get', 'mag'], 4]];
-    const mag4 = ['all', ['>=', ['get', 'mag'], 4], ['<', ['get', 'mag'], 5]];
-    const mag5 = ['>=', ['get', 'mag'], 5];
-   
-    const colors = ['#fed976', '#feb24c', '#fd8d3c', '#fc4e2a', '#e31a1c'];
-   
-    if (templateHoverType.current === "Circle Map") {
-      if (mapRef.current.getLayer("counties-circle")) {
-        mapRef.current.removeLayer("counties-circle");
-        mapRef.current.removeSource("circles"); //TEMPORARY FIX
-      }
-      if (mapRef.current.getSource("circles")) {
-        console.log("REMOVED circle");
-        mapRef.current.removeSource("circles");
-      }
-   
-      mapRef.current.addSource("circles", {
-        type: "geojson",
-        data: mapFileData.current,
-        // 'data': 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson',
-        'cluster': true,
-        'clusterRadius': 80,
-        'clusterProperties': {
-          // keep separate counts for each magnitude category in a cluster
-          'mag1': ['+', ['case', mag1, 1, 0]],
-          'mag2': ['+', ['case', mag2, 1, 0]],
-          'mag3': ['+', ['case', mag3, 1, 0]],
-          'mag4': ['+', ['case', mag4, 1, 0]],
-          'mag5': ['+', ['case', mag5, 1, 0]]
-        },
-      });
-   
-      console.log("SDHFOIS", mapRef.current.getSource('circles'));
-      console.log("SDHFOIS22", mapRef.current.querySourceFeatures('circles'));
-   
-      mapRef.current.addLayer({
-        'id': 'circle_shape',
-        'type': 'circle',
-        'source': 'circles',
-        'filter': ['!=', 'cluster', true],
-        'paint': {
-          'circle-color': [
-            'case',
-            mag1,
-            colors[0],
-            mag2,
-            colors[1],
-            mag3,
-            colors[2],
-            mag4,
-            colors[3],
-            colors[4]
-          ],
-          'circle-opacity': 0.6,
-          'circle-radius': 12
-        }
-      });
-   
-      mapRef.current.addLayer({
-        'id': 'circle_label',
-        'type': 'symbol',
-        'source': 'circles',
-        'filter': ['!=', 'cluster', true],
-        'layout': {
-          'text-field': [
-            'number-format',
-            ['get', 'mag'],
-            { 'min-fraction-digits': 1, 'max-fraction-digits': 1 }
-   
-   
-          ],
-          'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
-          'text-size': 10
-        },
-        'paint': {
-          'text-color': [
-            'case',
-            ['<', ['get', 'mag'], 3],
-            'black',
-            'white'
-          ]
-        }
-      });
-      const markers = {};
-      let markersOnScreen = {};
-   
-      function updateMarkers() {
-        const newMarkers = {};
-        const features = mapRef.current.getSource('circles')._data.features;
-        console.log("features in update markers: ", features);
-   
-        // for every cluster on the screen, create an HTML marker for it (if we didn't yet),
-        // and add it to the map if it's not there already
-        for (const feature of features) {
-          // const coords = feature.geometry.coordinates;
-          const coords = [-151.5129, 63.1016, 0.0];
-          // const props = feature.properties;
-          console.log("feature.properties: ", feature.properties);
-          console.log("currentmap: ", mapFileData);
-          const props = { "id": "ak16994521", "mag": 2.3, "time": 1507425650893, "felt": null, "tsunami": 0 };
-          if (!props.cluster) continue;
-          const id = props.cluster_id;
-   
-          let marker = markers[id];
-          if (!marker) {
-            const el = createDonutChart(props);
-            marker = markers[id] = new mapboxgl.Marker({
-              element: el
-            }).setLngLat(coords);
-          }
-          newMarkers[id] = marker;
-   
-          if (!markersOnScreen[id]) marker.addTo(mapRef.current);
-        }
-        // for every marker we've added previously, remove those that are no longer visible
-        for (const id in markersOnScreen) {
-          if (!newMarkers[id]) markersOnScreen[id].remove();
-        }
-        markersOnScreen = newMarkers;
-      }
-   
-      // after the GeoJSON data is loaded, update markers on the screen on every frame
-      mapRef.current.on('render', () => {
-        if (!mapRef.current.isSourceLoaded('circles')) return;
-        updateMarkers();
-      });
-    }
-   
-    function createDonutChart(props) { //pass in features.properties
-      const offsets = [];
-      const counts = [
-        props.mag1,
-        props.mag2,
-        props.mag3,
-        props.mag4,
-        props.mag5
-      ];
-      let total = 0;
-      for (const count of counts) {
-        offsets.push(total);
-        total += count;
-      }
-      const fontSize =
-        total >= 1000 ? 22 : total >= 100 ? 20 : total >= 10 ? 18 : 16;
-      const r =
-        total >= 1000 ? 50 : total >= 100 ? 32 : total >= 10 ? 24 : 18;
-      const r0 = Math.round(r * 0.6);
-      const w = r * 2;
-   
-      let html = `<div>
-      <svg width="${w}" height="${w}" viewbox="0 0 ${w} ${w}" text-anchor="middle" style="font: ${fontSize}px sans-serif; display: block">`;
-   
-      for (let i = 0; i < counts.length; i++) {
-        html += donutSegment(
-          offsets[i] / total,
-          (offsets[i] + counts[i]) / total,
-          r,
-          r0,
-          colors[i]
-        );
-      }
-      html += `<circle cx="${r}" cy="${r}" r="${r0}" fill="white" />
-      <text dominant-baseline="central" transform="translate(${r}, ${r})">
-      ${total.toLocaleString()}
-      </text>
-      </svg>
-      </div>`;
-   
-      const el = document.createElement('div');
-      el.innerHTML = html;
-      return el.firstChild;
-    }
-   
-    function donutSegment(start, end, r, r0, color) {
-      if (end - start === 1) end -= 0.00001;
-      const a0 = 2 * Math.PI * (start - 0.25);
-      const a1 = 2 * Math.PI * (end - 0.25);
-      const x0 = Math.cos(a0),
-        y0 = Math.sin(a0);
-      const x1 = Math.cos(a1),
-        y1 = Math.sin(a1);
-      const largeArc = end - start > 0.5 ? 1 : 0;
-   
-      // draw an SVG path
-      return `<path d="M ${r + r0 * x0} ${r + r0 * y0} L ${r + r * x0} ${r + r * y0
-        } A ${r} ${r} 0 ${largeArc} 1 ${r + r * x1} ${r + r * y1} L ${r + r0 * x1
-        } ${r + r0 * y1} A ${r0} ${r0} 0 ${largeArc} 0 ${r + r0 * x0} ${r + r0 * y0
-        }" fill="${color}" />`;
-    }
-  } */
-  // END ATTEMPT 2 -------------------------------
 
 
 
@@ -1012,56 +865,44 @@ const Map = ({
           filter: ["in", "name", ""],
         });
 
-        ////// HANEUL
-        map.addLayer(
-          {
-            id: `counties-thematic`,
-            type: "fill",
-            source: "counties",
-            'layout': {
-              // Make the layer visible by default.
-              'visibility': 'none'
-            },
-            paint: {
-              "fill-outline-color": "#484896", //Fill color
-              'fill-color': '#faafee',
-              "fill-opacity": 1,
-            },
-          }
-          // "building"
-        );
+        // ////// HANEUL
+        // map.addLayer(
+        //   {
+        //     id: `counties-thematic`,
+        //     type: "fill",
+        //     source: "counties",
+        //     'layout': {
+        //       // Make the layer visible by default.
+        //       'visibility': 'none'
+        //     },
+        //     paint: {
+        //       "fill-outline-color": "#484896", //Fill color
+        //       'fill-color': '#faafee',
+        //       "fill-opacity": 1,
+        //     },
+        //   }
+        //   // "building"
+        // );
 
-        map.addLayer(
-          {
-            id: `counties-circles`,
-            type: "fill",
-            source: "counties",
-            'layout': {
-              // Make the layer visible by default.
-              'visibility': 'none'
-            },
-            paint: {
-              "fill-outline-color": "#484896", //Fill color
-              'fill-color': '#faafee',
-              "fill-opacity": 1,
-            },
-          }
-        );
-
-
+        // map.addLayer(
+        //   {
+        //     id: `counties-circles`,
+        //     type: "fill",
+        //     source: "counties",
+        //     'layout': {
+        //       // Make the layer visible by default.
+        //       'visibility': 'none'
+        //     },
+        //     paint: {
+        //       "fill-outline-color": "#484896", //Fill color
+        //       'fill-color': '#faafee',
+        //       "fill-opacity": 1,
+        //     },
+        //   }
+        // );
 
 
 
-        // UGLY NAME LABELS
-        // map.addLayer({
-        //   id: "data-labels",
-        //   type: "symbol",
-        //   source: "counties",
-        //   layout: {
-        //     "text-field": ["get", "name"],
-        //     "text-size": 15,
-        //   },
-        // });
 
         map.on("click", (e) => {
           const bbox = [
