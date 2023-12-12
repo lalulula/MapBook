@@ -5,7 +5,6 @@ import {
   editSocialPostAPIMethod,
 } from "../../api/social";
 import Dropdown from "react-dropdown";
-import CancelTwoToneIcon from "@mui/icons-material/CancelTwoTone";
 
 const EditSocialPost = () => {
   const { id } = useParams();
