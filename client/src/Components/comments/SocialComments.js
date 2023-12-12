@@ -203,17 +203,19 @@ const SocialComments = () => {
                 </div>
                 {editingCommentId === comment._id ? (
                   <div>
-                    <textarea
-                      className="edit_comment_input"
-                      value={commentText}
-                      onChange={(e) => setCommentText(e.target.value)}
-                    />
-                    <button
-                      className="save_comment_changes"
-                      onClick={() => handleEditCommentSave(comment._id)}
-                    >
-                      save
-                    </button>
+                    <div className="socialcomments_edit_container">
+                      <textarea
+                        className="edit_comment_input"
+                        value={commentText}
+                        onChange={(e) => setCommentText(e.target.value)}
+                      />
+                      <button
+                        className="save_comment_changes"
+                        onClick={() => handleEditCommentSave(comment._id)}
+                      >
+                        save
+                      </button>
+                    </div>
                     <div className="social_comment_replies_container">
                       <SocialReplies
                         commentId={comment._id}

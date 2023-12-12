@@ -96,7 +96,7 @@
 }
 
 .edit_comment_input {
-    width: 100%;
+    width: 70%;
     height: 100%;
 }
 
@@ -244,4 +244,15 @@
     border: white;
     padding: 8px 15px 8px 15px;
     border-radius: 5px;
+}
+
+.socialcomments_edit_container {
+    display: flex;
+    flex-direction: column;
+}
+
+.save_comment_changes {
+    width: 80px;
+    margin-top: 1rem;
+    float: right;
 }
