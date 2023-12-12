@@ -206,7 +206,15 @@ const Profile = () => {
             )}
           </Popup>
           <Popup
-            trigger={<div className="remove_account">remove account</div>}
+            trigger = {
+              user.username !== "Admin" ? (
+                <div className="remove_account">
+                  remove account
+                </div>
+              ) : (
+                <></>
+              )
+            }
             modal
             nested
             closeOnDocumentClick={false}
