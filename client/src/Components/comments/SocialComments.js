@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import dummyComments from "./sample_data_comments.json";
 import "./socialcomments.css";
 import defaultImg from "../../assets/img/defaultProfileImg.jpg";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
@@ -13,9 +12,8 @@ import {
   getAllSocialCommentsAPI,
   updateSocialCommentAPIMethod,
 } from "../../api/comment";
-import { getAllUsersAPIMethod } from "../../api/user";
+import { getAllUsersAPIMethod, getUserById } from "../../api/user";
 import { useSelector } from "react-redux";
-import { getUserById } from "../../api/user";
 import SocialReplies from "./SocialReplies";
 
 const SocialComments = () => {
@@ -130,6 +128,9 @@ const SocialComments = () => {
 
   const refresh = async () => {
     const arr = comments.filter((c) => postComments.includes(c._id));
+    console.log("comments: ", comments);
+    console.log("postComments: ", postComments);
+    console.log("refresh: arr: ", arr);
     for (let i = 0; i < arr.length; i++) {
       try {
         if (arr[i]["username"] == null) {

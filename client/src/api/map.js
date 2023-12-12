@@ -156,6 +156,7 @@ export const likeMapAPIMethod = (mapId, isAuth, userId) => {
 
 // Get All Map Comments
 export const getAllMapCommentsAPIMethod = (mapPostId) => {
+  console.log(`${API_BASE_URL}/api/mapComment/mapComments/${mapPostId}`)
   const res = fetch(`${API_BASE_URL}/api/mapComment/mapComments/${mapPostId}`, {
     ...defaultHeaders,
     method: "GET",
@@ -163,6 +164,16 @@ export const getAllMapCommentsAPIMethod = (mapPostId) => {
     .then(checkStatus)
     .then(parseJSON);
   return res;
+};
+
+export const getAllExistingMapCommentsAPIMethod = () => {
+  return fetch(`${API_BASE_URL}/api/mapComment/existingMapComments`,
+    //await fetch(`${API_BASE_URL}/api/users/${userId}`, {
+    {
+      ...defaultHeaders,
+      method: "GET",
+    }
+  ).then(parseJSON);
 };
 
 export const createMapCommentAPIMethod = (comment) => {
@@ -193,6 +204,13 @@ export const deleteMapCommentAPIMethod = (mapCommentId) => {
 
 export const getAllMapPostRepliesAPIMethod = (id) => {
   return fetch(`${API_BASE_URL}/api/mapReply/mapReplies/${id}`, {
+    ...defaultHeaders,
+    method: "GET",
+  }).then(parseJSON);
+};
+
+export const getAllExistingMapPostRepliesAPIMethod = () => {
+  return fetch(`${API_BASE_URL}/api/mapReply/existingMapReplies`, {
     ...defaultHeaders,
     method: "GET",
   }).then(parseJSON);

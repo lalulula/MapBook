@@ -152,49 +152,84 @@ const editMap = async (req, res) => {
   try {
     const { mapId } = req.params;
 
-    const {
-      map_name,
-      topic,
-      user_id,
-      is_visible,
-      template,
-      colors,
-      data_names,
-      data_values,
-      heat_range,
-      view_count,
-    } = req.body;
+    if(req.file != null){
+      const {
+        map_name,
+        topic,
+        user_id,
+        is_visible,
+        map_description,
+        mapPreviewImg,
+        map_users_liked,
+        created_at,
+        view_count,
+      } = req.body;
+  
+      const fileBuffer = req.file.buffer;
+      const fileName = req.file.originalname;
+      const storageRef = bucket.file(fileName);
+      await storageRef.createWriteStream().end(fileBuffer);
+  
+      const [fileUrl] = await storageRef.getSignedUrl({
+        action: "read",
+        expires: "03-09-2025", // Replace with an expiration date
+      });
+  
+      const updatedMap = await MapObj.findByIdAndUpdate(
+        mapId,
+        {
+          map_name: map_name,
+          topic: topic,
+          user_id: user_id,
+          is_visible: is_visible,
+          file_path: fileUrl,
+          view_count: view_count,
+          map_description: map_description,
+          mapPreviewImg: mapPreviewImg,
+          map_users_liked:map_users_liked,
+          created_at:created_at
+        },
+        { new: true }
+      );
+      // Respond with success message
+      res.status(200).json(updatedMap);
+    }
+    else{
+      const {
+        map_name,
+        topic,
+        user_id,
+        is_visible,
+        map_description,
+        mapPreviewImg,
+        file_path,
+        map_users_liked,
+        created_at,
+        view_count,
+      } = req.body;
 
-    const fileBuffer = req.file.buffer;
-    const fileName = req.file.originalname;
-    const storageRef = bucket.file(fileName);
-    await storageRef.createWriteStream().end(fileBuffer);
+      const updatedMap = await MapObj.findByIdAndUpdate(
+        mapId,
+        {
+          map_name: map_name,
+          topic: topic,
+          user_id: user_id,
+          is_visible: is_visible,
+          file_path: file_path,
+          view_count: view_count,
+          map_description: map_description,
+          mapPreviewImg: mapPreviewImg,
+          map_users_liked:map_users_liked,
+          created_at:created_at
+        },
+        { new: true }
+      );
+      // Respond with success message
+      res.status(200).json(updatedMap);
+    }
+   
 
-    const [fileUrl] = await storageRef.getSignedUrl({
-      action: "read",
-      expires: "03-09-2025", // Replace with an expiration date
-    });
 
-    const updatedMap = await MapObj.findByIdAndUpdate(
-      mapId,
-      {
-        map_name: map_name,
-        topic: topic,
-        user_id: user_id,
-        is_visible: is_visible,
-        template: template,
-        file_path: fileUrl,
-        colors: colors,
-        data_names: data_names,
-        data_values: data_values,
-        heat_range: heat_range,
-        view_count: view_count,
-      },
-      { new: true }
-    );
-
-    // Respond with success message
-    res.status(200).json(updatedMap);
   } catch (error) {
     console.error("Error updating map:", error);
     res.status(500).json({ success: false, error: error.message });

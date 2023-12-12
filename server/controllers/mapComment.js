@@ -9,8 +9,13 @@ const getAllMapComments = async (req, res) => {
     // const mapPost = await MapPost.findById(sPostId);
     // const mapPostComments = mapPost["map_comments"];
     const mapComments = await MapComment.find({ "map_id": sPostId })
+    var mapCommentIds = [];
 
-    res.status(200).json(mapComments);
+    for(var i = 0; i < mapComments.length; i++){
+      // console.log(mapComments[i]._id)
+      mapCommentIds.push(mapComments[i]._id);
+    }
+    res.status(200).json(mapCommentIds);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
