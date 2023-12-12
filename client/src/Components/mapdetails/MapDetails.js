@@ -65,7 +65,7 @@ const MapDetails = () => {
   };
 
   const getMapRunning = useRef(false);
-  
+
 
   const getUsers = async () => {
     const data = await getAllUsersAPIMethod();
@@ -74,7 +74,7 @@ const MapDetails = () => {
 
   const getMap = async () => {
     // mutex that prevent calling multiple getMap simultaneously
-    if(!getMapRunning.current){
+    if (!getMapRunning.current) {
       getMapRunning.current = true;
       try {
         console.log("getMap called");
@@ -87,7 +87,7 @@ const MapDetails = () => {
         console.log("currentMap.current: ", currentMap.current);
         const updatedViewCount = currentMap.current.view_count + 1;
         const updatedMap = { ...currentMap.current, view_count: updatedViewCount };
-        
+
         //it does not have to await
         editMapPostAPIMethod(currentMap.current._id, updatedMap);
         // console.log(postOwner, user._id);
@@ -130,7 +130,7 @@ const MapDetails = () => {
   }, [mapId, user._id]);
 
   useEffect(() => {
-    if(selectedMapFile != null){
+    if (selectedMapFile != null) {
       console.log("selectedMapFile: useEffect: ", selectedMapFile);
 
       let map;
@@ -520,14 +520,8 @@ const MapDetails = () => {
             id="map"
             style={{ overflow: "hidden" }}
           ></div>
-
-
-
-
           <MapComments mapId={mapId} />
-
-
-            {/* 
+          {/* 
             <div className="comment_content">
               {mapComments.map((comment, i) => (
                 <Comment
@@ -539,7 +533,7 @@ const MapDetails = () => {
                 />
               ))}
             </div> */}
-            
+
 
 
           <Divider section inverted style={{ margin: "20px 0" }} />

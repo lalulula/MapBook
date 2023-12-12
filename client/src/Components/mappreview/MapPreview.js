@@ -32,7 +32,7 @@ const MapPreview = ({ data }) => {
     setImageLoaded(true);
   };
   const handleEdit = (id) => {
-    console.log("CLICKED ON MAP PREVIEW");
+    console.log("CLICKED ON MAP PREVIEW: ", id);
     navigate(`/mapdetails/${id}`);
   };
 
