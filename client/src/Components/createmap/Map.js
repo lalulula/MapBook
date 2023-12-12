@@ -467,6 +467,25 @@ const Map = ({
     // console.log("selectedMapFile: ", selectedMapFile);
     console.log("onhover: useEffect:", templateHoverType.current);
 
+    // TODO: make lowercase name 
+    // Name NAME -> name
+    if(mapFileData.current != null){
+      if(mapFileData.current["features"][0].properties.name == null){
+        if(mapFileData.current["features"][0].properties.Name != null){
+          for(var i = 0; i < mapFileData.current["features"].length; i++){
+            mapFileData.current["features"][i].properties.name = mapFileData.current["features"][i].properties.Name;
+          }
+        }
+        else if(mapFileData.current["features"][0].properties.NAME != null){
+          for(var i = 0; i < mapFileData.current["features"].length; i++){
+            mapFileData.current["features"][i].properties.name = mapFileData.current["features"][i].properties.NAME;
+          }
+        }
+      }
+    }
+
+    // mapFileData.current
+
     let map;
 
     mapboxgl.accessToken = MAPBOX_TOKEN;
