@@ -35,7 +35,10 @@
 }
 
 .social_post_preview_container_right {
+  display: flex;
   flex: 0.1;
+  margin-right: 2rem;
+
 }
 
 .owner_name {

@@ -16,10 +16,10 @@ const MapPreview = ({ data }) => {
   const navigate = useNavigate();
   const [optionsMenuVisible, setOptionsMenuVisible] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false); // New state to track image loading
-  const [username, setUsername] = useState() 
+  const [username, setUsername] = useState()
 
   useEffect(() => {
-    console.log(data);
+    // console.log(data);
     getUserName();
     if (data.mapPreviewImg) {
       setTimeout(() => {
@@ -47,7 +47,7 @@ const MapPreview = ({ data }) => {
     console.log("Fork clicked");
   };
 
-  const getUserName = async() => {
+  const getUserName = async () => {
     const user = await getUserById(data.user_id);
     setUsername(user.username);
   }

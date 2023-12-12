@@ -21,7 +21,10 @@ const Header = () => {
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const userId = useSelector((state) => state.user.id);
 
-  const [user, setUser] = useState(null);
+  const user = useSelector((state) => state.user);
+  // console.log("USER IN HEADER: ", userBro);
+
+  /* const [user, setUser] = useState(null);
 
   const getUser = async () => {
     const response = await fetch(`${API_BASE_URL}/api/users/${userId}`, {
@@ -30,13 +33,12 @@ const Header = () => {
     });
     const data = await response.json();
     setUser(data);
-  };
-
+  }; */
   useEffect(() => {
-    if (isAuthenticated) {
+    /* if (isAuthenticated) {
       getUser();
-    }
-    if (user && user.is_admin) {
+    } */
+    if (user.is_admin) {
       setAdmin(true);
     } else {
       setAdmin(false);
@@ -182,7 +184,8 @@ const Header = () => {
                   <div onClick={() => navigate("/mymap")}>
                     <h4>MyMaps</h4>
                   </div>
-                  {admin && (
+                  {console.log("IS BRO ADMIN?: ", user.user.is_admin)}
+                  {/* admin */user.user.is_admin && (
                     <div className="dropdown">
                       <h4 className="dropbtn">Manage</h4>
                       <div className="dropdown-content">
@@ -198,7 +201,8 @@ const Header = () => {
                   )}
                   <div>
                     <img
-                      src={user.profile_img}
+                      // CHANGED HEREEREREEEEEEEEEEEE
+                      src={user.user.profile_img}
                       alt="header_profile"
                       className="header_profile"
                       onClick={() => navigate("/profile")}

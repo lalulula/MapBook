@@ -7,6 +7,11 @@ import { getUserById } from "../../api/user";
 import { likeSocialPostAPIMethod } from "../../api/social";
 import { useSelector } from "react-redux";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import DeleteIcon from "@mui/icons-material/Delete";
+
+import {
+  deleteSocialPostAPIMethod,
+} from "../../api/social";
 
 const SocialPostPreview = ({ data }) => {
   const navigate = useNavigate();
@@ -16,6 +21,10 @@ const SocialPostPreview = ({ data }) => {
     data.social_users_liked.includes(currentUserId)
   );
   var [numLikes, setNumLikes] = useState(data.social_users_liked.length);
+  const [user, setUser] = useState(null);
+  const userBro = useSelector((state) => state.user);
+  console.log("USER: ", userBro);
+
 
   const handleToSocialDetails = (id) => {
     navigate(`/socialpostdetails/${id}`);
@@ -34,6 +43,23 @@ const SocialPostPreview = ({ data }) => {
     );
   };
 
+  const handleDeleteSocialPost = async (id) => {
+    try {
+      console.log("removing social post");
+      const deleteSuccess = await deleteSocialPostAPIMethod(id);
+
+      if (deleteSuccess) {
+        alert("Delete post with id:", id);
+        // TODO : not refresh ->Fix it auto reload
+        window.location.reload();
+      } else {
+        alert("Error deleting post");
+      }
+    } catch (error) {
+      console.error("Error handling delete operation:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,10 +68,10 @@ const SocialPostPreview = ({ data }) => {
       } catch (error) {
         console.error("Error fetching data:", error);
       }
-    };
-
+    }
     fetchData();
   }, [data.post_owner]);
+
   return (
     <div className="social_post_preview_container">
       <div className="social_post_preview_container_left">
@@ -81,6 +107,11 @@ const SocialPostPreview = ({ data }) => {
           alt=""
           src={data.post_images[0]}
         />
+        <div className="socialpostpreview_admin_delete">
+          <DeleteIcon
+            onClick={() => handleDeleteSocialPost(data._id)}
+          />
+        </div>
       </div>
     </div>
   );
