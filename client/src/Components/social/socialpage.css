@@ -52,11 +52,13 @@
 .social_post {
   margin-bottom: 20px;
 }
+
 .socialpage_search_container {
   display: flex;
   justify-content: space-evenly;
   align-items: baseline;
 }
+
 .socialpage_searchbar {
   width: 100%;
 }
@@ -68,36 +70,43 @@
 .socialpage_sort_by {
   font-size: 10px;
 }
+
 @media all and (max-width: 1400px) {
   .socialpostdetails_top_left h2 {
     font-size: 1.5rem;
   }
+
   .socialpage_top_right {
     display: flex;
     justify-content: space-between;
     flex-direction: column-reverse;
     align-items: flex-end;
   }
+
   .create_new_post {
     margin-right: 2rem;
     margin-bottom: 1rem;
   }
+
   .socialpage_searchbar {
     width: 50%;
   }
+
   .socialpage_search_container {
     display: flex;
     align-items: baseline;
     justify-content: center;
   }
+
   .socialpage_sort_by .Dropdown-control {
     width: 11rem;
   }
 }
+
 @media all and (max-width: 1300) {
   .socialpostdetails_top_left h2 {
     font-size: 1rem;
   }
 }
-@media all and (max-width: 600px) {
-}
+
+@media all and (max-width: 600px) {}

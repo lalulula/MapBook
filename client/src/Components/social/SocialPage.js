@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  deleteSocialPostAPIMethod,
   getAllSocialPostsAPIMethod,
   getMySocialPostAPIMethod,
 } from "../../api/social";
@@ -14,6 +15,7 @@ import { grey, blueGrey } from "@mui/material/colors";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import "./socialpage.css";
 import "react-dropdown/style.css";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const SocialPage = () => {
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ const SocialPage = () => {
   const [searchFilterOption, setSearchFilterOption] = useState("");
   const [displayMyPosts, setDisplayMyPosts] = useState(false);
   const [socialPosts, setSocialPosts] = useState([]);
+  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
   const searchFilterOps = ["Title", "Topics", "Description"];
   const currentUserId = useSelector((state) => state.user.id);
   const isAuth = useSelector((state) => state.user.isAuthenticates);
@@ -49,13 +52,25 @@ const SocialPage = () => {
     return searchFilterOption === "Title"
       ? post.title.toLowerCase().includes(searchTerm.toLowerCase())
       : searchFilterOption === "Topics"
-      ? post.topic.toLowerCase().includes(searchTerm.toLowerCase())
-      : post.post_content.toLowerCase().includes(searchTerm.toLowerCase());
+        ? post.topic.toLowerCase().includes(searchTerm.toLowerCase())
+        : post.post_content.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   const handleShowMySocialPosts = async () => {
     setDisplayMyPosts(!displayMyPosts);
   };
+
+  const handleDeleteSocialPost = async (id) => {
+    setShowDeleteConfirmationModal(false);
+    const filteredPosts = socialPosts.filter((c) => c._id !== id);
+    setSocialPosts(filteredPosts);
+    try {
+      console.log("removing user account");
+      deleteSocialPostAPIMethod(id);
+    } catch (error) {
+      console.error("Error handling delete operation:", error);
+    }
+  }
 
   return (
     <div className="socialpage">
@@ -72,7 +87,7 @@ const SocialPage = () => {
                   currentUserId
                     ? () => navigate("/createsocialpost")
                     : () =>
-                        window.alert("You need to Register/Login to continue!")
+                      window.alert("You need to Register/Login to continue!")
                 }
                 variant="outlined"
                 style={{
@@ -124,7 +139,32 @@ const SocialPage = () => {
             />
           )}
           {filteredPosts.map((item, index) => (
-            <SocialPostPreview key={index} data={item} />
+            <div>
+              <SocialPostPreview key={index} data={item} socialPosts={socialPosts} setSocialPosts={setSocialPosts} showDeleteConfirmationModal={showDeleteConfirmationModal} setShowDeleteConfirmationModal={setShowDeleteConfirmationModal} handleDeleteSocialPost={handleDeleteSocialPost} />
+              {showDeleteConfirmationModal == item._id && (
+                <div className="socialpostpreview_admin_delete_confirmation_modal">
+                  <div className="socialpostpreview_admin_delete_confirmation_modal_top">
+                    Are you sure you want to delete this post?
+                  </div>
+                  <div className="socialpostpreview_admin_delete_confirmation_modal_bottom">
+                    <button
+                      className="socialpostpreview_admin_delete_confirm"
+                      onClick={() => handleDeleteSocialPost(item._id)}
+                    >
+                      Yes
+                    </button>
+                    <button
+                      className="socialpostpreview_admin_cancel_delete"
+                      onClick={() =>
+                        setShowDeleteConfirmationModal(false)
+                      }
+                    >
+                      No
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           ))}
         </div>
       </div>

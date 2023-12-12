@@ -13,7 +13,7 @@ import {
   deleteSocialPostAPIMethod,
 } from "../../api/social";
 
-const SocialPostPreview = ({ data }) => {
+const SocialPostPreview = ({ data, socialPosts, setSocialPosts, showDeleteConfirmationModal, setShowDeleteConfirmationModal, handleDeleteSocialPost }) => {
   const navigate = useNavigate();
   const [postOwner, setPostOwner] = useState(null);
   const currentUserId = useSelector((state) => state.user.id);
@@ -41,22 +41,14 @@ const SocialPostPreview = ({ data }) => {
     );
   };
 
-  const handleDeleteSocialPost = async (id) => {
-    try {
-      console.log("removing social post");
-      const deleteSuccess = await deleteSocialPostAPIMethod(id);
-
-      if (deleteSuccess) {
-        alert("Delete post with id:", id);
-        // TODO : not refresh ->Fix it auto reload
-        window.location.reload();
-      } else {
-        alert("Error deleting post");
-      }
-    } catch (error) {
-      console.error("Error handling delete operation:", error);
+  const handleClickDeleteSocialPost = (id) => {
+    if (showDeleteConfirmationModal) {
+      setShowDeleteConfirmationModal(false);
+      return;
+    } else {
+      setShowDeleteConfirmationModal(id);
     }
-  };
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -108,7 +100,7 @@ const SocialPostPreview = ({ data }) => {
         {user.user.is_admin && (
           <div className="socialpostpreview_admin_delete">
             <DeleteIcon
-              onClick={() => handleDeleteSocialPost(data._id)}
+              onClick={() => handleClickDeleteSocialPost(data._id)}
             />
           </div>
         )}

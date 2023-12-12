@@ -40,13 +40,6 @@ const ManageUsers = () => {
       console.log("removing user account");
       const deleteSuccess = await adminRemoveUserAPIMethod(userId);
       console.log("successfully deleted user? ", deleteSuccess);
-      /* if (deleteSuccess) {
-        alert("Delete user with id:", id);
-        // TODO : not refresh ->Fix it auto reload
-        window.location.reload();
-      } else {
-        alert("Error removing user account ");
-      } */
     } catch (error) {
       console.error("Error handling delete operation:", error);
     }
