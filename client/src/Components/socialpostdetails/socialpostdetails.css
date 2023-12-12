@@ -129,3 +129,159 @@
   justify-content: center;
   align-items: center;
 }
+/* EDIT */
+.editsocialpost_page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4rem;
+}
+.editsocialpost_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #1a1a1b;
+  margin: 0 5rem 0 5rem;
+  width: 80%;
+  padding: 2rem 2rem 4rem 2rem;
+  border-radius: 10px;
+}
+.editsocialpost_top {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.editsocialpost_container_inner {
+  width: 90%;
+  margin-top: 30px;
+}
+.editsocialpost_other_topic_input {
+  width: 100%;
+  height: 40px;
+  padding: 5px 70px 5px 15px;
+  background-color: #1a1a1b;
+  border: 0.5px solid grey;
+  border-radius: 3px;
+  outline: none;
+  color: white;
+  margin-bottom: 10px;
+}
+.editsocialpost_other_topic_input:focus {
+  border: 1px solid white;
+}
+
+.editsocialpost_other_topic_input::selection {
+  color: white;
+  background-color: #656565;
+}
+.editsocialpost_description_textarea {
+  height: 200px;
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  outline: none;
+  padding: 10px;
+  background-color: #1a1a1b;
+  border: 0.5px solid grey;
+  border-radius: 3px;
+  color: white;
+  resize: vertical;
+  margin-bottom: 12px;
+}
+.editsocialpost_image_container {
+  width: 90%;
+  margin-top: 30px;
+}
+.uploaded_image {
+  margin: 10px 10px 0 0;
+}
+.remove_uploaded_image {
+  position: absolute;
+  z-index: 100;
+  right: 0;
+}
+.editsocialpost_hr {
+  width: 100%;
+  border: 0.2px solid grey;
+}
+.editsocialpost_bottom {
+  display: flex;
+  justify-content: space-between;
+  float: right;
+  margin-top: 20px;
+  align-self: self-end;
+}
+.editsocialpost_cancel {
+  background-color: #1a1a1b;
+  padding: 7px 16px 7px 16px;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 20px;
+  border: 1px solid white;
+  color: white;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.editsocialpost_cancel:hover {
+  background-color: #333334;
+}
+
+.editsocialpost_submit {
+  background-color: white;
+  padding: 7px 16px 7px 16px;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 20px;
+  border: none;
+  color: grey;
+  cursor: pointer;
+}
+.editsocialpost_submit:hover {
+  color: rgb(87, 87, 87);
+  background-color: rgba(255, 255, 255, 0.529);
+}
+/* EDIT POST MODAL */
+.editsocialpost_modal_cancel {
+  position: absolute;
+  top: 40%;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 15px;
+  border-radius: 5px;
+}
+.editsocialpost_modal_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+  font-weight: 500;
+  height: 5rem;
+  padding: 1rem;
+  text-align: center;
+  height: 100%;
+}
+.editsocialpost_modal_container {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+.editsocialpost_modal_cancel_btn {
+}
+.editsocialpost_modal_container button {
+  color: black;
+  padding: 8px 15px 8px 15px;
+  border-radius: 5px;
+  border: none;
+}
+
+.editsocialpost_modal_container button:hover {
+  color: rgb(47, 85, 120);
+  background-color: rgba(47, 85, 120, 0.141);
+}
+.editsocialpost_goback {
+  background-color: #aec6cf;
+}

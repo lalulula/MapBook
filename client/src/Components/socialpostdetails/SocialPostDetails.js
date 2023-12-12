@@ -181,7 +181,6 @@ const SocialPostDetails = () => {
             }
           >
             {currentPost.post_images && currentPost.post_images.length > 0 ? (
-              //renderImages(currentPost.post_images)
               <div className="post_details_img_container">
                 {currentPost.post_images.length > 1 && (
                   <ArrowBackIosNewIcon
