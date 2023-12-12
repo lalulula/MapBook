@@ -6,6 +6,8 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { useSelector } from "react-redux";
 import Lottie from "lottie-react";
 import ImageLoader from "../../assets/Lottie/ImageLoader.json";
+import { getUserById } from "../../api/user";
+
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
 
 const MapPreview = ({ data }) => {
@@ -14,8 +16,11 @@ const MapPreview = ({ data }) => {
   const navigate = useNavigate();
   const [optionsMenuVisible, setOptionsMenuVisible] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false); // New state to track image loading
+  const [username, setUsername] = useState() 
+
   useEffect(() => {
     console.log(data);
+    getUserName();
     if (data.mapPreviewImg) {
       setTimeout(() => {
         handleImageLoad();
@@ -41,6 +46,11 @@ const MapPreview = ({ data }) => {
     e.stopPropagation();
     console.log("Fork clicked");
   };
+
+  const getUserName = async() => {
+    const user = await getUserById(data.user_id);
+    setUsername(user.username);
+  }
 
   const handleShare = (e) => {
     // Handle share action
@@ -145,6 +155,7 @@ const MapPreview = ({ data }) => {
           <div className="mappreview_name">{data.map_name}</div>
         </div>
         <div className="mappreview_topic">{data.topic}</div>
+        <div className="mappreview_posted_by">Posted by {username}</div>
         <div className="mappreview_count_container">
           <div className="mappreview_like">
             Liked by {data.map_users_liked.length} users

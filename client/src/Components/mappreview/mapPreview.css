@@ -55,6 +55,14 @@
   color: #000000;
 }
 
+.mappreview_posted_by {
+  font-size: 1rem;
+  font-weight: 300;
+  margin-bottom: 8px;
+  color: #000000;
+}
+
+
 .mappreview_count_container {
   display: flex;
   justify-content: space-between;
