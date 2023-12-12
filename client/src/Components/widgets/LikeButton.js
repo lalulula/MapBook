@@ -6,7 +6,7 @@ import {
 } from "../../api/social";
 import "./buttons.css";
 
-function LikeButton({ id, currentPost }) {
+function LikeButton({ id, currentPost, isAuth }) {
   const currentUserId = useSelector((state) => state.user.id);
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
@@ -40,6 +40,7 @@ function LikeButton({ id, currentPost }) {
       <button
         className={`like-button ${liked ? "liked" : ""}`}
         onClick={handleLikeClick}
+        disabled={!isAuth}
       >
         {likes} Likes
       </button>

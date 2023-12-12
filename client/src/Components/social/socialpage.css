@@ -46,6 +46,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .social_post {
@@ -75,7 +76,11 @@
     display: flex;
     justify-content: space-between;
     flex-direction: column-reverse;
-    align-items: center;
+    align-items: flex-end;
+  }
+  .create_new_post {
+    margin-right: 2rem;
+    margin-bottom: 1rem;
   }
   .socialpage_searchbar {
     width: 50%;
@@ -84,6 +89,9 @@
     display: flex;
     align-items: baseline;
     justify-content: center;
+  }
+  .socialpage_sort_by .Dropdown-control {
+    width: 11rem;
   }
 }
 @media all and (max-width: 1300) {

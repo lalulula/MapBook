@@ -227,7 +227,6 @@ const Map = ({
         // "building"
       );
 
-
       const featureDataAdded = mapFileData.current["features"].filter(
         (f) => f["properties"].mapbook_data != null
       );
@@ -349,14 +348,20 @@ const Map = ({
 
       var heatRangeFrom = Number(mapFileData.current.mapbook_heatrange.from);
       var heatRangeTo = Number(mapFileData.current.mapbook_heatrange.to);
-      var range = ((heatRangeTo - heatRangeFrom) / 5);
+      var range = (heatRangeTo - heatRangeFrom) / 5;
       // console.log(heatRangeFrom, heatRangeTo, range)
       // console.log(typeof(heatRangeFrom), typeof(heatRangeTo), typeof(range), typeof(heatRangeFrom + range))
 
       let expHeatColorByValue = ["case"];
       for (var i = 0; i < 5; i++) {
-        expHeatColorByValue.push(['all', ['>=', expValue, heatRangeFrom], ['<', expValue, heatRangeFrom + range]])
-        expHeatColorByValue.push(mapFileData.current.mapbook_heat_selectedcolors[i]);
+        expHeatColorByValue.push([
+          "all",
+          [">=", expValue, heatRangeFrom],
+          ["<", expValue, heatRangeFrom + range],
+        ]);
+        expHeatColorByValue.push(
+          mapFileData.current.mapbook_heat_selectedcolors[i]
+        );
         heatRangeFrom = heatRangeFrom + range;
       }
       expHeatColorByValue.push("#000000");
@@ -371,7 +376,11 @@ const Map = ({
         "visibility",
         "visible"
       );
-      mapRef.current.setPaintProperty("counties-heat", "fill-color", expHeatColorByValue);
+      mapRef.current.setPaintProperty(
+        "counties-heat",
+        "fill-color",
+        expHeatColorByValue
+      );
       mapRef.current.setFilter("counties-heat", [
         "in",
         "name",
@@ -926,6 +935,28 @@ const Map = ({
   useEffect(() => {
     // console.log("selectedMapFile: ", selectedMapFile);
     console.log("onhover: useEffect:", templateHoverType.current);
+
+    // TODO: make lowercase name 
+    // Name NAME -> name
+    if (mapFileData.current != null) {
+      if (mapFileData.current["features"][0].properties.name == null) {
+        if (mapFileData.current["features"][0].properties.Name != null) {
+          for (var i = 0; i < mapFileData.current["features"].length; i++) {
+            mapFileData.current["features"][i].properties.name = mapFileData.current["features"][i].properties.Name;
+          }
+        }
+        else if (mapFileData.current["features"][0].properties.NAME != null) {
+          for (var i = 0; i < mapFileData.current["features"].length; i++) {
+            mapFileData.current["features"][i].properties.name = mapFileData.current["features"][i].properties.NAME;
+          }
+        }
+      }
+
+
+
+    }
+
+    // mapFileData.current
 
     let map;
 

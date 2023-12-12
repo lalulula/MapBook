@@ -16,6 +16,7 @@ import FlexBetween from "../FlexBetween";
 import sendMessage from "../../assets/img/sendMessage.png";
 
 const Comment = ({ isRelpy, comment, mapReply, handleDeleteMapComment, handleEditMapComment }) => {
+  // console.log("comment: ", comment);
   const { mapId } = useParams();
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const currentUserId = useSelector((state) => state.user.id);

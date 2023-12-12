@@ -1,5 +1,5 @@
 .map_details {
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
   justify-content: center;
   margin-top: 70px;
@@ -82,11 +82,11 @@
 }
 
 .map_image_comments {
-  display: flex;
-  justify-content: space-between;
+  /* display: flex; */
+  /* justify-content: space-between; */
 }
 
-.map_details_image {
+/* .map_details_image {
   width: 67%;
   height: 500px;
 }
@@ -95,11 +95,11 @@
   width: 100%;
   height: 100%;
   border-radius: 10px;
-}
+} */
 
 .map_details_comments {
-  width: 31%;
-  max-height: 500px;
+  /* width: 31%; */
+  /* max-height: 500px; */
   /* overflow-y: scroll; */
   background-color: #2a282e;
   display: flex;

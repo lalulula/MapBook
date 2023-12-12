@@ -5,6 +5,7 @@ import {
   editSocialPostAPIMethod,
 } from "../../api/social";
 import Dropdown from "react-dropdown";
+import CancelTwoToneIcon from "@mui/icons-material/CancelTwoTone";
 
 const EditSocialPost = () => {
   const { id } = useParams();
@@ -16,6 +17,7 @@ const EditSocialPost = () => {
     customTopic: "",
     post_images: [],
   });
+  const [showModal, setShowModal] = useState(false);
   const topics = [
     "Economy",
     "Education",
@@ -42,7 +44,7 @@ const EditSocialPost = () => {
     try {
       await editSocialPostAPIMethod(id, editedPost);
       alert("Edit Post Successfully");
-      navigate(`/socialpage`);
+      handleBackToPost();
     } catch (error) {
       alert("Error updating social post:", error);
     }
@@ -55,24 +57,75 @@ const EditSocialPost = () => {
   const handleChange = (e) => {
     setEditedPost({ ...editedPost, [e.target.name]: e.target.value });
   };
+  const handleRemoveImage = (index) => {
+    let uploadedImages = editedPost.post_images;
+    let newUploadedImages = [
+      ...uploadedImages.slice(0, index),
+      ...uploadedImages.slice(index + 1),
+    ];
+    setEditedPost(newUploadedImages);
+  };
+  const handleClickCancel = () => {
+    setShowModal(true);
+  };
+  const handleBackToPost = () => {
+    navigate(-1);
+  };
 
   return (
-    <div className="create_social_post_page">
-      <div className="create_social_post_container">
-        <div className="create_social_post_header">
-          <h2>Create Social Post</h2>
-        </div>
-        <div className="create_social_post_container_inner">
-          <div>
-            <h3>Title</h3>
-            <input
-              type="text"
-              name="title"
-              value={editedPost.title || ""}
-              onChange={handleChange}
-            />
+    <div className="editsocialpost_page">
+      {showModal && (
+        <div className="editsocialpost_modal_cancel">
+          <div className="editsocialpost_modal_content">
+            <h3>Are You Sure You Want To Cancel?</h3>
+            <h6>(Your draft will not be saved)</h6>
           </div>
-          <br />
+
+          <div className="editsocialpost_modal_container">
+            <button onClick={handleBackToPost}>Yes</button>
+            <button
+              className="editsocialpost_goback"
+              onClick={() => setShowModal(false)}
+            >
+              Go back
+            </button>
+          </div>
+        </div>
+      )}
+      <div className="editsocialpost_container">
+        <div className="editsocialpost_header">
+          <h2>Edit Post</h2>
+        </div>
+        <div className="editsocialpost_container_inner">
+          <div>
+            <h3 className="editsocialpost_title">Title</h3>
+            <div className="editsocialpost_top">
+              <input
+                type="text"
+                name="title"
+                value={editedPost.title || ""}
+                onChange={handleChange}
+                className="editsocialpost_other_topic_input"
+              />
+              {editedPost.topic === "Other" && (
+                <input
+                  value={editedPost.customTopic}
+                  placeholder="Enter a custom Topic"
+                  onChange={handleTopicClick}
+                  className="editsocialpost_other_topic_input"
+                  name="customTopic"
+                />
+              )}
+              <Dropdown
+                options={topics}
+                value={editedPost.topic}
+                placeholder="Select Topic"
+                className="create_map_dropdown"
+                onChange={handleTopicClick}
+              />
+            </div>
+          </div>
+
           <h3>Description</h3>
           <div className="social_post_description">
             <textarea
@@ -80,51 +133,42 @@ const EditSocialPost = () => {
               value={editedPost.post_content || ""}
               onChange={handleChange}
               name="post_content"
+              className="editsocialpost_description_textarea"
             />
           </div>
-          <br />
-          {/* <div className="social_post_img">
-            <label htmlFor="imageUpload" className="upload-label">
-              Choose an Image
-            </label>
-            <input
-              type="file"
-              id="imageUpload"
-              accept="image/*" 
-              onChange={handleImageUpload}
-              className="upload-input"
-            /> */}
+
           {editedPost.post_images.map((img, index) => (
+            // <div className="editsocialpost_image_container">
+            //   <CancelTwoToneIcon
+            //     className="remove_uploaded_image"
+            //     onClick={() => handleRemoveImage(index)}
+            //   />
+            //   <img
+            //     key={index}
+            //     src={img.data}
+            //     alt={`Uploaded${editedPost.post_images.length}`}
+            //     className="uploaded_image"
+            //     style={{ width: "100px", height: "100px" }}
+            //   />
+            // </div>
             <img
               key={index}
               src={img.data}
-              alt={`Uploaded ${index}`}
+              alt={`Uploaded ${editedPost.post_images.length}`}
               className="uploaded-image"
               style={{ width: "100px", height: "100px" }}
             />
           ))}
         </div>
-        <br></br>
-        <div className="social_post_bottom">
-          <Dropdown
-            options={topics}
-            value={editedPost.topic}
-            placeholder="Select Topic"
-            className="create_map_dropdown"
-            onChange={handleTopicClick}
-          />
-          {editedPost.topic === "Other" && (
-            <input
-              value={editedPost.customTopic || ""}
-              placeholder="Enter a custom Topic"
-              onChange={handleChange}
-              name="customTopic"
-            />
-          )}
+        <br />
+        <hr className="editsocialpost_hr"></hr>
+        <div className="editsocialpost_bottom">
+          <button onClick={handleClickCancel} className="editsocialpost_cancel">
+            Cancel
+          </button>
           <button
-            type="button"
             onClick={handleEditSocialPost}
-            className="social_post_button"
+            className="editsocialpost_submit"
           >
             Edit Post
           </button>
