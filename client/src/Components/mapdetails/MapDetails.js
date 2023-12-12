@@ -194,12 +194,13 @@ const MapDetails = () => {
           },
         });
 
+        ////////////// map visualization display ////////////
+        console.log(
+          "selectedMapFile.mapbook_template",
+          selectedMapFile.mapbook_template
+        );
 
-
-        ////////////// map visualization display //////////// 
-        console.log("selectedMapFile.mapbook_template", selectedMapFile.mapbook_template);
-
-        if(selectedMapFile.mapbook_template === "Thematic Map"){
+        if (selectedMapFile.mapbook_template === "Thematic Map") {
           map.addLayer(
             {
               id: `counties-thematic`,
@@ -217,8 +218,7 @@ const MapDetails = () => {
             }
             // "building"
           );
-    
-    
+
           const featureDataAdded = selectedMapFile["features"].filter(
             (f) => f["properties"].mapbook_data != null
           );
@@ -227,13 +227,12 @@ const MapDetails = () => {
             // console.log(element);
             namesDataAdded.push(element["properties"].name);
           });
-    
-    
+
           let dataNames = [];
-          for(let i = 0; i < selectedMapFile.mapbook_themedata.length; i++){
+          for (let i = 0; i < selectedMapFile.mapbook_themedata.length; i++) {
             dataNames.push(selectedMapFile.mapbook_themedata[i].dataName);
           }
-    
+
           let expMaximumValue = ["max"];
           let values = [];
           let colors = [];
@@ -247,7 +246,7 @@ const MapDetails = () => {
               "color",
               ["get", dataName, ["get", "mapbook_data"]],
             ];
-    
+
             values.push(expValue);
             colors.push(expColor);
             expMaximumValue.push(expValue);
@@ -260,29 +259,18 @@ const MapDetails = () => {
             expGetMaximumColor.push(selectedMapFile.mapbook_themedata[i].color);
           }
           expGetMaximumColor.push("#000000");
-    
-   
-    
-          map.setLayoutProperty(
-            "counties-thematic",
-            "visibility",
-            "visible"
-          );
+
+          map.setLayoutProperty("counties-thematic", "visibility", "visible");
           map.setPaintProperty(
             "counties-thematic",
             "fill-color",
             expGetMaximumColor
           );
           // mapRef.current.setPaintProperty('counties-thematic', 'fill-color', ['case', ['==',  ['to-number', ['get', 'value', ['get', 'aa', ['get', 'mapbook_data']]]] , 10], '#ffffff', '#123123']);
-    
+
           // mapRef.current.setPaintProperty('counties-thematic', 'fill-color', mapFileData.current.mapbook_themedata[0].color);
-          map.setFilter("counties-thematic", [
-            "in",
-            "name",
-            ...namesDataAdded,
-          ]);
-        }
-        else if(selectedMapFile.mapbook_template === "Heat Map"){
+          map.setFilter("counties-thematic", ["in", "name", ...namesDataAdded]);
+        } else if (selectedMapFile.mapbook_template === "Heat Map") {
           map.addLayer({
             id: `counties-heat`,
             type: "fill",
@@ -297,7 +285,6 @@ const MapDetails = () => {
             },
           });
 
-
           const featureDataAdded = selectedMapFile["features"].filter(
             (f) => f["properties"].mapbook_data != null
           );
@@ -309,46 +296,41 @@ const MapDetails = () => {
 
           const expValue = [
             "to-number",
-            ["get", "value",  ["get", "mapbook_data"]],
+            ["get", "value", ["get", "mapbook_data"]],
           ];
-
 
           var heatRangeFrom = Number(selectedMapFile.mapbook_heatrange.from);
           var heatRangeTo = Number(selectedMapFile.mapbook_heatrange.to);
-          var range = ((heatRangeTo - heatRangeFrom) / 5);
+          var range = (heatRangeTo - heatRangeFrom) / 5;
           // console.log(heatRangeFrom, heatRangeTo, range)
           // console.log(typeof(heatRangeFrom), typeof(heatRangeTo), typeof(range), typeof(heatRangeFrom + range))
-          
+
           let expHeatColorByValue = ["case"];
-          for(var i = 0; i<5; i++){
-            expHeatColorByValue.push(['all', ['>=', expValue, heatRangeFrom], ['<', expValue, heatRangeFrom + range]])
-            expHeatColorByValue.push(selectedMapFile.mapbook_heat_selectedcolors[i]);
+          for (var i = 0; i < 5; i++) {
+            expHeatColorByValue.push([
+              "all",
+              [">=", expValue, heatRangeFrom],
+              ["<", expValue, heatRangeFrom + range],
+            ]);
+            expHeatColorByValue.push(
+              selectedMapFile.mapbook_heat_selectedcolors[i]
+            );
             heatRangeFrom = heatRangeFrom + range;
           }
           expHeatColorByValue.push("#000000");
 
           // console.log("heatData", inputData, "namesdata", namesDataAdded);
 
-          map.setLayoutProperty(
+          map.setLayoutProperty("counties-heat", "visibility", "visible");
+          map.setPaintProperty(
             "counties-heat",
-            "visibility",
-            "visible"
+            "fill-color",
+            expHeatColorByValue
           );
-          map.setPaintProperty("counties-heat", "fill-color", expHeatColorByValue);
-          map.setFilter("counties-heat", [
-            "in",
-            "name",
-            ...namesDataAdded,
-          ]);
-        }
-        else if(selectedMapFile.mapbook_template === "Circle Map"){
-
-        }
-        else if(selectedMapFile.mapbook_template === "Bar Chart"){
-
-        }
-        else if(selectedMapFile.mapbook_template === "Pie Chart"){
-
+          map.setFilter("counties-heat", ["in", "name", ...namesDataAdded]);
+        } else if (selectedMapFile.mapbook_template === "Circle Map") {
+        } else if (selectedMapFile.mapbook_template === "Bar Chart") {
+        } else if (selectedMapFile.mapbook_template === "Pie Chart") {
         }
 
         map.on("mousemove", (event) => {
@@ -402,14 +384,14 @@ const MapDetails = () => {
     setOptionsMenuVisible(!optionsMenuVisible);
   };
 
-  const handleAddMapComment = () => {
+  const handleAddMapComment = async () => {
     const newComment = {
       map_comment_content: newMapComment,
       map_comment_owner: currentUserId,
       map_id: mapId,
     };
-    createMapCommentAPIMethod(newComment);
-    setMapComments([...mapComments, newComment]);
+    const result  = await createMapCommentAPIMethod(newComment);
+    setMapComments([...mapComments, result]);
   };
 
   const handleEditMapComment = (mapCommentId, editedComment) => {
@@ -449,16 +431,13 @@ const MapDetails = () => {
     deleteMapCommentAPIMethod(mapCommentId);
   };
 
-  
   const handleShare = () => {
     // Handle share action
-    navigator.clipboard.writeText(HOME_URL+'/mapdetails/' + currentMap._id);
+    navigator.clipboard.writeText(HOME_URL + "/mapdetails/" + currentMap._id);
     alert("Link Copied!");
 
-    
     console.log("Share clicked");
   };
-
 
   // Convert data to GEOJSON //
   function saveGeoJSONToFile(geoJSONObject, filename) {
@@ -553,91 +532,98 @@ const MapDetails = () => {
                   <EditButton />
                 </>
               )}
-              <div className="options_icon">
-                <img
-                  alt=""
-                  style={{ width: "30px", height: "30px" }}
-                  src={optionsIcon}
-                  onClick={handleToggleOptions}
-                />
-                {optionsMenuVisible && (
-                  <div className="mappreview_options_menu">
-                    <ul>
-                      <li>Fork Map</li>
-                      <Divider style={{ margin: "0" }} />
-                      <li onClick={() => handleShare()}>Share Map</li>
-                      <Divider style={{ margin: "0" }} />
-                      <li onClick={() => downloadGeoJSON(selectedMapFile, currentMap.map_name+".geojson")}>Export Map</li>
-                      <Divider style={{ margin: "0" }} />
-                      <li>Edit Map</li>
-                    </ul>
-                  </div>
-                )}
-              </div>
+              {isAuth && (
+                <div className="options_icon">
+                  <img
+                    alt=""
+                    style={{ width: "30px", height: "30px" }}
+                    src={optionsIcon}
+                    onClick={handleToggleOptions}
+                  />
+                  {optionsMenuVisible && (
+                    <div className="mappreview_options_menu">
+                      <ul>
+                        <li>Fork Map</li>
+                        <Divider style={{ margin: "0" }} />
+                        <li onClick={() => handleShare()}>Share Map</li>
+                        <Divider style={{ margin: "0" }} />
+                        <li
+                          onClick={() =>
+                            downloadGeoJSON(
+                              selectedMapFile,
+                              currentMap.map_name + ".geojson"
+                            )
+                          }
+                        >
+                          Export Map
+                        </li>
+                        <Divider style={{ margin: "0" }} />
+                        <li>Edit Map</li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
-          <div className="map_image_comments">
-            <div
-              ref={mapContainerRef}
-              id="map"
-              style={{ width: "800px", height: "500px" }}
-            ></div>
-            <div className="map_details_comments">
-              <div className="comment_title">Comments</div>
-              <div className="comment_content">
-                {/* <Box mt="0.5rem"> */}
-                {mapComments.map((comment, i) => (
-                  <Comment
-                    key={i}
-                    isRelpy={false}
-                    comment={comment}
-                    handleDeleteMapComment={handleDeleteMapComment}
-                    handleEditMapComment={handleEditMapComment}
-                  />
-                ))}
-                {/* </Box> */}
-              </div>
-              <div className="comment_box">
-                {isAuth ? (
-                  <>
-                    <div className="comment_box_profile">
-                      {users
-                        .filter((user) => user._id === currentUserId)
-                        .map((user) => (
-                          <img
-                            key={user._id}
-                            style={{ marginTop: "4px" }}
-                            className="profile_img"
-                            src={user.profile_img}
-                          ></img>
-                        ))}
+
+          <div
+            ref={mapContainerRef}
+            id="map"
+            style={{ overflow: "hidden" }}
+          ></div>
+
+          <div className="map_details_comments">
+            <div className="comment_title">Comments</div>
+            <div className="comment_content">
+              {mapComments.map((comment, i) => (
+                <Comment
+                  key={i}
+                  isRelpy={false}
+                  comment={comment}
+                  handleDeleteMapComment={handleDeleteMapComment}
+                  handleEditMapComment={handleEditMapComment}
+                />
+              ))}
+            </div>
+            <div className="comment_box">
+              {isAuth ? (
+                <>
+                  <div className="comment_box_profile">
+                    {users
+                      .filter((user) => user._id === currentUserId)
+                      .map((user) => (
+                        <img
+                          alt=""
+                          key={user._id}
+                          style={{ marginTop: "4px" }}
+                          className="profile_img"
+                          src={user.profile_img}
+                        ></img>
+                      ))}
+                  </div>
+                  <div className="comment_box_input">
+                    <input
+                      className="input_comment"
+                      type="text"
+                      placeholder="Add a comment..."
+                      // value={newMapComment}
+                      onChange={(e) => setNewMapComment(e.target.value)}
+                    />
+                    <div class="wrapper" onClick={handleAddMapComment}>
+                      <img className="btnimg" src={sendMessage} />
                     </div>
-                    <div className="comment_box_input">
-                      <input
-                        className="input_comment"
-                        type="text"
-                        placeholder="Add a comment..."
-                        // value={newMapComment}
-                        onChange={(e) => setNewMapComment(e.target.value)}
-                      />
-                      <div class="wrapper" onClick={handleAddMapComment}>
-                        <img className="btnimg" src={sendMessage} />
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <h4>Please sign in/sign up to comment.</h4>
-                )}
-              </div>
-              {/* {currentMap.map_comments.map((comment) => (
-                <MapComments />
-              ))} */}
+                  </div>
+                </>
+              ) : (
+                <div>Please Login/Register to Comment.</div>
+              )}
             </div>
           </div>
           <Divider section inverted style={{ margin: "20px 0" }} />
-          <div className="tools">
+          {/* <div className="tools">
             <MapTools isEdit={false} currentMap={currentMap} />
-          </div>
+          </div> */}
         </div>
       </div>
     );
