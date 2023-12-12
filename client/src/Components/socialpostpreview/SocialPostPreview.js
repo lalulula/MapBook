@@ -21,9 +21,7 @@ const SocialPostPreview = ({ data }) => {
     data.social_users_liked.includes(currentUserId)
   );
   var [numLikes, setNumLikes] = useState(data.social_users_liked.length);
-  const [user, setUser] = useState(null);
-  const userBro = useSelector((state) => state.user);
-  console.log("USER: ", userBro);
+  const user = useSelector((state) => state.user);
 
 
   const handleToSocialDetails = (id) => {
@@ -107,11 +105,13 @@ const SocialPostPreview = ({ data }) => {
           alt=""
           src={data.post_images[0]}
         />
-        <div className="socialpostpreview_admin_delete">
-          <DeleteIcon
-            onClick={() => handleDeleteSocialPost(data._id)}
-          />
-        </div>
+        {user.user.is_admin && (
+          <div className="socialpostpreview_admin_delete">
+            <DeleteIcon
+              onClick={() => handleDeleteSocialPost(data._id)}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

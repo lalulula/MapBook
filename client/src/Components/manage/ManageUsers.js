@@ -10,6 +10,8 @@ import { getAllUsersAPIMethod, adminRemoveUserAPIMethod } from "../../api/user";
 const ManageUsers = () => {
   const options = ["Date joined", "Name", "Username"];
   const [allUsers, setAllUsers] = useState([]);
+  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
+    useState(false);
   useEffect(() => {
     const fetchData = async () => {
       const users = await getAllUsersAPIMethod();
@@ -21,18 +23,30 @@ const ManageUsers = () => {
     };
     fetchData();
   }, []);
-  const handleDeleteUser = async (id) => {
+
+  const handleClickDeleteUser = (userId) => {
+    if (showDeleteConfirmationModal) {
+      setShowDeleteConfirmationModal(false);
+      return;
+    } else {
+      setShowDeleteConfirmationModal(userId);
+    }
+  }
+  const handleDeleteUser = async (userId) => {
+    setShowDeleteConfirmationModal(false);
+    const filteredUsers = allUsers.filter((c) => c._id !== userId);
+    setAllUsers(filteredUsers);
     try {
       console.log("removing user account");
-      const deleteSuccess = await adminRemoveUserAPIMethod(id);
-      console.log(deleteSuccess);
-      if (deleteSuccess) {
+      const deleteSuccess = await adminRemoveUserAPIMethod(userId);
+      console.log("successfully deleted user? ", deleteSuccess);
+      /* if (deleteSuccess) {
         alert("Delete user with id:", id);
         // TODO : not refresh ->Fix it auto reload
         window.location.reload();
       } else {
         alert("Error removing user account ");
-      }
+      } */
     } catch (error) {
       console.error("Error handling delete operation:", error);
     }
@@ -66,6 +80,7 @@ const ManageUsers = () => {
             </div>
           </div>
         </div>
+
         <div className="manage_users_middle">
           {allUsers &&
             allUsers.map((user, index) => (
@@ -76,8 +91,31 @@ const ManageUsers = () => {
                   Joined on {formatDate(user.created_at)}
                 </div>
                 <div className="user_delete">
-                  <DeleteIcon onClick={() => handleDeleteUser(user._id)} />
+                  <DeleteIcon onClick={() => handleClickDeleteUser(user._id)} />
                 </div>
+                {showDeleteConfirmationModal == user._id && (
+                  <div className="delete_user_confirmation_modal">
+                    <div className="delete_user_confirmation_modal_top">
+                      Are you sure you want to delete this user?
+                    </div>
+                    <div className="delete_user_confirmation_modal_bottom">
+                      <button
+                        className="delete_user_confirm"
+                        onClick={() => handleDeleteUser(user._id)}
+                      >
+                        Yes
+                      </button>
+                      <button
+                        className="cancel_delete_user"
+                        onClick={() =>
+                          setShowDeleteConfirmationModal(false)
+                        }
+                      >
+                        No
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
         </div>

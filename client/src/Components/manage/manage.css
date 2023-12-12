@@ -148,3 +148,35 @@
 
   transform: scale(1.3);
 }
+
+.delete_user_confirmation_modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  background-color: white;
+  color: black;
+  height: 150px;
+  width: 450px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 30px 0 30px 0;
+  font-weight: 500;
+  border-radius: 7px;
+}
+
+.delete_user_confirmation_modal_bottom {
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.delete_user_confirm,
+.cancel_delete_user {
+  color: black;
+  border: white;
+  padding: 8px 15px 8px 15px;
+  border-radius: 5px;
+}

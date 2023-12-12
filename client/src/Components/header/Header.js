@@ -58,7 +58,7 @@ const Header = () => {
     if (this.scrollY >= 50) header.classList.add("scroll_header");
     else header.classList.remove("scroll_header");
   });
-  if (!user) {
+  if (!user) { //NOT AUTHENTICATED
     return (
       <div className="header">
         <div className="header_container">
@@ -82,7 +82,7 @@ const Header = () => {
                 <div onClick={() => navigate("/mymap")}>
                   <h4>MyMaps</h4>
                 </div>
-                {admin && (
+                {user.user.is_admin && (
                   <div className="dropdown">
                     <h4 className="dropbtn">Manage</h4>
                     <div className="dropdown-content">
@@ -159,7 +159,7 @@ const Header = () => {
         </div>
       </div>
     );
-  } else {
+  } else { // AUTHENTICATED USER
     return (
       <>
         <div className="header">
@@ -187,16 +187,16 @@ const Header = () => {
                   {console.log("IS BRO ADMIN?: ", user.user.is_admin)}
                   {/* admin */user.user.is_admin && (
                     <div className="dropdown">
-                      <h4 className="dropbtn">Manage</h4>
-                      <div className="dropdown-content">
-                        <div onClick={() => navigate("/managemaps")}>Maps</div>
+                      <h4 className="dropbtn" onClick={() => navigate("/manageusers")}>Manage Users</h4>
+                      {/* <div className="dropdown-content">
+                        <div onClick={() => navigate("/managemaps")}>Manage Maps</div>
                         <div onClick={() => navigate("/managesocials")}>
                           Social Posts
                         </div>
                         <div onClick={() => navigate("/manageusers")}>
                           Users
-                        </div>
-                      </div>
+                        </div> 
+                    </div>*/}
                     </div>
                   )}
                   <div>
@@ -263,7 +263,7 @@ const Header = () => {
               )}
             </div>
           </div>
-        </div>
+        </div >
       </>
     );
   }
