@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import MapDataInputPage from "./MapDataInputPage";
 import { useState } from "react";
 import "./createMap.css";
@@ -23,6 +23,7 @@ const CreateMap = () => {
   const [heatRange, setHeatRange] = useState({ from: 0, to: 0 }); //HEATMAP: range value
   const [importDataOpen, setImportDataOpen] = useState(true);
   const [showMapEdit, setShowMapEdit] = useState(false);
+  const [isMapbookData, setIsMapbookData] = useState(false)
   const DEFAULT_GEOJSON =
     "https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/us-income.geojson";
 
@@ -52,6 +53,10 @@ const CreateMap = () => {
     setImportDataOpen(false);
   };
 
+  useEffect(() => {
+    console.log("isMapbookData: CreateMap.js: ", isMapbookData)
+  }, [isMapbookData]);
+
   return (
     <div className="createmap_container">
       <Popup
@@ -64,6 +69,8 @@ const CreateMap = () => {
           setSelectedMapFile={setSelectedMapFile}
           selectedMapFile={selectedMapFile}
           setImportDataOpen={setImportDataOpen}
+          isMapbookData = {isMapbookData}
+          setIsMapbookData = {setIsMapbookData}
         />
         <div></div>
       </Popup>
@@ -86,6 +93,9 @@ const CreateMap = () => {
             setSelectedMapFile={setSelectedMapFile}
             showMapEdit={showMapEdit}
             setShowMapEdit={setShowMapEdit}
+            isMapbookData = {isMapbookData}
+            setIsMapbookData = {setIsMapbookData}
+
           />
         </div>
       )}

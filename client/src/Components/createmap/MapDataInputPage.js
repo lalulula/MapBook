@@ -29,6 +29,8 @@ const MapDataInputPage = ({
   setHeatRange,
   selectedMapFile,
   setSelectedMapFile,
+  isMapbookData,
+  setIsMapbookData,
 }) => {
   const [mapImage, setMapImage] = useState(null);
   const [hoverData, setHoverData] = useState("Out of range");
@@ -36,6 +38,8 @@ const MapDataInputPage = ({
   useEffect(() => {
     console.log(showHoverData);
   }, [showHoverData]);
+
+
   const handleMapNameChange = (name) => {
     setOptions({ ...options, name });
   };
@@ -81,6 +85,17 @@ const MapDataInputPage = ({
     "Thematic Map",
   ];
   const template = options["template"];
+  
+  useEffect(() => {
+    setPieBarData([]);
+    setThemeData([]);
+    setSelectedColors([]);
+    setHeatRange({ from: 0, to: 0 })
+    setOptions({ ...options, circleHeatMapData: "" });
+
+  }, [template]);
+
+
   return (
     <>
       <div className="addmapdata_left_sidebar">
@@ -180,6 +195,8 @@ const MapDataInputPage = ({
         template={template}
         hoverData={hoverData}
         setHoverData={setHoverData}
+        isMapbookData = {isMapbookData}
+        setIsMapbookData={setIsMapbookData}
       />
       <div className="mapdatainput_right_sidebar">
         <h3>Data Names</h3>

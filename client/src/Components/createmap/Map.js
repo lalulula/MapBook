@@ -26,6 +26,8 @@ const Map = ({
   template,
   hoverData,
   setHoverData,
+  isMapbookData,
+  setIsMapbookData,
 }) => {
   const mapFileData = useRef(selectedMapFile);
   const mapRef = useRef();
@@ -81,7 +83,7 @@ const Map = ({
   const mapContainerRef = useRef(null);
   const userId = useSelector((state) => state.user.id);
   const [rerenderFlag, setRerenderFlag] = useState(false);
-
+  const [isMapLoaded, setIsMapLoaded] = useState(false)
   const navigate = useNavigate();
 
   const handleRerender = () => {
@@ -91,8 +93,30 @@ const Map = ({
   const resetMap = () => {
     undoStack.current = [];
     redoStack.current = [];
-    setSelectedMapFile((prevState) => {
-      const newState = { ...prevState };
+    // setSelectedMapFile((prevState) => {
+    //   const newState = { ...prevState };
+    //   newState.features = newState.features.map((feature) => {
+    //     const newFeature = { ...feature };
+    //     newState.mapbook_circleheatmapdata = "";
+    //     newState.mapbook_customtopic = "";
+    //     newState.mapbook_datanames = [""];
+    //     newState.mapbook_description = "";
+    //     newState.mapbook_heat_selectedcolors = [];
+    //     newState.mapbook_heatrange = { from: 0, to: 0 };
+    //     newState.mapbook_mapname = "";
+    //     newState.mapbook_topic = "";
+    //     newState.mapbook_visibility = false;
+
+    //     newState.mapbook_template = template;
+    //     if (newFeature.properties && newFeature.properties.mapbook_data) {
+    //       delete newFeature.properties.mapbook_data;
+    //     }
+    //     return newFeature;
+    //   });
+    //   return newState;
+    // });
+    // mapFileData.current = selectedMapFile;
+      const newState = { ...mapFileData.current };
       newState.features = newState.features.map((feature) => {
         const newFeature = { ...feature };
         newState.mapbook_circleheatmapdata = "";
@@ -111,8 +135,14 @@ const Map = ({
         }
         return newFeature;
       });
-      return newState;
-    });
+      mapFileData.current = newState;
+
+
+    if(isMapLoaded){
+      redrawThematicData();
+      redrawHeatData();
+      redrawCircleData();
+    }
   };
 
   const handleThematicMapLayer = (map, data) => {
@@ -121,8 +151,12 @@ const Map = ({
 
   useEffect(() => {
     templateHoverType.current = template;
-    resetMap();
-    console.log(selectedMapFile);
+    console.log("isMapbookData: Map.js:", isMapbookData)
+    if(!isMapbookData){
+      resetMap();
+      console.log("resetMap called:", selectedMapFile);
+    }
+
   }, [template]);
 
   const handleClickRegion = () => {
@@ -310,7 +344,7 @@ const Map = ({
   };
   // HEAT
   const redrawHeatData = () => {
-    if (templateHoverType.current === "Heat Map") {
+    if (templateHoverType.current === "Heat Map" && inputData != null) {
       if (mapRef.current.getLayer("counties-heat")) {
         mapRef.current.removeLayer("counties-heat");
       }
@@ -698,6 +732,7 @@ const Map = ({
         }
       }
     }
+    
 
     // mapFileData.current
 
@@ -853,11 +888,28 @@ const Map = ({
             }
           }
         });
+
+        
+        setIsMapLoaded(true);
       });
     }
 
     mapRef.current = map;
+
+    
   }, []);
+
+  useEffect(() => {
+    if(isMapLoaded){
+      if(isMapbookData){
+        redrawThematicData();
+        redrawHeatData();
+        redrawCircleData();
+  
+        setIsMapbookData(false);
+      }
+    }
+  }, [isMapLoaded]);
 
   // Convert data to GEOJSON //
   function saveGeoJSONToFile(geoJSONObject, filename) {
