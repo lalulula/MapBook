@@ -472,7 +472,7 @@ const MapDetails = () => {
               </div>
             </div>
             <div className="map_details_options_container">
-              {isOwner && (
+              {(isOwner || user.username === "Admin") && (
                 <>
                   <DeleteButton
                     onClick={() => handleDeleteMapPost(currentMap.current._id)}
