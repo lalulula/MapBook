@@ -127,6 +127,48 @@ const MapDetails = () => {
     }
   };
 
+  function calculateCentroid(features) {
+    let totalX = 0;
+    let totalY = 0;
+    let count = 0;
+
+    // Loop through features and sum up coordinates
+    features.forEach(feature => {
+      const coordinates = feature.geometry.coordinates[0]; // Assuming the first ring of the polygon
+      if (typeof coordinates == "number") {
+        return;
+      }
+      if (coordinates.length > 1) {
+        coordinates.forEach(coord => {
+          if (typeof coord[0] == 'number' && typeof coord[0] == 'number') {
+            totalX += coord[0];
+            totalY += coord[1];
+            count++;
+          } else {
+            coord.forEach(c => {
+              if (typeof coord[0] == 'number' && typeof coord[0] == 'number') {
+                totalX += coord[0];
+                totalY += coord[1];
+                count++;
+              }
+            })
+          }
+        });
+      } else {
+        coordinates[0].forEach(coord => {
+          if (typeof coord[0] == 'number' && typeof coord[0] == 'number') {
+            totalX += coord[0];
+            totalY += coord[1];
+            count++;
+          }
+        });
+      }
+    });
+    const avgX = totalX / count;
+    const avgY = totalY / count;
+    return [avgX, avgY];
+  }
+
   useEffect(() => {
     getMap();
   }, [mapId, user._id]);
@@ -134,6 +176,7 @@ const MapDetails = () => {
   useEffect(() => {
     if (selectedMapFile != null) {
       console.log("selectedMapFile: useEffect: ", selectedMapFile);
+      const centroid = calculateCentroid(selectedMapFile.features);
 
       let map;
 
@@ -146,6 +189,8 @@ const MapDetails = () => {
           zoom: zoom,
           preserveDrawingBuffer: true,
         });
+        map.setCenter(centroid);
+        map.setZoom(2);
       }
       if (map != null) {
         map.on("idle", function () {
@@ -477,7 +522,9 @@ const MapDetails = () => {
             const regions = map.queryRenderedFeatures(event.point, {
               layers: ["counties"],
             });
-
+            if (regions.length == 0) {
+              setHoverData("Out of range");
+            }
             if (regions.length > 0) {
               const tempFeature = selectedMapFile["features"].find(
                 (m) => m["properties"].name === regions[0]["properties"].name

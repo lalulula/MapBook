@@ -592,7 +592,7 @@ const Map = ({
           ) {
             if (
               typeof mapFileData.current["features"][i].geometry.coordinates[j][
-                k
+              k
               ][0] == "object"
             ) {
               for (
@@ -605,12 +605,12 @@ const Map = ({
                 centerX =
                   centerX +
                   mapFileData.current["features"][i].geometry.coordinates[j][k][
-                    l
+                  l
                   ][0];
                 canterY =
                   canterY +
                   mapFileData.current["features"][i].geometry.coordinates[j][k][
-                    l
+                  l
                   ][1];
                 pointCount++;
               }
@@ -618,12 +618,12 @@ const Map = ({
               centerX =
                 centerX +
                 mapFileData.current["features"][i].geometry.coordinates[j][
-                  k
+                k
                 ][0];
               canterY =
                 canterY +
                 mapFileData.current["features"][i].geometry.coordinates[j][
-                  k
+                k
                 ][1];
               pointCount++;
             }
@@ -949,6 +949,9 @@ const Map = ({
             layers: ["counties"],
           });
 
+          if (regions.length == 0) {
+            setHoverData("Out of range");
+          }
           if (regions.length > 0) {
             const tempFeature = mapFileData.current["features"].find(
               (m) => m["properties"].name === regions[0]["properties"].name
@@ -962,19 +965,19 @@ const Map = ({
               const formattedData =
                 templateHoverType.current === "Thematic Map"
                   ? Object.keys(data)
-                      .map((key) => {
-                        const nestedProperties = Object.keys(data[key])
-                          .map(
-                            (nestedKey) =>
-                              `${nestedKey}:${data[key][nestedKey]}`
-                          )
-                          .join("\n");
-                        return `${key}: \n${nestedProperties}`;
-                      })
-                      .join("\n")
+                    .map((key) => {
+                      const nestedProperties = Object.keys(data[key])
+                        .map(
+                          (nestedKey) =>
+                            `${nestedKey}:${data[key][nestedKey]}`
+                        )
+                        .join("\n");
+                      return `${key}: \n${nestedProperties}`;
+                    })
+                    .join("\n")
                   : Object.keys(data)
-                      .map((key) => `${key}:${data[key]}`)
-                      .join("\n");
+                    .map((key) => `${key}:${data[key]}`)
+                    .join("\n");
               // console.log(data, formattedData);
               // console.log(regions[0]["properties"].name + "\n" + formattedData);
 
