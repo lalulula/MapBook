@@ -250,32 +250,28 @@ const removeMap = async (req, res) => {
 
     // DELETE ASSOCIATED MAP COMMENTS & REPLIES
     const deletedMapComments = await MapComment.find({ map_id: mapId });
-    console.log(deletedMapComments);
+    
     await Promise.all(deletedMapComments.map(async (deletedMapComment) => {
       await MapReply.deleteMany({ map_comment_id: deletedMapComment._id });
     }));
     await MapComment.deleteMany({ map_id: mapId });
 
     // DELETE STORED FILE ON FIREBASE
-    const mapUrl = map.file_path;
-    const mapPreviewUrl = map.mapPreviewImg;
+    // const mapUrl = map.file_path;
+    // const mapPreviewUrl = map.mapPreviewImg;
     
-    try {
-      const mapUrlParts = new URL(mapUrl);
-      let mapFilename = path.basename(mapUrlParts.pathname).replaceAll("%20", " ");
-      const mapFile = bucket.file(mapFilename);
+    // const mapUrlParts = new URL(mapUrl);
+    // let mapFilename = path.basename(mapUrlParts.pathname).replaceAll("%20", " ");
+    // const mapFile = bucket.file(mapFilename);
 
-      const mapPreviewUrlParts = new URL(mapPreviewUrl);
-      let mapPreviewFilename = path.basename(mapPreviewUrlParts.pathname).replaceAll("%20", " ");
-      const mapPreviewFile = bucket.file(mapPreviewFilename);
+    // const mapPreviewUrlParts = new URL(mapPreviewUrl);
+    // let mapPreviewFilename = path.basename(mapPreviewUrlParts.pathname).replaceAll("%20", " ");
+    // const mapPreviewFile = bucket.file(mapPreviewFilename);
 
-      await mapFile.delete();
-      await mapPreviewFile.delete();
-      console.log(`mapFile ${mapFilename} deleted successfully.`);
-      console.log(`mapPreviewFile ${mapPreviewFilename} deleted successfully.`);
-    } catch (error) {
-      console.error(`Error deleting files ${mapFilename} & ${mapPreviewFilename}:`);
-    }
+    // await mapFile.delete();
+    // await mapPreviewFile.delete();
+    // console.log(`mapFile ${mapFilename} deleted successfully.`);
+    // console.log(`mapPreviewFile ${mapPreviewFilename} deleted successfully.`);
 
     res.status(200).json("Map deleted successfully");
   } catch (err) {
