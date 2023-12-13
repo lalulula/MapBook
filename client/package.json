@@ -27,7 +27,7 @@
     "firebase-admin": "^11.11.1",
     "flowbite-react": "^0.6.4",
     "formik": "^2.4.5",
-    "framer-motion": "^10.16.4",
+    "framer-motion": "^10.16.16",
     "fs": "^0.0.1-security",
     "gapi-script": "^1.2.0",
     "geojson": "^0.5.0",
