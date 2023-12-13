@@ -16,6 +16,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import DeleteButton from "../widgets/DeleteButton";
 import EditButton from "../widgets/EditButton";
+import Carousel from 'react-bootstrap/Carousel';
 
 const SocialPostDetails = () => {
   const { id } = useParams();
@@ -29,7 +30,9 @@ const SocialPostDetails = () => {
 
   const nextImage = () => {
     setCurrentIndex(
-      (prevIndex) => (prevIndex + 1) % currentPost.post_images.length
+      (prevIndex) =>
+        (prevIndex + 1 + currentPost.post_images.length) %
+        currentPost.post_images.length
     );
   };
 
@@ -184,7 +187,7 @@ const SocialPostDetails = () => {
               <div className="post_details_img_container">
                 {currentPost.post_images.length > 1 && (
                   <ArrowBackIosNewIcon
-                    onClick={nextImage}
+                    onClick={prevImage}
                     className="nextImg"
                   />
                 )}
@@ -195,10 +198,23 @@ const SocialPostDetails = () => {
                 />
                 {currentPost.post_images.length > 1 && (
                   <ArrowForwardIosIcon
-                    onClick={prevImage}
+                    onClick={nextImage}
                     className="prevImg"
                   />
                 )}
+                <span className="post_img_indicators">
+                  {currentPost.post_images.map((_, idx) => {
+                    return (
+                      <button
+                        key={idx}
+                        className={
+                          currentIndex === idx ? "post_img_indicator" : "post_img_indicator indicator-inactive"
+                        }
+                      /* onClick={() => setSlide(idx)} */
+                      ></button>
+                    );
+                  })}
+                </span>
               </div>
             ) : (
               <div></div>
