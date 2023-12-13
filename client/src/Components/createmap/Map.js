@@ -4,7 +4,7 @@ import { createMapAPIMethod } from "../../api/map";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./createMap.css";
-import * as turf from '@turf/turf'
+import * as turf from "@turf/turf";
 
 import html2canvas from "html2canvas";
 
@@ -339,10 +339,7 @@ const Map = ({
         namesDataAdded.push(element["properties"].name);
       });
 
-      const expValue = [
-        "to-number",
-        ["get", "value", ["get", "mapbook_data"]],
-      ];
+      const expValue = ["to-number", ["get", "value", ["get", "mapbook_data"]]];
 
       console.log("mapFileData.current: ", mapFileData.current);
 
@@ -387,8 +384,7 @@ const Map = ({
         ...namesDataAdded,
       ]);
     }
-  }
-
+  };
 
   // const redrawCircleData = () => {
 
@@ -435,7 +431,6 @@ const Map = ({
   //           'number-format',
   //           ['get', 'mag'],
   //           { 'min-fraction-digits': 1, 'max-fraction-digits': 1 }
-
 
   //         ],
   //         'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
@@ -542,7 +537,6 @@ const Map = ({
   //     }" fill="${color}" />`;
   // }
 
-
   // CLUSTER APPROACH
   const redrawCircleData = () => {
     if (templateHoverType.current === "Circle Map") {
@@ -556,7 +550,7 @@ const Map = ({
         mapRef.current.removeLayer("unclustered-point");
       }
       if (mapRef.current.getSource("circles")) {
-        console.log("circle source remove")
+        console.log("circle source remove");
         mapRef.current.removeSource("circles");
       }
 
@@ -564,7 +558,7 @@ const Map = ({
 
       let dataName = mapFileData.current["mapbook_circleheatmapdata"];
 
-      console.log(dataName)
+      console.log(dataName);
       const expValue = [
         "to-number",
         ["get", dataName, ["get", "mapbook_data"]],
@@ -573,36 +567,47 @@ const Map = ({
       const featureDataAdded = mapFileData.current["features"].filter(
         (f) => f["properties"].mapbook_data != null
       );
-      
+
       var namesDataAdded = [];
-      featureDataAdded.forEach((element) => { //adding mapbook data to each feature
+      featureDataAdded.forEach((element) => {
+        //adding mapbook data to each feature
         namesDataAdded.push(element["properties"].name);
       });
 
-
-
-
       var JsonBasedOnPoint = structuredClone(mapFileData.current);
-      for(var i = 0; i < mapFileData.current["features"].length; i++ ){
+      for (var i = 0; i < mapFileData.current["features"].length; i++) {
         var centerX = 0;
         var canterY = 0;
         var pointCount = 0;
-        for(var j = 0; j < mapFileData.current["features"][i].geometry.coordinates.length; j++){
-          for(var k = 0; k < mapFileData.current["features"][i].geometry.coordinates[j].length; k++){
-            centerX = centerX + mapFileData.current["features"][i].geometry.coordinates[j][k][0];
-            canterY = canterY + mapFileData.current["features"][i].geometry.coordinates[j][k][1];
+        for (
+          var j = 0;
+          j < mapFileData.current["features"][i].geometry.coordinates.length;
+          j++
+        ) {
+          for (
+            var k = 0;
+            k <
+            mapFileData.current["features"][i].geometry.coordinates[j].length;
+            k++
+          ) {
+            centerX =
+              centerX +
+              mapFileData.current["features"][i].geometry.coordinates[j][k][0];
+            canterY =
+              canterY +
+              mapFileData.current["features"][i].geometry.coordinates[j][k][1];
             pointCount++;
           }
         }
         centerX = centerX / pointCount;
         canterY = canterY / pointCount;
-        var newGeometry = { "type": "Point", "coordinates": [ centerX, canterY ] }
+        var newGeometry = { type: "Point", coordinates: [centerX, canterY] };
         JsonBasedOnPoint["features"][i].geometry = newGeometry;
         // mapFileData.current["features"][i].geometry
       }
 
-      mapRef.current.addSource('circles', {
-        type: 'geojson',
+      mapRef.current.addSource("circles", {
+        type: "geojson",
         // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
         // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
         //data: mapFileData.current,
@@ -619,86 +624,66 @@ const Map = ({
 
         //   }
       });
-      
+
       mapRef.current.addLayer({
-        id: 'clusters',
-        type: 'circle',
-        source: 'circles',
+        id: "clusters",
+        type: "circle",
+        source: "circles",
         paint: {
-          'circle-translate': [0,0]
-        }
+          "circle-translate": [0, 0],
+        },
       });
 
       mapRef.current.addLayer({
-        id: 'cluster-count',
-        type: 'symbol',
-        source: 'circles',
+        id: "cluster-count",
+        type: "symbol",
+        source: "circles",
         layout: {
-          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-          'text-size': 12
-        }
+          "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+          "text-size": 12,
+        },
       });
 
-      
-
-
-      
- 
-
-      mapRef.current.setFilter("clusters", [
-        "in",
-        "name",
-        ...namesDataAdded,
-      ]); 
+      mapRef.current.setFilter("clusters", ["in", "name", ...namesDataAdded]);
 
       mapRef.current.setFilter("cluster-count", [
         "in",
         "name",
         ...namesDataAdded,
-      ]); 
+      ]);
 
-      mapRef.current.setLayoutProperty(
-        "cluster-count",
-        "text-field",
-        ['to-string', expValue]
-      );
+      mapRef.current.setLayoutProperty("cluster-count", "text-field", [
+        "to-string",
+        expValue,
+      ]);
 
       //   * Blue, 20px circles when point count is less than 100
       //   * Yellow, 30px circles when point count is between 100 and 750
       //   * Pink, 40px circles when point count is greater than or equal to 750
-      mapRef.current.setPaintProperty(
-        "clusters",
-        "circle-color",
-        ['case',
-          ['<', expValue, 100],
-          '#51bbd6',
-          ['all', ['>=', expValue, 100] , ['<', expValue, 750]],
-          '#f1f075',
-          '#f28cb1'
-        ]
+      mapRef.current.setPaintProperty("clusters", "circle-color", [
+        "case",
+        ["<", expValue, 100],
+        "#51bbd6",
+        ["all", [">=", expValue, 100], ["<", expValue, 750]],
+        "#f1f075",
+        "#f28cb1",
+      ]);
+
+      mapRef.current.setPaintProperty("clusters", "circle-radius", [
+        "case",
+        ["<", expValue, 100],
+        20,
+        ["all", [">=", expValue, 100], ["<", expValue, 750]],
+        30,
+        40,
+      ]);
+
+      console.log(
+        "mapRef.current.getPaintProperty:",
+        mapRef.current.getPaintProperty("clusters", "circle-color")
       );
-
-      mapRef.current.setPaintProperty(
-        "clusters",
-        "circle-radius",
-        ['case',
-          ['<', expValue, 100],
-          20,
-          ['all', ['>=', expValue, 100] , ['<', expValue, 750]],
-          30,
-          40
-        ]
-      );
-
-      console.log("mapRef.current.getPaintProperty:", mapRef.current.getPaintProperty("clusters", "circle-color"))
-
-
     }
-  }
-
-
-
-
+  };
 
   const handleAddData = (e) => {
     e.preventDefault();
@@ -789,24 +774,22 @@ const Map = ({
     // console.log("selectedMapFile: ", selectedMapFile);
     console.log("onhover: useEffect:", templateHoverType.current);
 
-    // TODO: make lowercase name 
+    // TODO: make lowercase name
     // Name NAME -> name
     if (mapFileData.current != null) {
       if (mapFileData.current["features"][0].properties.name == null) {
         if (mapFileData.current["features"][0].properties.Name != null) {
           for (var i = 0; i < mapFileData.current["features"].length; i++) {
-            mapFileData.current["features"][i].properties.name = mapFileData.current["features"][i].properties.Name;
+            mapFileData.current["features"][i].properties.name =
+              mapFileData.current["features"][i].properties.Name;
           }
-        }
-        else if (mapFileData.current["features"][0].properties.NAME != null) {
+        } else if (mapFileData.current["features"][0].properties.NAME != null) {
           for (var i = 0; i < mapFileData.current["features"].length; i++) {
-            mapFileData.current["features"][i].properties.name = mapFileData.current["features"][i].properties.NAME;
+            mapFileData.current["features"][i].properties.name =
+              mapFileData.current["features"][i].properties.NAME;
           }
         }
       }
-
-
-
     }
 
     // mapFileData.current
@@ -853,17 +836,17 @@ const Map = ({
           },
         });
 
-        map.addLayer({
-          id: "counties-highlighted",
-          type: "fill",
-          source: "counties",
-          paint: {
-            "fill-outline-color": "#484896", //Fill color
-            "fill-color": "#6e599f", //Fill color onclick
-            "fill-opacity": 0.75,
-          },
-          filter: ["in", "name", ""],
-        });
+        // map.addLayer({
+        //   id: "counties-highlighted",
+        //   type: "fill",
+        //   source: "counties",
+        //   paint: {
+        //     "fill-outline-color": "#484896", //Fill color
+        //     "fill-color": "#6e599f", //Fill color onclick
+        //     "fill-opacity": 0.75,
+        //   },
+        //   filter: ["in", "name", ""],
+        // });
 
         // ////// HANEUL
         // map.addLayer(
@@ -900,9 +883,6 @@ const Map = ({
         //     },
         //   }
         // );
-
-
-
 
         map.on("click", (e) => {
           const bbox = [
@@ -958,19 +938,19 @@ const Map = ({
               const formattedData =
                 templateHoverType.current === "Thematic Map"
                   ? Object.keys(data)
-                    .map((key) => {
-                      const nestedProperties = Object.keys(data[key])
-                        .map(
-                          (nestedKey) =>
-                            `${nestedKey}:${data[key][nestedKey]}`
-                        )
-                        .join("\n");
-                      return `${key}: \n${nestedProperties}`;
-                    })
-                    .join("\n")
+                      .map((key) => {
+                        const nestedProperties = Object.keys(data[key])
+                          .map(
+                            (nestedKey) =>
+                              `${nestedKey}:${data[key][nestedKey]}`
+                          )
+                          .join("\n");
+                        return `${key}: \n${nestedProperties}`;
+                      })
+                      .join("\n")
                   : Object.keys(data)
-                    .map((key) => `${key}:${data[key]}`)
-                    .join("\n");
+                      .map((key) => `${key}:${data[key]}`)
+                      .join("\n");
               // console.log(data, formattedData);
               // console.log(regions[0]["properties"].name + "\n" + formattedData);
 
@@ -1151,6 +1131,8 @@ const Map = ({
             options={options}
             regionName={regionName}
             inputData={inputData}
+            heatRange={heatRange}
+            selectedColors={selectedColors}
           />
         )}
       </div>
