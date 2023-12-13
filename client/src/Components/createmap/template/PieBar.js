@@ -1,6 +1,5 @@
 import React from "react";
 import Input from "@mui/joy/Input";
-import Button from "@mui/joy/Button";
 
 const PieBar = ({ pieBarData, setPieBarData }) => {
   const handleAddPieBarData = () => {

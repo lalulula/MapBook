@@ -52,8 +52,8 @@ const MapDataInputPage = ({
 
   const handleTemplateClick = (template) => {
     const newVal = template.value;
-
     setOptions({ ...options, template: newVal });
+    console.log("Changing template");
   };
   const handleCircleHeatMapDataChange = (circleData) => {
     const newVal = circleData;

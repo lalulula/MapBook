@@ -17,7 +17,7 @@ const CreateMap = () => {
     description: "",
     isPrivate: false,
   });
-  const [pieBarData, setPieBarData] = useState([""]); //data names for pie & bar
+  const [pieBarData, setPieBarData] = useState([]); //data names for pie & bar
   const [themeData, setThemeData] = useState([]); //Theme: color and dataname
   const [selectedColors, setSelectedColors] = useState([]); //HEATMAP: color for each range
   const [heatRange, setHeatRange] = useState({ from: 0, to: 0 }); //HEATMAP: range value
