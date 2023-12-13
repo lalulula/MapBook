@@ -17,17 +17,17 @@ const PieBarDataInput = ({
   handlePieBarInputChange,
   regionName,
 }) => {
-  const [showCloseBtn, setShowCloseBtn] = useState(false);
+  // const [showCloseBtn, setShowCloseBtn] = useState(false);
 
-  useEffect(() => {
-    setShowCloseBtn(
-      selectedMapFile["mapbook_datanames"].length === 1 &&
-        selectedMapFile["mapbook_datanames"][0] === ""
-    );
-  }, [selectedMapFile]);
-  const isAnyDataNameMissing = selectedMapFile["mapbook_datanames"].some(
-    (dataname) => !dataname
-  );
+  // useEffect(() => {
+  //   setShowCloseBtn(
+  //     selectedMapFile["mapbook_datanames"].length === 1 &&
+  //       selectedMapFile["mapbook_datanames"][0] === ""
+  //   );
+  // }, [selectedMapFile]);
+  const isAnyDataNameMissing =
+    selectedMapFile["mapbook_datanames"].some((dataname) => !dataname) ||
+    selectedMapFile["mapbook_datanames"].length === 0;
   console.log(isAnyDataNameMissing, selectedMapFile["mapbook_datanames"]);
   return (
     <Modal
@@ -42,35 +42,33 @@ const PieBarDataInput = ({
         <form onSubmit={handleAddData}>
           <Stack spacing={2}>
             <div className="map_datainput_container">
-              {selectedMapFile["mapbook_datanames"].map((dataname, index) => (
-                <div key={index} className="map_datainput_element">
-                  <FormControl>
-                    {dataname ? (
-                      <>
-                        <h3 style={{ marginBottom: "0.5rem" }}>{dataname}</h3>
-                        <FormControl>
-                          <Input
-                            sx={{ marginBottom: "1rem" }}
-                            onChange={(e) =>
-                              handlePieBarInputChange(dataname, e.target.value)
-                            }
-                            type="number"
-                            placeholder="Enter data value"
-                            required
-                          />
-                        </FormControl>
-                      </>
-                    ) : (
-                      <>
-                        <div className="inputdata_warning_txt">
-                          First enter data name(s) on the right side bar
-                        </div>{" "}
-                      </>
-                    )}
-                  </FormControl>
-                </div>
-              ))}
-              {showCloseBtn ? (
+              {isAnyDataNameMissing ? (
+                <>
+                  <div className="inputdata_warning_txt">
+                    First enter data name(s) on the right side bar
+                  </div>{" "}
+                </>
+              ) : (
+                selectedMapFile["mapbook_datanames"].map((dataname, index) => (
+                  <div key={index} className="map_datainput_element">
+                    <FormControl>
+                      <h3 style={{ marginBottom: "0.5rem" }}>{dataname}</h3>
+                      <FormControl>
+                        <Input
+                          sx={{ marginBottom: "1rem" }}
+                          onChange={(e) =>
+                            handlePieBarInputChange(dataname, e.target.value)
+                          }
+                          type="number"
+                          placeholder="Enter data value"
+                          required
+                        />
+                      </FormControl>
+                    </FormControl>
+                  </div>
+                ))
+              )}
+              {isAnyDataNameMissing ? (
                 <Button
                   onClick={(e) => {
                     e.preventDefault();
@@ -81,9 +79,7 @@ const PieBarDataInput = ({
                   Close
                 </Button>
               ) : (
-                <Button type="submit" disabled={isAnyDataNameMissing}>
-                  Submit
-                </Button>
+                <Button type="submit">Submit</Button>
               )}
             </div>
           </Stack>

@@ -26,7 +26,7 @@ const ThematicDataInput = ({
           <Stack spacing={2}>
             <div className="map_datainput_container">
               {isAnyDataMissing ? (
-                <div className="inputdata_warning_txt_thematic">
+                <div className="inputdata_warning_txt">
                   First enter data name(s) on the right side bar
                 </div>
               ) : (

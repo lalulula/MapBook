@@ -51,7 +51,7 @@ const CircleDataInput = ({
                 </>
               ) : (
                 <>
-                  <div className="inputdata_warning_txt_circle">
+                  <div className="inputdata_warning_txt">
                     First enter data name(s) on the right side bar
                   </div>
                   <Button
