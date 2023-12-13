@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { FileInput, Label } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 
-function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
+function ImportFilePage({ setSelectedMapFile, setImportDataOpen, isMapbookData, setIsMapbookData }) {
   const [backgroundColor, setBackgroundColor] = useState("fff");
   const [textColor, setTextColor] = useState("rgba(128, 128, 128)");
   const [createTextColor, setCreateTextColor] = useState("rgba(128, 128, 128)");
@@ -84,8 +84,10 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen }) {
           'The "mapbook_template" key exists with value:',
           parsedData.mapbook_template
         );
-        // console.log(parsedData);
         setSelectedMapFile(parsedData);
+        setIsMapbookData(true);
+        console.log("isMapbookData: ", isMapbookData);
+
       } else {
         console.log(
           'The "mapbook_template" key does not exist at the top level.'

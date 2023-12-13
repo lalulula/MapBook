@@ -55,13 +55,12 @@ const CircleDataInput = ({
                     First enter data name(s) on the right side bar
                   </div>
                   <Button
-                    disabled={isAnyDataNameMissing}
                     onClick={(e) => {
                       e.preventDefault();
                       setShowModalCircle(false);
                     }}
                   >
-                    Submit
+                    Close
                   </Button>
                 </>
               )}
