@@ -3,17 +3,23 @@ import Input from "@mui/joy/Input";
 
 const PieBar = ({ pieBarData, setPieBarData }) => {
   const handleAddPieBarData = () => {
-    setPieBarData([...pieBarData, ""]);
+    const updatedData = [...pieBarData, ""];
+    // pieBarData = updatedData
+    setPieBarData(updatedData);
+    console.log("piebar updatedData: ", pieBarData)
   };
   const handlePieBarDataInput = (index, newData) => {
     const updatedData = [...pieBarData];
     updatedData[index] = newData;
     setPieBarData(updatedData);
+    console.log("piebar updatedData: ",updatedData)
+
   };
   const handleRemovePieBarData = (index, e) => {
     const updatedData = [...pieBarData];
     updatedData.splice(index, 1);
     setPieBarData(updatedData);
+    console.log("piebar updatedData: ",updatedData)
   };
   return (
     <div>

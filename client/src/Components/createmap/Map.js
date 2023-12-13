@@ -37,8 +37,8 @@ const Map = ({
   }, [template]);
 
   useEffect(() => {
-    setSelectedMapFile((prevMapFile) => ({
-      ...prevMapFile,
+    mapFileData.current = {
+      ...mapFileData.current,
       mapbook_mapname: options.name,
       mapbook_description: options.description,
       mapbook_template: options.template,
@@ -50,18 +50,18 @@ const Map = ({
       mapbook_heatrange: heatRange, // heat range
       mapbook_heat_selectedcolors: selectedColors, // heat color
       mapbook_themedata: themeData, //Color + data name
-    }));
+    };
 
-    mapFileData.current = selectedMapFile;
+    console.log("dataname changed:", mapFileData.current)
   }, [
     options,
     pieBarData,
     themeData,
-    themeData,
     heatRange,
     selectedColors,
-    mapFileData.current,
+    // mapFileData.current,
   ]);
+
   const MAPBOX_TOKEN =
     "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
   const [lng, setLng] = useState(-122.48);
@@ -298,6 +298,15 @@ const Map = ({
         ...namesDataAdded,
       ]);
     }
+    else{
+      if (mapRef.current.getLayer("counties-thematic")) {
+        mapRef.current.setLayoutProperty(
+          "counties-thematic",
+          "visibility",
+          "none"
+        );
+      }
+    }
   };
   // HEAT
   const redrawHeatData = () => {
@@ -384,158 +393,16 @@ const Map = ({
         ...namesDataAdded,
       ]);
     }
+    else{
+      if (mapRef.current.getLayer("counties-heat")) {
+        mapRef.current.setLayoutProperty(
+          "counties-heat",
+          "visibility",
+          "none"
+        );
+      }
+    }
   };
-
-  // const redrawCircleData = () => {
-
-  //   if (templateHoverType.current === "Circle Map") {
-  //     if (mapRef.current.getLayer("counties-circles")) {
-  //       mapRef.current.removeLayer("counties-circles");
-  //     }
-  //     if (mapRef.current.getSource("circles")) {
-  //       mapRef.current.removeSource("circles");
-  //     }
-
-  //     // ME
-
-  //     mapRef.current.addSource("circles", {
-  //       type: "geojson",
-  //       //data: mapFileData.current,
-  //       data: 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson',
-  //       'cluster': true,
-  //       'clusterRadius': 80,
-  //     });
-
-  //     console.log("getsourcecircles:", mapRef.current.getSource('circles'));
-  //     // console.log("SDHFOIS22", mapRef.current.querySourceFeatures('circles'));
-
-  //     mapRef.current.addLayer({
-  //       'id': 'circle_shape',
-  //       'type': 'circle',
-  //       'source': 'circles',
-  //       'filter': ['!=', 'cluster', true],
-  //       'paint': {
-  //         'circle-color': "blue",
-  //         'circle-opacity': 0.6,
-  //         'circle-radius': 12
-  //       }
-  //     });
-
-  //     mapRef.current.addLayer({
-  //       'id': 'circle_label',
-  //       'type': 'symbol',
-  //       'source': 'circles',
-  //       'filter': ['!=', 'cluster', true],
-  //       'layout': {
-  //         'text-field': [
-  //           'number-format',
-  //           ['get', 'mag'],
-  //           { 'min-fraction-digits': 1, 'max-fraction-digits': 1 }
-
-  //         ],
-  //         'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
-  //         'text-size': 10
-  //       },
-  //       'paint': {
-  //         'text-color': [
-  //           'case',
-  //           ['<', ['get', 'mag'], 3],
-  //           'black',
-  //           'white'
-  //         ]
-  //       }
-  //     });
-  //     const markers = {};
-  //     let markersOnScreen = {};
-
-  //     function updateMarkers() {
-  //       const newMarkers = {};
-  //       // const features = mapRef.current.getSource('circles')._data.features;
-  //       const features = mapFileData.current.querySourceFeatures('circles');
-  //       // console.log("features in update markers: ", features);
-
-  //       // for every cluster on the screen, create an HTML marker for it (if we didn't yet),
-  //       // and add it to the map if it's not there already
-  //       for (const feature of features) {
-  //         const coords = feature.geometry.coordinates;
-  //         // const coords = [-151.5129, 63.1016, 0.0];
-  //         const props = feature.properties;
-  //         // const props = { "id": "ak16994521", "mag": 2.3, "time": 1507425650893, "felt": null, "tsunami": 0 };
-  //         console.log("is this working???????????????????", props);
-
-  //         if (!props.cluster) continue;
-  //         const id = props.name;
-  //         console.log("is this working???????????????????");
-
-  //         let marker = markers[id];
-  //         console.log("2is this working???????????????????");
-
-  //         if (!marker) {
-  //           const el = createDonutChart(props);
-  //           marker = markers[id] = new mapboxgl.Marker({
-  //             element: el
-  //           }).setLngLat(coords);
-  //         }
-  //         newMarkers[id] = marker;
-
-  //         if (!markersOnScreen[id]) marker.addTo(mapRef.current);
-  //       }
-  //       // for every marker we've added previously, remove those that are no longer visible
-  //       for (const id in markersOnScreen) {
-  //         if (!newMarkers[id]) markersOnScreen[id].remove();
-  //       }
-  //       markersOnScreen = newMarkers;
-  //     }
-
-  //     // after the GeoJSON data is loaded, update markers on the screen on every frame
-  //     mapRef.current.on('render', () => {
-  //       if (!mapRef.current.isSourceLoaded('circles')) return;
-  //       updateMarkers();
-  //     });
-  //   }
-  // }
-
-  // function createDonutChart(props) {
-  //   const total = props.mag;
-
-  //   const fontSize =
-  //     total >= 1000 ? 22 : total >= 100 ? 20 : total >= 10 ? 18 : 16;
-  //   const r =
-  //     total >= 1000 ? 50 : total >= 100 ? 32 : total >= 10 ? 24 : 18;
-  //   const r0 = Math.round(r * 0.6);
-  //   const w = r * 2;
-
-  //   const html = `<div>
-  //     <svg width="${w}" height="${w}" viewBox="0 0 ${w} ${w}" text-anchor="middle" style="font: ${fontSize}px sans-serif; display: block">
-  //       ${donutSegment(0, 1, r, r0, props.color)}
-  //       <circle cx="${r}" cy="${r}" r="${r0}" fill="white" />
-  //       <text dominant-baseline="central" transform="translate(${r}, ${r})">
-  //         ${total.toLocaleString()}
-  //       </text>
-  //     </svg>
-  //   </div>`;
-
-  //   const el = document.createElement('div');
-  //   el.innerHTML = html;
-  //   return el.firstChild;
-  // }
-
-  // function donutSegment(start, end, r, r0, color) {
-  //   if (end - start === 1) end -= 0.00001;
-  //   const a0 = 2 * Math.PI * (start - 0.25);
-  //   const a1 = 2 * Math.PI * (end - 0.25);
-  //   const x0 = Math.cos(a0),
-  //     y0 = Math.sin(a0);
-  //   const x1 = Math.cos(a1),
-  //     y1 = Math.sin(a1);
-  //   const largeArc = end - start > 0.5 ? 1 : 0;
-
-  //   // draw an SVG path
-  //   return `<path d="M ${r + r0 * x0} ${r + r0 * y0} L ${r + r * x0} ${r + r * y0
-  //     } A ${r} ${r} 0 ${largeArc} 1 ${r + r * x1} ${r + r * y1} L ${r + r0 * x1
-  //     } ${r + r0 * y1} A ${r0} ${r0} 0 ${largeArc} 0 ${r + r0 * x0} ${r + r0 * y0
-  //     }" fill="${color}" />`;
-  // }
 
   // CLUSTER APPROACH
   const redrawCircleData = () => {
@@ -705,6 +572,22 @@ const Map = ({
         mapRef.current.getPaintProperty("clusters", "circle-color")
       );
     }
+    else{
+      if (mapRef.current.getLayer("clusters")) {
+        mapRef.current.setLayoutProperty(
+          "clusters",
+          "visibility",
+          "none"
+        );
+      }
+      if (mapRef.current.getLayer("cluster-count")) {
+        mapRef.current.setLayoutProperty(
+          "cluster-count",
+          "visibility",
+          "none"
+        );
+      }
+    }
   };
 
   const handleAddData = (e) => {
@@ -843,7 +726,7 @@ const Map = ({
 
       map.on("load", () => {
         const points = turf.featureCollection([]);
-        console.log("ON LOAD selectedMapFile: ", selectedMapFile);
+        console.log("ON LOAD selectedMapFile: ", mapFileData.current);
         map.addSource("counties", {
           type: "geojson",
           data: mapFileData.current,
@@ -860,53 +743,6 @@ const Map = ({
           },
         });
 
-        // map.addLayer({
-        //   id: "counties-highlighted",
-        //   type: "fill",
-        //   source: "counties",
-        //   paint: {
-        //     "fill-outline-color": "#484896", //Fill color
-        //     "fill-color": "#6e599f", //Fill color onclick
-        //     "fill-opacity": 0.75,
-        //   },
-        //   filter: ["in", "name", ""],
-        // });
-
-        // ////// HANEUL
-        // map.addLayer(
-        //   {
-        //     id: `counties-thematic`,
-        //     type: "fill",
-        //     source: "counties",
-        //     'layout': {
-        //       // Make the layer visible by default.
-        //       'visibility': 'none'
-        //     },
-        //     paint: {
-        //       "fill-outline-color": "#484896", //Fill color
-        //       'fill-color': '#faafee',
-        //       "fill-opacity": 1,
-        //     },
-        //   }
-        //   // "building"
-        // );
-
-        // map.addLayer(
-        //   {
-        //     id: `counties-circles`,
-        //     type: "fill",
-        //     source: "counties",
-        //     'layout': {
-        //       // Make the layer visible by default.
-        //       'visibility': 'none'
-        //     },
-        //     paint: {
-        //       "fill-outline-color": "#484896", //Fill color
-        //       'fill-color': '#faafee',
-        //       "fill-opacity": 1,
-        //     },
-        //   }
-        // );
 
         map.on("click", (e) => {
           const bbox = [

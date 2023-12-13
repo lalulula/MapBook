@@ -28,7 +28,7 @@ const PieBarDataInput = ({
   const isAnyDataNameMissing =
     selectedMapFile["mapbook_datanames"].some((dataname) => !dataname) ||
     selectedMapFile["mapbook_datanames"].length === 0;
-  console.log(isAnyDataNameMissing, selectedMapFile["mapbook_datanames"]);
+  console.log("isAnyDataNameMissing:", isAnyDataNameMissing, selectedMapFile["mapbook_datanames"]);
   return (
     <Modal
       open={showModalBar || showModalPie}
