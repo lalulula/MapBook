@@ -216,11 +216,13 @@ describe("MapBook API tests:", () => {
       const response = await request(app)
       .post("/api/map/createMap")
       .send({
-          "map_name": "This is test map",
-          "topic": "test Topic",
-          "is_visible": true,
-          "user_id": "655fd58b2b0e9ff49fe19154",
-          "map_description": "This is test map description"
+        "map_name": "This is test map",
+        "topic": "test Topic",
+        "is_visible": true,
+        "user_id": "655fd58b2b0e9ff49fe19154",
+        "map_description": "This is test map description",
+        "mapPreviewImg": "test.mapPreviewImgUrl",
+        "file_path": "test.fileUrl",
       })
       expect(response.statusCode).toBe(201);
       createdMapId = response.body._id;
@@ -381,7 +383,7 @@ describe("MapBook API tests:", () => {
   describe('DELETE /api/maps/:id', () => {
     test("should delete map with a map id", async () => {
       const response = await request(app)
-      .delete(`/api/maps/${createdMapId}` )
+      .delete(`/api/maps/removeMap/${createdMapId}` )
 
     expect(response.statusCode).toBe(200);
     });
@@ -395,7 +397,7 @@ describe("MapBook API tests:", () => {
         .set('Authorization', `Bearer ${loggedInAuthToken}`);
 
       expect(response.statusCode).toBe(200);
-      expect(response.body).toBe('User deleted successfully');
+      expect(response.body).toBe('User and associated items deleted successfully');
     });
 
     test('should return 404 for non-existing user', async () => {

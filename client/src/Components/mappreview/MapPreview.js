@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import Lottie from "lottie-react";
 import ImageLoader from "../../assets/Lottie/ImageLoader.json";
 import { getUserById } from "../../api/user";
+import { deleteMapPostAPIMethod } from "../../api/map";
 
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
 
@@ -17,6 +18,8 @@ const MapPreview = ({ data }) => {
   const [optionsMenuVisible, setOptionsMenuVisible] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false); // New state to track image loading
   const [username, setUsername] = useState()
+  const user = useSelector((state) => state.user.user);
+  const [isOwner, setIsOwner] = useState(data.user_id === user._id);
 
   useEffect(() => {
     // console.log(data);
@@ -114,6 +117,22 @@ const MapPreview = ({ data }) => {
     console.log("Export clicked");
   };
 
+  const handleDeleteMapPost = async (mapId) => {
+    console.log(mapId);
+    try {
+      console.log("removing map post");
+      const res = await deleteMapPostAPIMethod(mapId);
+      if (res) {
+        alert("Map has been deleted successfully.")
+        navigate("/mainpage");
+      } else {
+        alert("Error deleting post", res);
+      }
+    } catch (error) {
+      console.error("Error handling delete operation:", error);
+    }
+  };
+
   return (
     <div className="mappreview_container" onClick={() => handleEdit(data._id)}>
       {optionsMenuVisible && (
@@ -124,6 +143,9 @@ const MapPreview = ({ data }) => {
             </li>
             <li onClick={handleShare}>Share</li>
             <li onClick={handleExport}>Export</li>
+            {(isOwner || user.username === "Admin") && (
+              <li onClick={() => handleDeleteMapPost(data._id)}>Delete</li>
+            )}
           </ul>
         </div>
       )}

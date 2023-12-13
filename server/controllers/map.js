@@ -240,7 +240,7 @@ const editMap = async (req, res) => {
 const removeMap = async (req, res) => {
   try {
     const { mapId } = req.params;
-    // console.log(mapId);
+    console.log(mapId);
     const map = await MapObj.findByIdAndDelete(mapId);
 
     if (!map) {

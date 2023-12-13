@@ -137,8 +137,8 @@ const removeUser = async (req, res) => {
 
     res.status(200).json("User and associated items deleted successfully");
   } catch (err) {
-    console.error('Error:', err);
-    res.status(500).json({ message: "Internal server error" });
+    console.log('Error:', err);
+    res.status(404).json({ message: err.message });
   }
 };
 
