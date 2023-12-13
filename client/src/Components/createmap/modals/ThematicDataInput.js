@@ -15,14 +15,9 @@ const ThematicDataInput = ({
   handleThematicData,
   regionName,
 }) => {
-  const [showCloseBtn, setShowCloseBtn] = useState(false);
-
-  useEffect(() => {
-    setShowCloseBtn(
-      selectedMapFile["mapbook_themedata"].length === 1 &&
-        selectedMapFile["mapbook_themedata"][0]["dataName"] === ""
-    );
-  }, [selectedMapFile]);
+  const isAnyDataMissing =
+    selectedMapFile["mapbook_themedata"].some((data) => !data.dataName) ||
+    selectedMapFile["mapbook_themedata"].length === 0;
   return (
     <Modal open={showModalThematic} onClose={() => setShowModalThematic(false)}>
       <ModalDialog>
@@ -30,36 +25,33 @@ const ThematicDataInput = ({
         <form onSubmit={handleAddData}>
           <Stack spacing={2}>
             <div className="map_datainput_container">
-              {selectedMapFile["mapbook_themedata"].map((data, index) => (
-                <div key={index} className="map_datainput_element">
-                  <FormControl>
-                    {!showCloseBtn ? (
-                      <>
-                        <h3 style={{ marginBottom: "1rem" }}>
-                          {data["dataName"]}
-                        </h3>
-                        <FormControl>
-                          <Input
-                            sx={{ marginBottom: "1rem" }}
-                            onChange={(e) =>
-                              handleThematicData(data, e.target.value)
-                            }
-                            placeholder="Enter data value"
-                            required
-                          />
-                        </FormControl>
-                      </>
-                    ) : (
-                      <>
-                        <div className="inputdata_warning_txt">
-                          First enter data name(s) on the right side bar
-                        </div>
-                      </>
-                    )}
-                  </FormControl>
+              {isAnyDataMissing ? (
+                <div className="inputdata_warning_txt_thematic">
+                  First enter data name(s) on the right side bar
                 </div>
-              ))}
-              {showCloseBtn ? (
+              ) : (
+                selectedMapFile["mapbook_themedata"].map((data, index) => (
+                  <div key={index} className="map_datainput_element">
+                    <FormControl>
+                      <h3 style={{ marginBottom: "1rem" }}>
+                        {data["dataName"]}
+                      </h3>
+                      <FormControl>
+                        <Input
+                          sx={{ marginBottom: "1rem" }}
+                          onChange={(e) =>
+                            handleThematicData(data, e.target.value)
+                          }
+                          placeholder="Enter data value"
+                          type="number"
+                          required
+                        />
+                      </FormControl>
+                    </FormControl>
+                  </div>
+                ))
+              )}
+              {isAnyDataMissing ? (
                 <Button
                   onClick={(e) => {
                     e.preventDefault();

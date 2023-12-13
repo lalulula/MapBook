@@ -18,7 +18,6 @@ const PieBar = ({ pieBarData, setPieBarData }) => {
   };
   return (
     <div>
-      <br />
       <div className="data_container">
         <div style={{ maxHeight: "300px", overflowY: "auto" }}>
           {pieBarData.map((data, index) => (
@@ -30,15 +29,6 @@ const PieBar = ({ pieBarData, setPieBarData }) => {
                 name={`data_name_${index}`}
                 value={data}
                 onChange={(e) => handlePieBarDataInput(index, e.target.value)}
-                // endDecorator={
-                //   <Button
-                //     color=""
-                //     onClick={(e) => handleRemovePieBarData(index, e)}
-                //     sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
-                //   >
-                //     <i className="bi bi-x-circle " />
-                //   </Button>
-                // }
               />
               <i
                 className="data_input_delete bi bi-x-circle "

@@ -192,6 +192,14 @@
   font-weight: 300;
   font-size: small;
 }
+.inputdata_warning_txt_circle,
+.inputdata_warning_txt_heat,
+.inputdata_warning_txt_thematic {
+  margin-bottom: 1rem;
+  color: rgb(203, 54, 54);
+  font-weight: 300;
+  font-size: small;
+}
 .heatdatainput_label {
   display: flex;
   align-items: baseline;

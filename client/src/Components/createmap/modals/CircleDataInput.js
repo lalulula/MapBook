@@ -18,10 +18,11 @@ const CircleDataInput = ({
   handleRerender,
 }) => {
   const handleCircleDataSubmit = () => {
-    // Call the callback function to trigger a rerender in the parent
     console.log("ONRENDER");
     handleRerender();
   };
+  const isAnyDataNameMissing = options.circleHeatMapData === "";
+
   return (
     <Modal open={showModalCircle} onClose={() => setShowModalCircle(false)}>
       <ModalDialog>
@@ -39,24 +40,28 @@ const CircleDataInput = ({
                       sx={{ marginBottom: "1rem" }}
                       onChange={(e) => setInputData(e.target.value)}
                       placeholder="Enter data value"
+                      type="number"
                       required
                     />
                   </FormControl>
 
-                  <Button type="submit" onClick={handleCircleDataSubmit}>Submit</Button>
+                  <Button type="submit" onClick={handleCircleDataSubmit}>
+                    Submit
+                  </Button>
                 </>
               ) : (
                 <>
-                  <div className="inputdata_warning_txt">
+                  <div className="inputdata_warning_txt_circle">
                     First enter data name(s) on the right side bar
                   </div>
                   <Button
+                    disabled={isAnyDataNameMissing}
                     onClick={(e) => {
                       e.preventDefault();
                       setShowModalCircle(false);
                     }}
                   >
-                    Close
+                    Submit
                   </Button>
                 </>
               )}

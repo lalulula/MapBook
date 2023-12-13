@@ -25,6 +25,10 @@ const PieBarDataInput = ({
         selectedMapFile["mapbook_datanames"][0] === ""
     );
   }, [selectedMapFile]);
+  const isAnyDataNameMissing = selectedMapFile["mapbook_datanames"].some(
+    (dataname) => !dataname
+  );
+  console.log(isAnyDataNameMissing, selectedMapFile["mapbook_datanames"]);
   return (
     <Modal
       open={showModalBar || showModalPie}
@@ -50,6 +54,7 @@ const PieBarDataInput = ({
                             onChange={(e) =>
                               handlePieBarInputChange(dataname, e.target.value)
                             }
+                            type="number"
                             placeholder="Enter data value"
                             required
                           />
@@ -76,7 +81,9 @@ const PieBarDataInput = ({
                   Close
                 </Button>
               ) : (
-                <Button type="submit">Submit</Button>
+                <Button type="submit" disabled={isAnyDataNameMissing}>
+                  Submit
+                </Button>
               )}
             </div>
           </Stack>

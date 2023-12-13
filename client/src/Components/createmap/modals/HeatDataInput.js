@@ -15,6 +15,8 @@ const HeatDataInput = ({
   regionName,
   options,
   inputData,
+  heatRange,
+  selectedColors,
 }) => {
   const [renderedColor, setRenderedColor] = useState(null);
   const [invalidColor, setInvalidColor] = useState(false);
@@ -27,6 +29,21 @@ const HeatDataInput = ({
       inputData && setRenderedColor(inputData["color"]);
     }
   }, [inputData]);
+
+  const isEmpty = () => {
+    const isCircleHeatMapDataEmpty = !options["circleHeatMapData"];
+    const isHeatRangeEmpty = heatRange.from === 0 && heatRange.to === 0;
+    const isSelectedColorsEmpty = selectedColors.length === 0;
+    return (
+      isCircleHeatMapDataEmpty || isHeatRangeEmpty || isSelectedColorsEmpty
+    );
+  };
+
+  // Example of using the isEmpty function
+  const isAnyDataMissing = isEmpty();
+  useEffect(() => {
+    console.log(isAnyDataMissing);
+  }, []);
   return (
     <Modal open={showModalHeat} onClose={() => setShowModalHeat(false)}>
       <ModalDialog>
@@ -34,7 +51,7 @@ const HeatDataInput = ({
         <form onSubmit={handleAddData}>
           <Stack spacing={2}>
             <div className="map_datainput_container">
-              {options.circleHeatMapData ? (
+              {!isAnyDataMissing ? (
                 <>
                   <div className="heatdatainput_label">
                     <h3 style={{ marginBottom: "1rem" }}>
@@ -56,6 +73,7 @@ const HeatDataInput = ({
                       sx={{ marginBottom: "1rem" }}
                       onChange={(e) => handleHeatMapData(e.target.value)}
                       placeholder="Enter data value"
+                      type="number"
                       required
                     />
                   </FormControl>
@@ -68,7 +86,7 @@ const HeatDataInput = ({
                 </>
               ) : (
                 <>
-                  <div className="inputdata_warning_txt">
+                  <div className="inputdata_warning_txt_heat">
                     First enter data name(s) on the right side bar
                   </div>
                   <Button
