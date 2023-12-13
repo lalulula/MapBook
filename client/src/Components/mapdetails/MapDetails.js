@@ -25,6 +25,7 @@ import mapboxgl from "mapbox-gl"; // Import mapboxgl
 import DeleteButton from "../widgets/DeleteButton";
 import EditButton from "../widgets/EditButton";
 import { async } from "@firebase/util";
+import CustomSwitch from "../widgets/CustomSwitch";
 
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
@@ -52,6 +53,7 @@ const MapDetails = () => {
   const user = useSelector((state) => state.user.user);
   const mapContainerRef = useRef(null);
   const navigate = useNavigate();
+  const [showHoverData, setShowHoverData] = useState(false);
   const formatDate = (createdAt) => {
     const date = new Date(createdAt);
     const year = date.getFullYear();
@@ -340,7 +342,7 @@ const MapDetails = () => {
             );
             map.setFilter("counties-heat", ["in", "name", ...namesDataAdded]);
           } else if (selectedMapFile.mapbook_template === "Circle Map") {
-            
+
 
             let dataName = selectedMapFile["mapbook_circleheatmapdata"];
 
@@ -353,7 +355,7 @@ const MapDetails = () => {
             const featureDataAdded = selectedMapFile["features"].filter(
               (f) => f["properties"].mapbook_data != null
             );
-            
+
             var namesDataAdded = [];
             featureDataAdded.forEach((element) => { //adding mapbook data to each feature
               namesDataAdded.push(element["properties"].name);
@@ -363,30 +365,30 @@ const MapDetails = () => {
 
 
             var JsonBasedOnPoint = structuredClone(selectedMapFile);
-            for(var i = 0; i < selectedMapFile["features"].length; i++ ){
+            for (var i = 0; i < selectedMapFile["features"].length; i++) {
               var centerX = 0;
               var canterY = 0;
               var pointCount = 0;
-              for(var j = 0; j < selectedMapFile["features"][i].geometry.coordinates.length; j++){
-                for(var k = 0; k < selectedMapFile["features"][i].geometry.coordinates[j].length; k++){
-                  if(typeof(selectedMapFile["features"][i].geometry.coordinates[j][k][0]) == 'object'){
-                    for(var l = 0; l < selectedMapFile["features"][i].geometry.coordinates[j][k].length; l++ ){
+              for (var j = 0; j < selectedMapFile["features"][i].geometry.coordinates.length; j++) {
+                for (var k = 0; k < selectedMapFile["features"][i].geometry.coordinates[j].length; k++) {
+                  if (typeof (selectedMapFile["features"][i].geometry.coordinates[j][k][0]) == 'object') {
+                    for (var l = 0; l < selectedMapFile["features"][i].geometry.coordinates[j][k].length; l++) {
                       centerX = centerX + selectedMapFile["features"][i].geometry.coordinates[j][k][l][0];
                       canterY = canterY + selectedMapFile["features"][i].geometry.coordinates[j][k][l][1];
                       pointCount++;
                     }
-      
+
                   }
-                  else{
+                  else {
                     centerX = centerX + selectedMapFile["features"][i].geometry.coordinates[j][k][0];
                     canterY = canterY + selectedMapFile["features"][i].geometry.coordinates[j][k][1];
                     pointCount++;
                   }
                 }
               }
-              centerX = (pointCount == 0 ) ? 0 :centerX / pointCount;
-              canterY = (pointCount == 0 ) ? 0 :canterY / pointCount;
-              var newGeometry = { "type": "Point", "coordinates": [ centerX, canterY ] }
+              centerX = (pointCount == 0) ? 0 : centerX / pointCount;
+              canterY = (pointCount == 0) ? 0 : canterY / pointCount;
+              var newGeometry = { "type": "Point", "coordinates": [centerX, canterY] }
               JsonBasedOnPoint["features"][i].geometry = newGeometry;
               // mapFileData.current["features"][i].geometry
             }
@@ -398,13 +400,13 @@ const MapDetails = () => {
               // clusterMaxZoom: 14, // Max zoom to cluster points on
               // clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
             });
-            
+
             map.addLayer({
               id: 'clusters',
               type: 'circle',
               source: 'circles',
               paint: {
-                'circle-translate': [0,0]
+                'circle-translate': [0, 0]
               }
             });
 
@@ -422,13 +424,13 @@ const MapDetails = () => {
               "in",
               "name",
               ...namesDataAdded,
-            ]); 
+            ]);
 
             map.setFilter("cluster-count", [
               "in",
               "name",
               ...namesDataAdded,
-            ]); 
+            ]);
 
             map.setLayoutProperty(
               "cluster-count",
@@ -445,7 +447,7 @@ const MapDetails = () => {
               ['case',
                 ['<', expValue, 100],
                 '#51bbd6',
-                ['all', ['>=', expValue, 100] , ['<', expValue, 750]],
+                ['all', ['>=', expValue, 100], ['<', expValue, 750]],
                 '#f1f075',
                 '#f28cb1'
               ]
@@ -457,7 +459,7 @@ const MapDetails = () => {
               ['case',
                 ['<', expValue, 100],
                 20,
-                ['all', ['>=', expValue, 100] , ['<', expValue, 750]],
+                ['all', ['>=', expValue, 100], ['<', expValue, 750]],
                 30,
                 40
               ]
@@ -640,6 +642,25 @@ const MapDetails = () => {
                 </div>
               )}
             </div>
+            <div className={`mapdetails_hoverdata_switch${showHoverData ? "_showing" : ""}`}>
+              <CustomSwitch
+                showHoverData={showHoverData}
+                setShowHoverData={setShowHoverData}
+              />
+            </div>
+
+            {showHoverData ? (
+              <div className="mapdetails_hovered_data_container">
+                <div className="mapdetails_hovered_data_header">
+                  <h4 style={{ display: "inline-block", margin: 0 }}>Map Data</h4>
+                </div>
+                <div className="mapdetails_input_hovered_data">
+                  <div>{hoverData}</div>
+                </div>
+              </div>
+            ) : (
+              <div></div>
+            )}
           </div>
 
           <div

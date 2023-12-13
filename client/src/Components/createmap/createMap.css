@@ -2,6 +2,7 @@
   height: 100vh;
   overflow: hidden;
 }
+
 .createmap_add_data_container {
   margin-top: 6rem;
   padding-bottom: 5rem;
@@ -10,6 +11,7 @@
   width: 100%;
   align-items: flex-end;
 }
+
 .addmapdata_left_sidebar {
   flex: 1;
   padding: 1rem;
@@ -30,6 +32,7 @@
   flex-direction: column;
   gap: 1rem;
 }
+
 .mapdatainput_right_sidebar {
   flex: 1;
   display: flex;
@@ -43,17 +46,21 @@
   gap: 1rem;
   overflow: scroll;
 }
+
 .mapdatainput_templates {
   flex: 4;
 }
+
 .mapdatainput_hovered_data_container {
   flex: 2;
 }
+
 .mapdatainput_hovered_data_header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
 }
+
 .mapdatainput_hovered_data {
   height: 8rem;
   border: 1px gray dashed;
@@ -63,6 +70,7 @@
   display: flex;
   align-items: center;
 }
+
 .mapdatainput_image_drop {
   flex: 1;
 }
@@ -71,6 +79,7 @@
   height: 80vh;
   width: 100vh;
 }
+
 /* MAP TOOL BAR */
 .map_toolbar_container {
   display: flex;
@@ -78,6 +87,7 @@
   justify-content: flex-end;
   gap: 2rem;
 }
+
 .map_undo_redo_container {
   display: flex;
   flex-direction: row;
@@ -90,6 +100,7 @@
   font-size: 1.5rem;
   font-weight: bold;
 }
+
 .vertical_line_container {
   color: #333;
   font-weight: 200;
@@ -100,6 +111,7 @@
   color: #1f6baf;
   transition: all 0.2s ease-in-out;
 }
+
 .map_toolbar_container button {
   border: none;
   outline: none;
@@ -113,22 +125,25 @@
   border: 2px solid #333;
   border-radius: 5px;
 }
+
 .map_toolbar_container button:hover {
   color: #1f6baf;
   background-color: #33333350;
   border: 2px solid #1f6baf;
 }
+
 /* END*/
 
 /* RIGHT SIDEBAR DATA IMPUT */
 .data_input_container {
   display: flex;
 }
+
 .data_input_value {
   flex: 2;
 }
-.data_input_delete {
-}
+
+.data_input_delete {}
 
 .data_input_container_thematic {
   max-height: 27rem;
@@ -137,6 +152,7 @@
   flex-direction: column;
   margin-bottom: 2rem;
 }
+
 .add_data_btn {
   display: flex;
   justify-content: center;
@@ -144,10 +160,12 @@
   font-weight: bold;
   cursor: pointer;
 }
+
 .heat_data_container {
   display: flex;
   flex-direction: column;
 }
+
 .heat_data_tooltip {
   display: flex;
   align-items: stretch;
@@ -165,10 +183,12 @@
   background-color: transparent;
   /* border: 1px whitesmoke solid; */
 }
+
 .createMap_color_picker::-webkit-color-swatch {
   border-radius: 15px;
   border: 1px rgba(245, 245, 245, 0.333) solid;
 }
+
 .createMap_color_picker::-moz-color-swatch {
   border-radius: 15px;
   border: 1px rgba(245, 245, 245, 0.333) solid;
@@ -181,17 +201,20 @@
   left: 50%;
   background-color: black;
 }
+
 .map_datainput_container {
   display: flex;
   flex-direction: column;
   align-items: stretch;
 }
+
 .map_datainput_element .inputdata_warning_txt {
   margin-bottom: 1rem;
   color: rgb(203, 54, 54);
   font-weight: 300;
   font-size: small;
 }
+
 .inputdata_warning_txt_circle,
 .inputdata_warning_txt_heat,
 .inputdata_warning_txt_thematic {
@@ -200,6 +223,7 @@
   font-weight: 300;
   font-size: small;
 }
+
 .heatdatainput_label {
   display: flex;
   align-items: baseline;
@@ -219,6 +243,42 @@
   color: rgba(0, 0, 0, 0.827);
   overflow-wrap: break-word;
 }
+
+.mapdetails_hovered_data_container {
+  position: absolute;
+  top: 15rem;
+  left: 7rem;
+  width: 20rem;
+  height: 15rem;
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  padding: 1rem;
+}
+
+.mapdetails_hoverdata_switch_showing {
+  position: absolute;
+  top: 27.5rem;
+  left: 18.5rem;
+  z-index: 100;
+  color: black;
+
+}
+
+.mapdetails_hoverdata_switch {
+  position: absolute;
+  top: 14.5rem;
+  left: 6rem;
+  color: black;
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  padding: 3px;
+  border-radius: 2rem;
+}
+
+
+
 /* .popup {
   color: black;
   position: fixed;
