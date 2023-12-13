@@ -19,14 +19,12 @@
     "footer";
   transition: transform 0.3s ease-in-out;
   border: 2px solid gray;
+  display: flex;
+  flex-direction: column;
 }
 
 .mappreview_name_container {
   display: flex;
-}
-
-.mappreview_container:hover {
-  /* transform: scale(1.05); */
 }
 
 .mappreview_img {
