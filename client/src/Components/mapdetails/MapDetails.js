@@ -3,6 +3,10 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { Divider } from "semantic-ui-react";
 import "./mapdetails.css";
+import MapTools from "../maptools/MapTools";
+import Comment from "./Comment";
+import * as turf from '@turf/turf';
+
 import {
   getMapAPI,
   deleteMapPostAPIMethod,
@@ -75,8 +79,6 @@ const MapDetails = () => {
         const data = await getMapAPI(mapId);
         const post_owner_data = await getUserById(data.user_id);
         postOwner.current = post_owner_data;
-        console.log("postOwner: ", postOwner.current.username);
-
         currentMap.current = data;
         console.log("currentMap.current: ", currentMap.current);
         const updatedViewCount = currentMap.current.view_count + 1;
@@ -158,10 +160,40 @@ const MapDetails = () => {
         });
       }
     });
+    console.log("totalX: ", totalX);
+    console.log("totalY: ", totalY);
     const avgX = totalX / count;
     const avgY = totalY / count;
     return [avgX, avgY];
   }
+
+  // function calculateBoundingBox(features) {
+  //   let minX = Number.MAX_VALUE;
+  //   let minY = Number.MAX_VALUE;
+  //   let maxX = Number.MIN_VALUE;
+  //   let maxY = Number.MIN_VALUE;
+
+  //   // Loop through polygon features and find the minimum and maximum coordinates
+  //   features.forEach(feature => {
+  //     const coordinates = feature.geometry.coordinates[0]; // Assuming the first ring of the polygon
+  //     coordinates.forEach(coord => {
+  //       if (typeof coordinates == "number") {
+  //         return;
+  //       }
+  //       // minX = Math.min(minX, coord[0]);
+  //       // minY = Math.min(minY, coord[1]);
+  //       // maxX = Math.max(maxX, coord[0]);
+  //       // maxY = Math.max(maxY, coord[1]);
+  //       minX = coord[0];
+  //       minY = coord[1];
+  //       maxX = coord[0];
+  //       maxY = coord[1];
+  //     });
+  //   });
+
+  //   // Return bounding box [minX, minY, maxX, maxY]
+  //   return [[minX, minY], [maxX, maxY]];
+  // }
 
   useEffect(() => {
     getMap();
@@ -171,6 +203,11 @@ const MapDetails = () => {
     if (selectedMapFile != null) {
       console.log("selectedMapFile: useEffect: ", selectedMapFile);
       const centroid = calculateCentroid(selectedMapFile.features);
+      const totalArea = selectedMapFile.features.reduce((acc, feature) => {
+        const area = turf.area(feature);
+        return acc + area;
+      }, 0);
+      console.log('Total Area:', totalArea, 'square meters');
 
       let map;
 
@@ -184,7 +221,6 @@ const MapDetails = () => {
           preserveDrawingBuffer: true,
         });
         map.setCenter(centroid);
-        map.setZoom(2);
       }
       if (map != null) {
         map.on("idle", function () {
