@@ -1,6 +1,8 @@
 const MapObj = require("../models/MapObj");
 const serviceAccount = require("../mapbook-firebase.json");
 const cloudinary = require("cloudinary").v2;
+const MapComment = require("../models/MapComment");
+const MapReply = require("../models/MapReply");
 
 const admin = require("firebase-admin");
 const { URL } = require("url");
@@ -240,27 +242,40 @@ const editMap = async (req, res) => {
 const removeMap = async (req, res) => {
   try {
     const { mapId } = req.params;
-    console.log(mapId);
     const map = await MapObj.findByIdAndDelete(mapId);
 
     if (!map) {
       return res.status(400).json("Map not found");
     }
 
-    // DELETE STORED FILE ON FIREBASE
-    const url = map.file_path;
-    const urlParts = new URL(url);
-    const filename = path.basename(urlParts.pathname);
-    const file = bucket.file(filename);
+    // DELETE ASSOCIATED MAP COMMENTS & REPLIES
+    const deletedMapComments = await MapComment.find({ map_id: mapId });
+    console.log(deletedMapComments);
+    await Promise.all(deletedMapComments.map(async (deletedMapComment) => {
+      await MapReply.deleteMany({ map_comment_id: deletedMapComment._id });
+    }));
+    await MapComment.deleteMany({ map_id: mapId });
 
-    file
-      .delete()
-      .then(() => {
-        console.log(`File ${filename} deleted successfully.`);
-      })
-      .catch((error) => {
-        console.error(`Error deleting file ${filename}:`, error);
-      });
+    // DELETE STORED FILE ON FIREBASE
+    const mapUrl = map.file_path;
+    const mapPreviewUrl = map.mapPreviewImg;
+    
+    try {
+      const mapUrlParts = new URL(mapUrl);
+      let mapFilename = path.basename(mapUrlParts.pathname).replaceAll("%20", " ");
+      const mapFile = bucket.file(mapFilename);
+
+      const mapPreviewUrlParts = new URL(mapPreviewUrl);
+      let mapPreviewFilename = path.basename(mapPreviewUrlParts.pathname).replaceAll("%20", " ");
+      const mapPreviewFile = bucket.file(mapPreviewFilename);
+
+      await mapFile.delete();
+      await mapPreviewFile.delete();
+      console.log(`mapFile ${mapFilename} deleted successfully.`);
+      console.log(`mapPreviewFile ${mapPreviewFilename} deleted successfully.`);
+    } catch (error) {
+      console.error(`Error deleting files ${mapFilename} & ${mapPreviewFilename}:`);
+    }
 
     res.status(200).json("Map deleted successfully");
   } catch (err) {
