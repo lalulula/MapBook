@@ -27,7 +27,9 @@ describe("Test example", () => {
                 "topic": "test Topic",
                 "is_visible": true,
                 "user_id": "655fd58b2b0e9ff49fe19154",
-                "map_description": "This is test map description"
+                "map_description": "This is test map description",
+                "mapPreviewImg": "test.mapPreviewImgUrl",
+                "file_path": "test.fileUrl",
             })
             expect(response.statusCode).toBe(201);
             createdMapId = response.body._id;
@@ -60,7 +62,7 @@ describe("Test example", () => {
         test("should delete map with a map id", async () => {
 
         const response = await request(app)
-        .delete(`/api/maps/${createdMapId}` )
+        .delete(`/api/maps/removeMap/${createdMapId}` )
 
         expect(response.statusCode).toBe(200);
         });
