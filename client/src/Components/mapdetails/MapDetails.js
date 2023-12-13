@@ -340,6 +340,133 @@ const MapDetails = () => {
             );
             map.setFilter("counties-heat", ["in", "name", ...namesDataAdded]);
           } else if (selectedMapFile.mapbook_template === "Circle Map") {
+            
+
+            let dataName = selectedMapFile["mapbook_circleheatmapdata"];
+
+            console.log(dataName)
+            const expValue = [
+              "to-number",
+              ["get", dataName, ["get", "mapbook_data"]],
+            ];
+
+            const featureDataAdded = selectedMapFile["features"].filter(
+              (f) => f["properties"].mapbook_data != null
+            );
+            
+            var namesDataAdded = [];
+            featureDataAdded.forEach((element) => { //adding mapbook data to each feature
+              namesDataAdded.push(element["properties"].name);
+            });
+
+
+
+
+            var JsonBasedOnPoint = structuredClone(selectedMapFile);
+            for(var i = 0; i < selectedMapFile["features"].length; i++ ){
+              var centerX = 0;
+              var canterY = 0;
+              var pointCount = 0;
+              for(var j = 0; j < selectedMapFile["features"][i].geometry.coordinates.length; j++){
+                for(var k = 0; k < selectedMapFile["features"][i].geometry.coordinates[j].length; k++){
+                  if(typeof(selectedMapFile["features"][i].geometry.coordinates[j][k][0]) == 'object'){
+                    for(var l = 0; l < selectedMapFile["features"][i].geometry.coordinates[j][k].length; l++ ){
+                      centerX = centerX + selectedMapFile["features"][i].geometry.coordinates[j][k][l][0];
+                      canterY = canterY + selectedMapFile["features"][i].geometry.coordinates[j][k][l][1];
+                      pointCount++;
+                    }
+      
+                  }
+                  else{
+                    centerX = centerX + selectedMapFile["features"][i].geometry.coordinates[j][k][0];
+                    canterY = canterY + selectedMapFile["features"][i].geometry.coordinates[j][k][1];
+                    pointCount++;
+                  }
+                }
+              }
+              centerX = (pointCount == 0 ) ? 0 :centerX / pointCount;
+              canterY = (pointCount == 0 ) ? 0 :canterY / pointCount;
+              var newGeometry = { "type": "Point", "coordinates": [ centerX, canterY ] }
+              JsonBasedOnPoint["features"][i].geometry = newGeometry;
+              // mapFileData.current["features"][i].geometry
+            }
+
+            map.addSource('circles', {
+              type: 'geojson',
+              data: JsonBasedOnPoint,
+              // cluster: true,
+              // clusterMaxZoom: 14, // Max zoom to cluster points on
+              // clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
+            });
+            
+            map.addLayer({
+              id: 'clusters',
+              type: 'circle',
+              source: 'circles',
+              paint: {
+                'circle-translate': [0,0]
+              }
+            });
+
+            map.addLayer({
+              id: 'cluster-count',
+              type: 'symbol',
+              source: 'circles',
+              layout: {
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 12
+              }
+            });
+
+            map.setFilter("clusters", [
+              "in",
+              "name",
+              ...namesDataAdded,
+            ]); 
+
+            map.setFilter("cluster-count", [
+              "in",
+              "name",
+              ...namesDataAdded,
+            ]); 
+
+            map.setLayoutProperty(
+              "cluster-count",
+              "text-field",
+              ['to-string', expValue]
+            );
+
+            //   * Blue, 20px circles when point count is less than 100
+            //   * Yellow, 30px circles when point count is between 100 and 750
+            //   * Pink, 40px circles when point count is greater than or equal to 750
+            map.setPaintProperty(
+              "clusters",
+              "circle-color",
+              ['case',
+                ['<', expValue, 100],
+                '#51bbd6',
+                ['all', ['>=', expValue, 100] , ['<', expValue, 750]],
+                '#f1f075',
+                '#f28cb1'
+              ]
+            );
+
+            map.setPaintProperty(
+              "clusters",
+              "circle-radius",
+              ['case',
+                ['<', expValue, 100],
+                20,
+                ['all', ['>=', expValue, 100] , ['<', expValue, 750]],
+                30,
+                40
+              ]
+            );
+
+            console.log("mapRef.current.getPaintProperty:", map.getPaintProperty("clusters", "circle-color"))
+
+
+
           } else if (selectedMapFile.mapbook_template === "Bar Chart") {
           } else if (selectedMapFile.mapbook_template === "Pie Chart") {
           }

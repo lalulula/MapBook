@@ -589,35 +589,37 @@ const Map = ({
         var pointCount = 0;
         for(var j = 0; j < mapFileData.current["features"][i].geometry.coordinates.length; j++){
           for(var k = 0; k < mapFileData.current["features"][i].geometry.coordinates[j].length; k++){
-            centerX = centerX + mapFileData.current["features"][i].geometry.coordinates[j][k][0];
-            canterY = canterY + mapFileData.current["features"][i].geometry.coordinates[j][k][1];
-            pointCount++;
+            if(typeof(mapFileData.current["features"][i].geometry.coordinates[j][k][0]) == 'object'){
+              for(var l = 0; l < mapFileData.current["features"][i].geometry.coordinates[j][k].length; l++ ){
+                centerX = centerX + mapFileData.current["features"][i].geometry.coordinates[j][k][l][0];
+                canterY = canterY + mapFileData.current["features"][i].geometry.coordinates[j][k][l][1];
+                pointCount++;
+              }
+
+            }
+            else{
+              centerX = centerX + mapFileData.current["features"][i].geometry.coordinates[j][k][0];
+              canterY = canterY + mapFileData.current["features"][i].geometry.coordinates[j][k][1];
+              pointCount++;
+            }
           }
         }
-        centerX = centerX / pointCount;
-        canterY = canterY / pointCount;
+        centerX = (pointCount == 0 ) ? 0 : centerX / pointCount;
+        canterY = (pointCount == 0 ) ? 0 : canterY / pointCount;
         var newGeometry = { "type": "Point", "coordinates": [ centerX, canterY ] }
+        if(centerX != 0){
+          console.log("newGeometry: ", newGeometry)
+        }
         JsonBasedOnPoint["features"][i].geometry = newGeometry;
         // mapFileData.current["features"][i].geometry
       }
 
       mapRef.current.addSource('circles', {
         type: 'geojson',
-        // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
-        // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
-        //data: mapFileData.current,
-        // data: 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson',
         data: JsonBasedOnPoint,
         // cluster: true,
         // clusterMaxZoom: 14, // Max zoom to cluster points on
         // clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
-        // clusterProperties: {
-        //   // keep separate counts for each magnitude category in a cluster
-        //   'mag1': ['+', ['case', ['<', expValue, 100], 1, 0]],
-        //   'mag2': ['+', ['case', ['all', ['>=', expValue, 100] , ['<', expValue, 750]], 1, 0]],
-        //   'mag3': ['+', ['case', ['>=', expValue, 750], 1, 0]],
-
-        //   }
       });
       
       mapRef.current.addLayer({
@@ -638,12 +640,6 @@ const Map = ({
           'text-size': 12
         }
       });
-
-      
-
-
-      
- 
 
       mapRef.current.setFilter("clusters", [
         "in",
@@ -751,6 +747,8 @@ const Map = ({
       setSelectedMapFile(mapFileData.current);
       redrawHeatData();
       redrawThematicData();
+      redrawCircleData();
+
     }
   };
 
@@ -773,6 +771,8 @@ const Map = ({
 
       redrawThematicData();
       redrawHeatData();
+      redrawCircleData();
+
     }
   };
 
