@@ -79,7 +79,7 @@ const MainPage = () => {
             style={{
               height: 350,
               width: 350,
-              opacity: 0.3,
+              opacity: 0.5,
             }}
           />
         </div>
