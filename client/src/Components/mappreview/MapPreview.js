@@ -17,7 +17,7 @@ const MapPreview = ({ data }) => {
   const navigate = useNavigate();
   const [optionsMenuVisible, setOptionsMenuVisible] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false); // New state to track image loading
-  const [username, setUsername] = useState()
+  const [username, setUsername] = useState();
   const user = useSelector((state) => state.user.user);
   const [isOwner, setIsOwner] = useState(data.user_id === user._id);
 
@@ -32,7 +32,9 @@ const MapPreview = ({ data }) => {
   }, []);
   const handleImageLoad = () => {
     // Called when the image has finished loading
-    setImageLoaded(true);
+    setTimeout(() => {
+      setImageLoaded(true);
+    });
   };
   const handleEdit = (id) => {
     console.log("CLICKED ON MAP PREVIEW: ", id);
@@ -53,7 +55,7 @@ const MapPreview = ({ data }) => {
   const getUserName = async () => {
     const user = await getUserById(data.user_id);
     setUsername(user.username);
-  }
+  };
 
   const handleShare = (e) => {
     // Handle share action
@@ -123,7 +125,7 @@ const MapPreview = ({ data }) => {
       console.log("removing map post");
       const res = await deleteMapPostAPIMethod(mapId);
       if (res) {
-        alert("Map has been deleted successfully.")
+        alert("Map has been deleted successfully.");
         navigate("/mainpage");
       } else {
         alert("Error deleting post", res);
@@ -156,7 +158,7 @@ const MapPreview = ({ data }) => {
           style={{ color: "black" }}
         ></i>
       )}
-      {data.mapPreviewImg && imageLoaded ? (
+      {imageLoaded ? (
         <img
           className="mappreview_img"
           src={data.mapPreviewImg}
@@ -167,7 +169,12 @@ const MapPreview = ({ data }) => {
         <div className="mappreview_img">
           <Lottie
             animationData={ImageLoader}
-            style={{ width: "100%", height: "100%", alignSelf: "center" }}
+            style={{
+              width: "100%",
+              height: "100%",
+              alignSelf: "center",
+              opacity: 0.1,
+            }}
           />
         </div>
       )}

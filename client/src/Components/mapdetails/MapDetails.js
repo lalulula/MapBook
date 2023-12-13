@@ -2,21 +2,14 @@ import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { Divider } from "semantic-ui-react";
-
 import "./mapdetails.css";
-import MapTools from "../maptools/MapTools";
-import Comment from "./Comment";
 import {
   getMapAPI,
   deleteMapPostAPIMethod,
   editMapPostAPIMethod,
 } from "../../api/map";
-
-
 import MapComments from "../comments/MapComments";
-
 import { getAllUsersAPIMethod, getUserById } from "../../api/user";
-import sendMessage from "../../assets/img/sendMessage.png";
 import optionsIcon from "../../assets/img/options.png";
 import { fb, storage } from "../../firebase";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
@@ -26,6 +19,10 @@ import DeleteButton from "../widgets/DeleteButton";
 import EditButton from "../widgets/EditButton";
 import { async } from "@firebase/util";
 
+import Lottie from "lottie-react";
+import ImageLoader from "../../assets/Lottie/ImageLoader.json";
+import Typewriter from "typewriter-effect";
+
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
 
@@ -33,13 +30,9 @@ const MapDetails = () => {
   const { mapId } = useParams();
   const currentMap = useRef(null);
   const [users, setUsers] = useState([]);
-  // const [mapComments, setMapComments] = useState([]);
-  // const [newMapComment, setNewMapComment] = useState("");
   const isAuth = useSelector((state) => state.user.isAuthenticated);
-  // const currentUserId = useSelector((state) => state.user.id);
   const [optionsMenuVisible, setOptionsMenuVisible] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
-  // const [postOwner, setPostOwner] = useState(null);
   const postOwner = useRef(null);
   const MAPBOX_TOKEN =
     "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
@@ -66,7 +59,6 @@ const MapDetails = () => {
 
   const getMapRunning = useRef(false);
 
-
   const getUsers = async () => {
     const data = await getAllUsersAPIMethod();
     setUsers(data);
@@ -86,7 +78,10 @@ const MapDetails = () => {
         currentMap.current = data;
         console.log("currentMap.current: ", currentMap.current);
         const updatedViewCount = currentMap.current.view_count + 1;
-        const updatedMap = { ...currentMap.current, view_count: updatedViewCount };
+        const updatedMap = {
+          ...currentMap.current,
+          view_count: updatedViewCount,
+        };
 
         //it does not have to await
         editMapPostAPIMethod(currentMap.current._id, updatedMap);
@@ -94,8 +89,6 @@ const MapDetails = () => {
         if (postOwner.current._id === user._id) {
           setIsOwner(true);
         }
-
-
 
         if (currentMap.current != null) {
           let url = currentMap.current.file_path;
@@ -106,17 +99,18 @@ const MapDetails = () => {
           // console.log(fileName)
           const mapUrl = await getDownloadURL(ref(storage, fileName));
 
-          // This can be downloaded directly:
-          const xhr = new XMLHttpRequest();
-          xhr.responseType = "json";
-          xhr.onload = (event) => {
-            // console.log("response: ", xhr.response);
-            setSelectedMapFile(xhr.response);
-          };
-          xhr.open("GET", mapUrl);
-          xhr.send();
+          setTimeout(() => {
+            const xhr = new XMLHttpRequest();
+            xhr.responseType = "json";
+            xhr.onload = (event) => {
+              // console.log("response: ", xhr.response);
+              setSelectedMapFile(xhr.response);
+            };
+            xhr.open("GET", mapUrl);
+            xhr.send();
 
-          setIsMapLoaded(true);
+            setIsMapLoaded(true);
+          }, 3500);
         }
       } catch (error) {
         console.error("Error fetching map:", error);
@@ -267,7 +261,9 @@ const MapDetails = () => {
             for (let i = 0; i < values.length; i++) {
               const statement = ["==", values[i], expMaximumValue];
               expGetMaximumColor.push(statement);
-              expGetMaximumColor.push(selectedMapFile.mapbook_themedata[i].color);
+              expGetMaximumColor.push(
+                selectedMapFile.mapbook_themedata[i].color
+              );
             }
             expGetMaximumColor.push("#000000");
 
@@ -280,7 +276,11 @@ const MapDetails = () => {
             // mapRef.current.setPaintProperty('counties-thematic', 'fill-color', ['case', ['==',  ['to-number', ['get', 'value', ['get', 'aa', ['get', 'mapbook_data']]]] , 10], '#ffffff', '#123123']);
 
             // mapRef.current.setPaintProperty('counties-thematic', 'fill-color', mapFileData.current.mapbook_themedata[0].color);
-            map.setFilter("counties-thematic", ["in", "name", ...namesDataAdded]);
+            map.setFilter("counties-thematic", [
+              "in",
+              "name",
+              ...namesDataAdded,
+            ]);
           } else if (selectedMapFile.mapbook_template === "Heat Map") {
             map.addLayer({
               id: `counties-heat`,
@@ -340,11 +340,9 @@ const MapDetails = () => {
             );
             map.setFilter("counties-heat", ["in", "name", ...namesDataAdded]);
           } else if (selectedMapFile.mapbook_template === "Circle Map") {
-            
-
             let dataName = selectedMapFile["mapbook_circleheatmapdata"];
 
-            console.log(dataName)
+            console.log(dataName);
             const expValue = [
               "to-number",
               ["get", dataName, ["get", "mapbook_data"]],
@@ -353,120 +351,138 @@ const MapDetails = () => {
             const featureDataAdded = selectedMapFile["features"].filter(
               (f) => f["properties"].mapbook_data != null
             );
-            
+
             var namesDataAdded = [];
-            featureDataAdded.forEach((element) => { //adding mapbook data to each feature
+            featureDataAdded.forEach((element) => {
+              //adding mapbook data to each feature
               namesDataAdded.push(element["properties"].name);
             });
 
-
-
-
             var JsonBasedOnPoint = structuredClone(selectedMapFile);
-            for(var i = 0; i < selectedMapFile["features"].length; i++ ){
+            for (var i = 0; i < selectedMapFile["features"].length; i++) {
               var centerX = 0;
               var canterY = 0;
               var pointCount = 0;
-              for(var j = 0; j < selectedMapFile["features"][i].geometry.coordinates.length; j++){
-                for(var k = 0; k < selectedMapFile["features"][i].geometry.coordinates[j].length; k++){
-                  if(typeof(selectedMapFile["features"][i].geometry.coordinates[j][k][0]) == 'object'){
-                    for(var l = 0; l < selectedMapFile["features"][i].geometry.coordinates[j][k].length; l++ ){
-                      centerX = centerX + selectedMapFile["features"][i].geometry.coordinates[j][k][l][0];
-                      canterY = canterY + selectedMapFile["features"][i].geometry.coordinates[j][k][l][1];
+              for (
+                var j = 0;
+                j < selectedMapFile["features"][i].geometry.coordinates.length;
+                j++
+              ) {
+                for (
+                  var k = 0;
+                  k <
+                  selectedMapFile["features"][i].geometry.coordinates[j].length;
+                  k++
+                ) {
+                  if (
+                    typeof selectedMapFile["features"][i].geometry.coordinates[
+                      j
+                    ][k][0] == "object"
+                  ) {
+                    for (
+                      var l = 0;
+                      l <
+                      selectedMapFile["features"][i].geometry.coordinates[j][k]
+                        .length;
+                      l++
+                    ) {
+                      centerX =
+                        centerX +
+                        selectedMapFile["features"][i].geometry.coordinates[j][
+                          k
+                        ][l][0];
+                      canterY =
+                        canterY +
+                        selectedMapFile["features"][i].geometry.coordinates[j][
+                          k
+                        ][l][1];
                       pointCount++;
                     }
-      
-                  }
-                  else{
-                    centerX = centerX + selectedMapFile["features"][i].geometry.coordinates[j][k][0];
-                    canterY = canterY + selectedMapFile["features"][i].geometry.coordinates[j][k][1];
+                  } else {
+                    centerX =
+                      centerX +
+                      selectedMapFile["features"][i].geometry.coordinates[j][
+                        k
+                      ][0];
+                    canterY =
+                      canterY +
+                      selectedMapFile["features"][i].geometry.coordinates[j][
+                        k
+                      ][1];
                     pointCount++;
                   }
                 }
               }
-              centerX = (pointCount == 0 ) ? 0 :centerX / pointCount;
-              canterY = (pointCount == 0 ) ? 0 :canterY / pointCount;
-              var newGeometry = { "type": "Point", "coordinates": [ centerX, canterY ] }
+              centerX = pointCount === 0 ? 0 : centerX / pointCount;
+              canterY = pointCount === 0 ? 0 : canterY / pointCount;
+              var newGeometry = {
+                type: "Point",
+                coordinates: [centerX, canterY],
+              };
               JsonBasedOnPoint["features"][i].geometry = newGeometry;
-              // mapFileData.current["features"][i].geometry
             }
 
-            map.addSource('circles', {
-              type: 'geojson',
+            map.addSource("circles", {
+              type: "geojson",
               data: JsonBasedOnPoint,
               // cluster: true,
               // clusterMaxZoom: 14, // Max zoom to cluster points on
               // clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
             });
-            
+
             map.addLayer({
-              id: 'clusters',
-              type: 'circle',
-              source: 'circles',
+              id: "clusters",
+              type: "circle",
+              source: "circles",
               paint: {
-                'circle-translate': [0,0]
-              }
+                "circle-translate": [0, 0],
+              },
             });
 
             map.addLayer({
-              id: 'cluster-count',
-              type: 'symbol',
-              source: 'circles',
+              id: "cluster-count",
+              type: "symbol",
+              source: "circles",
               layout: {
-                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-                'text-size': 12
-              }
+                "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+                "text-size": 12,
+              },
             });
 
-            map.setFilter("clusters", [
-              "in",
-              "name",
-              ...namesDataAdded,
-            ]); 
+            map.setFilter("clusters", ["in", "name", ...namesDataAdded]);
 
-            map.setFilter("cluster-count", [
-              "in",
-              "name",
-              ...namesDataAdded,
-            ]); 
+            map.setFilter("cluster-count", ["in", "name", ...namesDataAdded]);
 
-            map.setLayoutProperty(
-              "cluster-count",
-              "text-field",
-              ['to-string', expValue]
-            );
+            map.setLayoutProperty("cluster-count", "text-field", [
+              "to-string",
+              expValue,
+            ]);
 
             //   * Blue, 20px circles when point count is less than 100
             //   * Yellow, 30px circles when point count is between 100 and 750
             //   * Pink, 40px circles when point count is greater than or equal to 750
-            map.setPaintProperty(
-              "clusters",
-              "circle-color",
-              ['case',
-                ['<', expValue, 100],
-                '#51bbd6',
-                ['all', ['>=', expValue, 100] , ['<', expValue, 750]],
-                '#f1f075',
-                '#f28cb1'
-              ]
+            map.setPaintProperty("clusters", "circle-color", [
+              "case",
+              ["<", expValue, 100],
+              "#51bbd6",
+              ["all", [">=", expValue, 100], ["<", expValue, 750]],
+              "#f1f075",
+              "#f28cb1",
+            ]);
+
+            map.setPaintProperty("clusters", "circle-radius", [
+              "case",
+              ["<", expValue, 100],
+              20,
+              ["all", [">=", expValue, 100], ["<", expValue, 750]],
+              30,
+              40,
+            ]);
+
+            console.log(
+              "mapRef.current.getPaintProperty:",
+              map.getPaintProperty("clusters", "circle-color")
             );
-
-            map.setPaintProperty(
-              "clusters",
-              "circle-radius",
-              ['case',
-                ['<', expValue, 100],
-                20,
-                ['all', ['>=', expValue, 100] , ['<', expValue, 750]],
-                30,
-                40
-              ]
-            );
-
-            console.log("mapRef.current.getPaintProperty:", map.getPaintProperty("clusters", "circle-color"))
-
-
-
           } else if (selectedMapFile.mapbook_template === "Bar Chart") {
           } else if (selectedMapFile.mapbook_template === "Pie Chart") {
           }
@@ -511,18 +527,10 @@ const MapDetails = () => {
     [] /* [users] */
   );
 
-  // useEffect(
-  //   () => {
-  //     getMapComments();
-  //   },
-  //   [] /* [mapComments] */
-  // );
-
   const handleToggleOptions = (e) => {
     e.stopPropagation();
     setOptionsMenuVisible(!optionsMenuVisible);
   };
-
 
   const handleDeleteMapPost = async (mapId) => {
     console.log(mapId);
@@ -541,7 +549,9 @@ const MapDetails = () => {
 
   const handleShare = () => {
     // Handle share action
-    navigator.clipboard.writeText(HOME_URL + "/mapdetails/" + currentMap.current._id);
+    navigator.clipboard.writeText(
+      HOME_URL + "/mapdetails/" + currentMap.current._id
+    );
     alert("Link Copied!");
 
     console.log("Share clicked");
@@ -550,7 +560,7 @@ const MapDetails = () => {
   // Convert data to GEOJSON //
   function saveGeoJSONToFile(geoJSONObject, filename) {
     const geoJSONString = JSON.stringify(geoJSONObject);
-    // console.log("geoJSONString: ", geoJSONString)
+
     const newGeoJson = new File([geoJSONString], filename, {
       type: "application/json",
     });
@@ -559,23 +569,17 @@ const MapDetails = () => {
 
   function downloadGeoJSON(geoJSONObject, filename) {
     const newGeoJson = saveGeoJSONToFile(geoJSONObject, filename);
-    // console.log(newGeoJson)
-    // Create a download link
     const link = document.createElement("a");
     link.href = URL.createObjectURL(newGeoJson);
     link.download = filename;
-    // Append the link to the body -> trigger click event to start the download
     document.body.appendChild(link);
     link.click();
     // RM link from DOM
     document.body.removeChild(link);
-    // console.log(`GeoJSON saved as ${filename}`);
     return newGeoJson;
   }
 
-  // if (!currentMap.current || !users || !mapComments) {
   if (!currentMap.current || !users) {
-
     return <></>;
   } else {
     return (
@@ -590,7 +594,12 @@ const MapDetails = () => {
                 <h3>{currentMap.current.topic}</h3>
               </div>
               <div className="map_details_name" style={{ color: "#b8c5c9" }}>
-                <h5>Posted by {postOwner.current != null ? postOwner.current["username"] : "Unknown User"}</h5>
+                <h5>
+                  Posted by{" "}
+                  {postOwner.current != null
+                    ? postOwner.current["username"]
+                    : "Unknown User"}
+                </h5>
                 <h6>{formatDate(currentMap.current.created_at)}</h6>
                 <div>
                   <i className="bi bi-eye" /> &nbsp;
@@ -642,31 +651,33 @@ const MapDetails = () => {
             </div>
           </div>
 
-          <div
-            ref={mapContainerRef}
-            id="map"
-            style={{ overflow: "hidden" }}
-          ></div>
+          {isMapLoaded ? (
+            <div
+              ref={mapContainerRef}
+              id="map"
+              style={{ overflow: "hidden" }}
+            ></div>
+          ) : (
+            <div className="mapdetails_loadmap_container">
+              <Lottie
+                animationData={ImageLoader}
+                style={{
+                  width: "45%",
+                  height: "45%",
+                  opacity: 0.2,
+                }}
+              />
+              <Typewriter
+                onInit={(typewriter) => {
+                  typewriter
+                    .typeString("L o a d i n g     m a p . . .")
+                    .start();
+                }}
+              />
+            </div>
+          )}
           <MapComments mapId={mapId} />
-          {/* 
-            <div className="comment_content">
-              {mapComments.map((comment, i) => (
-                <Comment
-                  key={i}
-                  isRelpy={false}
-                  comment={comment}
-                  handleDeleteMapComment={handleDeleteMapComment}
-                  handleEditMapComment={handleEditMapComment}
-                />
-              ))}
-            </div> */}
-
-
-
           <Divider section inverted style={{ margin: "20px 0" }} />
-          {/* <div className="tools">
-            <MapTools isEdit={false} currentMap.current={currentMap} />
-          </div> */}
         </div>
       </div>
     );

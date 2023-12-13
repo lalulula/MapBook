@@ -1,3 +1,20 @@
+.mapdetails_loadmap_container {
+  text-align: -webkit-center;
+  position: relative;
+}
+.mapdetails_loadmap_container .Typewriter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffffff;
+  background-color: #2a282e13;
+  padding: 2rem 8rem;
+  border-radius: 5px;
+}
+
 .map_details {
   /* height: 100vh; */
   display: flex;
