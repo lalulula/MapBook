@@ -22,6 +22,7 @@ import { async } from "@firebase/util";
 import Lottie from "lottie-react";
 import ImageLoader from "../../assets/Lottie/ImageLoader.json";
 import Typewriter from "typewriter-effect";
+import CustomSwitch from "../widgets/CustomSwitch";
 
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
@@ -45,6 +46,7 @@ const MapDetails = () => {
   const user = useSelector((state) => state.user.user);
   const mapContainerRef = useRef(null);
   const navigate = useNavigate();
+  const [showHoverData, setShowHoverData] = useState(false);
   const formatDate = (createdAt) => {
     const date = new Date(createdAt);
     const year = date.getFullYear();
@@ -119,6 +121,48 @@ const MapDetails = () => {
     }
   };
 
+  function calculateCentroid(features) {
+    let totalX = 0;
+    let totalY = 0;
+    let count = 0;
+
+    // Loop through features and sum up coordinates
+    features.forEach(feature => {
+      const coordinates = feature.geometry.coordinates[0]; // Assuming the first ring of the polygon
+      if (typeof coordinates == "number") {
+        return;
+      }
+      if (coordinates.length > 1) {
+        coordinates.forEach(coord => {
+          if (typeof coord[0] == 'number' && typeof coord[0] == 'number') {
+            totalX += coord[0];
+            totalY += coord[1];
+            count++;
+          } else {
+            coord.forEach(c => {
+              if (typeof coord[0] == 'number' && typeof coord[0] == 'number') {
+                totalX += coord[0];
+                totalY += coord[1];
+                count++;
+              }
+            })
+          }
+        });
+      } else {
+        coordinates[0].forEach(coord => {
+          if (typeof coord[0] == 'number' && typeof coord[0] == 'number') {
+            totalX += coord[0];
+            totalY += coord[1];
+            count++;
+          }
+        });
+      }
+    });
+    const avgX = totalX / count;
+    const avgY = totalY / count;
+    return [avgX, avgY];
+  }
+
   useEffect(() => {
     getMap();
   }, [mapId, user._id]);
@@ -126,6 +170,7 @@ const MapDetails = () => {
   useEffect(() => {
     if (selectedMapFile != null) {
       console.log("selectedMapFile: useEffect: ", selectedMapFile);
+      const centroid = calculateCentroid(selectedMapFile.features);
 
       let map;
 
@@ -138,6 +183,8 @@ const MapDetails = () => {
           zoom: zoom,
           preserveDrawingBuffer: true,
         });
+        map.setCenter(centroid);
+        map.setZoom(2);
       }
       if (map != null) {
         map.on("idle", function () {
@@ -376,7 +423,7 @@ const MapDetails = () => {
                 ) {
                   if (
                     typeof selectedMapFile["features"][i].geometry.coordinates[
-                      j
+                    j
                     ][k][0] == "object"
                   ) {
                     for (
@@ -389,12 +436,12 @@ const MapDetails = () => {
                       centerX =
                         centerX +
                         selectedMapFile["features"][i].geometry.coordinates[j][
-                          k
+                        k
                         ][l][0];
                       canterY =
                         canterY +
                         selectedMapFile["features"][i].geometry.coordinates[j][
-                          k
+                        k
                         ][l][1];
                       pointCount++;
                     }
@@ -402,12 +449,12 @@ const MapDetails = () => {
                     centerX =
                       centerX +
                       selectedMapFile["features"][i].geometry.coordinates[j][
-                        k
+                      k
                       ][0];
                     canterY =
                       canterY +
                       selectedMapFile["features"][i].geometry.coordinates[j][
-                        k
+                      k
                       ][1];
                     pointCount++;
                   }
@@ -491,7 +538,9 @@ const MapDetails = () => {
             const regions = map.queryRenderedFeatures(event.point, {
               layers: ["counties"],
             });
-
+            if (regions.length == 0) {
+              setHoverData("Out of range");
+            }
             if (regions.length > 0) {
               const tempFeature = selectedMapFile["features"].find(
                 (m) => m["properties"].name === regions[0]["properties"].name
@@ -649,6 +698,25 @@ const MapDetails = () => {
                 </div>
               )}
             </div>
+            <div className={`mapdetails_hoverdata_switch${showHoverData ? "_showing" : ""}`}>
+              <CustomSwitch
+                showHoverData={showHoverData}
+                setShowHoverData={setShowHoverData}
+              />
+            </div>
+
+            {showHoverData ? (
+              <div className="mapdetails_hovered_data_container">
+                <div className="mapdetails_hovered_data_header">
+                  <h4 style={{ display: "inline-block", margin: 0 }}>Map Data</h4>
+                </div>
+                <div className="mapdetails_input_hovered_data">
+                  <div>{hoverData}</div>
+                </div>
+              </div>
+            ) : (
+              <div></div>
+            )}
           </div>
 
           {isMapLoaded ? (
