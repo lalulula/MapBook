@@ -29,6 +29,7 @@ const SocialComments = () => {
   const [showingComment, setShowingComment] = useState(false);
   const [replyingCommentId, setReplyingCommentId] = useState(null);
   const [tempCommentId, setTempCommentId] = useState(null);
+  const [editingReplyId, setEditingReplyId] = useState(null);
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
     useState(false);
 
@@ -84,6 +85,8 @@ const SocialComments = () => {
   };
 
   const handleClickEditComment = (commentId) => {
+    setReplyingCommentId(null);
+    setEditingReplyId(null);
     if (editingCommentId != null) {
       setEditingCommentId(null);
     } else {
@@ -110,6 +113,9 @@ const SocialComments = () => {
   };
 
   const handleClickReplyComment = (cid) => {
+    setEditingCommentId(null);
+    setReplyingCommentId(null);
+    setEditingReplyId(null);
     if (replyingCommentId != null) {
       setReplyingCommentId(null);
     } else {
@@ -169,6 +175,9 @@ const SocialComments = () => {
 
   return (
     <div className="social_comments">
+      {showDeleteConfirmationModal != false && (
+        <div className="comments_overlay"></div>
+      )}
       <div className="social_comments_container">
         <div className="show_post_comments_container">
           <hr className="show_post_comments_hr"></hr>
@@ -220,7 +229,11 @@ const SocialComments = () => {
                       <SocialReplies
                         commentId={comment._id}
                         replyingCommentId={replyingCommentId}
-                        tempCommentId={tempCommentId}
+                        setReplyingCommentId={setReplyingCommentId}
+                        setEditingCommentId={setEditingCommentId}
+                        editingCommentId={editingCommentId}
+                        editingReplyId={editingReplyId}
+                        setEditingReplyId={setEditingReplyId}
                       />
                     </div>
                     {showDeleteConfirmationModal == comment._id && (
@@ -286,8 +299,10 @@ const SocialComments = () => {
                         commentId={comment._id}
                         replyingCommentId={replyingCommentId}
                         setReplyingCommentId={setReplyingCommentId}
-                        tempCommentId={tempCommentId}
                         setEditingCommentId={setEditingCommentId}
+                        editingCommentId={editingCommentId}
+                        editingReplyId={editingReplyId}
+                        setEditingReplyId={setEditingReplyId}
                       />
                     </div>
                     <div className="comment_tools">
@@ -376,7 +391,7 @@ const SocialComments = () => {
           </div>
         )}
       </div>
-    </div>
+    </div >
   );
 };
 

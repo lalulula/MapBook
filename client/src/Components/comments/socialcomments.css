@@ -53,6 +53,8 @@
     font-size: 12px;
     transition: background-color 0.3s ease;
     padding: 0 20px 0 20px;
+    font-weight: bold;
+    border: none;
 }
 
 .social_comments_bottom {
@@ -68,6 +70,8 @@
 }
 
 .social_comment_content_textarea {
+    display: flex;
+    flex-direction: row;
     width: 40%;
     align-items: right;
 }
@@ -96,8 +100,24 @@
 }
 
 .edit_comment_input {
-    width: 70%;
+    width: 100%;
     height: 100%;
+    margin: 5px 0 5px 0;
+    height: 80px;
+    padding: 5px;
+    border: none;
+    outline: none;
+}
+
+.socialcomments_edit_container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 4rem;
+    width: 60%;
+}
+
+.socialcomments_edit_container_textarea {
+    width: 70%;
 }
 
 .comment_reply {
@@ -124,11 +144,21 @@
 }
 
 .post_reply_btn,
-.save_reply_changes {
+.save_reply_changes,
+.save_comment_changes {
     /*  */
+    display: flex;
+    justify-content: center;
     padding: 5px 8px 5px 8px;
     width: 50px;
     align-self: flex-end;
+    background-color: white;
+    padding: 7px 16px 7px 16px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 20px;
+    border: none;
+    color: black;
 }
 
 .reply_text_field,
@@ -183,13 +213,32 @@
 .social_reply_dropdown {
     display: flex;
     flex-direction: column;
+    /* justify-content: space-between; */
+    /* padding: 5px 0 5px 0; */
+    align-items: center;
+    background-color: rgb(37, 37, 37);
+    width: 100px;
+    height: 60px;
+    position: absolute;
+    box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.7);
+    /* Add a white box-shadow for the glow effect */
+    border-radius: 4px;
+    z-index: 100;
+}
+
+.edit_reply_btn,
+.delete_reply_btn {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    display: flex;
     justify-content: center;
     align-items: center;
-    background-color: grey;
-    width: 60px;
-    height: 50px;
-    position: absolute;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.edit_reply_btn:hover,
+.delete_reply_btn:hover {
+    background-color: rgb(51, 51, 51);
 }
 
 .comment_tools {
@@ -209,11 +258,6 @@
     width: 20px;
 }
 
-.edit_reply_btn,
-.delete_reply_btn {
-    cursor: pointer;
-}
-
 .delete_confirmation_modal {
     display: flex;
     flex-direction: column;
@@ -230,6 +274,7 @@
     padding: 30px 0 30px 0;
     font-weight: 500;
     border-radius: 7px;
+    z-index: 100;
 }
 
 .delete_confirmation_modal_bottom {
@@ -246,13 +291,26 @@
     border-radius: 5px;
 }
 
-.socialcomments_edit_container {
-    display: flex;
-    flex-direction: column;
+.save_comment_changes {
+    float: right;
 }
 
-.save_comment_changes {
-    width: 80px;
-    margin-top: 1rem;
-    float: right;
+.comments_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0.8;
+    background-color: black;
+    z-index: 100;
+}
+
+.social_reply_dotted_menu_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 99;
 }
