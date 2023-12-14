@@ -32,26 +32,14 @@ export const createMapAPIMethod = async (mapData) => {
   const keyLen = keys.length;
   for (var i = 0; i < keyLen; i++) {
     if (keys[i] == "mapPreviewImg") {
-      // console.log("mapData[keys[i]]: ", mapData[keys[i]]);
-      // console.log("typeof: ", typeof(mapData[keys[i]]))
+
       const isImageFile = typeof mapData[keys[i]] == "object";
-      // console.log(isImageFile);
       var dataName = keys[i];
 
       if (isImageFile) {
         // read binary data
-
         const imageReadResult = await processFile(mapData[dataName]);
-
         console.log("reader.result: ", imageReadResult);
-        // var bitmap = fs.readFileSync(mapData[dataName]);
-
-        // var imgDataUrl = new Buffer(bitmap).toString('base64');
-        // var blobBin = atob(imgDataUrl.split(",")[1]); // base64 데이터 디코딩
-        // var array = [];
-        // for (var i = 0; i < blobBin.length; i++) {
-        //   array.push(blobBin.charCodeAt(i));
-        // }
 
         var file = new File([imageReadResult], "mapPreviewImg.png", {
           type: "image/png",
@@ -131,6 +119,69 @@ export const editMapPostAPIMethod = async (mapId, updateMapPost) => {
     console.error("Error updating post:", error.message);
   }
 };
+
+
+export const editMapPostAPIMethodWithFile = async (mapId, mapData) => {
+
+  var keys = Object.keys(mapData);
+  // console.log(keys);
+
+  const formData = new FormData();
+  formData.append("file", mapData["file"]);
+
+  const keyLen = keys.length;
+  for (var i = 0; i < keyLen; i++) {
+    if (keys[i] == "mapPreviewImg") {
+
+      const isImageFile = typeof mapData[keys[i]] == "object";
+      var dataName = keys[i];
+
+      if (isImageFile) {
+        // read binary data
+        const imageReadResult = await processFile(mapData[dataName]);
+        console.log("reader.result: ", imageReadResult);
+
+        var file = new File([imageReadResult], "mapPreviewImg.png", {
+          type: "image/png",
+        }); // Blob 생성
+
+        formData.append(dataName, file); // file data 추가
+      } else {
+        var imgDataUrl = mapData[dataName];
+        var blobBin = atob(imgDataUrl.split(",")[1]); // base64 데이터 디코딩
+        var array = [];
+        for (var i = 0; i < blobBin.length; i++) {
+          array.push(blobBin.charCodeAt(i));
+        }
+        var file = new File([new Uint8Array(array)], "mapPreviewImg.png", {
+          type: "image/png",
+        }); // Blob 생성
+        // console.log(file)
+        formData.append(dataName, file); // file data 추가
+      }
+    } else {
+      // console.log(keys[i]);
+      formData.append(keys[i], mapData[keys[i]]);
+    }
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/maps/${mapId}`, {
+      // ...defaultHeaders,
+      method: "PUT",
+      body: formData,
+    });
+    if (!response.ok) {
+      throw new Error(`Error updating post: ${response.statusText}`);
+    }
+    const responseData = await response.json();
+    console.log("POST updated successfully:", responseData.message);
+    return response;
+  } catch (error) {
+    console.error("Error updating post:", error.message);
+  }
+};
+
 
 export const deleteMapPostAPIMethod = (mapId) => {
   console.log(mapId);

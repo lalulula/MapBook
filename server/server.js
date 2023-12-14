@@ -74,7 +74,7 @@ app.post(
 // UPDATE MAP
 app.put(
   "/api/maps/:mapId",
-  fileUpload.single("file"),
+  fileUpload.fields([{name: 'file'}, {name: 'mapPreviewImg'}]),
   // auth.verifyToken,
   mapController.editMap
 );

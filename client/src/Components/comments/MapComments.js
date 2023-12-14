@@ -25,7 +25,7 @@ const MapComments = () => {
   const [commentText, setCommentText] = useState("");
   const [editingCommentId, setEditingCommentId] = useState(null);
   const { mapId } = useParams();
-  console.log("THIS IS THE ID: ", mapId);
+  // console.log("THIS IS THE ID: ", mapId);
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const [showingComment, setShowingComment] = useState(false);
   const [replyingCommentId, setReplyingCommentId] = useState(null);

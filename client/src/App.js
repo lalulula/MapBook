@@ -88,6 +88,10 @@ function App() {
             element={isAuthenticated ? <CreateMap /> : <LandingPage />}
           />
           <Route
+            path="/editmap"
+            element={isAuthenticated ? <EditMap /> : <LandingPage />}
+          />
+          <Route
             path="/profile"
             element={isAuthenticated ? <Profile /> : <LandingPage />}
           />

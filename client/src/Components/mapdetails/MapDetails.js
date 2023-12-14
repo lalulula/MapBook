@@ -574,9 +574,12 @@ const MapDetails = () => {
   };
 
   const handleFork = () => {
-
     navigate( '/createmap', { state: { mapFile: selectedMapFile} } )
+  };
 
+  
+  const handleEdit = () => {
+    navigate( '/editmap', { state: { mapFile: selectedMapFile, mapId: mapId} } )
   };
 
   const handleShare = () => {
@@ -645,7 +648,9 @@ const MapDetails = () => {
                   <DeleteButton
                     onClick={() => handleDeleteMapPost(currentMap.current._id)}
                   />
-                  <EditButton />
+                  <EditButton 
+                    onClick={() => handleEdit()}
+                  />
                 </>
               )}
               {isAuth && (
@@ -674,7 +679,7 @@ const MapDetails = () => {
                           Export Map
                         </li>
                         <Divider style={{ margin: "0" }} />
-                        <li>Edit Map</li>
+                        <li onClick={() => handleEdit()}>Edit Map</li>
                       </ul>
                     </div>
                   )}

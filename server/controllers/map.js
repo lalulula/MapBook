@@ -154,7 +154,10 @@ const editMap = async (req, res) => {
   try {
     const { mapId } = req.params;
 
-    if(req.file != null){
+    if (req.files !== undefined) {
+      console.log("editmap called")
+      console.log(req.body)
+
       const {
         map_name,
         topic,
@@ -162,21 +165,41 @@ const editMap = async (req, res) => {
         is_visible,
         map_description,
         mapPreviewImg,
+        file_path,
         map_users_liked,
         created_at,
         view_count,
       } = req.body;
   
-      const fileBuffer = req.file.buffer;
-      const fileName = req.file.originalname;
+      console.log("file", req.files["file"][0]);
+      console.log("mapPreviewImg", req.files["mapPreviewImg"][0]);
+
+      const randomString = (new Date().getTime() + Math.random())
+        .toString(36)
+        .substring(2);
+      // console.log("randomString :", randomString)
+
+      const fileBuffer = req.files["file"][0].buffer;
+      const fileName = randomString + req.files["file"][0].originalname;
       const storageRef = bucket.file(fileName);
       await storageRef.createWriteStream().end(fileBuffer);
-  
+
       const [fileUrl] = await storageRef.getSignedUrl({
         action: "read",
         expires: "03-09-2025", // Replace with an expiration date
       });
-  
+
+      const imgFileBuffer = req.files["mapPreviewImg"][0].buffer;
+      const imgFileName =
+        randomString + req.files["mapPreviewImg"][0].originalname;
+      const imgStorageRef = bucket.file(imgFileName);
+      await imgStorageRef.createWriteStream().end(imgFileBuffer);
+
+      const [mapPreviewImgUrl] = await imgStorageRef.getSignedUrl({
+        action: "read",
+        expires: "03-09-2025", // Replace with an expiration date
+      });
+
       const updatedMap = await MapObj.findByIdAndUpdate(
         mapId,
         {
@@ -185,18 +208,17 @@ const editMap = async (req, res) => {
           user_id: user_id,
           is_visible: is_visible,
           file_path: fileUrl,
-          view_count: view_count,
           map_description: map_description,
-          mapPreviewImg: mapPreviewImg,
+          mapPreviewImg: mapPreviewImgUrl,
           map_users_liked:map_users_liked,
-          created_at:created_at
         },
         { new: true }
       );
+
       // Respond with success message
-      res.status(200).json(updatedMap);
-    }
-    else{
+      // return res.status(201).json({ success: true, message: "Map created successfully!" });
+      return res.status(201).json(updatedMap);
+    } else {
       const {
         map_name,
         topic,
@@ -226,11 +248,11 @@ const editMap = async (req, res) => {
         },
         { new: true }
       );
-      // Respond with success message
-      res.status(200).json(updatedMap);
-    }
-   
 
+      // Respond with success message
+      // return res.status(201).json({ success: true, message: "Map created successfully!" });
+      return res.status(201).json(updatedMap);
+    }
 
   } catch (error) {
     console.error("Error updating map:", error);
