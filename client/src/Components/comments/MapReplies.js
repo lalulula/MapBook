@@ -3,7 +3,7 @@ import { createMapPostReplyAPIMethod, deleteMapPostReplyAPIMethod, getAllExistin
 import { getAllUsersAPIMethod } from "../../api/user";
 import { useSelector } from "react-redux";
 
-const MapReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tempCommentId, setEditingCommentId }) => {
+const MapReplies = ({ commentId, replyingCommentId, setReplyingCommentId, setEditingCommentId, editingCommentId, editingReplyId, setEditingReplyId }) => {
     const [allExistingReplies, setAllExistingReplies] = useState([]);
     const [allReplies, setAllReplies] = useState([]);
     const [isReplying, setIsReplying] = useState(false);
@@ -11,7 +11,6 @@ const MapReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tempCo
     const [newReply, setNewReply] = useState('');
     const [allUsers, setAllUsers] = useState([]);
     const [dropdownVisible, setDropdownVisible] = useState(false);
-    const [editingReplyId, setEditingReplyId] = useState(null);
     const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
     const currentUserId = useSelector((state) => state.user.id);
 
@@ -39,6 +38,8 @@ const MapReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tempCo
     }
 
     const handleClickEditReply = (replyId) => {
+        setEditingCommentId(null);
+        setReplyingCommentId(null);
         if (editingReplyId == replyId) {
             setEditingReplyId(null);
         } else {
@@ -129,16 +130,22 @@ const MapReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tempCo
                                                 )}
                                                 {reply.map_reply_content}
                                                 {reply.map_reply_owner == currentUserId && (
+                                                    <div className="social_reply_dotted_menu_container">
+                                                        {dropdownVisible && (
+                                                            <div className="social_reply_dotted_menu_overlay" onClick={() => setDropdownVisible(false)}></div>
+                                                        )}
                                                     <div className="map_reply_dotted_menu" onClick={() => handleClickDottedMenu(reply._id)}>
                                                         ...
+                                                    </div>    
                                                     </div>
                                                 )}
                                                 {dropdownVisible === reply._id && (
-                                                    <div className="map_reply_dropdown">
+                                                    <div className="social_reply_dropdown">
                                                         <div className="edit_reply_btn" onClick={() => handleClickEditReply(reply._id)}>
                                                             Edit
                                                         </div>
-                                                        <hr style={{ "width": "100%" }}></hr>
+                                                        <hr style={{ "width": "100%", margin: "0" }}></hr>
+
                                                         <div className="delete_reply_btn" onClick={() => handleClickDeleteReply(reply._id)}>
                                                             Delete
                                                         </div>
