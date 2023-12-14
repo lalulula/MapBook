@@ -258,7 +258,8 @@
   display: flex;
   justify-content: space-between;
   float: right;
-  margin-top: 20px;
+  padding-top: 20px;
+  width: 20%;
 }
 
 .createsocialpost_hr {

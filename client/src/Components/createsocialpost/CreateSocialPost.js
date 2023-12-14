@@ -27,6 +27,7 @@ const CreateSocialPost = () => {
   const [uploadedFileObj, setUploadedFileObj] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [clickedPost, setClickedPost] = useState(false);
 
   const [options, setOptions] = useState({
     title: "",
@@ -80,6 +81,7 @@ const CreateSocialPost = () => {
   };
 
   const handleSocialPostCreate = async () => {
+    setClickedPost(true);
     const newPost = { ...options, post_owner: userId };
     // console.log(newPost)
     const res = await createSocialPostAPIMethod(newPost);
@@ -88,12 +90,37 @@ const CreateSocialPost = () => {
       navigate("/socialpage");
     } else {
       setShowErrorMessage(true);
+      setClickedPost(false);
       // alert(`Error: ${res.status} - ${res.statusText}`);
     }
   };
 
   const handleClickCancel = () => {
     setShowModal(true);
+  };
+  const containerStyle = {
+    position: "relative",
+    width: "2.3rem",
+    height: "2.3rem",
+    boxSizing: "border-box"
+  };
+  const circleStyle = {
+    display: "block",
+    width: "2.3rem",
+    height: "2.3rem",
+    border: "0.5rem dotted #e9e9e9", // Use "dotted" for a dotted border style
+    borderRadius: "50%",
+    position: "absolute",
+    boxSizing: "border-box",
+    marginLeft: "2px",
+    top: 0,
+    left: 0
+  };
+
+  const spinTransition = {
+    loop: Infinity,
+    ease: "linear",
+    duration: 12
   };
 
   return (
@@ -227,13 +254,24 @@ const CreateSocialPost = () => {
             >
               Cancel
             </button>
-            <button
-              onClick={handleSocialPostCreate}
-              className="createsocialpost_submit"
-            /* disabled={options.title.trim() === ''} */
-            >
-              Post
-            </button>
+            {clickedPost ? (
+              <div style={containerStyle}>
+                <motion.span
+                  style={circleStyle}
+                  animate={{ rotate: 3600 }}
+                  transition={spinTransition}
+                />
+              </div>
+            ) : (
+              <button
+                onClick={handleSocialPostCreate}
+                className="createsocialpost_submit"
+              /* disabled={options.title.trim() === ''} */
+              >
+                Post
+              </button>
+            )}
+
           </div>
         </div>
       </div>
