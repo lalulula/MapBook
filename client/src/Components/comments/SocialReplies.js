@@ -3,7 +3,7 @@ import { createSocialReplyAPIMethod, deleteSocialReplyAPIMethod, getAllExistingS
 import { getAllUsersAPIMethod } from "../../api/user";
 import { useSelector } from "react-redux";
 
-const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tempCommentId, setEditingCommentId }) => {
+const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, setEditingCommentId, editingCommentId, editingReplyId, setEditingReplyId }) => {
     const [allExistingReplies, setAllExistingReplies] = useState([]);
     const [allReplies, setAllReplies] = useState([]);
     const [isReplying, setIsReplying] = useState(false);
@@ -11,7 +11,7 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tem
     const [newReply, setNewReply] = useState('');
     const [allUsers, setAllUsers] = useState([]);
     const [dropdownVisible, setDropdownVisible] = useState(false);
-    const [editingReplyId, setEditingReplyId] = useState(null);
+    // const [editingReplyId, setEditingReplyId] = useState(null);
     const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
     const currentUserId = useSelector((state) => state.user.id);
 
@@ -41,6 +41,8 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tem
     }
 
     const handleClickEditReply = (replyId) => {
+        setEditingCommentId(null);
+        setReplyingCommentId(null);
         if (editingReplyId == replyId) {
             setEditingReplyId(null);
         } else {
@@ -94,6 +96,9 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tem
 
     return (
         <div className="social_comment_replies_wrapper">
+            {showDeleteConfirmationModal != false && (
+                <div className="comments_overlay"></div>
+            )}
             {allReplies.length > -1 && (
                 <div className="social_comment_replies">
                     {allReplies.length > 0 && allReplies.map((reply, i) => (
@@ -131,16 +136,22 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, tem
                                                 )}
                                                 {reply.social_reply_content}
                                                 {reply.social_reply_owner == currentUserId && (
-                                                    <div className="social_reply_dotted_menu" onClick={() => handleClickDottedMenu(reply._id)}>
-                                                        ...
+                                                    <div className="social_reply_dotted_menu_container">
+                                                        {dropdownVisible && (
+                                                            <div className="social_reply_dotted_menu_overlay" onClick={() => setDropdownVisible(false)}></div>
+                                                        )}
+                                                        <div className="social_reply_dotted_menu" onClick={() => handleClickDottedMenu(reply._id)}>
+                                                            ...
+                                                        </div>
                                                     </div>
+
                                                 )}
                                                 {dropdownVisible === reply._id && (
                                                     <div className="social_reply_dropdown">
                                                         <div className="edit_reply_btn" onClick={() => handleClickEditReply(reply._id)}>
                                                             Edit
                                                         </div>
-                                                        <hr style={{ "width": "100%" }}></hr>
+                                                        <hr style={{ "width": "100%", margin: "0" }}></hr>
                                                         <div className="delete_reply_btn" onClick={() => handleClickDeleteReply(reply._id)}>
                                                             Delete
                                                         </div>

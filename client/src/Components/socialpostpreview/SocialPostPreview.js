@@ -92,11 +92,13 @@ const SocialPostPreview = ({ data, socialPosts, setSocialPosts, showDeleteConfir
         </div>
       </div>
       <div className="social_post_preview_container_right">
-        <img
-          className="social_post_preview_img"
-          alt=""
-          src={data.post_images[0]}
-        />
+        {data.post_images.length > 0 && (
+          <img
+            className="social_post_preview_img"
+            alt=""
+            src={data.post_images[0]}
+          />
+        )}
         {user.user.is_admin && (
           <div className="socialpostpreview_admin_delete">
             <DeleteIcon

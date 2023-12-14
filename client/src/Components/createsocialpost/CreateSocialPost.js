@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import ImageIcon from "@mui/icons-material/Image";
 import CancelTwoToneIcon from "@mui/icons-material/CancelTwoTone";
 import "./createsocialpost.css";
+import { easeInOut, motion } from "framer-motion"
 
 const CreateSocialPost = () => {
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ const CreateSocialPost = () => {
   const [uploadedImages, setUploadedImages] = useState([]);
   const [uploadedFileObj, setUploadedFileObj] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [clickedPost, setClickedPost] = useState(false);
 
   const [options, setOptions] = useState({
     title: "",
@@ -78,6 +81,7 @@ const CreateSocialPost = () => {
   };
 
   const handleSocialPostCreate = async () => {
+    setClickedPost(true);
     const newPost = { ...options, post_owner: userId };
     // console.log(newPost)
     const res = await createSocialPostAPIMethod(newPost);
@@ -85,16 +89,58 @@ const CreateSocialPost = () => {
       // const responseMsg = await res.json;
       navigate("/socialpage");
     } else {
-      alert(`Error: ${res.status} - ${res.statusText}`);
+      setShowErrorMessage(true);
+      setClickedPost(false);
+      // alert(`Error: ${res.status} - ${res.statusText}`);
     }
   };
 
   const handleClickCancel = () => {
     setShowModal(true);
   };
+  const containerStyle = {
+    position: "relative",
+    width: "2.3rem",
+    height: "2.3rem",
+    boxSizing: "border-box"
+  };
+  const circleStyle = {
+    display: "block",
+    width: "2.3rem",
+    height: "2.3rem",
+    border: "0.5rem dotted #e9e9e9", // Use "dotted" for a dotted border style
+    borderRadius: "50%",
+    position: "absolute",
+    boxSizing: "border-box",
+    marginLeft: "2px",
+    top: 0,
+    left: 0
+  };
+
+  const spinTransition = {
+    loop: Infinity,
+    ease: "linear",
+    duration: 12
+  };
 
   return (
     <div className="createsocialpost_page">
+      <motion.div
+        initial={{ x: '200%' }}
+        animate={{ x: !showErrorMessage ? '200%' : 0 }}
+        transition={{ type: 'tween', duration: 0.5, ease: easeInOut }}
+        exit={{ x: '-100%' }}
+        style={{
+          position: 'fixed',
+          padding: '20px',
+        }}
+        className="createsocialpost_error_message">
+        Please fill everything out!
+        <div
+          className="createsocialpost_error_message_close" onClick={() => setShowErrorMessage(false)}>
+          X
+        </div>
+      </motion.div>
       {showModal && (
         <div className="createsocialpost_modal_cancel">
           <div className="createsocialpost_modal_content">
@@ -208,13 +254,24 @@ const CreateSocialPost = () => {
             >
               Cancel
             </button>
-            <button
-              onClick={handleSocialPostCreate}
-              className="createsocialpost_submit"
+            {clickedPost ? (
+              <div style={containerStyle}>
+                <motion.span
+                  style={circleStyle}
+                  animate={{ rotate: 3600 }}
+                  transition={spinTransition}
+                />
+              </div>
+            ) : (
+              <button
+                onClick={handleSocialPostCreate}
+                className="createsocialpost_submit"
               /* disabled={options.title.trim() === ''} */
-            >
-              Post
-            </button>
+              >
+                Post
+              </button>
+            )}
+
           </div>
         </div>
       </div>

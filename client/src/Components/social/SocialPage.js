@@ -38,7 +38,8 @@ const SocialPage = () => {
           ? await getMySocialPostAPIMethod(currentUserId)
           : await getAllSocialPostsAPIMethod();
 
-        setSocialPosts(posts);
+        const revPosts = posts.reverse();
+        setSocialPosts(revPosts);
       } catch (error) {
         alert("Error fetching social posts:", error);
       }

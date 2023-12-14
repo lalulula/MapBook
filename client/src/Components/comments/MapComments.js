@@ -25,11 +25,11 @@ const MapComments = () => {
   const [commentText, setCommentText] = useState("");
   const [editingCommentId, setEditingCommentId] = useState(null);
   const { mapId } = useParams();
-  // console.log("THIS IS THE ID: ", mapId);
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const [showingComment, setShowingComment] = useState(false);
   const [replyingCommentId, setReplyingCommentId] = useState(null);
   const [tempCommentId, setTempCommentId] = useState(null);
+  const [editingReplyId, setEditingReplyId] = useState(null);
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
     useState(false);
 
@@ -85,6 +85,8 @@ const MapComments = () => {
   };
 
   const handleClickEditComment = (commentId) => {
+    setReplyingCommentId(null);
+    setEditingReplyId(null);
     if (editingCommentId != null) {
       setEditingCommentId(null);
     } else {
@@ -93,7 +95,7 @@ const MapComments = () => {
     const commentToEdit = finalComments.find(
       (comment) => comment._id === commentId
     );
-    setCommentText(commentToEdit.social_comment_content);
+    setCommentText(commentToEdit.map_comment_content);
   };
 
   const handleEditCommentSave = (commentId) => {
@@ -111,6 +113,9 @@ const MapComments = () => {
   };
 
   const handleClickReplyComment = (cid) => {
+    setEditingCommentId(null);
+    setReplyingCommentId(null);
+    setEditingReplyId(null);
     if (replyingCommentId != null) {
       setReplyingCommentId(null);
     } else {
@@ -204,14 +209,14 @@ const MapComments = () => {
                 </div>
                 {editingCommentId === comment._id ? (
                   <div>
-                    <div className="mapcomments_edit_container">
+                    <div className="socialcomments_edit_container">
                       <textarea
-                        className="edit_map_comment_input"
+                        className="edit_comment_input"
                         value={commentText}
                         onChange={(e) => setCommentText(e.target.value)}
                       />
                       <button
-                        className="save_map_comment_changes"
+                        className="save_comment_changes"
                         onClick={() => handleEditCommentSave(comment._id)}
                       >
                         save
@@ -221,7 +226,11 @@ const MapComments = () => {
                       <MapReplies
                         commentId={comment._id}
                         replyingCommentId={replyingCommentId}
-                        tempCommentId={tempCommentId}
+                        setReplyingCommentId={setReplyingCommentId}
+                        setEditingCommentId={setEditingCommentId}
+                        editingCommentId={editingCommentId}
+                        editingReplyId={editingReplyId}
+                        setEditingReplyId={setEditingReplyId}
                       />
                     </div>
                     {showDeleteConfirmationModal == comment._id && (
@@ -269,7 +278,7 @@ const MapComments = () => {
                         </div>
                       )}
                       <div
-                        className="reply_map_comment_btn"
+                        className="reply_comment_btn"
                         onClick={() => handleClickReplyComment(comment._id)}
                       >
                         <ChatBubbleOutlineIcon />
@@ -287,8 +296,10 @@ const MapComments = () => {
                         commentId={comment._id}
                         replyingCommentId={replyingCommentId}
                         setReplyingCommentId={setReplyingCommentId}
-                        tempCommentId={tempCommentId}
                         setEditingCommentId={setEditingCommentId}
+                        editingCommentId={editingCommentId}
+                        editingReplyId={editingReplyId}
+                        setEditingReplyId={setEditingReplyId}
                       />
                     </div>
                     <div className="map_comment_tools">

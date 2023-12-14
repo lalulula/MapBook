@@ -17,10 +17,12 @@
   padding: 2rem 2rem 4rem 2rem;
   border-radius: 10px;
 }
+
 .back_btn_mainpage {
   align-self: flex-start;
   cursor: pointer;
 }
+
 .back_btn_mainpage:hover {
   font-weight: 400;
   color: rgba(153, 198, 237, 0.365);
@@ -225,7 +227,7 @@
   font-weight: bold;
   border-radius: 20px;
   border: none;
-  color: grey;
+  color: black;
 }
 
 .createsocialpost_submit:disabled {
@@ -256,7 +258,8 @@
   display: flex;
   justify-content: space-between;
   float: right;
-  margin-top: 20px;
+  padding-top: 20px;
+  width: 20%;
 }
 
 .createsocialpost_hr {
@@ -408,4 +411,22 @@
 
 .createsocialpost_goback {
   background-color: #aec6cf;
+}
+
+.createsocialpost_error_message {
+  background-color: #ffd4dc;
+  color: #7b484c;
+  position: fixed;
+  top: 15rem;
+  right: 0;
+  width: 30rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 3px;
+  border: 1px solid rgb(148, 86, 99)
+}
+
+.createsocialpost_error_message_close {
+  cursor: pointer;
 }
