@@ -663,7 +663,7 @@ const Map = ({
   };
 
   useEffect(() => {
-    // console.log("selectedMapFile: ", mapFileData.current);
+    console.log("selectedMapFile: ", mapFileData.current);
     // console.log("onhover: useEffect:", templateHoverType.current);
 
     // TODO: make lowercase name

@@ -573,6 +573,12 @@ const MapDetails = () => {
     }
   };
 
+  const handleFork = () => {
+
+    navigate( '/createmap', { state: { mapFile: selectedMapFile} } )
+
+  };
+
   const handleShare = () => {
     // Handle share action
     navigator.clipboard.writeText(
@@ -653,7 +659,7 @@ const MapDetails = () => {
                   {optionsMenuVisible && (
                     <div className="mappreview_options_menu">
                       <ul>
-                        <li>Fork Map</li>
+                        <li onClick={() => handleFork()}>Fork Map</li>
                         <Divider style={{ margin: "0" }} />
                         <li onClick={() => handleShare()}>Share Map</li>
                         <Divider style={{ margin: "0" }} />

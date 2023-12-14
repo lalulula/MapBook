@@ -2,12 +2,17 @@ import React, { useEffect, useRef } from "react";
 import MapDataInputPage from "./MapDataInputPage";
 import { useState } from "react";
 import "./createMap.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Popup from "reactjs-popup";
 import ImportFilePage from "./ImportFilePage";
 
+
 const CreateMap = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const mapInfo = { ...location.state };
+
+
   const [options, setOptions] = useState({
     name: "",
     topic: "",
@@ -31,28 +36,44 @@ const CreateMap = () => {
   // const [selectedMapFile, setSelectedMapFile] = useState(null);
 
   useEffect(() => {
+    console.log("mapInfo: ", mapInfo.mapFile)
+    // mapInfo
+    if(mapInfo.mapFile){
+      setIsMapbookData(true);
+      setSelectedMapFile(mapInfo.mapFile);
+      setImportDataOpen(false);
+    }
+
+  }, []);
+
+
+  useEffect(() => {
     // console.log("useEffect: selectedMapFile: ", selectedMapFile);
-    const newGeojsonData = {
-      ...selectedMapFile,
-      mapbook_mapname: options.name,
-      mapbook_description: options.description,
-      mapbook_template: options.template,
-      mapbook_circleheatmapdata: options.circleHeatMapData,
-      mapbook_topic: options.topic,
-      mapbook_customtopic: options.customTopic,
-      mapbook_visibility: options.isPrivate,
-      mapbook_datanames: pieBarData, //piebar
-      mapbook_heatrange: heatRange, // heat range
-      mapbook_heat_selectedcolors: selectedColors, // heat color
-      mapbook_themedata: themeData, //Color + data name
-    };
-    setSelectedMapFile(newGeojsonData);
+    if(mapInfo.mapFile == null){
+      const newGeojsonData = {
+        ...selectedMapFile,
+        mapbook_mapname: options.name,
+        mapbook_description: options.description,
+        mapbook_template: options.template,
+        mapbook_circleheatmapdata: options.circleHeatMapData,
+        mapbook_topic: options.topic,
+        mapbook_customtopic: options.customTopic,
+        mapbook_visibility: options.isPrivate,
+        mapbook_datanames: pieBarData, //piebar
+        mapbook_heatrange: heatRange, // heat range
+        mapbook_heat_selectedcolors: selectedColors, // heat color
+        mapbook_themedata: themeData, //Color + data name
+      };
+      setSelectedMapFile(newGeojsonData);
+    }
   }, [options, pieBarData, heatRange, selectedColors, themeData]);
 
 
   const closeImportDataPopup = () => {
     setImportDataOpen(false);
   };
+
+  
 
   useEffect(() => {
     // console.log("isMapbookData: CreateMap.js: ", isMapbookData)

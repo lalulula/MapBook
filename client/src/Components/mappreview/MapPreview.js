@@ -46,9 +46,32 @@ const MapPreview = ({ data }) => {
     setOptionsMenuVisible(!optionsMenuVisible);
   };
 
-  const handleFork = (e) => {
+  const handleFork = async (e) => {
     // Handle fork action
     e.stopPropagation();
+
+
+    
+    let url = data.file_path;
+    // get file name from url
+    let fileName = url
+      .substring(57, url.indexOf("geojson") + 7)
+      .replaceAll("%20", " ");
+    // console.log(fileName)
+    const mapUrl = await getDownloadURL(ref(storage, fileName));
+
+    // This can be downloaded directly:
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = "json";
+    xhr.onload = (event) => {
+      // console.log("response: ", xhr.response);
+      navigate( '/createmap', { state: { mapFile: xhr.response} } )
+
+    };
+    xhr.open("GET", mapUrl);
+    xhr.send();
+
+
     console.log("Fork clicked");
   };
 
