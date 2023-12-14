@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Input from "@mui/joy/Input";
+import { useEffect } from "react";
 
 const Thematic = ({ themeData, setThemeData }) => {
   const [selectedDataIndexes, setSelectedDataIndexes] = useState([]);

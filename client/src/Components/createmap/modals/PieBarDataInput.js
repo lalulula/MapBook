@@ -16,7 +16,12 @@ const PieBarDataInput = ({
   selectedMapFile,
   handlePieBarInputChange,
   regionName,
+  feature,
 }) => {
+  useEffect( () =>  {
+    console.log("PieBar feature: ", feature)
+    console.log(feature[0].properties.mapbook_data)
+  }, [] );
   // const [showCloseBtn, setShowCloseBtn] = useState(false);
 
   // useEffect(() => {
@@ -60,7 +65,9 @@ const PieBarDataInput = ({
                             handlePieBarInputChange(dataname, e.target.value)
                           }
                           type="number"
-                          placeholder="Enter data value"
+                          placeholder={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data[dataname].value : "Enter data value"}
+
+                          // placeholder="Enter data value"
                           required
                         />
                       </FormControl>

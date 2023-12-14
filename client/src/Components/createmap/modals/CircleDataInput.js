@@ -5,6 +5,7 @@ import Input from "@mui/joy/Input";
 import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
 import Stack from "@mui/joy/Stack";
+import { useEffect } from "react";
 
 import DialogTitle from "@mui/joy/DialogTitle";
 
@@ -16,7 +17,14 @@ const CircleDataInput = ({
   regionName,
   options,
   handleRerender,
+  feature,
 }) => {
+
+  useEffect( () =>  {
+    console.log("Circle feature: ", feature)
+    console.log(feature[0].properties.mapbook_data)
+  }, [] );
+
   const handleCircleDataSubmit = () => {
     console.log("ONRENDER");
     handleRerender();
@@ -39,7 +47,9 @@ const CircleDataInput = ({
                     <Input
                       sx={{ marginBottom: "1rem" }}
                       onChange={(e) => setInputData(e.target.value)}
-                      placeholder="Enter data value"
+                      // placeholder="Enter data value"
+                      placeholder={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data[options.circleHeatMapData].value : "Enter data value"}
+
                       type="number"
                       required
                     />

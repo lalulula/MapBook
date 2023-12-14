@@ -23,6 +23,8 @@ import Lottie from "lottie-react";
 import ImageLoader from "../../assets/Lottie/ImageLoader.json";
 import Typewriter from "typewriter-effect";
 import CustomSwitch from "../widgets/CustomSwitch";
+import polylabel from "polylabel"
+
 
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
@@ -121,6 +123,22 @@ const MapDetails = () => {
     }
   };
 
+  function calcPolygonArea(vertices) {
+    var total = 0;
+
+    for (var i = 0, l = vertices.length; i < l; i++) {
+      var addX = vertices[i][0];
+      var addY = vertices[i == vertices.length - 1 ? 0 : i + 1][1];
+      var subX = vertices[i == vertices.length - 1 ? 0 : i + 1][0];
+      var subY = vertices[i][1];
+
+      total += (addX * addY * 0.5);
+      total -= (subX * subY * 0.5);
+    }
+
+    return Math.abs(total);
+  }
+ 
   function calculateCentroid(features) {
     let totalX = 0;
     let totalY = 0;
@@ -406,66 +424,25 @@ const MapDetails = () => {
             });
 
             var JsonBasedOnPoint = structuredClone(selectedMapFile);
+            var newGeometry;
+
             for (var i = 0; i < selectedMapFile["features"].length; i++) {
-              var centerX = 0;
-              var canterY = 0;
-              var pointCount = 0;
-              for (
-                var j = 0;
-                j < selectedMapFile["features"][i].geometry.coordinates.length;
-                j++
-              ) {
-                for (
-                  var k = 0;
-                  k <
-                  selectedMapFile["features"][i].geometry.coordinates[j].length;
-                  k++
-                ) {
-                  if (
-                    typeof selectedMapFile["features"][i].geometry.coordinates[
-                    j
-                    ][k][0] == "object"
-                  ) {
-                    for (
-                      var l = 0;
-                      l <
-                      selectedMapFile["features"][i].geometry.coordinates[j][k]
-                        .length;
-                      l++
-                    ) {
-                      centerX =
-                        centerX +
-                        selectedMapFile["features"][i].geometry.coordinates[j][
-                        k
-                        ][l][0];
-                      canterY =
-                        canterY +
-                        selectedMapFile["features"][i].geometry.coordinates[j][
-                        k
-                        ][l][1];
-                      pointCount++;
-                    }
-                  } else {
-                    centerX =
-                      centerX +
-                      selectedMapFile["features"][i].geometry.coordinates[j][
-                      k
-                      ][0];
-                    canterY =
-                      canterY +
-                      selectedMapFile["features"][i].geometry.coordinates[j][
-                      k
-                      ][1];
-                    pointCount++;
+              console.log(selectedMapFile["features"][i])
+              if(selectedMapFile["features"][i].geometry.type == "Polygon"){
+                newGeometry = { type: "Point", coordinates:  polylabel(selectedMapFile["features"][i].geometry.coordinates, 1.0) };
+              }
+              else{
+                let maxArea = 0;
+                let maxPoint = [];
+                for(var j = 0; j < selectedMapFile["features"][i].geometry.coordinates.length; j++){
+                  var polygonArea = calcPolygonArea(selectedMapFile["features"][i].geometry.coordinates[j][0])
+                  if(maxArea < polygonArea){
+                    maxArea = polygonArea
+                    maxPoint = polylabel(selectedMapFile["features"][i].geometry.coordinates[j])
                   }
                 }
+                newGeometry = { type: "Point", coordinates: maxPoint };
               }
-              centerX = pointCount === 0 ? 0 : centerX / pointCount;
-              canterY = pointCount === 0 ? 0 : canterY / pointCount;
-              var newGeometry = {
-                type: "Point",
-                coordinates: [centerX, canterY],
-              };
               JsonBasedOnPoint["features"][i].geometry = newGeometry;
             }
 

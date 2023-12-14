@@ -54,7 +54,7 @@ const CreateMap = () => {
   };
 
   useEffect(() => {
-    console.log("isMapbookData: CreateMap.js: ", isMapbookData)
+    // console.log("isMapbookData: CreateMap.js: ", isMapbookData)
   }, [isMapbookData]);
 
   return (
