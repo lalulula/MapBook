@@ -24,6 +24,14 @@ const Heat = ({
     to,
   ];
 
+  useEffect(() => {
+    console.log("Heat map options: ", options)
+    console.log("Heat map heatRange: ", heatRange)
+    console.log("Heat map selectedColors: ", selectedColors)
+
+  }, []);
+
+
   const handleRangeChange = (e) => {
     const { name, value } = e.target;
     setHeatRange({
@@ -44,6 +52,8 @@ const Heat = ({
         required
         type="number"
         name="from"
+        value={heatRange.from}
+
         placeholder="From"
         onChange={handleRangeChange}
       />
@@ -52,6 +62,8 @@ const Heat = ({
         required
         type="number"
         name="to"
+        value={heatRange.to}
+
         placeholder="To"
         onChange={handleRangeChange}
       />

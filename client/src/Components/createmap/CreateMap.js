@@ -49,12 +49,13 @@ const CreateMap = () => {
     setSelectedMapFile(newGeojsonData);
   }, [options, pieBarData, heatRange, selectedColors, themeData]);
 
+
   const closeImportDataPopup = () => {
     setImportDataOpen(false);
   };
 
   useEffect(() => {
-    console.log("isMapbookData: CreateMap.js: ", isMapbookData)
+    // console.log("isMapbookData: CreateMap.js: ", isMapbookData)
   }, [isMapbookData]);
 
   return (

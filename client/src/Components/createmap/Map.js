@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./createMap.css";
 import * as turf from "@turf/turf";
+import polylabel from "polylabel"
 
 import html2canvas from "html2canvas";
 
@@ -29,6 +30,7 @@ const Map = ({
   isMapbookData,
   setIsMapbookData,
 }) => {
+  
   const mapFileData = useRef(selectedMapFile);
   const mapRef = useRef();
 
@@ -54,7 +56,7 @@ const Map = ({
       mapbook_themedata: themeData, //Color + data name
     };
 
-    console.log("dataname changed:", mapFileData.current)
+    // console.log("dataname changed:", mapFileData.current)
   }, [
     options,
     pieBarData,
@@ -93,49 +95,26 @@ const Map = ({
   const resetMap = () => {
     undoStack.current = [];
     redoStack.current = [];
-    // setSelectedMapFile((prevState) => {
-    //   const newState = { ...prevState };
-    //   newState.features = newState.features.map((feature) => {
-    //     const newFeature = { ...feature };
-    //     newState.mapbook_circleheatmapdata = "";
-    //     newState.mapbook_customtopic = "";
-    //     newState.mapbook_datanames = [""];
-    //     newState.mapbook_description = "";
-    //     newState.mapbook_heat_selectedcolors = [];
-    //     newState.mapbook_heatrange = { from: 0, to: 0 };
-    //     newState.mapbook_mapname = "";
-    //     newState.mapbook_topic = "";
-    //     newState.mapbook_visibility = false;
+    const newState = { ...mapFileData.current };
+    newState.features = newState.features.map((feature) => {
+      const newFeature = { ...feature };
+      newState.mapbook_circleheatmapdata = "";
+      newState.mapbook_customtopic = "";
+      newState.mapbook_datanames = [""];
+      newState.mapbook_description = "";
+      newState.mapbook_heat_selectedcolors = [];
+      newState.mapbook_heatrange = { from: 0, to: 0 };
+      newState.mapbook_mapname = "";
+      newState.mapbook_topic = "";
+      newState.mapbook_visibility = false;
 
-    //     newState.mapbook_template = template;
-    //     if (newFeature.properties && newFeature.properties.mapbook_data) {
-    //       delete newFeature.properties.mapbook_data;
-    //     }
-    //     return newFeature;
-    //   });
-    //   return newState;
-    // });
-    // mapFileData.current = selectedMapFile;
-      const newState = { ...mapFileData.current };
-      newState.features = newState.features.map((feature) => {
-        const newFeature = { ...feature };
-        newState.mapbook_circleheatmapdata = "";
-        newState.mapbook_customtopic = "";
-        newState.mapbook_datanames = [""];
-        newState.mapbook_description = "";
-        newState.mapbook_heat_selectedcolors = [];
-        newState.mapbook_heatrange = { from: 0, to: 0 };
-        newState.mapbook_mapname = "";
-        newState.mapbook_topic = "";
-        newState.mapbook_visibility = false;
-
-        newState.mapbook_template = template;
-        if (newFeature.properties && newFeature.properties.mapbook_data) {
-          delete newFeature.properties.mapbook_data;
-        }
-        return newFeature;
-      });
-      mapFileData.current = newState;
+      newState.mapbook_template = template;
+      if (newFeature.properties && newFeature.properties.mapbook_data) {
+        delete newFeature.properties.mapbook_data;
+      }
+      return newFeature;
+    });
+    mapFileData.current = newState;
 
 
     if(isMapLoaded){
@@ -151,7 +130,7 @@ const Map = ({
 
   useEffect(() => {
     templateHoverType.current = template;
-    console.log("isMapbookData: Map.js:", isMapbookData)
+    // console.log("isMapbookData: Map.js:", isMapbookData)
     if(!isMapbookData){
       resetMap();
       console.log("resetMap called:", selectedMapFile);
@@ -296,9 +275,9 @@ const Map = ({
         colors.push(expColor);
         expMaximumValue.push(expValue);
       });
-      console.log("values", values);
-      console.log("colors", colors);
-      console.log("expMaximumValue", expMaximumValue);
+      // console.log("values", values);
+      // console.log("colors", colors);
+      // console.log("expMaximumValue", expMaximumValue);
 
       let expGetMaximumColor = ["case"];
       for (let i = 0; i < values.length; i++) {
@@ -308,10 +287,10 @@ const Map = ({
       }
       expGetMaximumColor.push("#000000");
 
-      console.log("expGetMaximumColor", expGetMaximumColor);
+      // console.log("expGetMaximumColor", expGetMaximumColor);
 
-      console.log("mapFileData.current", mapFileData.current);
-      console.log("mapRef.getSource(): ", mapRef.current.getSource("counties"));
+      // console.log("mapFileData.current", mapFileData.current);
+      // console.log("mapRef.getSource(): ", mapRef.current.getSource("counties"));
 
       mapRef.current.setLayoutProperty(
         "counties-thematic",
@@ -344,7 +323,7 @@ const Map = ({
   };
   // HEAT
   const redrawHeatData = () => {
-    if (templateHoverType.current === "Heat Map" && inputData != null) {
+    if (templateHoverType.current === "Heat Map") {
       if (mapRef.current.getLayer("counties-heat")) {
         mapRef.current.removeLayer("counties-heat");
       }
@@ -408,9 +387,7 @@ const Map = ({
 
       // console.log("heatData", inputData, "namesdata", namesDataAdded);
 
-      let value = inputData["value"];
-      let color = inputData["color"];
-      console.log(value, color);
+
       mapRef.current.setLayoutProperty(
         "counties-heat",
         "visibility",
@@ -438,8 +415,25 @@ const Map = ({
     }
   };
 
+  function calcPolygonArea(vertices) {
+    var total = 0;
+
+    for (var i = 0, l = vertices.length; i < l; i++) {
+      var addX = vertices[i][0];
+      var addY = vertices[i == vertices.length - 1 ? 0 : i + 1][1];
+      var subX = vertices[i == vertices.length - 1 ? 0 : i + 1][0];
+      var subY = vertices[i][1];
+
+      total += (addX * addY * 0.5);
+      total -= (subX * subY * 0.5);
+    }
+
+    return Math.abs(total);
+  }
+ 
   // CLUSTER APPROACH
   const redrawCircleData = () => {
+
     if (templateHoverType.current === "Circle Map") {
       if (mapRef.current.getLayer("clusters")) {
         mapRef.current.removeLayer("clusters");
@@ -476,68 +470,25 @@ const Map = ({
       });
 
       var JsonBasedOnPoint = structuredClone(mapFileData.current);
+      var newGeometry;
       for (var i = 0; i < mapFileData.current["features"].length; i++) {
-        var centerX = 0;
-        var canterY = 0;
-        var pointCount = 0;
-        for (
-          var j = 0;
-          j < mapFileData.current["features"][i].geometry.coordinates.length;
-          j++
-        ) {
-          for (
-            var k = 0;
-            k <
-            mapFileData.current["features"][i].geometry.coordinates[j].length;
-            k++
-          ) {
-            if (
-              typeof mapFileData.current["features"][i].geometry.coordinates[j][
-              k
-              ][0] == "object"
-            ) {
-              for (
-                var l = 0;
-                l <
-                mapFileData.current["features"][i].geometry.coordinates[j][k]
-                  .length;
-                l++
-              ) {
-                centerX =
-                  centerX +
-                  mapFileData.current["features"][i].geometry.coordinates[j][k][
-                  l
-                  ][0];
-                canterY =
-                  canterY +
-                  mapFileData.current["features"][i].geometry.coordinates[j][k][
-                  l
-                  ][1];
-                pointCount++;
-              }
-            } else {
-              centerX =
-                centerX +
-                mapFileData.current["features"][i].geometry.coordinates[j][
-                k
-                ][0];
-              canterY =
-                canterY +
-                mapFileData.current["features"][i].geometry.coordinates[j][
-                k
-                ][1];
-              pointCount++;
+        // console.log(mapFileData.current["features"][i])
+        if(mapFileData.current["features"][i].geometry.type == "Polygon"){
+          newGeometry = { type: "Point", coordinates:  polylabel(mapFileData.current["features"][i].geometry.coordinates, 1.0) };
+        }
+        else{
+          let maxArea = 0;
+          let maxPoint = [];
+          for(var j = 0; j < mapFileData.current["features"][i].geometry.coordinates.length; j++){
+            var polygonArea = calcPolygonArea(mapFileData.current["features"][i].geometry.coordinates[j][0])
+            if(maxArea < polygonArea){
+              maxArea = polygonArea
+              maxPoint = polylabel(mapFileData.current["features"][i].geometry.coordinates[j])
             }
           }
-        }
-        centerX = pointCount == 0 ? 0 : centerX / pointCount;
-        canterY = pointCount == 0 ? 0 : canterY / pointCount;
-        var newGeometry = { type: "Point", coordinates: [centerX, canterY] };
-        if (centerX != 0) {
-          console.log("newGeometry: ", newGeometry);
+          newGeometry = { type: "Point", coordinates: maxPoint };
         }
         JsonBasedOnPoint["features"][i].geometry = newGeometry;
-        // mapFileData.current["features"][i].geometry
       }
 
       mapRef.current.addSource("circles", {
@@ -712,8 +663,8 @@ const Map = ({
   };
 
   useEffect(() => {
-    // console.log("selectedMapFile: ", selectedMapFile);
-    console.log("onhover: useEffect:", templateHoverType.current);
+    // console.log("selectedMapFile: ", mapFileData.current);
+    // console.log("onhover: useEffect:", templateHoverType.current);
 
     // TODO: make lowercase name
     // Name NAME -> name
@@ -772,7 +723,7 @@ const Map = ({
           type: "fill",
           source: "counties",
           paint: {
-            "fill-color": "#ff0088", //default map color
+            "fill-color": "#454545", //default map color
             "fill-opacity": 0.4,
             "fill-outline-color": "#000000",
           },
@@ -1008,6 +959,7 @@ const Map = ({
             selectedMapFile={mapFileData.current}
             handlePieBarInputChange={handlePieBarInputChange}
             regionName={regionName}
+            feature={feature}
           />
         )}
         {/* Circle Modal */}
@@ -1021,6 +973,7 @@ const Map = ({
             setInputData={setInputData}
             regionName={regionName}
             handleRerender={handleRerender}
+            feature={feature}
           />
         )}
 
@@ -1033,6 +986,7 @@ const Map = ({
             selectedMapFile={mapFileData.current}
             handleThematicData={handleThematicData}
             regionName={regionName}
+            feature={feature}
           />
         )}
 
@@ -1048,6 +1002,7 @@ const Map = ({
             inputData={inputData}
             heatRange={heatRange}
             selectedColors={selectedColors}
+            feature={feature}
           />
         )}
       </div>

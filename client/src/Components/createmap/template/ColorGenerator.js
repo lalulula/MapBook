@@ -47,7 +47,7 @@ const ColorGenerator = ({ selectedColors, setSelectedColors }) => {
       <input
         type="color"
         className="createMap_color_picker"
-        value={baseColor}
+        value={selectedColors.length == 0 ? baseColor : selectedColors[0]}
         onChange={handleBaseColorChange}
       />
     </div>

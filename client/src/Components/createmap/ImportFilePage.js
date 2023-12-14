@@ -86,7 +86,7 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen, isMapbookData, 
         );
         setSelectedMapFile(parsedData);
         setIsMapbookData(true);
-        console.log("isMapbookData: ", isMapbookData);
+        // console.log("isMapbookData: ", isMapbookData);
 
       } else {
         console.log(

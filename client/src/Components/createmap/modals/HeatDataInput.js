@@ -17,7 +17,13 @@ const HeatDataInput = ({
   inputData,
   heatRange,
   selectedColors,
+  feature,
 }) => {
+  useEffect( () =>  {
+    console.log("Heat feature: ", feature)
+    console.log(feature[0].properties.mapbook_data)
+  }, [] );
+
   const [renderedColor, setRenderedColor] = useState(null);
   const [invalidColor, setInvalidColor] = useState(false);
 
@@ -72,7 +78,9 @@ const HeatDataInput = ({
                     <Input
                       sx={{ marginBottom: "1rem" }}
                       onChange={(e) => handleHeatMapData(e.target.value)}
-                      placeholder="Enter data value"
+                      // placeholder="Enter data value"
+                      placeholder={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data.value : "Enter data value"}
+                      // value={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data[options.circleHeatMapData].value : ""}
                       type="number"
                       required
                     />
