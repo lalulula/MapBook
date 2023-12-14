@@ -323,7 +323,7 @@ const Map = ({
   };
   // HEAT
   const redrawHeatData = () => {
-    if (templateHoverType.current === "Heat Map" && inputData != null) {
+    if (templateHoverType.current === "Heat Map") {
       if (mapRef.current.getLayer("counties-heat")) {
         mapRef.current.removeLayer("counties-heat");
       }
@@ -387,9 +387,7 @@ const Map = ({
 
       // console.log("heatData", inputData, "namesdata", namesDataAdded);
 
-      let value = inputData["value"];
-      let color = inputData["color"];
-      console.log(value, color);
+
       mapRef.current.setLayoutProperty(
         "counties-heat",
         "visibility",

@@ -79,7 +79,7 @@ const HeatDataInput = ({
                       sx={{ marginBottom: "1rem" }}
                       onChange={(e) => handleHeatMapData(e.target.value)}
                       // placeholder="Enter data value"
-                      placeholder={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data[options.circleHeatMapData] : "Enter data value"}
+                      placeholder={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data.value : "Enter data value"}
                       // value={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data[options.circleHeatMapData].value : ""}
                       type="number"
                       required
