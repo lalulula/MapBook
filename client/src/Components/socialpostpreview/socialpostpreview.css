@@ -19,7 +19,7 @@
 
 .social_post_preview_img {
   width: 80%;
-  height: 80%;
+  object-fit: contain;
 }
 
 .social_post_preview_container_left {
@@ -35,10 +35,10 @@
 }
 
 .social_post_preview_container_right {
+  height: 100%;
   display: flex;
   flex: 0.1;
   margin-right: 2rem;
-
 }
 
 .owner_name {

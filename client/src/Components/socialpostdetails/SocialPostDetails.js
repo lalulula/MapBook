@@ -27,6 +27,7 @@ const SocialPostDetails = () => {
   const [postOwner, setPostOwner] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const isAuth = useSelector((state) => state.user.isAuthenticated);
+  const [imgFullScreen, setImgFullScreen] = useState(false);
 
   const nextImage = () => {
     setCurrentIndex(
@@ -102,7 +103,7 @@ const SocialPostDetails = () => {
   }
 
   return (
-    <div className="socialpostdetails">
+    <div className={`socialpostdetails ${imgFullScreen ? "img_fullscreen" : ""}`}>
       <div className="socialpostdetails_container">
         <span
           className="back_btn_socialdetail"
@@ -191,11 +192,27 @@ const SocialPostDetails = () => {
                     className="nextImg"
                   />
                 )}
-                <img
-                  alt=""
-                  id="post_details_img"
-                  src={currentPost.post_images[currentIndex]}
-                />
+                {imgFullScreen && (
+                  <div className="overlay" onClick={() => setImgFullScreen(!imgFullScreen)}></div>
+                )}
+                <div className="fullscreen_img_container">
+                  <img
+                    alt=""
+                    id="post_details_img"
+                    src={currentPost.post_images[currentIndex]}
+                    className={`socialpostdetails_img${imgFullScreen ? "_fullscreen" : ""}`}
+                    onClick={() => setImgFullScreen(!imgFullScreen)}
+                  />
+                  {imgFullScreen && (
+                    <img
+                      alt=""
+                      id="post_details_img"
+                      src={currentPost.post_images[currentIndex]}
+                      className={`socialpostdetails_img`}
+                    />
+                  )}
+                </div>
+
                 {currentPost.post_images.length > 1 && (
                   <ArrowForwardIosIcon
                     onClick={nextImage}
