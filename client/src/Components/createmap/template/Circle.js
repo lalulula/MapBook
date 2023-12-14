@@ -1,5 +1,11 @@
 import Input from "@mui/joy/Input";
+import { useEffect } from "react";
+
 const Circle = ({ options, handleCircleHeatMapDataChange }) => {
+
+  useEffect(()  => {
+    console.log("circle: option ", options)
+  },[]);
   return (
     <div className="circle_container">
       <Input

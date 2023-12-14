@@ -23,6 +23,7 @@ const CircleDataInput = ({
   useEffect( () =>  {
     console.log("Circle feature: ", feature)
     console.log(feature[0].properties.mapbook_data)
+    console.log("options.circleHeatMapData: ", options.circleHeatMapData)
   }, [] );
 
   const handleCircleDataSubmit = () => {
@@ -47,8 +48,8 @@ const CircleDataInput = ({
                     <Input
                       sx={{ marginBottom: "1rem" }}
                       onChange={(e) => setInputData(e.target.value)}
-                      // placeholder="Enter data value"
-                      placeholder={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data[options.circleHeatMapData].value : "Enter data value"}
+                      // placeholder={options.circleHeatMapData}
+                      placeholder={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data[options.circleHeatMapData] : "Enter data value"}
 
                       type="number"
                       required

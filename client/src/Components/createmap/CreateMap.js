@@ -49,6 +49,7 @@ const CreateMap = () => {
     setSelectedMapFile(newGeojsonData);
   }, [options, pieBarData, heatRange, selectedColors, themeData]);
 
+
   const closeImportDataPopup = () => {
     setImportDataOpen(false);
   };

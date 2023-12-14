@@ -187,7 +187,7 @@ const MapDetails = () => {
 
   useEffect(() => {
     if (selectedMapFile != null) {
-      console.log("selectedMapFile: useEffect: ", selectedMapFile);
+      // console.log("selectedMapFile: useEffect: ", selectedMapFile);
       const centroid = calculateCentroid(selectedMapFile.features);
 
       let map;
@@ -427,7 +427,7 @@ const MapDetails = () => {
             var newGeometry;
 
             for (var i = 0; i < selectedMapFile["features"].length; i++) {
-              console.log(selectedMapFile["features"][i])
+              // console.log(selectedMapFile["features"][i])
               if(selectedMapFile["features"][i].geometry.type == "Polygon"){
                 newGeometry = { type: "Point", coordinates:  polylabel(selectedMapFile["features"][i].geometry.coordinates, 1.0) };
               }

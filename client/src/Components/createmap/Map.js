@@ -56,7 +56,7 @@ const Map = ({
       mapbook_themedata: themeData, //Color + data name
     };
 
-    console.log("dataname changed:", mapFileData.current)
+    // console.log("dataname changed:", mapFileData.current)
   }, [
     options,
     pieBarData,
@@ -474,7 +474,7 @@ const Map = ({
       var JsonBasedOnPoint = structuredClone(mapFileData.current);
       var newGeometry;
       for (var i = 0; i < mapFileData.current["features"].length; i++) {
-        console.log(mapFileData.current["features"][i])
+        // console.log(mapFileData.current["features"][i])
         if(mapFileData.current["features"][i].geometry.type == "Polygon"){
           newGeometry = { type: "Point", coordinates:  polylabel(mapFileData.current["features"][i].geometry.coordinates, 1.0) };
         }
@@ -665,7 +665,7 @@ const Map = ({
   };
 
   useEffect(() => {
-    console.log("selectedMapFile: ", mapFileData.current);
+    // console.log("selectedMapFile: ", mapFileData.current);
     // console.log("onhover: useEffect:", templateHoverType.current);
 
     // TODO: make lowercase name
