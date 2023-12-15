@@ -279,21 +279,25 @@ const removeMap = async (req, res) => {
     await MapComment.deleteMany({ map_id: mapId });
 
     // DELETE STORED FILE ON FIREBASE
-    // const mapUrl = map.file_path;
-    // const mapPreviewUrl = map.mapPreviewImg;
-    
-    // const mapUrlParts = new URL(mapUrl);
-    // let mapFilename = path.basename(mapUrlParts.pathname).replaceAll("%20", " ");
-    // const mapFile = bucket.file(mapFilename);
+    try {
+      const mapUrl = map.file_path;
+      const mapPreviewUrl = map.mapPreviewImg;
+      
+      const mapUrlParts = new URL(mapUrl);
+      let mapFilename = path.basename(mapUrlParts.pathname).replaceAll("%20", " ");
+      const mapFile = bucket.file(mapFilename);
 
-    // const mapPreviewUrlParts = new URL(mapPreviewUrl);
-    // let mapPreviewFilename = path.basename(mapPreviewUrlParts.pathname).replaceAll("%20", " ");
-    // const mapPreviewFile = bucket.file(mapPreviewFilename);
+      const mapPreviewUrlParts = new URL(mapPreviewUrl);
+      let mapPreviewFilename = path.basename(mapPreviewUrlParts.pathname).replaceAll("%20", " ");
+      const mapPreviewFile = bucket.file(mapPreviewFilename);
 
-    // await mapFile.delete();
-    // await mapPreviewFile.delete();
-    // console.log(`mapFile ${mapFilename} deleted successfully.`);
-    // console.log(`mapPreviewFile ${mapPreviewFilename} deleted successfully.`);
+      await mapFile.delete();
+      await mapPreviewFile.delete();
+      console.log(`mapFile ${mapFilename} deleted successfully.`);
+      console.log(`mapPreviewFile ${mapPreviewFilename} deleted successfully.`);
+    } catch (err) {
+      console.log("Not able to delete files. Such files do not exist");
+    }
 
     res.status(200).json("Map deleted successfully");
   } catch (err) {
