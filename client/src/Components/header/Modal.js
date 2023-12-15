@@ -31,7 +31,7 @@ const CustomModal = ({ isOpen, closeModal }) => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: "rgba(0, 0, 0, 0.55)",
+          backgroundColor: "rgba(0, 0, 0, 0.85)",
         },
         content: {
           position: "absolute",
@@ -40,19 +40,23 @@ const CustomModal = ({ isOpen, closeModal }) => {
           right: "35%",
           bottom: "30%",
           border: "1px solid #ccc",
-          background: "#fff",
+          background: "#ffffffe4",
           overflow: "auto",
           WebkitOverflowScrolling: "touch",
-          borderRadius: "4px",
+          borderRadius: "5px",
           outline: "none",
           padding: "20px",
         },
       }}
     >
       <div className="modal_content">
-        <div onClick={handleToMain}>Continue as a guest</div>
+        <div className="modal_content_guest" onClick={handleToMain}>
+          Continue as a guest
+        </div>
         <hr></hr>
-        <div onClick={handleToRegister}>Register</div>
+        <div className="modal_content_register" onClick={handleToRegister}>
+          Register
+        </div>
       </div>
     </Modal>
   );

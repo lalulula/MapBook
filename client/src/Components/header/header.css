@@ -40,9 +40,10 @@ h4:hover {
   color: black;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   padding: 65px 0 65px 0;
+  gap: 2rem;
 }
 
 .header_profile {
@@ -85,6 +86,33 @@ h4:hover {
 
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+/* MODAL */
+.modal_content {
+  font-size: large;
+  font-weight: 200;
+  overflow: hidden;
+  color: #3c3c3ca2;
+}
+.modal_content_guest,
+.modal_content_register {
+  padding: 3rem;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+.modal_content_guest:hover,
+.modal_content_register:hover {
+  font-weight: 300;
+  color: #3c3c3c;
+  transform: scale(1.1);
+  /* background: #ffffffd0; */
+}
+
+.modal_content hr {
+  border-top: 1px solid rrgba(0, 0, 0, 0.408);
+  width: 100%;
+  margin: 0 1rem;
 }
 
 @media all and (min-width: 601px) {
