@@ -12,22 +12,24 @@ const Intro = () => {
 
   return (
     <div>
-      <div className="landing_intro ">
+      <div className="landing_intro">
         <div className="landing_right">
-          <motion.h2
+          <motion.div
+            className="intro_subtext"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 10, y: 0 }}
             transition={{ duration: 3 }}
           >
             Explore the World, Your Way
-          </motion.h2>
-          <motion.h1
+          </motion.div>
+          <motion.div
+            className="intro_maintext"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 3 }}
           >
             Map Book
-          </motion.h1>
+          </motion.div>
         </div>
         <div className="landing_left">
           <Lottie animationData={landingData1} style={style} />

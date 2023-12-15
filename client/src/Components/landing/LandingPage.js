@@ -10,6 +10,7 @@ const LandingPage = () => {
   return (
     <div className="landing_container">
       <Intro />
+      <br />
       <Intro1 />
       <Intro2 />
       <Intro3 />
