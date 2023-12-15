@@ -55,7 +55,12 @@ const MainPage = () => {
 
   return (
     <div className="mainpage_container">
-      <div className="mainpage_trending_header">Trending Maps</div>
+      <div className="mainpage_trending_header">
+        Trending Maps &nbsp;&nbsp;
+        <span className="mainpage_trending_subheader">
+          Hover to explore the most popular maps.
+        </span>
+      </div>
       <TrendingMaps trendingMaps={trendingMaps} />
       <hr style={{ width: "100%" }} />
       <div className="search_wrapper">

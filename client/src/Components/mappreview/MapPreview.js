@@ -36,7 +36,7 @@ const MapPreview = ({ data }) => {
       setImageLoaded(true);
     });
   };
-  const handleEdit = (id) => {
+  const handleShowMapDetail = (id) => {
     console.log("CLICKED ON MAP PREVIEW: ", id);
     navigate(`/mapdetails/${id}`);
   };
@@ -50,8 +50,6 @@ const MapPreview = ({ data }) => {
     // Handle fork action
     e.stopPropagation();
 
-
-    
     let url = data.file_path;
     // get file name from url
     let fileName = url
@@ -65,12 +63,10 @@ const MapPreview = ({ data }) => {
     xhr.responseType = "json";
     xhr.onload = (event) => {
       // console.log("response: ", xhr.response);
-      navigate( '/createmap', { state: { mapFile: xhr.response} } )
-
+      navigate("/createmap", { state: { mapFile: xhr.response } });
     };
     xhr.open("GET", mapUrl);
     xhr.send();
-
 
     console.log("Fork clicked");
   };
@@ -159,7 +155,10 @@ const MapPreview = ({ data }) => {
   };
 
   return (
-    <div className="mappreview_container" onClick={() => handleEdit(data._id)}>
+    <div
+      className="mappreview_container"
+      onClick={() => handleShowMapDetail(data._id)}
+    >
       {optionsMenuVisible && (
         <div className="mappreview_options_menu">
           <ul>

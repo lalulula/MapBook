@@ -1,3 +1,6 @@
+:root {
+  --main-color: rgba(105, 163, 255, 0.901);
+}
 * {
   margin: 0;
   padding: 0;

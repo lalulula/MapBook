@@ -7,10 +7,18 @@
   gap: 2rem;
 }
 .mainpage_trending_header {
+  display: flex;
   align-self: baseline;
+  align-items: baseline;
   font-size: 2rem;
-  font-weight: 300;
+  font-weight: 400;
   margin-bottom: 1rem;
+}
+.mainpage_trending_subheader {
+  align-self: baseline;
+  font-size: 1.1rem;
+  font-weight: 300;
+  margin-top: 1rem;
 }
 
 .search_wrapper {

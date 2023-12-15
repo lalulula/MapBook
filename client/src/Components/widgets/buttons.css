@@ -21,8 +21,8 @@
   background-color: #333;
 }
 .like-button.liked {
-  color: rgba(105, 163, 255, 0.901);
-  border-color: rgba(105, 163, 255, 0.901);
+  color: var(--main-color);
+  border-color: var(--main-color);
 }
 
 .social_delete_btn {
