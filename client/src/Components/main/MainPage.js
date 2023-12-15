@@ -9,13 +9,14 @@ import Typewriter from "typewriter-effect";
 import { getAllMapsAPI } from "../../api/map";
 import "./main.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import TrendingMaps from "./TrendingMaps";
 
 const MainPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchFilterOption, setSearchFilterOption] = useState("");
   const [allMaps, setAllMaps] = useState([]);
   const [mainPageLoading, setMainPageLoading] = useState(true);
-  // const [noMaps, setNoMaps] = useState(false);
+  const [trendingMaps, setTrendingMaps] = useState(null);
   const searchFilterOps = ["Map Name", "Topics", "Description"];
   const handleSeachFilter = (e) => {
     setSearchFilterOption(e.value);
@@ -31,15 +32,14 @@ const MainPage = () => {
         }, 3000);
       });
   }, []);
-
+  useEffect(() => {
+    const copiedMaps = [...allMaps];
+    const sortedMapByViewCount = copiedMaps.sort(
+      (a, b) => parseFloat(b.view_count) - parseFloat(a.view_count)
+    );
+    setTrendingMaps(sortedMapByViewCount.slice(0, 7));
+  }, [allMaps]);
   useEffect(() => {}, [searchFilterOption]);
-
-  // useEffect(() => {
-  //   console.log(allMaps);
-  //   if (allMaps.length === 0) {
-  //     setNoMaps(true);
-  //   }
-  // }, [allMaps]);
 
   const filteredMaps = allMaps.filter((map) => {
     const isVisible = map.is_visible === true;
@@ -55,6 +55,9 @@ const MainPage = () => {
 
   return (
     <div className="mainpage_container">
+      <div className="mainpage_trending_header">Trending Maps</div>
+      <TrendingMaps trendingMaps={trendingMaps} />
+      <hr style={{ width: "100%" }} />
       <div className="search_wrapper">
         <SearchBar onSearchChange={(term) => setSearchTerm(term)} />
         <Dropdown
@@ -65,54 +68,54 @@ const MainPage = () => {
           onChange={handleSeachFilter}
         />
       </div>
-      {mainPageLoading ? (
-        <div style={{ textAlign: "center", marginTop: "8rem" }}>
-          <div>
-            <Typewriter
-              onInit={(typewriter) => {
-                typewriter.typeString("Loading all maps..").start();
+      <div className="mainpage_maps_container">
+        <div className="mainpage_maps">
+          {filteredMaps.length !== 0 &&
+            filteredMaps.map((item, index) => (
+              <MapPreview key={index} data={item} />
+            ))}
+        </div>
+
+        {filteredMaps.length === 0 && (
+          <div className="mainpage_maps_no_search_container">
+            <div className="mainpage_maps_no_search">
+              <br />
+              <h1>No search results for '{searchTerm}'</h1>
+              <br />
+            </div>
+            <Lottie
+              animationData={NoMapAni}
+              style={{
+                height: 300,
+                width: 300,
+                position: "absolute",
               }}
             />
           </div>
-          <Lottie
-            animationData={MainPageLoading}
-            style={{
-              height: 350,
-              width: 350,
-              opacity: 0.5,
-            }}
-          />
-        </div>
-      ) : (
-        <div className="mainpage_maps_container">
-          <div className="mainpage_maps">
-            {filteredMaps.length !== 0 &&
-              filteredMaps.map((item, index) => (
-                <MapPreview key={index} data={item} />
-              ))}
-          </div>
-
-          {filteredMaps.length === 0 && (
-            <div className="mainpage_maps_no_search_container">
-              <div className="mainpage_maps_no_search">
-                <br />
-                <h1>No search results for '{searchTerm}'</h1>
-                <br />
-              </div>
-              <Lottie
-                animationData={NoMapAni}
-                style={{
-                  height: 300,
-                  width: 300,
-                  position: "absolute",
-                }}
-              />
-            </div>
-          )}
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
 
 export default MainPage;
+
+/* {mainPageLoading ? (
+  <div style={{ textAlign: "center", marginTop: "8rem" }}>
+    <div>
+      <Typewriter
+        onInit={(typewriter) => {
+          typewriter.typeString("Loading all maps..").start();
+        }}
+      />
+    </div>
+    <Lottie
+      animationData={MainPageLoading}
+      style={{
+        height: 350,
+        width: 350,
+        opacity: 0.5,
+      }}
+    />
+  </div>
+) : ( */

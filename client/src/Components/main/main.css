@@ -6,6 +6,12 @@
   flex-direction: column;
   gap: 2rem;
 }
+.mainpage_trending_header {
+  align-self: baseline;
+  font-size: 2rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+}
 
 .search_wrapper {
   display: flex;
