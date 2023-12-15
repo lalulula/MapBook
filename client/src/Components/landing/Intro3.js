@@ -12,7 +12,6 @@ const Intro3 = () => {
 
   useEffect(() => {
     if (inView) {
-      // console.log("In Intro3 now");
       setAnimationPlayed(true);
     } else {
       setAnimationPlayed(false);
@@ -57,13 +56,13 @@ const Intro3 = () => {
     <div className="landing_intro_3 intro" ref={ref}>
       <div className="landing3_whole">
         {animationPlayed && (
-          <h1>
+          <div className="intro_maintext">
             <Typewriter
               onInit={(typewriter) => {
                 typewriter.typeString("Ready to Get Started?").start();
               }}
             />
-          </h1>
+          </div>
         )}
         <div
           id="animationContainer"
@@ -75,14 +74,16 @@ const Intro3 = () => {
             <CustomModal isOpen={isModalOpen} closeModal={closeModal} />
           </div>
           <Lottie animationData={Network} style={style} onClick={openModal} />
-          <div id="animationText">Get Started</div>
+          <div id="animationText" onClick={openModal}>
+            Get Started
+          </div>
         </div>
-        <h4 style={{ textAlign: "center" }}>
+        <div style={{ textAlign: "center" }} className="intro_subtext">
           Your journey in mapping begins here!
           <br />
           Unleash your creativity and join a vibrant community of map
           enthusiasts.
-        </h4>
+        </div>
       </div>
     </div>
   );

@@ -16,7 +16,6 @@ const Intro2 = () => {
 
   useEffect(() => {
     if (inView) {
-      // console.log("In Intro2 now");
       setAnimationPlayed(true);
     } else {
       setAnimationPlayed(false);
@@ -36,14 +35,14 @@ const Intro2 = () => {
             iteration="1"
             fillMode="none"
           >
-            <h1>Collaborate and Share</h1>
+            <div className="intro_maintext">Collaborate and Share</div>
           </MovingComponent>
         )}
         <br />
-        <h4>
+        <div className="intro_subtext">
           Connect with fellow map enthusiasts, and share your maps for the world
           to see.
-        </h4>
+        </div>
       </div>
       <div className="landing_btm">
         {animationPlayed && <Lottie animationData={Discuss} style={style} />}
