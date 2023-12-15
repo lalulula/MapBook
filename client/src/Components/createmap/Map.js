@@ -582,29 +582,16 @@ const Map = ({
   const redrawPieData = () => {
 
     if (templateHoverType.current === "Pie Chart") {
-      if (mapRef.current.getLayer("clusters")) {
-        mapRef.current.removeLayer("clusters");
+      if (mapRef.current.getLayer("counties-pie")) {
+        mapRef.current.removeLayer("counties-pie");
       }
-      if (mapRef.current.getLayer("cluster-count")) {
-        mapRef.current.removeLayer("cluster-count");
+      if (mapRef.current.getSource("pie")) {
+        mapRef.current.removeSource("pie");
       }
-      if (mapRef.current.getLayer("unclustered-point")) {
-        mapRef.current.removeLayer("unclustered-point");
-      }
-      if (mapRef.current.getSource("circles")) {
-        console.log("circle source remove");
-        mapRef.current.removeSource("circles");
-      }
-
-      console.log("mapfile.current: ", mapFileData.current);
 
       // let dataName = mapFileData.current["mapbook_circleheatmapdata"];
-      let dataNames = mapFileData.current["mapbook_datanames"];
 
-      console.log("dataNames: ", dataNames);
 
-      console.log("inputData: ", inputData);
-      
       let maxDataValueName = null;
       let maxDataValue = 0
       if (inputData) {
@@ -615,7 +602,6 @@ const Map = ({
           }
         }
       }
-      console.log("maxDataValueName: ", maxDataValueName);
 
       const expValue = [
         "to-number",
@@ -633,54 +619,24 @@ const Map = ({
         namesDataAdded.push(element["properties"].name);
       });
 
-      var JsonBasedOnPoint = structuredClone(mapFileData.current);
-      var newGeometry;
-      for (var i = 0; i < mapFileData.current["features"].length; i++) {
-        // console.log(mapFileData.current["features"][i])
-        if(mapFileData.current["features"][i].geometry.type == "Polygon"){
-          newGeometry = { type: "Point", coordinates:  polylabel(mapFileData.current["features"][i].geometry.coordinates, 1.0) };
-        }
-        else{
-          let maxArea = 0;
-          let maxPoint = [];
-          for(var j = 0; j < mapFileData.current["features"][i].geometry.coordinates.length; j++){
-            var polygonArea = calcPolygonArea(mapFileData.current["features"][i].geometry.coordinates[j][0])
-            if(maxArea < polygonArea){
-              maxArea = polygonArea
-              maxPoint = polylabel(mapFileData.current["features"][i].geometry.coordinates[j])
-            }
-          }
-          newGeometry = { type: "Point", coordinates: maxPoint };
-        }
-        JsonBasedOnPoint["features"][i].geometry = newGeometry;
-      }
-
-      mapRef.current.addSource("circles", {
+      mapRef.current.addSource("pie", {
         type: "geojson",
-        data: JsonBasedOnPoint,
+        data: mapFileData.current,
         // cluster: true,
         // clusterMaxZoom: 14, // Max zoom to cluster points on
         // clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
       });
 
+
       mapRef.current.addLayer({
-        id: "clusters",
-        type: "circle",
-        source: "circles",
-        paint: {
-          "circle-translate": [0, 0],
+        id: "counties-pie",
+        type: "symbol",
+        source: "pie",
+        layout: {
+          "icon-size": 0.25
         },
       });
 
-      mapRef.current.addLayer({
-        id: "cluster-count",
-        type: "symbol",
-        source: "circles",
-        layout: {
-          "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-          "text-size": 12,
-        },
-      });
 
       mapRef.current.setFilter("clusters", ["in", "name", ...namesDataAdded]);
 
@@ -690,52 +646,45 @@ const Map = ({
         ...namesDataAdded,
       ]);
 
-      mapRef.current.setLayoutProperty("cluster-count", "text-field", [
-        "to-string",
-        expValue,
-      ]);
 
-      //   * Blue, 20px circles when point count is less than 100
-      //   * Yellow, 30px circles when point count is between 100 and 750
-      //   * Pink, 40px circles when point count is greater than or equal to 750
-      mapRef.current.setPaintProperty("clusters", "circle-color", [
-        "case",
-        ["<", expValue, 100],
-        "#51bbd6",
-        ["all", [">=", expValue, 100], ["<", expValue, 750]],
-        "#f1f075",
-        "#f28cb1",
-      ]);
 
-      mapRef.current.setPaintProperty("clusters", "circle-radius", [
-        "case",
-        ["<", expValue, 100],
-        20,
-        ["all", [">=", expValue, 100], ["<", expValue, 750]],
-        30,
-        40,
-      ]);
+      /// Haneul
+      var expImageSelect = ['case'];
+      // generate image object for region which data exist
+      namesDataAdded.forEach((name) => {
 
-      console.log(
-        "mapRef.current.getPaintProperty:",
-        mapRef.current.getPaintProperty("clusters", "circle-color")
-      );
+        // generate image 
+        // image =generateImage(data);
+
+        // add image that we generate
+        if(mapRef.current.hasImage(name))
+        {
+          // mapRef.current.updateImage(name, image);
+
+        }
+        else{
+          // mapRef.current.addImage(name, image);
+        }
+
+        // add expImageSelect on new image
+        expImageSelect.push(["==", ["get", "name"], name]);
+        expImageSelect.push(name)
+      });
+      //set default image (anything is okay)
+      expImageSelect.push("aaa")
+
+      mapRef.current.setLayoutProperty("counties-pie", "icon-image", expImageSelect);
+
     }
     else{
-      if (mapRef.current.getLayer("clusters")) {
+      if (mapRef.current.getLayer("counties-pie")) {
         mapRef.current.setLayoutProperty(
-          "clusters",
+          "counties-pie",
           "visibility",
           "none"
         );
       }
-      if (mapRef.current.getLayer("cluster-count")) {
-        mapRef.current.setLayoutProperty(
-          "cluster-count",
-          "visibility",
-          "none"
-        );
-      }
+
     }
   };
 
