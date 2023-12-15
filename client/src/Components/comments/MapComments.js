@@ -257,32 +257,38 @@ const MapComments = () => {
                       </div>
                     )}
                     <div className="comment_tools">
-                      {comment.map_comment_owner == currentUserId && (
+                    <div className="map_comment_bottom_container">
                         <div className="map_comment_bottom">
-                          <div
-                            className="edit_map_comment_btn"
-                            onClick={() => handleClickEditComment(comment._id)}
-                          >
-                            <EditIcon />
-                            Edit comment
-                          </div>
-                          <div
-                            className="delete_map_comment_btn"
-                            onClick={() =>
-                              handleClickDeleteComment(comment._id)
-                            }
-                          >
-                            <DeleteIcon />
-                            Delete comment
-                          </div>
+                          {comment.map_comment_owner === currentUserId && (
+                            <div
+                              className="edit_comment_btn"
+                              onClick={() => handleClickEditComment(comment._id)}
+                            >
+                              <EditIcon style={{ fontSize: '17px' }} />
+                              Edit comment
+                            </div>
+                          )}
+                          {comment.map_comment_owner === currentUserId && (
+                            <div
+                              className="delete_comment_btn"
+                              onClick={() =>
+                                handleClickDeleteComment(comment._id)
+                              }
+                            >
+                              <DeleteIcon style={{ fontSize: '17px' }} />
+                              Delete comment
+                            </div>
+                          )}
+                          {isAuth && (
+                            <div
+                              className="reply_comment_btn"
+                              onClick={() => handleClickReplyComment(comment._id)}
+                            >
+                              <ChatBubbleOutlineIcon style={{ fontSize: '20px' }} />
+                              <p>Reply</p>
+                            </div>
+                          )}
                         </div>
-                      )}
-                      <div
-                        className="reply_comment_btn"
-                        onClick={() => handleClickReplyComment(comment._id)}
-                      >
-                        <ChatBubbleOutlineIcon />
-                        Reply
                       </div>
                     </div>
                   </div>
@@ -327,7 +333,40 @@ const MapComments = () => {
                         </div>
                       )}
                       <div className="comment_tools">
-                      {comment.map_comment_owner === currentUserId && (
+                      <div className="map_comment_bottom_container">
+                        <div className="map_comment_bottom">
+                          {comment.map_comment_owner === currentUserId && (
+                            <div
+                              className="edit_comment_btn"
+                              onClick={() => handleClickEditComment(comment._id)}
+                            >
+                              <EditIcon style={{ fontSize: '17px' }} />
+                              Edit comment
+                            </div>
+                          )}
+                          {comment.map_comment_owner === currentUserId && (
+                            <div
+                              className="delete_comment_btn"
+                              onClick={() =>
+                                handleClickDeleteComment(comment._id)
+                              }
+                            >
+                              <DeleteIcon style={{ fontSize: '17px' }} />
+                              Delete comment
+                            </div>
+                          )}
+                          {isAuth && (
+                            <div
+                              className="reply_comment_btn"
+                              onClick={() => handleClickReplyComment(comment._id)}
+                            >
+                              <ChatBubbleOutlineIcon style={{ fontSize: '20px' }} />
+                              <p>Reply</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      {/* {comment.map_comment_owner === currentUserId && (
                         <div className="map_comment_bottom">
                           <div
                             className="edit_map_comment_btn"
@@ -346,17 +385,7 @@ const MapComments = () => {
                             Delete comment
                           </div>
                         </div>
-                      )}
-                      {isAuth && (
-                        <div
-                          className="reply_comment_btn"
-                          onClick={() => handleClickReplyComment(comment._id)}
-                        >
-                          <ChatBubbleOutlineIcon />
-                          Reply
-                          {/* <p>Reply</p> */}
-                        </div>
-                      )}
+                      )} */}
                       </div>
                       
                     </div>

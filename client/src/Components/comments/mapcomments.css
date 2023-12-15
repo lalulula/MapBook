@@ -55,6 +55,12 @@
   padding: 0 20px 0 20px;
 }
 
+.map_comments_bottom_container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 .map_comments_bottom {
   display: flex;
   justify-content: center;
@@ -197,7 +203,7 @@
 }
 
 .reply_comment_btn {
-  margin-left: 50px;
+  /* margin-left: 50px; */
 }
 
 .reply_comment_btn p {
