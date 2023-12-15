@@ -121,6 +121,7 @@ const Map = ({
       redrawThematicData();
       redrawHeatData();
       redrawCircleData();
+      redrawPieData();
     }
   };
 
@@ -162,12 +163,14 @@ const Map = ({
       return prevMapFile; // Return the unchanged state
     });
   };
-  const handlePieBarInputChange = (dataname, value) => {
+
+  const handlePieBarInputChange = (data, value) => {
     setInputData((prevInputData) => ({
       ...prevInputData,
-      [dataname]: value,
+      [data["dataName"]]: { color: data["color"], value: value },
     }));
   };
+
   const getColor = (datavalue, colors, ranges) => {
     for (let i = 0; i < ranges.length - 1; i++) {
       if (datavalue >= ranges[i] && datavalue < ranges[i + 1]) {
@@ -575,6 +578,167 @@ const Map = ({
     }
   };
 
+  // PIE
+  const redrawPieData = () => {
+
+    if (templateHoverType.current === "Pie Chart") {
+      if (mapRef.current.getLayer("clusters")) {
+        mapRef.current.removeLayer("clusters");
+      }
+      if (mapRef.current.getLayer("cluster-count")) {
+        mapRef.current.removeLayer("cluster-count");
+      }
+      if (mapRef.current.getLayer("unclustered-point")) {
+        mapRef.current.removeLayer("unclustered-point");
+      }
+      if (mapRef.current.getSource("circles")) {
+        console.log("circle source remove");
+        mapRef.current.removeSource("circles");
+      }
+
+      console.log("mapfile.current: ", mapFileData.current);
+
+      // let dataName = mapFileData.current["mapbook_circleheatmapdata"];
+      let dataNames = mapFileData.current["mapbook_datanames"];
+
+      console.log("dataNames: ", dataNames);
+
+      console.log("inputData: ", inputData);
+      
+      let maxDataValueName = null;
+      let maxDataValue = 0
+      if (inputData) {
+        for (const key in inputData) {
+          if (inputData[key]["value"] > maxDataValue) {
+            maxDataValue = inputData[key]["value"];
+            maxDataValueName = key;
+          }
+        }
+      }
+      console.log("maxDataValueName: ", maxDataValueName);
+
+      const expValue = [
+        "to-number",
+        ["get", maxDataValueName, ["get", "mapbook_data"]],
+      ];
+      console.log("expValue: ", expValue);
+
+      const featureDataAdded = mapFileData.current["features"].filter(
+        (f) => f["properties"].mapbook_data != null
+      );
+
+      var namesDataAdded = [];
+      featureDataAdded.forEach((element) => {
+        //adding mapbook data to each feature
+        namesDataAdded.push(element["properties"].name);
+      });
+
+      var JsonBasedOnPoint = structuredClone(mapFileData.current);
+      var newGeometry;
+      for (var i = 0; i < mapFileData.current["features"].length; i++) {
+        // console.log(mapFileData.current["features"][i])
+        if(mapFileData.current["features"][i].geometry.type == "Polygon"){
+          newGeometry = { type: "Point", coordinates:  polylabel(mapFileData.current["features"][i].geometry.coordinates, 1.0) };
+        }
+        else{
+          let maxArea = 0;
+          let maxPoint = [];
+          for(var j = 0; j < mapFileData.current["features"][i].geometry.coordinates.length; j++){
+            var polygonArea = calcPolygonArea(mapFileData.current["features"][i].geometry.coordinates[j][0])
+            if(maxArea < polygonArea){
+              maxArea = polygonArea
+              maxPoint = polylabel(mapFileData.current["features"][i].geometry.coordinates[j])
+            }
+          }
+          newGeometry = { type: "Point", coordinates: maxPoint };
+        }
+        JsonBasedOnPoint["features"][i].geometry = newGeometry;
+      }
+
+      mapRef.current.addSource("circles", {
+        type: "geojson",
+        data: JsonBasedOnPoint,
+        // cluster: true,
+        // clusterMaxZoom: 14, // Max zoom to cluster points on
+        // clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
+      });
+
+      mapRef.current.addLayer({
+        id: "clusters",
+        type: "circle",
+        source: "circles",
+        paint: {
+          "circle-translate": [0, 0],
+        },
+      });
+
+      mapRef.current.addLayer({
+        id: "cluster-count",
+        type: "symbol",
+        source: "circles",
+        layout: {
+          "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+          "text-size": 12,
+        },
+      });
+
+      mapRef.current.setFilter("clusters", ["in", "name", ...namesDataAdded]);
+
+      mapRef.current.setFilter("cluster-count", [
+        "in",
+        "name",
+        ...namesDataAdded,
+      ]);
+
+      mapRef.current.setLayoutProperty("cluster-count", "text-field", [
+        "to-string",
+        expValue,
+      ]);
+
+      //   * Blue, 20px circles when point count is less than 100
+      //   * Yellow, 30px circles when point count is between 100 and 750
+      //   * Pink, 40px circles when point count is greater than or equal to 750
+      mapRef.current.setPaintProperty("clusters", "circle-color", [
+        "case",
+        ["<", expValue, 100],
+        "#51bbd6",
+        ["all", [">=", expValue, 100], ["<", expValue, 750]],
+        "#f1f075",
+        "#f28cb1",
+      ]);
+
+      mapRef.current.setPaintProperty("clusters", "circle-radius", [
+        "case",
+        ["<", expValue, 100],
+        20,
+        ["all", [">=", expValue, 100], ["<", expValue, 750]],
+        30,
+        40,
+      ]);
+
+      console.log(
+        "mapRef.current.getPaintProperty:",
+        mapRef.current.getPaintProperty("clusters", "circle-color")
+      );
+    }
+    else{
+      if (mapRef.current.getLayer("clusters")) {
+        mapRef.current.setLayoutProperty(
+          "clusters",
+          "visibility",
+          "none"
+        );
+      }
+      if (mapRef.current.getLayer("cluster-count")) {
+        mapRef.current.setLayoutProperty(
+          "cluster-count",
+          "visibility",
+          "none"
+        );
+      }
+    }
+  };
+
   const handleAddData = (e) => {
     e.preventDefault();
 
@@ -594,6 +758,15 @@ const Map = ({
     } else {
       feature[0]["properties"]["mapbook_data"] = inputData;
     }
+
+    // if (showModalPie) {
+    //   feature[0]["properties"]["mapbook_data"] = {
+    //     [mapFileData.current["mapbook_datanames"]]: inputData,
+    //   };
+    // } else {
+    //   feature[0]["properties"]["mapbook_data"] = inputData;
+    // }
+
     for (var i = 0; i < tempArr.length; i++) {
       if (tempArr[i]["properties"].name === feature[0]["properties"].name) {
         mapFileData.current["features"][i] = feature[0];
@@ -605,6 +778,7 @@ const Map = ({
     redrawThematicData();
     redrawHeatData();
     redrawCircleData();
+    redrawPieData();
   };
 
   const handleUndo = () => {
@@ -627,6 +801,7 @@ const Map = ({
       redrawHeatData();
       redrawThematicData();
       redrawCircleData();
+      redrawPieData();
     }
   };
 
@@ -650,6 +825,7 @@ const Map = ({
       redrawThematicData();
       redrawHeatData();
       redrawCircleData();
+      redrawPieData();
     }
   };
 
@@ -856,6 +1032,7 @@ const Map = ({
         redrawThematicData();
         redrawHeatData();
         redrawCircleData();
+        redrawPieData();
   
         setIsMapbookData(false);
       }
@@ -960,6 +1137,10 @@ const Map = ({
             handlePieBarInputChange={handlePieBarInputChange}
             regionName={regionName}
             feature={feature}
+            // CIRCLE
+            options={options}
+            setInputData={setInputData}
+            handleRerender={handleRerender}
           />
         )}
         {/* Circle Modal */}

@@ -123,8 +123,10 @@ const MapDataInputPage = ({
         setOptions({ ...options, template: selectedMapFile.mapbook_template, topic:selectedMapFile.mapbook_topic, customTopic:selectedMapFile.mapbook_customtopic, circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata });
       }
       else if(selectedMapFile.mapbook_template == "Pie Chart"){
+        console.log("Pie Map selected")
+        console.log("selectedMapFile.mapbook_datanames: ", selectedMapFile.mapbook_datanames)
         setPieBarData(selectedMapFile.mapbook_datanames);
-        setOptions({ ...options, template: selectedMapFile.mapbook_template, topic:selectedMapFile.mapbook_topic, customTopic:selectedMapFile.mapbook_customtopic});
+        setOptions({ ...options, template: selectedMapFile.mapbook_template, topic:selectedMapFile.mapbook_topic, customTopic:selectedMapFile.mapbook_customtopic });
       }
       else if(selectedMapFile.mapbook_template == "Bar Chart"){
         setPieBarData(selectedMapFile.mapbook_datanames);
@@ -243,7 +245,13 @@ const MapDataInputPage = ({
         <h3>Data Names</h3>
         <div className="mapdatainput_templates">
           {(template === "Pie Chart" || template === "Bar Chart") && (
-            <PieBar pieBarData={pieBarData} setPieBarData={setPieBarData} />
+            <PieBar
+              pieBarData={pieBarData}
+              setPieBarData={setPieBarData}
+              // CIRCLE
+              options={options}
+              handleCircleHeatMapDataChange={handleCircleHeatMapDataChange}
+            />
           )}
           {template === "Circle Map" && (
             <Circle
