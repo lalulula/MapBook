@@ -57,12 +57,17 @@
     border: none;
 }
 
+.social_comment_bottom_container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
 .social_comments_bottom {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
-
 }
 
 .social_comment_content {
@@ -97,6 +102,18 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    color: #c8c8c8;
+    font-family: 'DIN Next Bold', sans-serif;
+    font-weight: bold;
+    font-size: 10px;
+    padding: 4px;
+    border-radius: 3px;
+}
+
+.reply_comment_btn:hover,
+.delete_comment_btn:hover,
+.edit_comment_btn:hover {
+    background-color: rgb(79, 79, 79);
 }
 
 .edit_comment_input {
@@ -243,10 +260,13 @@
 
 .comment_tools {
     display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-left: 1rem;
 }
 
 .reply_comment_btn {
-    margin-left: 50px;
+    /* margin-left: 50px; */
 }
 
 .reply_comment_btn p {

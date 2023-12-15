@@ -93,18 +93,15 @@ const Profile = () => {
         <div className="profile_top">
           <div className="profile_left">
             <img alt="" className="profile_img" src={user.profile_img}></img>
-            {isEditing && (
-              <Button
-                className="change_profileImg_btn"
-                style={{ backgroundColor: "transparent", marginTop: "1rem" }}
-                component="label"
-                variant="contained"
-                startIcon={<i className="bi bi-person-square"></i>}
-              >
-                Change Profile Image
-                <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-              </Button>
-            )}
+            <Button
+              className="change_profileImg_btn"
+              style={{ backgroundColor: "transparent", marginTop: "1rem", textDecoration: "underline" }}
+              component="label"
+              variant="contained"
+            >
+              Change Profile Image
+              <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+            </Button>
           </div>
 
           <div className="profile_right">
@@ -139,13 +136,13 @@ const Profile = () => {
                   style={
                     isEditing
                       ? {
-                          fontSize: "2rem",
-                        }
+                        fontSize: "13px",
+                      }
                       : {
-                          padding: 0,
-                          background: "transparent",
-                          fontSize: "2rem",
-                        }
+                        padding: 0,
+                        background: "transparent",
+                        fontSize: "2rem",
+                      }
                   }
                 />
               </div>
@@ -166,13 +163,13 @@ const Profile = () => {
                   style={
                     isEditing
                       ? {
-                          fontSize: "2rem",
-                        }
+                        fontSize: "13px",
+                      }
                       : {
-                          padding: 0,
-                          background: "transparent",
-                          fontSize: "2rem",
-                        }
+                        padding: 0,
+                        background: "transparent",
+                        fontSize: "2rem",
+                      }
                   }
                 />
               </div>
@@ -206,7 +203,7 @@ const Profile = () => {
             )}
           </Popup>
           <Popup
-            trigger = {
+            trigger={
               user.username !== "Admin" ? (
                 <div className="remove_account">
                   remove account
