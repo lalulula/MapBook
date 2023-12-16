@@ -6,7 +6,6 @@ import "./mapdetails.css";
 import MapTools from "../maptools/MapTools";
 import Comment from "./Comment";
 import * as turf from '@turf/turf';
-
 import {
   getMapAPI,
   deleteMapPostAPIMethod,
@@ -58,6 +57,7 @@ const MapDetails = () => {
   const mapContainerRef = useRef(null);
   const navigate = useNavigate();
   const [showHoverData, setShowHoverData] = useState(false);
+  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
   const pieChartData = useRef([]);
   const barChartData = useRef([]);
   const mapRef = useRef();
@@ -220,6 +220,14 @@ const MapDetails = () => {
   //   // Return bounding box [minX, minY, maxX, maxY]
   //   return [[minX, minY], [maxX, maxY]];
   // }
+
+  const handleClickDeleteMapPost = (id) => {
+    if (showDeleteConfirmationModal) {
+      setShowDeleteConfirmationModal(false);
+    } else {
+      setShowDeleteConfirmationModal(id);
+    }
+  }
 
   useEffect(() => {
     getMap();
@@ -846,6 +854,32 @@ const MapDetails = () => {
   } else {
     return (
       <div className="map_details">
+        {showDeleteConfirmationModal != false && (
+          <div className="maps_overlay"></div>
+        )}
+        {showDeleteConfirmationModal && (
+          <div className="mappdetails_delete_confirmation_modal">
+            <div className="mapdetails_delete_confirmation_modal_top">
+              Are you sure you want to delete this post?
+            </div>
+            <div className="mapdetails_delete_confirmation_modal_bottom">
+              <button
+                className="mapdetails_delete_confirm"
+                onClick={() => handleDeleteMapPost(mapId)}
+              >
+                Yes
+              </button>
+              <button
+                className="mapdetails_cancel_delete"
+                onClick={() =>
+                  setShowDeleteConfirmationModal(false)
+                }
+              >
+                No
+              </button>
+            </div>
+          </div>
+        )}
         <div className="map_details_container">
           <div className="name_options">
             <div className="name_topic_details_container">
@@ -876,7 +910,7 @@ const MapDetails = () => {
                 {(isOwner || user.username === "Admin") && (
                   <>
                     <DeleteButton
-                      onClick={() => handleDeleteMapPost(currentMap.current._id)}
+                      onClick={() => handleClickDeleteMapPost(currentMap.current._id)}
                     />
                     <EditButton
                       onClick={() => handleEdit()}
