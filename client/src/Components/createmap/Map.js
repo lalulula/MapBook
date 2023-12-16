@@ -29,6 +29,8 @@ const Map = ({
   setHoverData,
   isMapbookData,
   setIsMapbookData,
+  setMapImage,
+  mapImage
 }) => {
   const mapFileData = useRef(selectedMapFile);
   const mapRef = useRef();
@@ -930,19 +932,19 @@ const Map = ({
               const formattedData =
                 templateHoverType.current === "Thematic Map"
                   ? Object.keys(data)
-                      .map((key) => {
-                        const nestedProperties = Object.keys(data[key])
-                          .map(
-                            (nestedKey) =>
-                              `${nestedKey}:${data[key][nestedKey]}`
-                          )
-                          .join("\n");
-                        return `${key}: \n${nestedProperties}`;
-                      })
-                      .join("\n")
+                    .map((key) => {
+                      const nestedProperties = Object.keys(data[key])
+                        .map(
+                          (nestedKey) =>
+                            `${nestedKey}:${data[key][nestedKey]}`
+                        )
+                        .join("\n");
+                      return `${key}: \n${nestedProperties}`;
+                    })
+                    .join("\n")
                   : Object.keys(data)
-                      .map((key) => `${key}:${data[key]}`)
-                      .join("\n");
+                    .map((key) => `${key}:${data[key]}`)
+                    .join("\n");
               // console.log(data, formattedData);
               // console.log(regions[0]["properties"].name + "\n" + formattedData);
 
@@ -1035,7 +1037,9 @@ const Map = ({
     );
 
     // console.log("canvas", canvas);
-    const mapImage = canvas.toDataURL();
+    if (mapImage == null) {
+      const mapImage = canvas.toDataURL();
+    }
 
     const newMapObj = {
       map_name: options.name,
@@ -1074,16 +1078,14 @@ const Map = ({
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
           <i
-            className={`${
-              undoStack.current.length === 0 ? "disabled_undo" : "undo"
-            } bx bx-undo`}
+            className={`${undoStack.current.length === 0 ? "disabled_undo" : "undo"
+              } bx bx-undo`}
             onClick={handleUndo}
           />
           <div className="vertical_line_container">|</div>
           <i
-            className={`${
-              redoStack.current.length === 0 ? "disabled_redo" : "redo"
-            } bx bx-redo`}
+            className={`${redoStack.current.length === 0 ? "disabled_redo" : "redo"
+              } bx bx-redo`}
             onClick={handleRedo}
           />
         </div>
