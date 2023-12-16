@@ -5,7 +5,7 @@
 
 .mymaps_container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   justify-content: center;
   row-gap: 2rem;
   column-gap: 2rem;
@@ -58,11 +58,11 @@
 
 
 
-@media all and (max-width: 1100px) {
+/* @media all and (max-width: 1100px) {
   .mymaps_container {
     grid-template-columns: repeat(4, 1fr);
   }
-}
+} */
 
 @media all and (max-width: 1000px) {
   .mymaps_container {
