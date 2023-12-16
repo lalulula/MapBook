@@ -49,12 +49,19 @@ const ThematicDataInput = ({
                             handleThematicData(data, e.target.value)
                           }
                           // placeholder="Enter data value"
+                          // placeholder={
+                          //   feature[0].properties.mapbook_data
+                          //     ? feature[0].properties.mapbook_data[
+                          //         data["dataName"]
+                          //       ].value
+                          //     : "Enter data value"
+                          // }
                           placeholder={
-                            feature[0].properties.mapbook_data
-                              ? feature[0].properties.mapbook_data[
-                                  data["dataName"]
-                                ].value
-                              : "Enter data value"
+                            !feature[0].properties.mapbook_data ? 
+                            "Enter data value" : 
+                            !feature[0].properties.mapbook_data[data["dataName"]] ? 
+                            "Enter data value" :
+                            feature[0].properties.mapbook_data[data["dataName"]].value
                           }
                           // type="number"
                           // step="0.01"
