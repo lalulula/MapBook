@@ -5,7 +5,7 @@
 
 .mymaps_container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   justify-content: center;
   row-gap: 2rem;
   column-gap: 2rem;
@@ -51,5 +51,43 @@
   .mymaps_container {
     grid-template-columns: repeat(1, 1fr);
     /* Single column layout on smaller screens */
+  }
+}
+
+
+
+
+
+@media all and (max-width: 1100px) {
+  .mymaps_container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media all and (max-width: 1000px) {
+  .mymaps_container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .search_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .search_filter_dropdown {
+    width: 250px;
+  }
+
+  .search_bar_wrapper {
+    width: 300px;
+  }
+}
+
+@media all and (max-width: 600px) {
+  .mymaps_container {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
