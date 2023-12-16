@@ -910,7 +910,6 @@ const MapDetails = () => {
                           Export Map
                         </li>
                         <Divider style={{ margin: "0" }} />
-                        <li onClick={() => handleEdit()}>Edit Map</li>
                       </ul>
                     </div>
                   )}
