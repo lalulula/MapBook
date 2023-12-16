@@ -638,23 +638,15 @@ const Map = ({
       });
 
 
-      mapRef.current.setFilter("clusters", ["in", "name", ...namesDataAdded]);
-
-      mapRef.current.setFilter("cluster-count", [
-        "in",
-        "name",
-        ...namesDataAdded,
-      ]);
-
-
-
+      mapRef.current.setFilter("counties-pie", ["in", "name", ...namesDataAdded]);
+      
       /// Haneul
       var expImageSelect = ['case'];
       // generate image object for region which data exist
       namesDataAdded.forEach((name) => {
 
         // generate image 
-        // image =generateImage(data);
+        // image = generateImage(data);
 
         // add image that we generate
         if(mapRef.current.hasImage(name))
