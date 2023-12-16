@@ -6,10 +6,8 @@ import { useNavigate } from "react-router-dom";
 import "./createMap.css";
 import * as turf from "@turf/turf";
 import polylabel from "polylabel";
-
 import html2canvas from "html2canvas";
 import { easeInOut, motion } from "framer-motion";
-
 import PieBarDataInput from "./modals/PieBarDataInput";
 import CircleDataInput from "./modals/CircleDataInput";
 import ThematicDataInput from "./modals/ThematicDataInput";
@@ -103,6 +101,7 @@ const Map = ({
   const barChartData = useRef([]);
   const navigate = useNavigate();
   const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleRerender = () => {
     setRerenderFlag(!rerenderFlag);
@@ -1105,9 +1104,8 @@ const Map = ({
               return `<span>${Object.keys(obj)
                 .map((nestedKey) => {
                   const value = obj[nestedKey];
-                  return ` ${
-                    nestedKey.toLowerCase() === "color" ? `(${value})` : value
-                  }`;
+                  return ` ${nestedKey.toLowerCase() === "color" ? `(${value})` : value
+                    }`;
                 })
                 .join("<br/>")}</span>`;
             };
@@ -1116,9 +1114,8 @@ const Map = ({
               setHoverData(`No data for ${regions[0]["properties"].name}`);
             } else {
               const formatDataByKey = (key, value) => {
-                return `${key}: ${
-                  isObject(value) ? renderObject(value) : value
-                }`;
+                return `${key}: ${isObject(value) ? renderObject(value) : value
+                  }`;
               };
 
               const formatColorKey = (key, value) => {
@@ -1248,28 +1245,29 @@ const Map = ({
     if (res.ok) {
       navigate("/mainpage");
     } else {
-      const responseData = await res.json();
+      setShowErrorMessage(true);
+      // const responseData = await res.json();
 
-      if (res.status === 400 && responseData.validationErrors) {
-        console.log("Validation Errors:", responseData.validationErrors);
-        let map_description =
-          responseData.validationErrors["map_description"] ===
-          "Path `map_description` is required.";
-        let topic =
-          responseData.validationErrors["topic"] ===
-          "Path `topic` is required.";
-        let map_name =
-          responseData.validationErrors["map_name"] ===
-          "Path `map_name` is required.";
+      // if (res.status === 400 && responseData.validationErrors) {
+      //   console.log("Validation Errors:", responseData.validationErrors);
+      //   let map_description =
+      //     responseData.validationErrors["map_description"] ===
+      //     "Path `map_description` is required.";
+      //   let topic =
+      //     responseData.validationErrors["topic"] ===
+      //     "Path `topic` is required.";
+      //   let map_name =
+      //     responseData.validationErrors["map_name"] ===
+      //     "Path `map_name` is required.";
 
-        alert(
-          `Check if you entered field(s): ${
-            map_description && "map_description"
-          }, ${topic && "topic"},${map_name && "map_name"}.`
-        );
-      } else {
-        alert(`Error: ${res.status} - ${res.statusText}`);
-      }
+
+      //   alert(
+      //     `Check if you entered field(s): ${map_description && "map_description"
+      //     }, ${topic && "topic"},${map_name && "map_name"}.`
+      //   );
+      // } else {
+      //   alert(`Error: ${res.status} - ${res.statusText}`);
+      // }
     }
   };
 
@@ -1309,16 +1307,14 @@ const Map = ({
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
           <i
-            className={`${
-              undoStack.current.length === 0 ? "disabled_undo" : "undo"
-            } bx bx-undo`}
+            className={`${undoStack.current.length === 0 ? "disabled_undo" : "undo"
+              } bx bx-undo`}
             onClick={handleUndo}
           />
           <div className="vertical_line_container">|</div>
           <i
-            className={`${
-              redoStack.current.length === 0 ? "disabled_redo" : "redo"
-            } bx bx-redo`}
+            className={`${redoStack.current.length === 0 ? "disabled_redo" : "redo"
+              } bx bx-redo`}
             onClick={handleRedo}
           />
         </div>
