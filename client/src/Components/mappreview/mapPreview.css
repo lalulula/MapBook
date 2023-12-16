@@ -31,6 +31,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  z-index: 1;
 }
 
 .mappreview_content {
@@ -82,6 +83,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  z-index: 2;
 }
 
 .mappreview_options_menu {
@@ -94,28 +96,35 @@
   /* border: 1px solid #ddd; */
   border-radius: 5px;
   padding: 5px;
-  z-index: 1;
+  z-index: 100;
 }
 
 .mappreview_options_menu ul {
   list-style: none;
   margin: 0;
   padding: 0;
+  z-index: 2;
 }
 
 .mappreview_options_menu li {
   cursor: pointer;
   padding: 5px 10px;
   transition: background-color 0.3s;
+  z-index: 2;
+
 }
 
 .mappreview_options_menu li:hover {
   background-color: rgb(109, 109, 109);
   border-radius: 3px;
+  z-index: 2;
+
 }
 
 .mappreview_options {
   background-color: white;
+  z-index: 2;
+
 }
 
 .bi-three-dots-vertical {
@@ -123,4 +132,57 @@
   right: 0;
   padding: 10px;
   font-size: 25px;
+  z-index: 2;
+
+}
+
+
+.mappreview_delete_confirmation_modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  background-color: white;
+  color: black;
+  height: 150px;
+  width: 450px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 30px 0 30px 0;
+  font-weight: 500;
+  border-radius: 7px;
+  z-index: 100;
+}
+
+.mappreview_delete_confirmation_modal_bottom {
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mappreview_delete_confirm,
+.mappreview_cancel_delete {
+  color: black;
+  border: white;
+  padding: 8px 15px 8px 15px;
+  border-radius: 5px;
+}
+
+.mappreview_delete {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.mappreview_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0.3;
+  background-color: black;
+  z-index: 99;
 }

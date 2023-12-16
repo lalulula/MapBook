@@ -7,11 +7,10 @@ import { useSelector } from "react-redux";
 import Lottie from "lottie-react";
 import ImageLoader from "../../assets/Lottie/ImageLoader.json";
 import { getUserById } from "../../api/user";
-import { deleteMapPostAPIMethod } from "../../api/map";
 
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
 
-const MapPreview = ({ data }) => {
+const MapPreview = ({ data, showDeleteConfirmationModal, setShowDeleteConfirmationModal }) => {
   // console.log("data: ", data);
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const navigate = useNavigate();
@@ -37,7 +36,6 @@ const MapPreview = ({ data }) => {
     });
   };
   const handleShowMapDetail = (id) => {
-    console.log("CLICKED ON MAP PREVIEW: ", id);
     navigate(`/mapdetails/${id}`);
   };
 
@@ -85,6 +83,16 @@ const MapPreview = ({ data }) => {
 
     console.log("Share clicked");
   };
+
+  const handleClickDeleteMapPost = (e, id) => {
+    e.stopPropagation();
+    if (showDeleteConfirmationModal) {
+      setShowDeleteConfirmationModal(false);
+    } else {
+      setShowDeleteConfirmationModal(id);
+      setOptionsMenuVisible(!optionsMenuVisible);
+    }
+  }
 
   // Convert data to GEOJSON //
   function saveGeoJSONToFile(geoJSONObject, filename) {
@@ -138,21 +146,21 @@ const MapPreview = ({ data }) => {
     console.log("Export clicked");
   };
 
-  const handleDeleteMapPost = async (mapId) => {
-    console.log(mapId);
-    try {
-      console.log("removing map post");
-      const res = await deleteMapPostAPIMethod(mapId);
-      if (res) {
-        alert("Map has been deleted successfully.");
-        navigate("/mainpage");
-      } else {
-        alert("Error deleting post", res);
-      }
-    } catch (error) {
-      console.error("Error handling delete operation:", error);
-    }
-  };
+  // const handleDeleteMapPost = async (mapId) => {
+  //   console.log(mapId);
+  //   try {
+  //     console.log("removing map post");
+  //     const res = await deleteMapPostAPIMethod(mapId);
+  //     if (res) {
+  //       alert("Map has been deleted successfully.");
+  //       navigate("/mainpage");
+  //     } else {
+  //       alert("Error deleting post", res);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error handling delete operation:", error);
+  //   }
+  // };
 
   return (
     <div
@@ -168,7 +176,7 @@ const MapPreview = ({ data }) => {
             <li onClick={handleShare}>Share</li>
             <li onClick={handleExport}>Export</li>
             {(isOwner || user.username === "Admin") && (
-              <li onClick={() => handleDeleteMapPost(data._id)}>Delete</li>
+              <li onClick={(e) => handleClickDeleteMapPost(e, data._id)}>Delete</li>
             )}
           </ul>
         </div>

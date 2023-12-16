@@ -29,7 +29,7 @@ import Typewriter from "typewriter-effect";
 import CustomSwitch from "../widgets/CustomSwitch";
 import polylabel from "polylabel"
 
-import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement} from 'chart.js';
+import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement } from 'chart.js';
 import { Pie, Bar } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement);
@@ -662,14 +662,14 @@ const MapDetails = () => {
             const featureDataAdded = selectedMapFile["features"].filter(
               (f) => f["properties"].mapbook_data != null
             );
-      
+
             const newBarChartData = []
-      
+
             var namesDataAdded = [];
             featureDataAdded.forEach((element) => {
               //adding mapbook data to each feature
               namesDataAdded.push(element["properties"].name);
-      
+
               var tempBarChartData = {
                 labels: [''],
                 datasets: [],
@@ -677,19 +677,19 @@ const MapDetails = () => {
               console.log("tempBarChartData: ", tempBarChartData)
               var keys = Object.keys(element["properties"].mapbook_data);
               keys.forEach((name) => {
-                var tempDataset = {data: []}
+                var tempDataset = { data: [] }
                 tempDataset.label = name
                 tempDataset.data.push(element["properties"].mapbook_data[name].value)
                 tempDataset.backgroundColor = element["properties"].mapbook_data[name].color
-      
+
                 tempBarChartData.datasets.push(tempDataset)
               });
               newBarChartData.push([element["properties"].name, tempBarChartData])
-      
+
             });
-      
+
             barChartData.current = newBarChartData;
-      
+
             // wait till canvas is re-rander
             drawBarData(namesDataAdded);
 
@@ -698,14 +698,14 @@ const MapDetails = () => {
             const featureDataAdded = selectedMapFile["features"].filter(
               (f) => f["properties"].mapbook_data != null
             );
-      
+
             const newPieChartData = []
-      
+
             var namesDataAdded = [];
             featureDataAdded.forEach((element) => {
               //adding mapbook data to each feature
               namesDataAdded.push(element["properties"].name);
-      
+
               var tempPieChartData = {
                 labels: [],
                 datasets: [
@@ -720,21 +720,21 @@ const MapDetails = () => {
               keys.forEach((name) => {
                 console.log("name: ", name)
                 console.log('element["properties"].mapbook_data', element["properties"].mapbook_data)
-      
+
                 console.log('element["properties"].mapbook_data.name', element["properties"].mapbook_data[name])
                 tempPieChartData.labels.push(name);
                 tempPieChartData.datasets[0].data.push(element["properties"].mapbook_data[name].value);
                 tempPieChartData.datasets[0].backgroundColor.push(element["properties"].mapbook_data[name].color);
               });
               newPieChartData.push([element["properties"].name, tempPieChartData])
-      
+
             });
-      
+
             pieChartData.current = newPieChartData;
-      
+
             // wait till canvas is re-rander
             drawPieData(namesDataAdded);
-      
+
 
           }
 
@@ -893,7 +893,7 @@ const MapDetails = () => {
                     onClick={handleToggleOptions}
                   />
                   {optionsMenuVisible && (
-                    <div className="mappreview_options_menu">
+                    <div className="mapdetails_mappreview_options_menu">
                       <ul>
                         <li onClick={() => handleFork()}>Fork Map</li>
                         <Divider style={{ margin: "0" }} />
@@ -966,69 +966,69 @@ const MapDetails = () => {
         </div>
 
 
-        
-      <div style={{
-        width:50, 
-        height:50, 
-        top: 100,
-        left: -200,
-        position: 'absolute'
-        // display:'none'
-      }}>
-        {pieChartData.current.length !== 0 &&
-          pieChartData.current.map((item, index) => (
-            <Pie id={item[0] + 'pie'} data={item[1]}  options={{
-              animation: {
-                duration: 0
-              },
-              plugins: {
-                legend: {
-                  display: false,
-                },
-              },
-            }}/>
-        ))}
 
-        {barChartData.current.length !== 0 &&
-          barChartData.current.map((item, index) => (
-            <Bar id={item[0] + 'bar'} data={item[1]} options={{
-              animation: {
-                duration: 0
-              },
-              plugins: {
-                legend: {
-                  display: false,
+        <div style={{
+          width: 50,
+          height: 50,
+          top: 100,
+          left: -200,
+          position: 'absolute'
+          // display:'none'
+        }}>
+          {pieChartData.current.length !== 0 &&
+            pieChartData.current.map((item, index) => (
+              <Pie id={item[0] + 'pie'} data={item[1]} options={{
+                animation: {
+                  duration: 0
                 },
-              },
-              scales: {
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
+                },
+              }} />
+            ))}
 
-                x: {
-                  grid: {
-                    display: false
+          {barChartData.current.length !== 0 &&
+            barChartData.current.map((item, index) => (
+              <Bar id={item[0] + 'bar'} data={item[1]} options={{
+                animation: {
+                  duration: 0
+                },
+                plugins: {
+                  legend: {
+                    display: false,
                   },
-                  ticks:{
-                    display: false
+                },
+                scales: {
+
+                  x: {
+                    grid: {
+                      display: false
+                    },
+                    ticks: {
+                      display: false
+                    },
+                    border: {
+                      display: false
+                    }
                   },
-                  border:{
-                    display: false
+                  y: {
+                    grid: {
+                      display: false
+                    },
+                    ticks: {
+                      display: false
+                    },
+                    border: {
+                      display: false
+                    }
                   }
                 },
-                y: {
-                  grid: {
-                    display: false
-                  },
-                  ticks:{
-                    display: false
-                  },
-                  border:{
-                    display: false
-                  }
-                }
-              },
-            }}/>
-        ))}
+              }} />
+            ))}
 
-      </div>
+        </div>
 
       </div>
     );

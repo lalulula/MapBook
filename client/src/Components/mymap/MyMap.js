@@ -11,6 +11,7 @@ import NoMapAni from "../../assets/Lottie/NoMaps.json";
 import Typewriter from "typewriter-effect";
 import { getMapsAPI } from "../../api/map";
 import MainPageLoading from "../../assets/Lottie/MapsLoading.json";
+import { deleteMapPostAPIMethod } from "../../api/map";
 
 const MyMap = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const MyMap = () => {
   const [searchFilterOption, setSearchFilterOption] = useState("");
   const searchFilterOps = ["MapName", "Topics", "Description"];
   const [myMaps, setMyMaps] = useState([]);
+  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
 
   const handleSeachFilter = (e) => {
     setSearchFilterOption(e.value);
@@ -36,9 +38,24 @@ const MyMap = () => {
       searchFilterOption === "Search by"
       ? map.map_name.toLowerCase().includes(searchTerm.toLowerCase())
       : searchFilterOption === "Topics"
-      ? map.topic.toLowerCase().includes(searchTerm.toLowerCase())
-      : map.map_description.toLowerCase().includes(searchTerm.toLowerCase());
+        ? map.topic.toLowerCase().includes(searchTerm.toLowerCase())
+        : map.map_description.toLowerCase().includes(searchTerm.toLowerCase());
   });
+  const handleDeleteMapPost = async (mapId) => {
+    try {
+      console.log("removing map post");
+      const res = await deleteMapPostAPIMethod(mapId);
+      if (res) {
+        setShowDeleteConfirmationModal(false);
+        const filteredMaps = myMaps.filter((m) => m._id !== mapId);
+        setMyMaps(filteredMaps);
+      } else {
+        alert("Error deleting post", res);
+      }
+    } catch (error) {
+      console.error("Error handling delete operation:", error);
+    }
+  };
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -61,6 +78,9 @@ const MyMap = () => {
 
   return (
     <div className="mymaps_main_container">
+      {showDeleteConfirmationModal != false && (
+        <div className="maps_overlay"></div>
+      )}
       {!myMapsLoading && <h1>{user.username}'s Maps</h1>}
       {myMapsLoading ? (
         <div
@@ -105,7 +125,34 @@ const MyMap = () => {
           </div>
           <div className="mymaps_container">
             {filteredMaps.map((item, index) => (
-              <MapPreview key={index} data={item} />
+              <div className="mymap_mappreview_container">
+                <MapPreview key={index} data={item} showDeleteConfirmationModal={showDeleteConfirmationModal} setShowDeleteConfirmationModal={setShowDeleteConfirmationModal} />
+                {console.log("showDeleteconfimationmodal: ", showDeleteConfirmationModal)}
+                {console.log("item._id: ", item._id)}
+                {showDeleteConfirmationModal == item._id && (
+                  <div className="mappreview_delete_confirmation_modal">
+                    <div className="mappreview_delete_confirmation_modal_top">
+                      Are you sure you want to delete this post?
+                    </div>
+                    <div className="mappreview_delete_confirmation_modal_bottom">
+                      <button
+                        className="mappreview_delete_confirm"
+                        onClick={() => handleDeleteMapPost(item._id)}
+                      >
+                        Yes
+                      </button>
+                      <button
+                        className="mappreview_cancel_delete"
+                        onClick={() =>
+                          setShowDeleteConfirmationModal(false)
+                        }
+                      >
+                        No
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </>

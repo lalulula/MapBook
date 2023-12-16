@@ -238,7 +238,8 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen, isMapbookData, 
           id="dropzone-file"
           style={{ display: "none" }}
           onChange={handleFileChange}
-          // className="importfilepage_fileInput"
+          accept=".shp, .json, .geojson, .kml, .zip"
+        // className="importfilepage_fileInput"
         />
       </Label>
       {selectedFile && (
@@ -251,7 +252,7 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen, isMapbookData, 
             fontSize: "15px",
             textAlign: "center",
           }}
-          // className="importfilepage_container"
+        // className="importfilepage_container"
         >
           Selected File :{" "}
           <span
