@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../features/userSlice";
+import { logout, updateUsername } from "../../features/userSlice";
 import { useSelector } from "react-redux";
 import "./profile.css";
 import { updateUserAPIMethod, removeUserAPIMethod } from "../../api/user";
@@ -9,7 +9,6 @@ import Popup from "reactjs-popup";
 import Input from "@mui/joy/Input";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
-
 import FormLabel from "@mui/joy/FormLabel";
 import UpdateUserButton from "../widgets/UpdateUserButton";
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
@@ -24,6 +23,8 @@ const Profile = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const userId = useSelector((state) => state.user.id);
+  const currentUser = useSelector((state) => state.user.user);
+  console.log("THIS IS THE CURRENT USER: ", currentUser);
 
   const getUser = async () => {
     const response = await fetch(`${API_BASE_URL}/api/users/${userId}`, {
@@ -35,7 +36,8 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    getUser();
+    setUser(currentUser);
+    setUsername(currentUser.username)
   }, [user]);
 
   if (!user) return null;
@@ -50,9 +52,12 @@ const Profile = () => {
   };
 
   const updateUser = async () => {
+    dispatch(updateUsername(username));
+
     updateUserAPIMethod(username, selectedFile, userId, isAuth).catch((err) => {
       console.error("Error updating user:", err.message);
     });
+
     setIsEditing(!isEditing);
   };
 
@@ -131,7 +136,7 @@ const Profile = () => {
                   placeholder="username"
                   size="lg"
                   variant="soft"
-                  value={user.username}
+                  value={username}
                   className="username"
                   style={
                     isEditing

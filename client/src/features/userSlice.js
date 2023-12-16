@@ -19,11 +19,14 @@ export const userSlice = createSlice({
       state.user = {};
       state.isAuthenticated = false;
       state.id = null;
-
+    },
+    updateUsername: (state, { payload }) => {
+      // Assuming payload contains the new username
+      state.user.username = payload;
     },
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, updateUsername } = userSlice.actions;
 
 export default userSlice.reducer;
