@@ -907,6 +907,50 @@ const Map = ({
     redoStack.current = [];
   };
 
+  function calculateCentroid(features) {
+    let totalX = 0;
+    let totalY = 0;
+    let count = 0;
+
+    // Loop through features and sum up coordinates
+    features.forEach(feature => {
+      const coordinates = feature.geometry.coordinates[0]; // Assuming the first ring of the polygon
+      if (typeof coordinates == "number") {
+        return;
+      }
+      if (coordinates.length > 1) {
+        coordinates.forEach(coord => {
+          if (typeof coord[0] == 'number' && typeof coord[0] == 'number') {
+            totalX += coord[0];
+            totalY += coord[1];
+            count++;
+          } else {
+            coord.forEach(c => {
+              if (typeof coord[0] == 'number' && typeof coord[0] == 'number') {
+                totalX += coord[0];
+                totalY += coord[1];
+                count++;
+              }
+            })
+          }
+        });
+      } else {
+        coordinates[0].forEach(coord => {
+          if (typeof coord[0] == 'number' && typeof coord[0] == 'number') {
+            totalX += coord[0];
+            totalY += coord[1];
+            count++;
+          }
+        });
+      }
+    });
+    console.log("totalX: ", totalX);
+    console.log("totalY: ", totalY);
+    const avgX = totalX / count;
+    const avgY = totalY / count;
+    return [avgX, avgY];
+  }
+
   useEffect(() => {
     console.log("selectedMapFile: ", mapFileData.current);
     // console.log("onhover: useEffect:", templateHoverType.current);
@@ -932,6 +976,7 @@ const Map = ({
     // mapFileData.current
 
     let map;
+    const centroid = calculateCentroid(selectedMapFile.features);
 
     mapboxgl.accessToken = MAPBOX_TOKEN;
     if (mapContainerRef.current) {
@@ -942,6 +987,8 @@ const Map = ({
         zoom: zoom,
         preserveDrawingBuffer: true,
       });
+      map.setCenter(centroid);
+
     }
 
     if (map != null) {

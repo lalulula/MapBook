@@ -15,7 +15,7 @@ import ThematicDataInput from "./modals/ThematicDataInput";
 import HeatDataInput from "./modals/HeatDataInput";
 
 
-import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement} from 'chart.js';
+import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement } from 'chart.js';
 import { Pie, Bar } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement);
@@ -37,7 +37,7 @@ const Map = ({
   setIsMapbookData,
   mapId,
 }) => {
-  
+
   const mapFileData = useRef(selectedMapFile);
   const mapRef = useRef();
 
@@ -127,7 +127,7 @@ const Map = ({
     mapFileData.current = newState;
 
 
-    if(isMapLoaded){
+    if (isMapLoaded) {
       redrawThematicData();
       redrawHeatData();
       redrawCircleData();
@@ -143,7 +143,7 @@ const Map = ({
   useEffect(() => {
     templateHoverType.current = template;
     // console.log("isMapbookData: Map.js:", isMapbookData)
-    if(!isMapbookData){
+    if (!isMapbookData) {
       resetMap();
       console.log("resetMap called:", selectedMapFile);
     }
@@ -323,7 +323,7 @@ const Map = ({
         ...namesDataAdded,
       ]);
     }
-    else{
+    else {
       if (mapRef.current.getLayer("counties-thematic")) {
         mapRef.current.setLayoutProperty(
           "counties-thematic",
@@ -416,7 +416,7 @@ const Map = ({
         ...namesDataAdded,
       ]);
     }
-    else{
+    else {
       if (mapRef.current.getLayer("counties-heat")) {
         mapRef.current.setLayoutProperty(
           "counties-heat",
@@ -442,7 +442,7 @@ const Map = ({
 
     return Math.abs(total);
   }
- 
+
   // CLUSTER APPROACH
   const redrawCircleData = () => {
 
@@ -485,15 +485,15 @@ const Map = ({
       var newGeometry;
       for (var i = 0; i < mapFileData.current["features"].length; i++) {
         // console.log(mapFileData.current["features"][i])
-        if(mapFileData.current["features"][i].geometry.type == "Polygon"){
-          newGeometry = { type: "Point", coordinates:  polylabel(mapFileData.current["features"][i].geometry.coordinates, 1.0) };
+        if (mapFileData.current["features"][i].geometry.type == "Polygon") {
+          newGeometry = { type: "Point", coordinates: polylabel(mapFileData.current["features"][i].geometry.coordinates, 1.0) };
         }
-        else{
+        else {
           let maxArea = 0;
           let maxPoint = [];
-          for(var j = 0; j < mapFileData.current["features"][i].geometry.coordinates.length; j++){
+          for (var j = 0; j < mapFileData.current["features"][i].geometry.coordinates.length; j++) {
             var polygonArea = calcPolygonArea(mapFileData.current["features"][i].geometry.coordinates[j][0])
-            if(maxArea < polygonArea){
+            if (maxArea < polygonArea) {
               maxArea = polygonArea
               maxPoint = polylabel(mapFileData.current["features"][i].geometry.coordinates[j])
             }
@@ -569,7 +569,7 @@ const Map = ({
         mapRef.current.getPaintProperty("clusters", "circle-color")
       );
     }
-    else{
+    else {
       if (mapRef.current.getLayer("clusters")) {
         mapRef.current.setLayoutProperty(
           "clusters",
@@ -730,7 +730,7 @@ const Map = ({
         console.log("tempBarChartData: ", tempBarChartData)
         var keys = Object.keys(element["properties"].mapbook_data);
         keys.forEach((name) => {
-          var tempDataset = {data: []}
+          var tempDataset = { data: [] }
           tempDataset.label = name
           tempDataset.data.push(element["properties"].mapbook_data[name].value)
           tempDataset.backgroundColor = element["properties"].mapbook_data[name].color
@@ -900,6 +900,48 @@ const Map = ({
     redoStack.current = [];
   };
 
+  function calculateCentroid(features) {
+    let totalX = 0;
+    let totalY = 0;
+    let count = 0;
+
+    // Loop through features and sum up coordinates
+    features.forEach(feature => {
+      const coordinates = feature.geometry.coordinates[0]; // Assuming the first ring of the polygon
+      if (typeof coordinates == "number") {
+        return;
+      }
+      if (coordinates.length > 1) {
+        coordinates.forEach(coord => {
+          if (typeof coord[0] == 'number' && typeof coord[0] == 'number') {
+            totalX += coord[0];
+            totalY += coord[1];
+            count++;
+          } else {
+            coord.forEach(c => {
+              if (typeof coord[0] == 'number' && typeof coord[0] == 'number') {
+                totalX += coord[0];
+                totalY += coord[1];
+                count++;
+              }
+            })
+          }
+        });
+      } else {
+        coordinates[0].forEach(coord => {
+          if (typeof coord[0] == 'number' && typeof coord[0] == 'number') {
+            totalX += coord[0];
+            totalY += coord[1];
+            count++;
+          }
+        });
+      }
+    });
+    const avgX = totalX / count;
+    const avgY = totalY / count;
+    return [avgX, avgY];
+  }
+
   useEffect(() => {
     console.log("selectedMapFile: ", mapFileData.current);
     // console.log("onhover: useEffect:", templateHoverType.current);
@@ -921,11 +963,12 @@ const Map = ({
         }
       }
     }
-    
+
 
     // mapFileData.current
 
     let map;
+    const centroid = calculateCentroid(selectedMapFile.features);
 
     mapboxgl.accessToken = MAPBOX_TOKEN;
     if (mapContainerRef.current) {
@@ -936,6 +979,7 @@ const Map = ({
         zoom: zoom,
         preserveDrawingBuffer: true,
       });
+      map.setCenter(centroid);
     }
 
     if (map != null) {
@@ -1078,25 +1122,25 @@ const Map = ({
           }
         });
 
-        
+
         setIsMapLoaded(true);
       });
     }
 
     mapRef.current = map;
 
-    
+
   }, []);
 
   useEffect(() => {
-    if(isMapLoaded){
-      if(isMapbookData){
+    if (isMapLoaded) {
+      if (isMapbookData) {
         redrawThematicData();
         redrawHeatData();
         redrawCircleData();
         redrawPieData();
         redrawBarData();
-  
+
         setIsMapbookData(false);
       }
     }
@@ -1145,7 +1189,7 @@ const Map = ({
       mapPreviewImg: mapImage,
       file: mapData,
     };
-    
+
     console.log("mapId", mapId);
     console.log("newMapObj", newMapObj);
 
@@ -1251,8 +1295,8 @@ const Map = ({
         )}
       </div>
       <div style={{
-        width:50, 
-        height:50, 
+        width: 50,
+        height: 50,
         top: 100,
         left: -200,
         position: 'absolute'
@@ -1260,7 +1304,7 @@ const Map = ({
       }}>
         {pieChartData.current.length !== 0 &&
           pieChartData.current.map((item, index) => (
-            <Pie id={item[0] + 'pie'} data={item[1]}  options={{
+            <Pie id={item[0] + 'pie'} data={item[1]} options={{
               animation: {
                 duration: 0
               },
@@ -1269,8 +1313,8 @@ const Map = ({
                   display: false,
                 },
               },
-            }}/>
-        ))}
+            }} />
+          ))}
 
         {barChartData.current.length !== 0 &&
           barChartData.current.map((item, index) => (
@@ -1289,10 +1333,10 @@ const Map = ({
                   grid: {
                     display: false
                   },
-                  ticks:{
+                  ticks: {
                     display: false
                   },
-                  border:{
+                  border: {
                     display: false
                   }
                 },
@@ -1300,16 +1344,16 @@ const Map = ({
                   grid: {
                     display: false
                   },
-                  ticks:{
+                  ticks: {
                     display: false
                   },
-                  border:{
+                  border: {
                     display: false
                   }
                 }
               },
-            }}/>
-        ))}
+            }} />
+          ))}
 
       </div>
 
