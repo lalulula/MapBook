@@ -6,15 +6,12 @@ import { useNavigate } from "react-router-dom";
 import "./createMap.css";
 import * as turf from "@turf/turf";
 import polylabel from "polylabel"
-
 import html2canvas from "html2canvas";
-
 import PieBarDataInput from "./modals/PieBarDataInput";
 import CircleDataInput from "./modals/CircleDataInput";
 import ThematicDataInput from "./modals/ThematicDataInput";
 import HeatDataInput from "./modals/HeatDataInput";
-
-
+import { easeInOut, motion } from "framer-motion";
 import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement } from 'chart.js';
 import { Pie, Bar } from 'react-chartjs-2';
 
@@ -95,6 +92,7 @@ const Map = ({
   const [isMapLoaded, setIsMapLoaded] = useState(false)
   const pieChartData = useRef([]);
   const barChartData = useRef([]);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
 
   const navigate = useNavigate();
 
@@ -1200,7 +1198,8 @@ const Map = ({
       navigate("/mainpage");
     } else {
       // alert(`Error: ${res.status} - ${res.statusText}`);
-      alert("Check that all input fields have values");
+      // alert("Check that all input fields have values");
+      setShowErrorMessage(true);
     }
   };
 
@@ -1218,6 +1217,27 @@ const Map = ({
 
   return (
     <div className="addmapdata_center">
+      <motion.div
+        initial={{ x: "200%" }}
+        animate={{ x: !showErrorMessage ? "200%" : 0 }}
+        transition={{ type: "tween", duration: 0.5, ease: easeInOut }}
+        exit={{ x: "-100%" }}
+        style={{
+          position: "fixed",
+          padding: "20px",
+          zIndex: "100",
+          top: "100px",
+        }}
+        className="createsocialpost_error_message"
+      >
+        Please fill everything out!
+        <div
+          className="createsocialpost_error_message_close"
+          onClick={() => setShowErrorMessage(false)}
+        >
+          X
+        </div>
+      </motion.div>
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
           <i
