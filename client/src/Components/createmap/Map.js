@@ -8,15 +8,21 @@ import * as turf from "@turf/turf";
 import polylabel from "polylabel";
 
 import html2canvas from "html2canvas";
-import { easeInOut, motion } from "framer-motion"
+import { easeInOut, motion } from "framer-motion";
 
 import PieBarDataInput from "./modals/PieBarDataInput";
 import CircleDataInput from "./modals/CircleDataInput";
 import ThematicDataInput from "./modals/ThematicDataInput";
 import HeatDataInput from "./modals/HeatDataInput";
 
-import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement } from 'chart.js';
-import { Pie, Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+} from "chart.js";
+import { Pie, Bar } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement);
 
@@ -596,12 +602,11 @@ const Map = ({
         mapRef.current.removeSource("pie");
       }
 
-
       const featureDataAdded = mapFileData.current["features"].filter(
         (f) => f["properties"].mapbook_data != null
       );
 
-      const newPieChartData = []
+      const newPieChartData = [];
 
       var namesDataAdded = [];
       featureDataAdded.forEach((element) => {
@@ -617,26 +622,34 @@ const Map = ({
             },
           ],
         };
-        console.log("tempPieChartData: ", tempPieChartData)
+        console.log("tempPieChartData: ", tempPieChartData);
         var keys = Object.keys(element["properties"].mapbook_data);
         keys.forEach((name) => {
-          console.log("name: ", name)
-          console.log('element["properties"].mapbook_data', element["properties"].mapbook_data)
+          console.log("name: ", name);
+          console.log(
+            'element["properties"].mapbook_data',
+            element["properties"].mapbook_data
+          );
 
-          console.log('element["properties"].mapbook_data.name', element["properties"].mapbook_data[name])
+          console.log(
+            'element["properties"].mapbook_data.name',
+            element["properties"].mapbook_data[name]
+          );
           tempPieChartData.labels.push(name);
-          tempPieChartData.datasets[0].data.push(element["properties"].mapbook_data[name].value);
-          tempPieChartData.datasets[0].backgroundColor.push(element["properties"].mapbook_data[name].color);
+          tempPieChartData.datasets[0].data.push(
+            element["properties"].mapbook_data[name].value
+          );
+          tempPieChartData.datasets[0].backgroundColor.push(
+            element["properties"].mapbook_data[name].color
+          );
         });
-        newPieChartData.push([element["properties"].name, tempPieChartData])
-
+        newPieChartData.push([element["properties"].name, tempPieChartData]);
       });
 
       pieChartData.current = newPieChartData;
 
       // wait till canvas is re-rander
-      await new Promise(resolve => setTimeout(resolve, 50));
-
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       mapRef.current.addSource("pie", {
         type: "geojson",
@@ -655,21 +668,29 @@ const Map = ({
         },
       });
 
-
-      mapRef.current.setFilter("counties-pie", ["in", "name", ...namesDataAdded]);
+      mapRef.current.setFilter("counties-pie", [
+        "in",
+        "name",
+        ...namesDataAdded,
+      ]);
 
       /// Haneul
       var expImageSelect = ["case"];
       // generate image object for region which data exist
       namesDataAdded.forEach((name) => {
-        console.log("name:", name)
-        // generate image 
+        console.log("name:", name);
+        // generate image
         // image = generateImage(data);
-        const canvasSave = document.getElementById(name + 'pie');
-        console.log("canvasSave:", canvasSave)
-        var context = canvasSave.getContext('2d');
-        console.log("context", context)
-        var imgData = context.getImageData(0, 0, canvasSave.width, canvasSave.height)
+        const canvasSave = document.getElementById(name + "pie");
+        console.log("canvasSave:", canvasSave);
+        var context = canvasSave.getContext("2d");
+        console.log("context", context);
+        var imgData = context.getImageData(
+          0,
+          0,
+          canvasSave.width,
+          canvasSave.height
+        );
 
         // add image that we generate
         if (mapRef.current.hasImage(name)) {
@@ -709,42 +730,39 @@ const Map = ({
         mapRef.current.removeSource("bar");
       }
 
-
       const featureDataAdded = mapFileData.current["features"].filter(
         (f) => f["properties"].mapbook_data != null
       );
 
-      const newBarChartData = []
+      const newBarChartData = [];
 
       var namesDataAdded = [];
       featureDataAdded.forEach((element) => {
         //adding mapbook data to each feature
         namesDataAdded.push(element["properties"].name);
 
-
         var tempBarChartData = {
-          labels: [''],
+          labels: [""],
           datasets: [],
         };
-        console.log("tempBarChartData: ", tempBarChartData)
+        console.log("tempBarChartData: ", tempBarChartData);
         var keys = Object.keys(element["properties"].mapbook_data);
         keys.forEach((name) => {
-          var tempDataset = { data: [] }
-          tempDataset.label = name
-          tempDataset.data.push(element["properties"].mapbook_data[name].value)
-          tempDataset.backgroundColor = element["properties"].mapbook_data[name].color
+          var tempDataset = { data: [] };
+          tempDataset.label = name;
+          tempDataset.data.push(element["properties"].mapbook_data[name].value);
+          tempDataset.backgroundColor =
+            element["properties"].mapbook_data[name].color;
 
-          tempBarChartData.datasets.push(tempDataset)
+          tempBarChartData.datasets.push(tempDataset);
         });
-        newBarChartData.push([element["properties"].name, tempBarChartData])
-
+        newBarChartData.push([element["properties"].name, tempBarChartData]);
       });
 
       barChartData.current = newBarChartData;
 
       // wait till canvas is re-rander
-      await new Promise(resolve => setTimeout(resolve, 50));
-
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       mapRef.current.addSource("bar", {
         type: "geojson",
@@ -763,21 +781,29 @@ const Map = ({
         },
       });
 
-
-      mapRef.current.setFilter("counties-bar", ["in", "name", ...namesDataAdded]);
+      mapRef.current.setFilter("counties-bar", [
+        "in",
+        "name",
+        ...namesDataAdded,
+      ]);
 
       /// Haneul
       var expImageSelect = ["case"];
       // generate image object for region which data exist
       namesDataAdded.forEach((name) => {
-        console.log("name:", name)
-        // generate image 
+        console.log("name:", name);
+        // generate image
         // image = generateImage(data);
-        const canvasSave = document.getElementById(name + 'bar');
-        console.log("canvasSave:", canvasSave)
+        const canvasSave = document.getElementById(name + "bar");
+        console.log("canvasSave:", canvasSave);
 
-        var context = canvasSave.getContext('2d');
-        var imgData = context.getImageData(0, 0, canvasSave.width, canvasSave.height)
+        var context = canvasSave.getContext("2d");
+        var imgData = context.getImageData(
+          0,
+          0,
+          canvasSave.width,
+          canvasSave.height
+        );
 
         // add image that we generate
         if (mapRef.current.hasImage(name)) {
@@ -915,30 +941,30 @@ const Map = ({
     let count = 0;
 
     // Loop through features and sum up coordinates
-    features.forEach(feature => {
+    features.forEach((feature) => {
       const coordinates = feature.geometry.coordinates[0]; // Assuming the first ring of the polygon
       if (typeof coordinates == "number") {
         return;
       }
       if (coordinates.length > 1) {
-        coordinates.forEach(coord => {
-          if (typeof coord[0] == 'number' && typeof coord[0] == 'number') {
+        coordinates.forEach((coord) => {
+          if (typeof coord[0] == "number" && typeof coord[0] == "number") {
             totalX += coord[0];
             totalY += coord[1];
             count++;
           } else {
-            coord.forEach(c => {
-              if (typeof coord[0] == 'number' && typeof coord[0] == 'number') {
+            coord.forEach((c) => {
+              if (typeof coord[0] == "number" && typeof coord[0] == "number") {
                 totalX += coord[0];
                 totalY += coord[1];
                 count++;
               }
-            })
+            });
           }
         });
       } else {
-        coordinates[0].forEach(coord => {
-          if (typeof coord[0] == 'number' && typeof coord[0] == 'number') {
+        coordinates[0].forEach((coord) => {
+          if (typeof coord[0] == "number" && typeof coord[0] == "number") {
             totalX += coord[0];
             totalY += coord[1];
             count++;
@@ -990,7 +1016,6 @@ const Map = ({
         preserveDrawingBuffer: true,
       });
       map.setCenter(centroid);
-
     }
 
     if (map != null) {
@@ -1079,19 +1104,19 @@ const Map = ({
               const formattedData =
                 templateHoverType.current === "Thematic Map"
                   ? Object.keys(data)
-                    .map((key) => {
-                      const nestedProperties = Object.keys(data[key])
-                        .map(
-                          (nestedKey) =>
-                            `${nestedKey}:${data[key][nestedKey]}`
-                        )
-                        .join("\n");
-                      return `${key}: \n${nestedProperties}`;
-                    })
-                    .join("\n")
+                      .map((key) => {
+                        const nestedProperties = Object.keys(data[key])
+                          .map(
+                            (nestedKey) =>
+                              `${nestedKey}:${data[key][nestedKey]}`
+                          )
+                          .join("\n");
+                        return `${key}: \n${nestedProperties}`;
+                      })
+                      .join("\n")
                   : Object.keys(data)
-                    .map((key) => `${key}:${data[key]}`)
-                    .join("\n");
+                      .map((key) => `${key}:${data[key]}`)
+                      .join("\n");
               // console.log(data, formattedData);
               // console.log(regions[0]["properties"].name + "\n" + formattedData);
 
@@ -1203,11 +1228,30 @@ const Map = ({
     const res = await createMapAPIMethod(newMapObj);
     console.log("res: ", res);
     if (res.ok) {
-      // const responseMsg = await res.json;
       navigate("/mainpage");
     } else {
-      // alert(`Error: ${res.status} - ${res.statusText}`);
-      setShowErrorMessage(true);
+      const responseData = await res.json();
+
+      if (res.status === 400 && responseData.validationErrors) {
+        console.log("Validation Errors:", responseData.validationErrors);
+        let map_description =
+          responseData.validationErrors["map_description"] ===
+          "Path `map_description` is required.";
+        let topic =
+          responseData.validationErrors["topic"] ===
+          "Path `topic` is required.";
+        let map_name =
+          responseData.validationErrors["map_name"] ===
+          "Path `map_name` is required.";
+
+        alert(
+          `Check if you entered field(s): ${
+            map_description && "map_description"
+          }, ${topic && "topic"},${map_name && "map_name"}.`
+        );
+      } else {
+        alert(`Error: ${res.status} - ${res.statusText}`);
+      }
     }
   };
 
@@ -1224,34 +1268,39 @@ const Map = ({
   return (
     <div className="addmapdata_center">
       <motion.div
-        initial={{ x: '200%' }}
-        animate={{ x: !showErrorMessage ? '200%' : 0 }}
-        transition={{ type: 'tween', duration: 0.5, ease: easeInOut }}
-        exit={{ x: '-100%' }}
+        initial={{ x: "200%" }}
+        animate={{ x: !showErrorMessage ? "200%" : 0 }}
+        transition={{ type: "tween", duration: 0.5, ease: easeInOut }}
+        exit={{ x: "-100%" }}
         style={{
-          position: 'fixed',
-          padding: '20px',
-          zIndex: '100',
-          top: '100px'
+          position: "fixed",
+          padding: "20px",
+          zIndex: "100",
+          top: "100px",
         }}
-        className="createsocialpost_error_message">
+        className="createsocialpost_error_message"
+      >
         Please fill everything out!
         <div
-          className="createsocialpost_error_message_close" onClick={() => setShowErrorMessage(false)}>
+          className="createsocialpost_error_message_close"
+          onClick={() => setShowErrorMessage(false)}
+        >
           X
         </div>
       </motion.div>
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
           <i
-            className={`${undoStack.current.length === 0 ? "disabled_undo" : "undo"
-              } bx bx-undo`}
+            className={`${
+              undoStack.current.length === 0 ? "disabled_undo" : "undo"
+            } bx bx-undo`}
             onClick={handleUndo}
           />
           <div className="vertical_line_container">|</div>
           <i
-            className={`${redoStack.current.length === 0 ? "disabled_redo" : "redo"
-              } bx bx-redo`}
+            className={`${
+              redoStack.current.length === 0 ? "disabled_redo" : "redo"
+            } bx bx-redo`}
             onClick={handleRedo}
           />
         </div>
@@ -1320,72 +1369,78 @@ const Map = ({
             feature={feature}
           />
         )}
-
       </div>
 
-      <div style={{
-        width: 50,
-        height: 50,
-        top: 100,
-        left: -200,
-        position: 'absolute'
-        // display:'none'
-      }}>
+      <div
+        style={{
+          width: 50,
+          height: 50,
+          top: 100,
+          left: -200,
+          position: "absolute",
+          // display:'none'
+        }}
+      >
         {pieChartData.current.length !== 0 &&
           pieChartData.current.map((item, index) => (
-            <Pie id={item[0] + 'pie'} data={item[1]} options={{
-              animation: {
-                duration: 0
-              },
-              plugins: {
-                legend: {
-                  display: false,
+            <Pie
+              id={item[0] + "pie"}
+              data={item[1]}
+              options={{
+                animation: {
+                  duration: 0,
                 },
-              },
-            }} />
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
+                },
+              }}
+            />
           ))}
 
         {barChartData.current.length !== 0 &&
           barChartData.current.map((item, index) => (
-            <Bar id={item[0] + 'bar'} data={item[1]} options={{
-              animation: {
-                duration: 0
-              },
-              plugins: {
-                legend: {
-                  display: false,
+            <Bar
+              id={item[0] + "bar"}
+              data={item[1]}
+              options={{
+                animation: {
+                  duration: 0,
                 },
-              },
-              scales: {
-
-                x: {
-                  grid: {
-                    display: false
+                plugins: {
+                  legend: {
+                    display: false,
                   },
-                  ticks: {
-                    display: false
-                  },
-                  border: {
-                    display: false
-                  }
                 },
-                y: {
-                  grid: {
-                    display: false
+                scales: {
+                  x: {
+                    grid: {
+                      display: false,
+                    },
+                    ticks: {
+                      display: false,
+                    },
+                    border: {
+                      display: false,
+                    },
                   },
-                  ticks: {
-                    display: false
+                  y: {
+                    grid: {
+                      display: false,
+                    },
+                    ticks: {
+                      display: false,
+                    },
+                    border: {
+                      display: false,
+                    },
                   },
-                  border: {
-                    display: false
-                  }
-                }
-              },
-            }} />
+                },
+              }}
+            />
           ))}
-
       </div>
-
     </div>
   );
 };

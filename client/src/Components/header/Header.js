@@ -17,33 +17,15 @@ const Header = () => {
   const staticRoutes = ["resetPasswordRequest", "resetPassword"];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const profileImgPath = useSelector((state) => state.user.user.profile_img);
-
-  const isAuth = useSelector((state) => state.user.isAuthenticated);
-  const userId = useSelector((state) => state.user.id);
-
   const user = useSelector((state) => state.user);
-  // console.log("USER IN HEADER: ", userBro);
-
-  /* const [user, setUser] = useState(null);
-
-  const getUser = async () => {
-    const response = await fetch(`${API_BASE_URL}/api/users/${userId}`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${isAuth}` },
-    });
-    const data = await response.json();
-    setUser(data);
-  }; */
+  const isCreateMapPage = route === "/createmap";
   useEffect(() => {
-    /* if (isAuthenticated) {
-      getUser();
-    } */
     if (user.is_admin) {
       setAdmin(true);
     } else {
       setAdmin(false);
     }
-    console.log(route);
+    console.log(isCreateMapPage);
   }, [user]);
 
   const openModal = () => {
@@ -78,11 +60,37 @@ const Header = () => {
                 <div onClick={() => navigate("/createmap")}>
                   <h4>CreateMaps</h4>
                 </div>
-                <div onClick={() => navigate("/socialpage")}>
-                  <h4>Social</h4>
+                <div
+                  onClick={() => !isCreateMapPage && navigate("/socialpage")}
+                >
+                  <h4
+                    style={
+                      isCreateMapPage
+                        ? {
+                            cursor: "default",
+                            transform: "none",
+                            color: "#6a6a6abf",
+                          }
+                        : {}
+                    }
+                  >
+                    Social
+                  </h4>
                 </div>
-                <div onClick={() => navigate("/mymap")}>
-                  <h4>MyMaps</h4>
+                <div onClick={() => !isCreateMapPage && navigate("/mymap")}>
+                  <h4
+                    style={
+                      isCreateMapPage
+                        ? {
+                            cursor: "default",
+                            transform: "none",
+                            color: "#6a6a6abf",
+                          }
+                        : {}
+                    }
+                  >
+                    MyMaps
+                  </h4>
                 </div>
                 {user.user.is_admin && (
                   <div className="dropdown">
@@ -101,7 +109,7 @@ const Header = () => {
                     src={profileImgPath ? profileImgPath : defaultProfileImg}
                     alt="header_profile"
                     className="header_profile"
-                    onClick={() => navigate("/profile")}
+                    onClick={() => !isCreateMapPage && navigate("/profile")}
                   />
                 </div>
               </>
@@ -142,8 +150,22 @@ const Header = () => {
                 >
                   <h4>CreateMaps</h4>
                 </div>
-                <div onClick={() => navigate("/socialpage")}>
-                  <h4>Social</h4>
+                <div
+                  onClick={() => !isCreateMapPage && navigate("/socialpage")}
+                >
+                  <h4
+                    style={
+                      isCreateMapPage
+                        ? {
+                            cursor: "default",
+                            transform: "none",
+                            color: "#6a6a6abf",
+                          }
+                        : {}
+                    }
+                  >
+                    Social
+                  </h4>
                 </div>
                 <div
                   onClick={() =>
@@ -181,41 +203,54 @@ const Header = () => {
                   <div onClick={() => navigate("/createmap")}>
                     <h4>CreateMaps</h4>
                   </div>
-                  <div onClick={() => navigate("/socialpage")}>
-                    <h4>Social</h4>
+                  <div
+                    onClick={() => !isCreateMapPage && navigate("/socialpage")}
+                  >
+                    <h4
+                      style={
+                        isCreateMapPage
+                          ? {
+                              cursor: "default",
+                              transform: "none",
+                              color: "#6a6a6abf",
+                            }
+                          : {}
+                      }
+                    >
+                      Social
+                    </h4>
                   </div>
-                  <div onClick={() => navigate("/mymap")}>
-                    <h4>MyMaps</h4>
+                  <div onClick={() => !isCreateMapPage && navigate("/mymap")}>
+                    <h4
+                      style={
+                        isCreateMapPage
+                          ? {
+                              cursor: "default",
+                              transform: "none",
+                              color: "#6a6a6abf",
+                            }
+                          : {}
+                      }
+                    >
+                      MyMaps
+                    </h4>
                   </div>
-                  {console.log("IS BRO ADMIN?: ", user.user.is_admin)}
-                  {
-                    /* admin */ user.user.is_admin && (
-                      <div className="dropdown">
-                        <h4
-                          className="dropbtn"
-                          onClick={() => navigate("/manageusers")}
-                        >
-                          Manage Users
-                        </h4>
-                        {/* <div className="dropdown-content">
-                        <div onClick={() => navigate("/managemaps")}>Manage Maps</div>
-                        <div onClick={() => navigate("/managesocials")}>
-                          Social Posts
-                        </div>
-                        <div onClick={() => navigate("/manageusers")}>
-                          Users
-                        </div> 
-                    </div>*/}
-                      </div>
-                    )
-                  }
+                  {user.user.is_admin && (
+                    <div className="dropdown">
+                      <h4
+                        className="dropbtn"
+                        onClick={() => navigate("/manageusers")}
+                      >
+                        Manage Users
+                      </h4>
+                    </div>
+                  )}
                   <div>
                     <img
-                      // CHANGED HEREEREREEEEEEEEEEEE
                       src={user.user.profile_img}
                       alt="header_profile"
                       className="header_profile"
-                      onClick={() => navigate("/profile")}
+                      onClick={() => !isCreateMapPage && navigate("/profile")}
                     />
                   </div>
                 </>
@@ -256,7 +291,9 @@ const Header = () => {
                   >
                     <h4>CreateMaps</h4>
                   </div>
-                  <div onClick={() => navigate("/socialpage")}>
+                  <div
+                    onClick={() => !isCreateMapPage && navigate("/socialpage")}
+                  >
                     <h4>Social</h4>
                   </div>
                   <div

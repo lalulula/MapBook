@@ -111,7 +111,7 @@ const Profile = () => {
 
           <div className="profile_right">
             <div className="username_container">
-              <div>
+              <div style={{alignItems: "center", textAlign: "center"}}>
                 <FormLabel
                   style={{
                     color: "white",

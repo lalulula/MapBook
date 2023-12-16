@@ -1,7 +1,5 @@
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
-// import { useSelector } from "react-redux";
-// const isAuth = useSelector((state) => state.user.isAuthenticated);
 
 const defaultHeaders = {
   headers: {
@@ -24,14 +22,13 @@ const processFile = (file) => {
 // Create Map
 export const createMapAPIMethod = async (mapData) => {
   var keys = Object.keys(mapData);
-  // console.log(keys);
 
   const formData = new FormData();
   formData.append("file", mapData["file"]);
 
   const keyLen = keys.length;
   for (var i = 0; i < keyLen; i++) {
-    if (keys[i] == "mapPreviewImg") {
+    if (keys[i] === "mapPreviewImg") {
       const isImageFile = typeof mapData[keys[i]] == "object";
       var dataName = keys[i];
       console.log("mapData[dataName]: ", mapData[dataName])
@@ -56,18 +53,17 @@ export const createMapAPIMethod = async (mapData) => {
         var file = new File([new Uint8Array(array)], "mapPreviewImg.png", {
           type: "image/png",
         }); // Blob 생성
-        // console.log(file)
+
         formData.append(dataName, file); // file data 추가
       }
     } else {
-      // console.log(keys[i]);
       formData.append(keys[i], mapData[keys[i]]);
     }
   }
   console.log("done for loop");
 
   const response = await fetch(`${API_BASE_URL}/api/map/createMap`, {
-    // ...defaultHeaders,
+    ...defaultHeaders,
     method: "POST",
     body: formData,
   });
