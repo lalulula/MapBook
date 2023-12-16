@@ -16,7 +16,7 @@ import { deleteMapPostAPIMethod } from "../../api/map";
 const MainPage = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchFilterOption, setSearchFilterOption] = useState("");
+  const [searchFilterOption, setSearchFilterOption] = useState("Search by");
   const [allMaps, setAllMaps] = useState([]);
   const [mainPageLoading, setMainPageLoading] = useState(true);
   const [trendingMaps, setTrendingMaps] = useState(null);
@@ -44,23 +44,37 @@ const MainPage = () => {
     );
     setTrendingMaps(sortedMapByViewCount.slice(0, 7));
   }, [allMaps]);
-  useEffect(() => { }, [searchFilterOption]);
+  useEffect(() => {
+  }, [searchFilterOption]);
+
+  // const filteredMaps = allMaps.filter((map) => {
+  //   if (map.map_name.includes(searchTerm)) {
+  //     console.log("FDJFKSDJFLDSFJSKL");
+  //   }
+  //   const isVisible = map.is_visible === true;
+  //   return searchFilterOption === "Map Name" ||
+  //     searchFilterOption === "Search by"
+  //     ? isVisible &&
+  //     map.map_name.toLowerCase().includes(searchTerm.toLowerCase())
+  //     : searchFilterOption === "Topics"
+  //       ? isVisible && map.topic.toLowerCase().includes(searchTerm.toLowerCase())
+  //       : isVisible &&
+  //       map.map_description.toLowerCase().includes(searchTerm.toLowerCase());
+  // });
 
   const filteredMaps = allMaps.filter((map) => {
     const isVisible = map.is_visible === true;
-    return searchFilterOption === "Map Name" ||
-      searchFilterOption === "Search by"
-      ? isVisible &&
-      map.map_name.toLowerCase().includes(searchTerm.toLowerCase())
-      : searchFilterOption === "Topics"
-        ? isVisible && map.topic.toLowerCase().includes(searchTerm.toLowerCase())
-        : isVisible &&
-        map.map_description.toLowerCase().includes(searchTerm.toLowerCase());
+    if (searchFilterOption === "Map Name" || searchFilterOption === "Search by") {
+      return isVisible && map.map_name.toLowerCase().includes(searchTerm.toLowerCase());
+    } else if (map.topic.toLowerCase().includes(searchTerm.toLowerCase())) {
+      return isVisible && map.topic.toLowerCase().includes(searchTerm.toLowerCase());
+    } else {
+      return isVisible && map.map_description.toLowerCase().includes(searchTerm.toLowerCase());
+    }
   });
 
   const handleDeleteMapPost = async (mapId) => {
     try {
-      console.log("removing map post");
       const res = await deleteMapPostAPIMethod(mapId);
       if (res) {
         setShowDeleteConfirmationModal(false);
@@ -99,6 +113,7 @@ const MainPage = () => {
       </div>
       <div className="mainpage_maps_container">
         <div className="mainpage_maps">
+          {console.log("FILTERED MAPS: ", filteredMaps)}
           {filteredMaps.length !== 0 &&
             filteredMaps.map((item, index) => (
               <div className="mainpage_mappreview_container">

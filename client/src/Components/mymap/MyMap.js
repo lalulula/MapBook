@@ -23,8 +23,8 @@ const MyMap = () => {
   const [myMapsLoading, setMyMapsLoading] = useState(true);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchFilterOption, setSearchFilterOption] = useState("");
-  const searchFilterOps = ["MapName", "Topics", "Description"];
+  const [searchFilterOption, setSearchFilterOption] = useState("Search by");
+  const searchFilterOps = ["Map Name", "Topics", "Description"];
   const [myMaps, setMyMaps] = useState([]);
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
 
@@ -33,14 +33,15 @@ const MyMap = () => {
   };
 
   const filteredMaps = myMaps.filter((map) => {
-    //change to allMaps.filter
-    return searchFilterOption === "Map Name" ||
-      searchFilterOption === "Search by"
-      ? map.map_name.toLowerCase().includes(searchTerm.toLowerCase())
-      : searchFilterOption === "Topics"
-        ? map.topic.toLowerCase().includes(searchTerm.toLowerCase())
-        : map.map_description.toLowerCase().includes(searchTerm.toLowerCase());
+    if (searchFilterOption === "Map Name" || searchFilterOption === "Search by") {
+      return map.map_name.toLowerCase().includes(searchTerm.toLowerCase());
+    } else if (map.topic.toLowerCase().includes(searchTerm.toLowerCase())) {
+      return map.topic.toLowerCase().includes(searchTerm.toLowerCase());
+    } else {
+      return map.map_description.toLowerCase().includes(searchTerm.toLowerCase());
+    }
   });
+
   const handleDeleteMapPost = async (mapId) => {
     try {
       console.log("removing map post");
@@ -63,7 +64,8 @@ const MyMap = () => {
       //setMyMaps(user.maps_created);
       getMapsAPI(user._id)
         .then((m) => {
-          setMyMaps(m);
+          const revMaps = m.reverse();
+          setMyMaps(revMaps);
         })
         .finally(() => {
           setTimeout(() => {
@@ -118,12 +120,13 @@ const MyMap = () => {
             <Dropdown
               options={searchFilterOps}
               value={searchFilterOption}
-              placeholder="Search By.."
+              placeholder="Search by"
               className="search_filter_dropdown"
               onChange={handleSeachFilter}
             />
           </div>
           <div className="mymaps_container">
+            {console.log("FILTERED MAPS: ", filteredMaps)}
             {filteredMaps.map((item, index) => (
               <div className="mymap_mappreview_container">
                 <MapPreview key={index} data={item} showDeleteConfirmationModal={showDeleteConfirmationModal} setShowDeleteConfirmationModal={setShowDeleteConfirmationModal} />
