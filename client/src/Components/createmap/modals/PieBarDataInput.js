@@ -47,6 +47,8 @@ const PieBarDataInput = ({
               ) : (
                 selectedMapFile["mapbook_datanames"].map((data, index) => (
                   <div key={index} className="map_datainput_element">
+                    {console.log("data: ", data["dataName"])}
+                    {feature[0].properties.mapbook_data ? console.log("mapbook_data: ", feature[0].properties.mapbook_data[data["dataName"]]) : console.log("still null")}
                     <FormControl>
                       <h3 style={{ marginBottom: "1rem" }}>
                         {data["dataName"]}
@@ -59,14 +61,19 @@ const PieBarDataInput = ({
                           }
                           // placeholder="Enter data value"
                           placeholder={
-                            feature[0].properties.mapbook_data
-                              ? feature[0].properties.mapbook_data[
-                                  data["dataName"]
-                                ].value
-                              : "Enter data value"
+                            !feature[0].properties.mapbook_data ? 
+                            "Enter data value" : 
+                            !feature[0].properties.mapbook_data[data["dataName"]] ? 
+                            "Enter data value" :
+                            feature[0].properties.mapbook_data[data["dataName"]].value
                           }
-                          // type="number"
-                          // step="0.01"
+                          // value={
+                          //   !feature[0].properties.mapbook_data ? 
+                          //   null : 
+                          //   !feature[0].properties.mapbook_data[data["dataName"]] ? 
+                          //   null :
+                          //   feature[0].properties.mapbook_data[data["dataName"]].value
+                          // }
                           type="float"
                           required
                         />
