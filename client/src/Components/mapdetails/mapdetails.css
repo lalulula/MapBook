@@ -42,10 +42,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .name_topic_details_container {
   margin-bottom: 1rem;
+  width: 30%;
 }
 
 .map_details_topic {
@@ -67,6 +69,13 @@
 .map_details_options_container {
   display: flex;
   gap: 2;
+}
+
+.map_details_options_outer {
+  display: flex;
+  flex-direction: row;
+  width: 20%;
+  justify-content: space-between;
 }
 
 .options_icon {

@@ -1034,7 +1034,7 @@ const Map = ({
 
     // console.log("canvas", canvas);
     if (mapImage == null) {
-      const mapImage = canvas.toDataURL();
+      mapImage = canvas.toDataURL();
     }
 
     const newMapObj = {
