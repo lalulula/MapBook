@@ -1113,72 +1113,59 @@ const Map = ({
             };
 
             if (data === undefined) {
-              setHoverData(`No data for ${regions[0]["properties"].name}}`);
+              setHoverData(`No data for ${regions[0]["properties"].name}`);
             } else {
-              console.log(data);
-              const formattedData =
-                templateHoverType.current === "Thematic Map" //Thematic //ok
-                  ? Object.keys(data)
-                      .map((key) => {
-                        const value = data[key];
-                        return `${key}: ${
-                          isObject(value) ? renderObject(value) : value
-                        }`;
-                      })
-                      .join("<br/>")
-                  : templateHoverType.current === "Circle Map" //Circle //ok
-                  ? Object.keys(data)
-                      .map((key) => `${data[key]}`)
-                      .join("\n")
-                  : templateHoverType.current === "Pie Chart" //Pie
-                  ? Object.keys(data)
-                      .map((key) => {
-                        const value = data[key];
-                        return `${key}: ${
-                          isObject(value) ? renderObject(value) : value
-                        }`;
-                      })
-                      .join("<br/>")
-                  : templateHoverType.current === "Bar Chart" //Bar
-                  ? Object.keys(data)
-                      .map((key) => {
-                        const value = data[key];
-                        return `${key}: ${
-                          isObject(value) ? renderObject(value) : value
-                        }`;
-                      })
-                      .join("<br/>")
-                  : Object.keys(data) //Heat
-                      .map((key) => {
-                        const value = data[key];
-                        return `${key}: ${
-                          isObject(value) ? renderObject(value) : value
-                        }`;
-                      })
+              const formatDataByKey = (key, value) => {
+                return `${key}: ${
+                  isObject(value) ? renderObject(value) : value
+                }`;
+              };
+
+              const formatColorKey = (key, value) => {
+                const formattedValue =
+                  key.toLowerCase() === "color" ? `(${value})` : value;
+                return `${formattedValue}`;
+              };
+
+              const formattedData = (() => {
+                const dataKeys = Object.keys(data);
+
+                switch (templateHoverType.current) {
+                  case "Thematic Map":
+                  case "Pie Chart":
+                  case "Bar Chart":
+                    return dataKeys
+                      .map((key) => formatDataByKey(key, data[key]))
                       .join("<br/>");
 
+                  case "Circle Map":
+                    return dataKeys.map((key) => `${data[key]}`).join("\n");
+
+                  default:
+                    return dataKeys
+                      .sort((a, b) => (a.toLowerCase() === "color" ? -1 : 1))
+                      .map((key) => formatColorKey(key, data[key]))
+                      .join("<br/>");
+                }
+              })();
+
               if (templateHoverType.current === "Pie Chart") {
-                console.log("Calling PIE");
                 setHoverData(
                   regions[0]["properties"].name + "<br/>" + formattedData
                 );
               } else if (templateHoverType.current === "Bar Chart") {
-                console.log("Calling BAR");
                 setHoverData(
                   regions[0]["properties"].name + "<br/>" + formattedData
                 );
               } else if (templateHoverType.current === "Heat Map") {
-                //ok
                 const heatDataName =
                   mapFileData.current.mapbook_circleheatmapdata;
-                setHoverData(heatDataName + "<br/>" + formattedData);
+                setHoverData(heatDataName + formattedData);
               } else if (templateHoverType.current === "Thematic Map") {
-                //ok
                 setHoverData(
                   regions[0]["properties"].name + "<br/>" + formattedData
                 );
               } else if (templateHoverType.current === "Circle Map") {
-                //ok
                 const circleDataName =
                   mapFileData.current.mapbook_circleheatmapdata;
 
