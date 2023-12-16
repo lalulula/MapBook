@@ -10,13 +10,17 @@ import { getAllMapsAPI } from "../../api/map";
 import "./main.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import TrendingMaps from "./TrendingMaps";
+import { useNavigate } from "react-router-dom";
+import { deleteMapPostAPIMethod } from "../../api/map";
 
 const MainPage = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [searchFilterOption, setSearchFilterOption] = useState("");
   const [allMaps, setAllMaps] = useState([]);
   const [mainPageLoading, setMainPageLoading] = useState(true);
   const [trendingMaps, setTrendingMaps] = useState(null);
+  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
   const searchFilterOps = ["Map Name", "Topics", "Description"];
   const handleSeachFilter = (e) => {
     setSearchFilterOption(e.value);
@@ -54,8 +58,27 @@ const MainPage = () => {
         map.map_description.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
+  const handleDeleteMapPost = async (mapId) => {
+    try {
+      console.log("removing map post");
+      const res = await deleteMapPostAPIMethod(mapId);
+      if (res) {
+        setShowDeleteConfirmationModal(false);
+        const filteredMaps = allMaps.filter((m) => m._id !== mapId);
+        setAllMaps(filteredMaps);
+      } else {
+        alert("Error deleting post", res);
+      }
+    } catch (error) {
+      console.error("Error handling delete operation:", error);
+    }
+  };
+
   return (
     <div className="mainpage_container">
+      {showDeleteConfirmationModal != false && (
+        <div className="maps_overlay"></div>
+      )}
       <div className="mainpage_trending_header">
         Trending Maps &nbsp;&nbsp;
         <span className="mainpage_trending_subheader">
@@ -78,7 +101,32 @@ const MainPage = () => {
         <div className="mainpage_maps">
           {filteredMaps.length !== 0 &&
             filteredMaps.map((item, index) => (
-              <MapPreview key={index} data={item} />
+              <div className="mainpage_mappreview_container">
+                <MapPreview key={index} data={item} showDeleteConfirmationModal={showDeleteConfirmationModal} setShowDeleteConfirmationModal={setShowDeleteConfirmationModal} />
+                {showDeleteConfirmationModal == item._id && (
+                  <div className="mappreview_delete_confirmation_modal">
+                    <div className="mappreview_delete_confirmation_modal_top">
+                      Are you sure you want to delete this post?
+                    </div>
+                    <div className="mappreview_delete_confirmation_modal_bottom">
+                      <button
+                        className="mappreview_delete_confirm"
+                        onClick={() => handleDeleteMapPost(item._id)}
+                      >
+                        Yes
+                      </button>
+                      <button
+                        className="mappreview_cancel_delete"
+                        onClick={() =>
+                          setShowDeleteConfirmationModal(false)
+                        }
+                      >
+                        No
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
         </div>
 

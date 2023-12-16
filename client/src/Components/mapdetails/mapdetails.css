@@ -82,7 +82,7 @@
   position: relative;
 }
 
-.mappreview_options_menu {
+.mapdetails_mappreview_options_menu {
   grid-area: options;
   position: absolute;
   top: 35px;
@@ -96,19 +96,19 @@
   color: black;
 }
 
-.mappreview_options_menu ul {
+.mapdetails_mappreview_options_menu ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.mappreview_options_menu li {
+.mapdetails_mappreview_options_menu li {
   cursor: pointer;
   padding: 5px 10px;
   transition: background-color 0.3s;
 }
 
-.mappreview_options_menu li:hover {
+.mapdetails_mappreview_options_menu li:hover {
   background-color: rgb(208, 200, 200);
   border-radius: 3px;
 }

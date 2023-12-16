@@ -29,6 +29,11 @@ import Typewriter from "typewriter-effect";
 import CustomSwitch from "../widgets/CustomSwitch";
 import polylabel from "polylabel"
 
+import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement } from 'chart.js';
+import { Pie, Bar } from 'react-chartjs-2';
+
+ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement);
+
 
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
@@ -53,6 +58,9 @@ const MapDetails = () => {
   const mapContainerRef = useRef(null);
   const navigate = useNavigate();
   const [showHoverData, setShowHoverData] = useState(false);
+  const pieChartData = useRef([]);
+  const barChartData = useRef([]);
+  const mapRef = useRef();
   const formatDate = (createdAt) => {
     const date = new Date(createdAt);
     const year = date.getFullYear();
@@ -217,6 +225,110 @@ const MapDetails = () => {
     getMap();
   }, [mapId, user._id]);
 
+  async function drawPieData(namesDataAdded) {
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    mapRef.current.addLayer({
+      id: "counties-pie",
+      type: "symbol",
+      source: "counties",
+      layout: {
+        "icon-size": 1,
+      },
+    });
+
+
+    mapRef.current.setFilter("counties-pie", ["in", "name", ...namesDataAdded]);
+
+    /// Haneul
+    var expImageSelect = ["case"];
+    // generate image object for region which data exist
+    namesDataAdded.forEach((name) => {
+      console.log("name:", name)
+      // generate image 
+      // image = generateImage(data);
+      const canvasSave = document.getElementById(name + 'pie');
+      console.log("canvasSave:", canvasSave)
+      var context = canvasSave.getContext('2d');
+      console.log("context", context)
+      var imgData = context.getImageData(0, 0, canvasSave.width, canvasSave.height)
+
+      // add image that we generate
+      if (mapRef.current.hasImage(name)) {
+        // mapRef.current.updateImage(name, image);
+        mapRef.current.updateImage(name, imgData);
+      } else {
+        // mapRef.current.addImage(name, image);
+        mapRef.current.addImage(name, imgData);
+      }
+
+      // add expImageSelect on new image
+      expImageSelect.push(["==", ["get", "name"], name]);
+      expImageSelect.push(name);
+    });
+    //set default image (anything is okay)
+    expImageSelect.push("aaa");
+
+    mapRef.current.setLayoutProperty(
+      "counties-pie",
+      "icon-image",
+      expImageSelect
+    );
+  }
+  async function drawBarData(namesDataAdded) {
+
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    mapRef.current.addLayer({
+      id: "counties-bar",
+      type: "symbol",
+      source: "counties",
+      layout: {
+        "icon-size": 1,
+      },
+    });
+
+    mapRef.current.setFilter("counties-bar", ["in", "name", ...namesDataAdded]);
+
+    /// Haneul
+    var expImageSelect = ["case"];
+    // generate image object for region which data exist
+    namesDataAdded.forEach((name) => {
+      console.log("name:", name)
+      // generate image 
+      // image = generateImage(data);
+      const canvasSave = document.getElementById(name + 'bar');
+      console.log("canvasSave:", canvasSave)
+
+      var context = canvasSave.getContext('2d');
+      var imgData = context.getImageData(0, 0, canvasSave.width, canvasSave.height)
+
+      // add image that we generate
+      if (mapRef.current.hasImage(name)) {
+        // mapRef.current.updateImage(name, image);
+        mapRef.current.updateImage(name, imgData);
+      } else {
+        // mapRef.current.addImage(name, image);
+        mapRef.current.addImage(name, imgData);
+      }
+
+      // add expImageSelect on new image
+      expImageSelect.push(["==", ["get", "name"], name]);
+      expImageSelect.push(name);
+    });
+    //set default image (anything is okay)
+    expImageSelect.push("aaa");
+
+    mapRef.current.setLayoutProperty(
+      "counties-bar",
+      "icon-image",
+      expImageSelect
+    );
+
+  }
+
+
+
   useEffect(() => {
     if (selectedMapFile != null) {
       // console.log("selectedMapFile: useEffect: ", selectedMapFile);
@@ -239,6 +351,7 @@ const MapDetails = () => {
           preserveDrawingBuffer: true,
         });
         map.setCenter(centroid);
+        mapRef.current = map;
       }
       if (map != null) {
         map.on("idle", function () {
@@ -265,7 +378,7 @@ const MapDetails = () => {
               // "source-layer": "original",
               paint: {
                 // "fill-color": "rgba(0.5,0.5,0,0.4)",
-                "fill-color": "#ff0088",
+                "fill-color": "#454545", //default map color
                 "fill-opacity": 0.4,
                 "fill-outline-color": "#000000",
                 // "fill-outline-opacity": 0.8
@@ -544,7 +657,85 @@ const MapDetails = () => {
               map.getPaintProperty("clusters", "circle-color")
             );
           } else if (selectedMapFile.mapbook_template === "Bar Chart") {
+
+
+            const featureDataAdded = selectedMapFile["features"].filter(
+              (f) => f["properties"].mapbook_data != null
+            );
+
+            const newBarChartData = []
+
+            var namesDataAdded = [];
+            featureDataAdded.forEach((element) => {
+              //adding mapbook data to each feature
+              namesDataAdded.push(element["properties"].name);
+
+              var tempBarChartData = {
+                labels: [''],
+                datasets: [],
+              };
+              console.log("tempBarChartData: ", tempBarChartData)
+              var keys = Object.keys(element["properties"].mapbook_data);
+              keys.forEach((name) => {
+                var tempDataset = { data: [] }
+                tempDataset.label = name
+                tempDataset.data.push(element["properties"].mapbook_data[name].value)
+                tempDataset.backgroundColor = element["properties"].mapbook_data[name].color
+
+                tempBarChartData.datasets.push(tempDataset)
+              });
+              newBarChartData.push([element["properties"].name, tempBarChartData])
+
+            });
+
+            barChartData.current = newBarChartData;
+
+            // wait till canvas is re-rander
+            drawBarData(namesDataAdded);
+
           } else if (selectedMapFile.mapbook_template === "Pie Chart") {
+
+            const featureDataAdded = selectedMapFile["features"].filter(
+              (f) => f["properties"].mapbook_data != null
+            );
+
+            const newPieChartData = []
+
+            var namesDataAdded = [];
+            featureDataAdded.forEach((element) => {
+              //adding mapbook data to each feature
+              namesDataAdded.push(element["properties"].name);
+
+              var tempPieChartData = {
+                labels: [],
+                datasets: [
+                  {
+                    data: [],
+                    backgroundColor: [],
+                  },
+                ],
+              };
+              console.log("tempPieChartData: ", tempPieChartData)
+              var keys = Object.keys(element["properties"].mapbook_data);
+              keys.forEach((name) => {
+                console.log("name: ", name)
+                console.log('element["properties"].mapbook_data', element["properties"].mapbook_data)
+
+                console.log('element["properties"].mapbook_data.name', element["properties"].mapbook_data[name])
+                tempPieChartData.labels.push(name);
+                tempPieChartData.datasets[0].data.push(element["properties"].mapbook_data[name].value);
+                tempPieChartData.datasets[0].backgroundColor.push(element["properties"].mapbook_data[name].color);
+              });
+              newPieChartData.push([element["properties"].name, tempPieChartData])
+
+            });
+
+            pieChartData.current = newPieChartData;
+
+            // wait till canvas is re-rander
+            drawPieData(namesDataAdded);
+
+
           }
 
           map.on("mousemove", (event) => {
@@ -702,7 +893,7 @@ const MapDetails = () => {
                     onClick={handleToggleOptions}
                   />
                   {optionsMenuVisible && (
-                    <div className="mappreview_options_menu">
+                    <div className="mapdetails_mappreview_options_menu">
                       <ul>
                         <li onClick={() => handleFork()}>Fork Map</li>
                         <Divider style={{ margin: "0" }} />
@@ -773,6 +964,72 @@ const MapDetails = () => {
           <MapComments mapId={mapId} />
           <Divider section inverted style={{ margin: "20px 0" }} />
         </div>
+
+
+
+        <div style={{
+          width: 50,
+          height: 50,
+          top: 100,
+          left: -200,
+          position: 'absolute'
+          // display:'none'
+        }}>
+          {pieChartData.current.length !== 0 &&
+            pieChartData.current.map((item, index) => (
+              <Pie id={item[0] + 'pie'} data={item[1]} options={{
+                animation: {
+                  duration: 0
+                },
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
+                },
+              }} />
+            ))}
+
+          {barChartData.current.length !== 0 &&
+            barChartData.current.map((item, index) => (
+              <Bar id={item[0] + 'bar'} data={item[1]} options={{
+                animation: {
+                  duration: 0
+                },
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
+                },
+                scales: {
+
+                  x: {
+                    grid: {
+                      display: false
+                    },
+                    ticks: {
+                      display: false
+                    },
+                    border: {
+                      display: false
+                    }
+                  },
+                  y: {
+                    grid: {
+                      display: false
+                    },
+                    ticks: {
+                      display: false
+                    },
+                    border: {
+                      display: false
+                    }
+                  }
+                },
+              }} />
+            ))}
+
+        </div>
+
       </div>
     );
   }

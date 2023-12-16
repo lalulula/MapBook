@@ -26,23 +26,25 @@
 
 .profile_top {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 1rem;
 }
 
 .profile_left {
+  width: 50%;
   display: flex;
   justify-content: center;
   flex-direction: column;
+  flex: 1 1 0px;
   align-items: center;
-  flex: 1;
 }
 
 .profile_right {
+  width: 50%;
   display: flex;
   justify-content: center;
-  flex: 1;
   flex-direction: column;
+  flex: 1 1 0px;
 }
 
 .profile_bottom {
@@ -142,4 +144,56 @@
 .modal_btn_container button:hover {
   color: rgb(47, 85, 120);
   background-color: rgba(47, 85, 120, 0.141);
+}
+
+@media screen and (max-width: 1500px) {
+  .profile_container {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .profile_container {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .profile_container {
+    width: 100%;
+  }
+
+  /* .profile_left {
+    width: 50%;
+  }
+
+  .profile_right {
+    width: 50%;
+  } */
+
+  .profile_img {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .profile_top {
+    display: block;
+  }
+  .profile_left {
+    margin: 1rem auto 3rem auto;
+  }
+  .profile_right {
+    margin: 1rem auto 1rem auto;
+  }
+  .username {
+    font-size: 1.5rem !important;
+  }
+  .name {
+    font-size: 22px;
+  }
+  .email {
+    font-size: 1.5rem !important;
+  }
 }

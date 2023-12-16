@@ -31,6 +31,7 @@ export const createMapAPIMethod = async (mapData) => {
     if (keys[i] === "mapPreviewImg") {
       const isImageFile = typeof mapData[keys[i]] == "object";
       var dataName = keys[i];
+      console.log("mapData[dataName]: ", mapData[dataName])
 
       if (isImageFile) {
         // read binary data

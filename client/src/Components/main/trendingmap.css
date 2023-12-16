@@ -5,23 +5,28 @@
   display: grid;
   place-items: center;
 }
+
 .slide_track {
   display: flex;
   gap: 6rem;
   width: calc(15rem * 7);
   animation: scroll 60s linear infinite;
 }
+
 .slide_track:hover {
   animation-play-state: paused;
 }
+
 @keyframes scroll {
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(calc(-15rem * 9));
   }
 }
+
 .slide {
   width: 24rem;
   height: 18rem;
@@ -30,7 +35,7 @@
   perspective: 100px;
 }
 
-img {
+.slide img {
   width: 25rem;
   height: 18rem;
   transition: 0.8s;
@@ -42,6 +47,7 @@ img {
   border-radius: 5px;
   border: 2px solid var(--main-color);
 }
+
 .trendingmap_preview {
   width: 25rem;
   height: 18rem;
@@ -56,21 +62,26 @@ img {
   transition: 0.8s;
   cursor: pointer;
 }
+
 .trendingmap_preview:hover {
   transform: translateZ(0.5rem);
 }
+
 .trending_mapname {
   font-size: 2rem;
   font-weight: 600;
 }
+
 .trending_maptopic {
   font-size: medium;
   font-weight: 400;
 }
+
 .trending_mapdescription {
   font-size: small;
   font-weight: 300;
 }
+
 i .bi {
   font-weight: 100;
 }
