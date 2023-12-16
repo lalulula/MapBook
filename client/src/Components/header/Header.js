@@ -22,22 +22,8 @@ const Header = () => {
   const userId = useSelector((state) => state.user.id);
 
   const user = useSelector((state) => state.user);
-  // console.log("USER IN HEADER: ", userBro);
 
-  /* const [user, setUser] = useState(null);
-
-  const getUser = async () => {
-    const response = await fetch(`${API_BASE_URL}/api/users/${userId}`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${isAuth}` },
-    });
-    const data = await response.json();
-    setUser(data);
-  }; */
   useEffect(() => {
-    /* if (isAuthenticated) {
-      getUser();
-    } */
     if (user.is_admin) {
       setAdmin(true);
     } else {
@@ -187,7 +173,6 @@ const Header = () => {
                   <div onClick={() => navigate("/mymap")}>
                     <h4>MyMaps</h4>
                   </div>
-                  {console.log("IS BRO ADMIN?: ", user.user.is_admin)}
                   {
                     /* admin */ user.user.is_admin && (
                       <div className="dropdown">
@@ -197,21 +182,11 @@ const Header = () => {
                         >
                           Manage Users
                         </h4>
-                        {/* <div className="dropdown-content">
-                        <div onClick={() => navigate("/managemaps")}>Manage Maps</div>
-                        <div onClick={() => navigate("/managesocials")}>
-                          Social Posts
-                        </div>
-                        <div onClick={() => navigate("/manageusers")}>
-                          Users
-                        </div> 
-                    </div>*/}
                       </div>
                     )
                   }
                   <div>
                     <img
-                      // CHANGED HEREEREREEEEEEEEEEEE
                       src={user.user.profile_img}
                       alt="header_profile"
                       className="header_profile"
