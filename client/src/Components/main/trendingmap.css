@@ -54,6 +54,7 @@ img {
   align-items: flex-end;
   justify-content: space-around;
   transition: 0.8s;
+  cursor: pointer;
 }
 .trendingmap_preview:hover {
   transform: translateZ(0.5rem);

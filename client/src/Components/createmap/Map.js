@@ -30,7 +30,7 @@ const Map = ({
   isMapbookData,
   setIsMapbookData,
   setMapImage,
-  mapImage
+  mapImage,
 }) => {
   const mapFileData = useRef(selectedMapFile);
   const mapRef = useRef();
@@ -669,11 +669,8 @@ const Map = ({
         },
       });
 
-<<<<<<< HEAD
+      // mapRef.current.setFilter("counties-pie", ["in", "name", ...namesDataAdded]);
 
-      mapRef.current.setFilter("counties-pie", ["in", "name", ...namesDataAdded]);
-      
-=======
       mapRef.current.setFilter("clusters", ["in", "name", ...namesDataAdded]);
 
       mapRef.current.setFilter("cluster-count", [
@@ -682,19 +679,12 @@ const Map = ({
         ...namesDataAdded,
       ]);
 
->>>>>>> ed5460bde8cc094ed4c710bb5d1071ad9513629b
       /// Haneul
       var expImageSelect = ["case"];
       // generate image object for region which data exist
       namesDataAdded.forEach((name) => {
-<<<<<<< HEAD
-
-        // generate image 
-        // image = generateImage(data);
-=======
         // generate image
         // image =generateImage(data);
->>>>>>> ed5460bde8cc094ed4c710bb5d1071ad9513629b
 
         // add image that we generate
         if (mapRef.current.hasImage(name)) {
@@ -944,19 +934,19 @@ const Map = ({
               const formattedData =
                 templateHoverType.current === "Thematic Map"
                   ? Object.keys(data)
-                    .map((key) => {
-                      const nestedProperties = Object.keys(data[key])
-                        .map(
-                          (nestedKey) =>
-                            `${nestedKey}:${data[key][nestedKey]}`
-                        )
-                        .join("\n");
-                      return `${key}: \n${nestedProperties}`;
-                    })
-                    .join("\n")
+                      .map((key) => {
+                        const nestedProperties = Object.keys(data[key])
+                          .map(
+                            (nestedKey) =>
+                              `${nestedKey}:${data[key][nestedKey]}`
+                          )
+                          .join("\n");
+                        return `${key}: \n${nestedProperties}`;
+                      })
+                      .join("\n")
                   : Object.keys(data)
-                    .map((key) => `${key}:${data[key]}`)
-                    .join("\n");
+                      .map((key) => `${key}:${data[key]}`)
+                      .join("\n");
               // console.log(data, formattedData);
               // console.log(regions[0]["properties"].name + "\n" + formattedData);
 
@@ -1090,14 +1080,16 @@ const Map = ({
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
           <i
-            className={`${undoStack.current.length === 0 ? "disabled_undo" : "undo"
-              } bx bx-undo`}
+            className={`${
+              undoStack.current.length === 0 ? "disabled_undo" : "undo"
+            } bx bx-undo`}
             onClick={handleUndo}
           />
           <div className="vertical_line_container">|</div>
           <i
-            className={`${redoStack.current.length === 0 ? "disabled_redo" : "redo"
-              } bx bx-redo`}
+            className={`${
+              redoStack.current.length === 0 ? "disabled_redo" : "redo"
+            } bx bx-redo`}
             onClick={handleRedo}
           />
         </div>

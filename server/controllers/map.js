@@ -143,7 +143,7 @@ const createMap = async (req, res) => {
       return res.status(201).json(savedMap);
     }
   } catch (error) {
-    // console.error("Error creating map:", error);
+    console.error("Error creating map:", error);
     // return res.status(500).json({ success: false, error: error.message });
     return res.status(500).json({ error: error.message });
   }
@@ -155,8 +155,8 @@ const editMap = async (req, res) => {
     const { mapId } = req.params;
 
     if (req.files !== undefined) {
-      console.log("editmap called")
-      console.log(req.body)
+      console.log("editmap called");
+      console.log(req.body);
 
       const {
         map_name,
@@ -170,7 +170,7 @@ const editMap = async (req, res) => {
         created_at,
         view_count,
       } = req.body;
-  
+
       console.log("file", req.files["file"][0]);
       console.log("mapPreviewImg", req.files["mapPreviewImg"][0]);
 
@@ -210,7 +210,7 @@ const editMap = async (req, res) => {
           file_path: fileUrl,
           map_description: map_description,
           mapPreviewImg: mapPreviewImgUrl,
-          map_users_liked:map_users_liked,
+          map_users_liked: map_users_liked,
         },
         { new: true }
       );
@@ -243,8 +243,8 @@ const editMap = async (req, res) => {
           view_count: view_count,
           map_description: map_description,
           mapPreviewImg: mapPreviewImg,
-          map_users_liked:map_users_liked,
-          created_at:created_at
+          map_users_liked: map_users_liked,
+          created_at: created_at,
         },
         { new: true }
       );
@@ -253,7 +253,6 @@ const editMap = async (req, res) => {
       // return res.status(201).json({ success: true, message: "Map created successfully!" });
       return res.status(201).json(updatedMap);
     }
-
   } catch (error) {
     console.error("Error updating map:", error);
     res.status(500).json({ success: false, error: error.message });
@@ -272,23 +271,29 @@ const removeMap = async (req, res) => {
 
     // DELETE ASSOCIATED MAP COMMENTS & REPLIES
     const deletedMapComments = await MapComment.find({ map_id: mapId });
-    
-    await Promise.all(deletedMapComments.map(async (deletedMapComment) => {
-      await MapReply.deleteMany({ map_comment_id: deletedMapComment._id });
-    }));
+
+    await Promise.all(
+      deletedMapComments.map(async (deletedMapComment) => {
+        await MapReply.deleteMany({ map_comment_id: deletedMapComment._id });
+      })
+    );
     await MapComment.deleteMany({ map_id: mapId });
 
     // DELETE STORED FILE ON FIREBASE
     try {
       const mapUrl = map.file_path;
       const mapPreviewUrl = map.mapPreviewImg;
-      
+
       const mapUrlParts = new URL(mapUrl);
-      let mapFilename = path.basename(mapUrlParts.pathname).replaceAll("%20", " ");
+      let mapFilename = path
+        .basename(mapUrlParts.pathname)
+        .replaceAll("%20", " ");
       const mapFile = bucket.file(mapFilename);
 
       const mapPreviewUrlParts = new URL(mapPreviewUrl);
-      let mapPreviewFilename = path.basename(mapPreviewUrlParts.pathname).replaceAll("%20", " ");
+      let mapPreviewFilename = path
+        .basename(mapPreviewUrlParts.pathname)
+        .replaceAll("%20", " ");
       const mapPreviewFile = bucket.file(mapPreviewFilename);
 
       await mapFile.delete();
