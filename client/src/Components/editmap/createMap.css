@@ -1,4 +1,4 @@
-.createmap_container {
+/* .createmap_container {
   height: 100vh;
   overflow: hidden;
 }
@@ -25,7 +25,6 @@
 }
 
 .addmapdata_center {
-  /* width: fit-content; */
   height: fit-content;
   flex: 5;
   display: flex;
@@ -80,7 +79,6 @@
   width: 100vh;
 }
 
-/* MAP TOOL BAR */
 .map_toolbar_container {
   display: flex;
   align-items: center;
@@ -132,9 +130,7 @@
   border: 2px solid #1f6baf;
 }
 
-/* END*/
 
-/* RIGHT SIDEBAR DATA IMPUT */
 .data_input_container {
   display: flex;
 }
@@ -181,7 +177,7 @@
   border: none;
   cursor: pointer;
   background-color: transparent;
-  /* border: 1px whitesmoke solid; */
+
 }
 
 .createMap_color_picker::-webkit-color-swatch {
@@ -194,7 +190,6 @@
   border: 1px rgba(245, 245, 245, 0.333) solid;
 }
 
-/* data input modal */
 .add_map_data_modal {
   position: absolute;
   top: 50%;
@@ -230,7 +225,6 @@
   gap: 1rem;
 }
 
-/* RENDER DATA:HOVER */
 
 .map_region_info {
   display: flex;
@@ -275,17 +269,4 @@
   border: 2px solid black;
   padding: 3px;
   border-radius: 2rem;
-}
-
-
-
-/* .popup {
-  color: black;
-  position: fixed;
-  background-color: #ffffff;
-  padding: 10px;
-  border: 1px solid #ccc;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  z-index: 9999;
-  pointer-events: none;
 } */

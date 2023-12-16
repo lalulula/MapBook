@@ -24,7 +24,8 @@ const MainPage = () => {
   useEffect(() => {
     getAllMapsAPI()
       .then((m) => {
-        setAllMaps(m);
+        const revMaps = m.reverse();
+        setAllMaps(revMaps);
       })
       .finally(() => {
         setTimeout(() => {
@@ -39,17 +40,17 @@ const MainPage = () => {
     );
     setTrendingMaps(sortedMapByViewCount.slice(0, 7));
   }, [allMaps]);
-  useEffect(() => {}, [searchFilterOption]);
+  useEffect(() => { }, [searchFilterOption]);
 
   const filteredMaps = allMaps.filter((map) => {
     const isVisible = map.is_visible === true;
     return searchFilterOption === "Map Name" ||
       searchFilterOption === "Search by"
       ? isVisible &&
-          map.map_name.toLowerCase().includes(searchTerm.toLowerCase())
+      map.map_name.toLowerCase().includes(searchTerm.toLowerCase())
       : searchFilterOption === "Topics"
-      ? isVisible && map.topic.toLowerCase().includes(searchTerm.toLowerCase())
-      : isVisible &&
+        ? isVisible && map.topic.toLowerCase().includes(searchTerm.toLowerCase())
+        : isVisible &&
         map.map_description.toLowerCase().includes(searchTerm.toLowerCase());
   });
 

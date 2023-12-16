@@ -111,17 +111,20 @@
   cursor: not-allowed;
   color: rgb(141, 141, 141);
 }
+
 .disabled_redo:hover,
 .disabled_undo:hover {
   cursor: not-allowed;
   color: rgb(141, 141, 141);
 }
+
 .redo:hover,
 .undo:hover {
   cursor: pointer;
   color: #1f6baf;
   transition: all 0.2s ease-in-out;
 }
+
 .map_toolbar_container button {
   border: none;
   outline: none;
@@ -153,8 +156,7 @@
   flex: 2;
 }
 
-.data_input_delete {
-}
+.data_input_delete {}
 
 .data_input_container_thematic {
   max-height: 27rem;
@@ -255,7 +257,7 @@
   overflow-wrap: break-word;
 }
 
-.mapdetails_hovered_data_container {
+/* .mapdetails_hovered_data_container {
   position: absolute;
   top: 15rem;
   left: 7rem;
@@ -285,7 +287,7 @@
   border: 2px solid black;
   padding: 3px;
   border-radius: 2rem;
-}
+} */
 
 /* .popup {
   color: black;

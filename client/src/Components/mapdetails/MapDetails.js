@@ -140,7 +140,7 @@ const MapDetails = () => {
 
     return Math.abs(total);
   }
- 
+
   function calculateCentroid(features) {
     let totalX = 0;
     let totalY = 0;
@@ -464,15 +464,15 @@ const MapDetails = () => {
 
             for (var i = 0; i < selectedMapFile["features"].length; i++) {
               // console.log(selectedMapFile["features"][i])
-              if(selectedMapFile["features"][i].geometry.type == "Polygon"){
-                newGeometry = { type: "Point", coordinates:  polylabel(selectedMapFile["features"][i].geometry.coordinates, 1.0) };
+              if (selectedMapFile["features"][i].geometry.type == "Polygon") {
+                newGeometry = { type: "Point", coordinates: polylabel(selectedMapFile["features"][i].geometry.coordinates, 1.0) };
               }
-              else{
+              else {
                 let maxArea = 0;
                 let maxPoint = [];
-                for(var j = 0; j < selectedMapFile["features"][i].geometry.coordinates.length; j++){
+                for (var j = 0; j < selectedMapFile["features"][i].geometry.coordinates.length; j++) {
                   var polygonArea = calcPolygonArea(selectedMapFile["features"][i].geometry.coordinates[j][0])
-                  if(maxArea < polygonArea){
+                  if (maxArea < polygonArea) {
                     maxArea = polygonArea
                     maxPoint = polylabel(selectedMapFile["features"][i].geometry.coordinates[j])
                   }
@@ -610,12 +610,12 @@ const MapDetails = () => {
   };
 
   const handleFork = () => {
-    navigate( '/createmap', { state: { mapFile: selectedMapFile} } )
+    navigate('/createmap', { state: { mapFile: selectedMapFile } })
   };
 
-  
+
   const handleEdit = () => {
-    navigate( '/editmap', { state: { mapFile: selectedMapFile, mapId: mapId} } )
+    navigate('/editmap', { state: { mapFile: selectedMapFile, mapId: mapId } })
   };
 
   const handleShare = () => {
@@ -657,12 +657,14 @@ const MapDetails = () => {
       <div className="map_details">
         <div className="map_details_container">
           <div className="name_options">
-            <div className="name_topic">
-              <div className="map_details_name">
-                <h1>{currentMap.current.map_name}</h1>
-              </div>
-              <div className="map_details_topic">
-                <h3>{currentMap.current.topic}</h3>
+            <div className="name_topic_details_container">
+              <div className="name_topic">
+                <div className="map_details_name">
+                  <h1>{currentMap.current.map_name}</h1>
+                </div>
+                <div className="map_details_topic">
+                  <h3>{currentMap.current.topic}</h3>
+                </div>
               </div>
               <div className="map_details_name" style={{ color: "#b8c5c9" }}>
                 <h5>
@@ -684,64 +686,61 @@ const MapDetails = () => {
                   <DeleteButton
                     onClick={() => handleDeleteMapPost(currentMap.current._id)}
                   />
-                  <EditButton 
+                  <EditButton
                     onClick={() => handleEdit()}
                   />
                 </>
               )}
-              {isAuth && (
-                <div className="options_icon">
-                  <img
-                    alt=""
-                    style={{ width: "30px", height: "30px" }}
-                    src={optionsIcon}
-                    onClick={handleToggleOptions}
-                  />
-                  {optionsMenuVisible && (
-                    <div className="mappreview_options_menu">
-                      <ul>
-                        <li onClick={() => handleFork()}>Fork Map</li>
-                        <Divider style={{ margin: "0" }} />
-                        <li onClick={() => handleShare()}>Share Map</li>
-                        <Divider style={{ margin: "0" }} />
-                        <li
-                          onClick={() =>
-                            downloadGeoJSON(
-                              selectedMapFile,
-                              currentMap.current.map_name + ".geojson"
-                            )
-                          }
-                        >
-                          Export Map
-                        </li>
-                        <Divider style={{ margin: "0" }} />
-                        <li onClick={() => handleEdit()}>Edit Map</li>
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
-            <div className={`mapdetails_hoverdata_switch${showHoverData ? "_showing" : ""}`}>
-              <CustomSwitch
-                showHoverData={showHoverData}
-                setShowHoverData={setShowHoverData}
-              />
-            </div>
-
-            {showHoverData ? (
-              <div className="mapdetails_hovered_data_container">
-                <div className="mapdetails_hovered_data_header">
-                  <h4 style={{ display: "inline-block", margin: 0 }}>Map Data</h4>
-                </div>
-                <div className="mapdetails_input_hovered_data">
-                  <div>{hoverData}</div>
-                </div>
+            {isAuth && (
+              <div className="options_icon">
+                <img
+                  alt=""
+                  style={{ width: "30px", height: "30px" }}
+                  src={optionsIcon}
+                  onClick={handleToggleOptions}
+                />
+                {optionsMenuVisible && (
+                  <div className="mappreview_options_menu">
+                    <ul>
+                      <li onClick={() => handleFork()}>Fork Map</li>
+                      <Divider style={{ margin: "0" }} />
+                      <li onClick={() => handleShare()}>Share Map</li>
+                      <Divider style={{ margin: "0" }} />
+                      <li
+                        onClick={() =>
+                          downloadGeoJSON(
+                            selectedMapFile,
+                            currentMap.current.map_name + ".geojson"
+                          )
+                        }
+                      >
+                        Export Map
+                      </li>
+                      <Divider style={{ margin: "0" }} />
+                      <li onClick={() => handleEdit()}>Edit Map</li>
+                    </ul>
+                  </div>
+                )}
               </div>
-            ) : (
-              <div></div>
             )}
           </div>
+          <div className={`mapdetails_hoverdata_switch${showHoverData ? "_showing" : ""}`}>
+            <CustomSwitch
+              showHoverData={showHoverData}
+              setShowHoverData={setShowHoverData}
+            />
+          </div>
+          {showHoverData && (
+            <div className="mapdetails_hovered_data_container">
+              <div className="mapdetails_hovered_data_header">
+                <h4 style={{ display: "inline-block", margin: 0 }}>Map Data</h4>
+              </div>
+              <div className="mapdetails_input_hovered_data">
+                <div>{hoverData}</div>
+              </div>
+            </div>
+          )}
 
           {isMapLoaded ? (
             <div
