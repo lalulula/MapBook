@@ -910,9 +910,6 @@ const MapDetails = () => {
                           Export Map
                         </li>
                         <Divider style={{ margin: "0" }} />
-                        {(isOwner || user.username === "Admin" && (
-                          <li onClick={() => handleEdit()}>Edit Map</li>
-                        ))}
                       </ul>
                     </div>
                   )}
