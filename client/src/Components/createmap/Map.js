@@ -485,7 +485,7 @@ const Map = ({
       var newGeometry;
       for (var i = 0; i < mapFileData.current["features"].length; i++) {
         // console.log(mapFileData.current["features"][i])
-        if (mapFileData.current["features"][i].geometry.type == "Polygon") {
+        if (mapFileData.current["features"][i].geometry.type === "Polygon") {
           newGeometry = {
             type: "Point",
             coordinates: polylabel(
@@ -1087,7 +1087,7 @@ const Map = ({
             layers: ["counties"],
           });
 
-          if (regions.length == 0) {
+          if (regions.length === 0) {
             setHoverData("Out of range");
           }
           if (regions.length > 0) {
@@ -1096,62 +1096,78 @@ const Map = ({
             );
 
             var data = tempFeature["properties"]["mapbook_data"];
+            const isObject = (value) => {
+              return typeof value === "object" && value !== null;
+            };
+            const renderObject = (obj) => {
+              console.log("calling render");
+              return `<span>${Object.keys(obj)
+                .map((nestedKey) => {
+                  const value = obj[nestedKey];
+                  return ` ${nestedKey.toLowerCase() === "color" ? `(${value})` : value
+                    }`;
+                })
+                .join("<br/>")}</span>`;
+            };
 
             if (data === undefined) {
-              setHoverData(regions[0]["properties"].name + "No data");
+              setHoverData(`No data for ${regions[0]["properties"].name}`);
             } else {
-              const formattedData =
-                templateHoverType.current === "Thematic Map"
-                  ? Object.keys(data)
-                    .map((key) => {
-                      const nestedProperties = Object.keys(data[key])
-                        .map(
-                          (nestedKey) =>
-                            `${nestedKey}:${data[key][nestedKey]}`
-                        )
-                        .join("\n");
-                      return `${key}: \n${nestedProperties}`;
-                    })
-                    .join("\n")
-                  : Object.keys(data)
-                    .map((key) => `${key}:${data[key]}`)
-                    .join("\n");
-              // console.log(data, formattedData);
-              // console.log(regions[0]["properties"].name + "\n" + formattedData);
+              const formatDataByKey = (key, value) => {
+                return `${key}: ${isObject(value) ? renderObject(value) : value
+                  }`;
+              };
+
+              const formatColorKey = (key, value) => {
+                const formattedValue =
+                  key.toLowerCase() === "color" ? `(${value})` : value;
+                return `${formattedValue}`;
+              };
+
+              const formattedData = (() => {
+                const dataKeys = Object.keys(data);
+
+                switch (templateHoverType.current) {
+                  case "Thematic Map":
+                  case "Pie Chart":
+                  case "Bar Chart":
+                    return dataKeys
+                      .map((key) => formatDataByKey(key, data[key]))
+                      .join("<br/>");
+
+                  case "Circle Map":
+                    return dataKeys.map((key) => `${data[key]}`).join("\n");
+
+                  default:
+                    return dataKeys
+                      .sort((a, b) => (a.toLowerCase() === "color" ? -1 : 1))
+                      .map((key) => formatColorKey(key, data[key]))
+                      .join("<br/>");
+                }
+              })();
 
               if (templateHoverType.current === "Pie Chart") {
-                //ok
-                console.log("Calling PIE");
                 setHoverData(
-                  regions[0]["properties"].name + "\n" + formattedData
+                  regions[0]["properties"].name + "<br/>" + formattedData
                 );
               } else if (templateHoverType.current === "Bar Chart") {
-                //ok
-                console.log("Calling BAR");
                 setHoverData(
-                  regions[0]["properties"].name + "\n" + formattedData
+                  regions[0]["properties"].name + "<br/>" + formattedData
                 );
               } else if (templateHoverType.current === "Heat Map") {
-                console.log("Calling HEAT");
-                setHoverData(
-                  regions[0]["properties"].name + "\n" + formattedData
-                );
+                const heatDataName =
+                  mapFileData.current.mapbook_circleheatmapdata;
+                setHoverData(heatDataName + formattedData);
               } else if (templateHoverType.current === "Thematic Map") {
-                console.log("Calling THEMATIC");
                 setHoverData(
-                  regions[0]["properties"].name + "\n" + formattedData
+                  regions[0]["properties"].name + "<br/>" + formattedData
                 );
               } else if (templateHoverType.current === "Circle Map") {
-                console.log("Calling CIRCLE");
-                setHoverData(
-                  regions[0]["properties"].name + "\n" + formattedData
-                );
+                const circleDataName =
+                  mapFileData.current.mapbook_circleheatmapdata;
+
+                setHoverData(circleDataName + "<br/>" + formattedData);
               }
-              // setHoverData(
-              //   JSON.stringify(tempFeature["properties"].mapbook_data)
-              // );
-              // console.log(formattedData);
-              // setHoverData(formattedData);
             }
           }
         });
