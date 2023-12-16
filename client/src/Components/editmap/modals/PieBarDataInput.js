@@ -54,20 +54,29 @@ const PieBarDataInput = ({
                   </div>{" "}
                 </>
               ) : (
-                selectedMapFile["mapbook_datanames"].map((dataname, index) => (
+                selectedMapFile["mapbook_datanames"].map((data, index) => (
                   <div key={index} className="map_datainput_element">
                     <FormControl>
-                      <h3 style={{ marginBottom: "0.5rem" }}>{dataname}</h3>
+                      <h3 style={{ marginBottom: "1rem" }}>
+                        {data["dataName"]}
+                      </h3>
                       <FormControl>
                         <Input
                           sx={{ marginBottom: "1rem" }}
                           onChange={(e) =>
-                            handlePieBarInputChange(dataname, e.target.value)
+                            handlePieBarInputChange(data, e.target.value)
                           }
-                          type="number"
-                          // placeholder={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data[dataname].value : "Enter data value"}
-
-                          placeholder="Enter data value"
+                          // placeholder="Enter data value"
+                          placeholder={
+                            feature[0].properties.mapbook_data
+                              ? feature[0].properties.mapbook_data[
+                                  data["dataName"]
+                                ].value
+                              : "Enter data value"
+                          }
+                          // type="number"
+                          // step="0.01"
+                          type="float"
                           required
                         />
                       </FormControl>
