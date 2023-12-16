@@ -142,6 +142,8 @@ const Map = ({
     templateHoverType.current = template;
     // console.log("isMapbookData: Map.js:", isMapbookData)
     if (!isMapbookData) {
+      // pieChartData.current = [];
+      // barChartData.current = [];
       resetMap();
       console.log("resetMap called:", selectedMapFile);
     }
@@ -634,7 +636,7 @@ const Map = ({
       pieChartData.current = newPieChartData;
 
       // wait till canvas is re-rander
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise(resolve => setTimeout(resolve, 100));
 
 
       mapRef.current.addSource("pie", {
@@ -672,12 +674,9 @@ const Map = ({
 
         // add image that we generate
         if (mapRef.current.hasImage(name)) {
-          // mapRef.current.updateImage(name, image);
-          mapRef.current.updateImage(name, imgData);
-        } else {
-          // mapRef.current.addImage(name, image);
-          mapRef.current.addImage(name, imgData);
+          mapRef.current.removeImage(name);
         }
+        mapRef.current.addImage(name, imgData);
 
         // add expImageSelect on new image
         expImageSelect.push(["==", ["get", "name"], name]);
@@ -742,7 +741,7 @@ const Map = ({
       barChartData.current = newBarChartData;
 
       // wait till canvas is re-rander
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise(resolve => setTimeout(resolve, 100));
 
 
       mapRef.current.addSource("bar", {
@@ -780,12 +779,9 @@ const Map = ({
 
         // add image that we generate
         if (mapRef.current.hasImage(name)) {
-          // mapRef.current.updateImage(name, image);
-          mapRef.current.updateImage(name, imgData);
-        } else {
-          // mapRef.current.addImage(name, image);
-          mapRef.current.addImage(name, imgData);
+          mapRef.current.removeImage(name);
         }
+        mapRef.current.addImage(name, imgData);
 
         // add expImageSelect on new image
         expImageSelect.push(["==", ["get", "name"], name]);
@@ -1322,7 +1318,7 @@ const Map = ({
         position: 'absolute'
         // display:'none'
       }}>
-        {pieChartData.current.length !== 0 &&
+        {pieChartData.current.length !== 0 && 
           pieChartData.current.map((item, index) => (
             <Pie id={item[0] + 'pie'} data={item[1]} options={{
               animation: {
@@ -1336,7 +1332,7 @@ const Map = ({
             }} />
           ))}
 
-        {barChartData.current.length !== 0 &&
+        {barChartData.current.length !== 0 && 
           barChartData.current.map((item, index) => (
             <Bar id={item[0] + 'bar'} data={item[1]} options={{
               animation: {

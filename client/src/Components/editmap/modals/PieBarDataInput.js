@@ -65,9 +65,9 @@ const PieBarDataInput = ({
                             handlePieBarInputChange(dataname, e.target.value)
                           }
                           type="number"
-                          placeholder={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data[dataname].value : "Enter data value"}
+                          // placeholder={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data[dataname].value : "Enter data value"}
 
-                          // placeholder="Enter data value"
+                          placeholder="Enter data value"
                           required
                         />
                       </FormControl>
