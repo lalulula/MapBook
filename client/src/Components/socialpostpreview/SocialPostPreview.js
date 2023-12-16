@@ -99,14 +99,19 @@ const SocialPostPreview = ({ data, socialPosts, setSocialPosts, showDeleteConfir
             src={data.post_images[0]}
           />
         )}
-        {user.user.is_admin && (
-          <div className="socialpostpreview_admin_delete">
+      </div>
+      {user.user.is_admin && (
+        <div className="socialpostpreview_admin_delete">
+          <div className="socialpostpreview_admin_delete_inner">
+            {showDeleteConfirmationModal && (
+              <div className="socialpostpreview_overlay"></div>
+            )}
             <DeleteIcon
               onClick={() => handleClickDeleteSocialPost(data._id)}
             />
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -89,3 +89,20 @@
   padding: 8px 15px 8px 15px;
   border-radius: 5px;
 }
+
+.socialpostpreview_admin_delete {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.socialpostpreview_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0.3;
+  background-color: black;
+  z-index: 99;
+}

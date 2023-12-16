@@ -260,33 +260,40 @@ const SocialComments = () => {
                       </div>
                     )}
                     <div className="comment_tools">
-                      {comment.social_comment_owner == currentUserId && (
+                      <div className="social_comment_bottom_container">
                         <div className="social_comment_bottom">
-                          <div
-                            className="edit_comment_btn"
-                            onClick={() => handleClickEditComment(comment._id)}
-                          >
-                            <EditIcon />
-                            Edit comment
-                          </div>
-                          <div
-                            className="delete_comment_btn"
-                            onClick={() =>
-                              handleClickDeleteComment(comment._id)
-                            }
-                          >
-                            <DeleteIcon />
-                            Delete comment
-                          </div>
+                          {comment.social_comment_owner === currentUserId && (
+                            <div
+                              className="edit_comment_btn"
+                              onClick={() => handleClickEditComment(comment._id)}
+                            >
+                              <EditIcon style={{ fontSize: '17px' }} />
+                              Edit comment
+                            </div>
+                          )}
+                          {comment.social_comment_owner === currentUserId && (
+                            <div
+                              className="delete_comment_btn"
+                              onClick={() =>
+                                handleClickDeleteComment(comment._id)
+                              }
+                            >
+                              <DeleteIcon style={{ fontSize: '17px' }} />
+                              Delete comment
+                            </div>
+                          )}
+                          {isAuth && (
+                            <div
+                              className="reply_comment_btn"
+                              onClick={() => handleClickReplyComment(comment._id)}
+                            >
+                              <ChatBubbleOutlineIcon style={{ fontSize: '20px' }} />
+                              <p>Reply</p>
+                            </div>
+                          )}
                         </div>
-                      )}
-                      <div
-                        className="reply_comment_btn"
-                        onClick={() => handleClickReplyComment(comment._id)}
-                      >
-                        <ChatBubbleOutlineIcon />
-                        Reply
                       </div>
+
                     </div>
                   </div>
                 ) : (
@@ -329,35 +336,39 @@ const SocialComments = () => {
                           </div>
                         </div>
                       )}
-                      {comment.social_comment_owner === currentUserId && (
+                      <div className="social_comment_bottom_container">
                         <div className="social_comment_bottom">
-                          <div
-                            className="edit_comment_btn"
-                            onClick={() => handleClickEditComment(comment._id)}
-                          >
-                            <EditIcon />
-                            Edit comment
-                          </div>
-                          <div
-                            className="delete_comment_btn"
-                            onClick={() =>
-                              handleClickDeleteComment(comment._id)
-                            }
-                          >
-                            <DeleteIcon />
-                            Delete comment
-                          </div>
+                          {comment.social_comment_owner === currentUserId && (
+                            <div
+                              className="edit_comment_btn"
+                              onClick={() => handleClickEditComment(comment._id)}
+                            >
+                              <EditIcon style={{ fontSize: '17px' }} />
+                              Edit comment
+                            </div>
+                          )}
+                          {comment.social_comment_owner === currentUserId && (
+                            <div
+                              className="delete_comment_btn"
+                              onClick={() =>
+                                handleClickDeleteComment(comment._id)
+                              }
+                            >
+                              <DeleteIcon style={{ fontSize: '17px' }} />
+                              Delete comment
+                            </div>
+                          )}
+                          {isAuth && (
+                            <div
+                              className="reply_comment_btn"
+                              onClick={() => handleClickReplyComment(comment._id)}
+                            >
+                              <ChatBubbleOutlineIcon style={{ fontSize: '20px' }} />
+                              <p>Reply</p>
+                            </div>
+                          )}
                         </div>
-                      )}
-                      {isAuth && (
-                        <div
-                          className="reply_comment_btn"
-                          onClick={() => handleClickReplyComment(comment._id)}
-                        >
-                          <ChatBubbleOutlineIcon />
-                          <p>Reply</p>
-                        </div>
-                      )}
+                      </div>
                     </div>
                   </div>
                 )}
