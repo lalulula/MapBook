@@ -14,7 +14,7 @@ import CircleDataInput from "./modals/CircleDataInput";
 import ThematicDataInput from "./modals/ThematicDataInput";
 import HeatDataInput from "./modals/HeatDataInput";
 
-import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement} from 'chart.js';
+import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement } from 'chart.js';
 import { Pie, Bar } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement);
@@ -727,7 +727,7 @@ const Map = ({
         console.log("tempBarChartData: ", tempBarChartData)
         var keys = Object.keys(element["properties"].mapbook_data);
         keys.forEach((name) => {
-          var tempDataset = {data: []}
+          var tempDataset = { data: [] }
           tempDataset.label = name
           tempDataset.data.push(element["properties"].mapbook_data[name].value)
           tempDataset.backgroundColor = element["properties"].mapbook_data[name].color
@@ -1030,19 +1030,19 @@ const Map = ({
               const formattedData =
                 templateHoverType.current === "Thematic Map"
                   ? Object.keys(data)
-                      .map((key) => {
-                        const nestedProperties = Object.keys(data[key])
-                          .map(
-                            (nestedKey) =>
-                              `${nestedKey}:${data[key][nestedKey]}`
-                          )
-                          .join("\n");
-                        return `${key}: \n${nestedProperties}`;
-                      })
-                      .join("\n")
+                    .map((key) => {
+                      const nestedProperties = Object.keys(data[key])
+                        .map(
+                          (nestedKey) =>
+                            `${nestedKey}:${data[key][nestedKey]}`
+                        )
+                        .join("\n");
+                      return `${key}: \n${nestedProperties}`;
+                    })
+                    .join("\n")
                   : Object.keys(data)
-                      .map((key) => `${key}:${data[key]}`)
-                      .join("\n");
+                    .map((key) => `${key}:${data[key]}`)
+                    .join("\n");
               // console.log(data, formattedData);
               // console.log(regions[0]["properties"].name + "\n" + formattedData);
 
@@ -1177,16 +1177,14 @@ const Map = ({
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
           <i
-            className={`${
-              undoStack.current.length === 0 ? "disabled_undo" : "undo"
-            } bx bx-undo`}
+            className={`${undoStack.current.length === 0 ? "disabled_undo" : "undo"
+              } bx bx-undo`}
             onClick={handleUndo}
           />
           <div className="vertical_line_container">|</div>
           <i
-            className={`${
-              redoStack.current.length === 0 ? "disabled_redo" : "redo"
-            } bx bx-redo`}
+            className={`${redoStack.current.length === 0 ? "disabled_redo" : "redo"
+              } bx bx-redo`}
             onClick={handleRedo}
           />
         </div>
@@ -1255,12 +1253,12 @@ const Map = ({
             feature={feature}
           />
         )}
-        
+
       </div>
 
       <div style={{
-        width:50, 
-        height:50, 
+        width: 50,
+        height: 50,
         top: 100,
         left: -200,
         position: 'absolute'
@@ -1268,7 +1266,7 @@ const Map = ({
       }}>
         {pieChartData.current.length !== 0 &&
           pieChartData.current.map((item, index) => (
-            <Pie id={item[0] + 'pie'} data={item[1]}  options={{
+            <Pie id={item[0] + 'pie'} data={item[1]} options={{
               animation: {
                 duration: 0
               },
@@ -1277,8 +1275,8 @@ const Map = ({
                   display: false,
                 },
               },
-            }}/>
-        ))}
+            }} />
+          ))}
 
         {barChartData.current.length !== 0 &&
           barChartData.current.map((item, index) => (
@@ -1297,10 +1295,10 @@ const Map = ({
                   grid: {
                     display: false
                   },
-                  ticks:{
+                  ticks: {
                     display: false
                   },
-                  border:{
+                  border: {
                     display: false
                   }
                 },
@@ -1308,16 +1306,16 @@ const Map = ({
                   grid: {
                     display: false
                   },
-                  ticks:{
+                  ticks: {
                     display: false
                   },
-                  border:{
+                  border: {
                     display: false
                   }
                 }
               },
-            }}/>
-        ))}
+            }} />
+          ))}
 
       </div>
 
