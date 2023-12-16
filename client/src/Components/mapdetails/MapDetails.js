@@ -680,50 +680,53 @@ const MapDetails = () => {
                 </div>
               </div>
             </div>
-            <div className="map_details_options_container">
-              {(isOwner || user.username === "Admin") && (
-                <>
-                  <DeleteButton
-                    onClick={() => handleDeleteMapPost(currentMap.current._id)}
-                  />
-                  <EditButton
-                    onClick={() => handleEdit()}
-                  />
-                </>
-              )}
-            </div>
-            {isAuth && (
-              <div className="options_icon">
-                <img
-                  alt=""
-                  style={{ width: "30px", height: "30px" }}
-                  src={optionsIcon}
-                  onClick={handleToggleOptions}
-                />
-                {optionsMenuVisible && (
-                  <div className="mappreview_options_menu">
-                    <ul>
-                      <li onClick={() => handleFork()}>Fork Map</li>
-                      <Divider style={{ margin: "0" }} />
-                      <li onClick={() => handleShare()}>Share Map</li>
-                      <Divider style={{ margin: "0" }} />
-                      <li
-                        onClick={() =>
-                          downloadGeoJSON(
-                            selectedMapFile,
-                            currentMap.current.map_name + ".geojson"
-                          )
-                        }
-                      >
-                        Export Map
-                      </li>
-                      <Divider style={{ margin: "0" }} />
-                      <li onClick={() => handleEdit()}>Edit Map</li>
-                    </ul>
-                  </div>
+            <div className="map_details_options_outer">
+              <div className="map_details_options_container">
+                {(isOwner || user.username === "Admin") && (
+                  <>
+                    <DeleteButton
+                      onClick={() => handleDeleteMapPost(currentMap.current._id)}
+                    />
+                    <EditButton
+                      onClick={() => handleEdit()}
+                    />
+                  </>
                 )}
               </div>
-            )}
+              {isAuth && (
+                <div className="options_icon">
+                  <img
+                    alt=""
+                    style={{ width: "30px", height: "30px" }}
+                    src={optionsIcon}
+                    onClick={handleToggleOptions}
+                  />
+                  {optionsMenuVisible && (
+                    <div className="mappreview_options_menu">
+                      <ul>
+                        <li onClick={() => handleFork()}>Fork Map</li>
+                        <Divider style={{ margin: "0" }} />
+                        <li onClick={() => handleShare()}>Share Map</li>
+                        <Divider style={{ margin: "0" }} />
+                        <li
+                          onClick={() =>
+                            downloadGeoJSON(
+                              selectedMapFile,
+                              currentMap.current.map_name + ".geojson"
+                            )
+                          }
+                        >
+                          Export Map
+                        </li>
+                        <Divider style={{ margin: "0" }} />
+                        <li onClick={() => handleEdit()}>Edit Map</li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
           </div>
           <div className={`mapdetails_hoverdata_switch${showHoverData ? "_showing" : ""}`}>
             <CustomSwitch
