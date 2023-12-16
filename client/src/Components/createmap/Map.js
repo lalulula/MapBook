@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./createMap.css";
 import * as turf from "@turf/turf";
-import polylabel from "polylabel"
+import polylabel from "polylabel";
 
 import html2canvas from "html2canvas";
 
@@ -30,7 +30,6 @@ const Map = ({
   isMapbookData,
   setIsMapbookData,
 }) => {
-  
   const mapFileData = useRef(selectedMapFile);
   const mapRef = useRef();
 
@@ -85,13 +84,16 @@ const Map = ({
   const mapContainerRef = useRef(null);
   const userId = useSelector((state) => state.user.id);
   const [rerenderFlag, setRerenderFlag] = useState(false);
-  const [isMapLoaded, setIsMapLoaded] = useState(false)
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
   const navigate = useNavigate();
 
   const handleRerender = () => {
     setRerenderFlag(!rerenderFlag);
   };
-
+  useEffect(() => {
+    console.log(undoStack.current.length === 0);
+    console.log(redoStack.current.length === 0);
+  }, [undoStack, redoStack]);
   const resetMap = () => {
     undoStack.current = [];
     redoStack.current = [];
@@ -116,8 +118,7 @@ const Map = ({
     });
     mapFileData.current = newState;
 
-
-    if(isMapLoaded){
+    if (isMapLoaded) {
       redrawThematicData();
       redrawHeatData();
       redrawCircleData();
@@ -132,11 +133,10 @@ const Map = ({
   useEffect(() => {
     templateHoverType.current = template;
     // console.log("isMapbookData: Map.js:", isMapbookData)
-    if(!isMapbookData){
+    if (!isMapbookData) {
       resetMap();
       console.log("resetMap called:", selectedMapFile);
     }
-
   }, [template]);
 
   const handleClickRegion = () => {
@@ -313,8 +313,7 @@ const Map = ({
         "name",
         ...namesDataAdded,
       ]);
-    }
-    else{
+    } else {
       if (mapRef.current.getLayer("counties-thematic")) {
         mapRef.current.setLayoutProperty(
           "counties-thematic",
@@ -390,7 +389,6 @@ const Map = ({
 
       // console.log("heatData", inputData, "namesdata", namesDataAdded);
 
-
       mapRef.current.setLayoutProperty(
         "counties-heat",
         "visibility",
@@ -406,14 +404,9 @@ const Map = ({
         "name",
         ...namesDataAdded,
       ]);
-    }
-    else{
+    } else {
       if (mapRef.current.getLayer("counties-heat")) {
-        mapRef.current.setLayoutProperty(
-          "counties-heat",
-          "visibility",
-          "none"
-        );
+        mapRef.current.setLayoutProperty("counties-heat", "visibility", "none");
       }
     }
   };
@@ -427,16 +420,15 @@ const Map = ({
       var subX = vertices[i == vertices.length - 1 ? 0 : i + 1][0];
       var subY = vertices[i][1];
 
-      total += (addX * addY * 0.5);
-      total -= (subX * subY * 0.5);
+      total += addX * addY * 0.5;
+      total -= subX * subY * 0.5;
     }
 
     return Math.abs(total);
   }
- 
+
   // CLUSTER APPROACH
   const redrawCircleData = () => {
-
     if (templateHoverType.current === "Circle Map") {
       if (mapRef.current.getLayer("clusters")) {
         mapRef.current.removeLayer("clusters");
@@ -476,17 +468,30 @@ const Map = ({
       var newGeometry;
       for (var i = 0; i < mapFileData.current["features"].length; i++) {
         // console.log(mapFileData.current["features"][i])
-        if(mapFileData.current["features"][i].geometry.type == "Polygon"){
-          newGeometry = { type: "Point", coordinates:  polylabel(mapFileData.current["features"][i].geometry.coordinates, 1.0) };
-        }
-        else{
+        if (mapFileData.current["features"][i].geometry.type == "Polygon") {
+          newGeometry = {
+            type: "Point",
+            coordinates: polylabel(
+              mapFileData.current["features"][i].geometry.coordinates,
+              1.0
+            ),
+          };
+        } else {
           let maxArea = 0;
           let maxPoint = [];
-          for(var j = 0; j < mapFileData.current["features"][i].geometry.coordinates.length; j++){
-            var polygonArea = calcPolygonArea(mapFileData.current["features"][i].geometry.coordinates[j][0])
-            if(maxArea < polygonArea){
-              maxArea = polygonArea
-              maxPoint = polylabel(mapFileData.current["features"][i].geometry.coordinates[j])
+          for (
+            var j = 0;
+            j < mapFileData.current["features"][i].geometry.coordinates.length;
+            j++
+          ) {
+            var polygonArea = calcPolygonArea(
+              mapFileData.current["features"][i].geometry.coordinates[j][0]
+            );
+            if (maxArea < polygonArea) {
+              maxArea = polygonArea;
+              maxPoint = polylabel(
+                mapFileData.current["features"][i].geometry.coordinates[j]
+              );
             }
           }
           newGeometry = { type: "Point", coordinates: maxPoint };
@@ -559,28 +564,18 @@ const Map = ({
         "mapRef.current.getPaintProperty:",
         mapRef.current.getPaintProperty("clusters", "circle-color")
       );
-    }
-    else{
+    } else {
       if (mapRef.current.getLayer("clusters")) {
-        mapRef.current.setLayoutProperty(
-          "clusters",
-          "visibility",
-          "none"
-        );
+        mapRef.current.setLayoutProperty("clusters", "visibility", "none");
       }
       if (mapRef.current.getLayer("cluster-count")) {
-        mapRef.current.setLayoutProperty(
-          "cluster-count",
-          "visibility",
-          "none"
-        );
+        mapRef.current.setLayoutProperty("cluster-count", "visibility", "none");
       }
     }
   };
 
   // PIE
   const redrawPieData = () => {
-
     if (templateHoverType.current === "Pie Chart") {
       if (mapRef.current.getLayer("clusters")) {
         mapRef.current.removeLayer("clusters");
@@ -604,9 +599,9 @@ const Map = ({
       console.log("dataNames: ", dataNames);
 
       console.log("inputData: ", inputData);
-      
+
       let maxDataValueName = null;
-      let maxDataValue = 0
+      let maxDataValue = 0;
       if (inputData) {
         for (const key in inputData) {
           if (inputData[key]["value"] > maxDataValue) {
@@ -637,17 +632,30 @@ const Map = ({
       var newGeometry;
       for (var i = 0; i < mapFileData.current["features"].length; i++) {
         // console.log(mapFileData.current["features"][i])
-        if(mapFileData.current["features"][i].geometry.type == "Polygon"){
-          newGeometry = { type: "Point", coordinates:  polylabel(mapFileData.current["features"][i].geometry.coordinates, 1.0) };
-        }
-        else{
+        if (mapFileData.current["features"][i].geometry.type == "Polygon") {
+          newGeometry = {
+            type: "Point",
+            coordinates: polylabel(
+              mapFileData.current["features"][i].geometry.coordinates,
+              1.0
+            ),
+          };
+        } else {
           let maxArea = 0;
           let maxPoint = [];
-          for(var j = 0; j < mapFileData.current["features"][i].geometry.coordinates.length; j++){
-            var polygonArea = calcPolygonArea(mapFileData.current["features"][i].geometry.coordinates[j][0])
-            if(maxArea < polygonArea){
-              maxArea = polygonArea
-              maxPoint = polylabel(mapFileData.current["features"][i].geometry.coordinates[j])
+          for (
+            var j = 0;
+            j < mapFileData.current["features"][i].geometry.coordinates.length;
+            j++
+          ) {
+            var polygonArea = calcPolygonArea(
+              mapFileData.current["features"][i].geometry.coordinates[j][0]
+            );
+            if (maxArea < polygonArea) {
+              maxArea = polygonArea;
+              maxPoint = polylabel(
+                mapFileData.current["features"][i].geometry.coordinates[j]
+              );
             }
           }
           newGeometry = { type: "Point", coordinates: maxPoint };
@@ -720,21 +728,12 @@ const Map = ({
         "mapRef.current.getPaintProperty:",
         mapRef.current.getPaintProperty("clusters", "circle-color")
       );
-    }
-    else{
+    } else {
       if (mapRef.current.getLayer("clusters")) {
-        mapRef.current.setLayoutProperty(
-          "clusters",
-          "visibility",
-          "none"
-        );
+        mapRef.current.setLayoutProperty("clusters", "visibility", "none");
       }
       if (mapRef.current.getLayer("cluster-count")) {
-        mapRef.current.setLayoutProperty(
-          "cluster-count",
-          "visibility",
-          "none"
-        );
+        mapRef.current.setLayoutProperty("cluster-count", "visibility", "none");
       }
     }
   };
@@ -859,7 +858,6 @@ const Map = ({
         }
       }
     }
-    
 
     // mapFileData.current
 
@@ -904,7 +902,6 @@ const Map = ({
             "fill-outline-color": "#000000",
           },
         });
-
 
         map.on("click", (e) => {
           const bbox = [
@@ -963,19 +960,19 @@ const Map = ({
               const formattedData =
                 templateHoverType.current === "Thematic Map"
                   ? Object.keys(data)
-                    .map((key) => {
-                      const nestedProperties = Object.keys(data[key])
-                        .map(
-                          (nestedKey) =>
-                            `${nestedKey}:${data[key][nestedKey]}`
-                        )
-                        .join("\n");
-                      return `${key}: \n${nestedProperties}`;
-                    })
-                    .join("\n")
+                      .map((key) => {
+                        const nestedProperties = Object.keys(data[key])
+                          .map(
+                            (nestedKey) =>
+                              `${nestedKey}:${data[key][nestedKey]}`
+                          )
+                          .join("\n");
+                        return `${key}: \n${nestedProperties}`;
+                      })
+                      .join("\n")
                   : Object.keys(data)
-                    .map((key) => `${key}:${data[key]}`)
-                    .join("\n");
+                      .map((key) => `${key}:${data[key]}`)
+                      .join("\n");
               // console.log(data, formattedData);
               // console.log(regions[0]["properties"].name + "\n" + formattedData);
 
@@ -1016,24 +1013,21 @@ const Map = ({
           }
         });
 
-        
         setIsMapLoaded(true);
       });
     }
 
     mapRef.current = map;
-
-    
   }, []);
 
   useEffect(() => {
-    if(isMapLoaded){
-      if(isMapbookData){
+    if (isMapLoaded) {
+      if (isMapbookData) {
         redrawThematicData();
         redrawHeatData();
         redrawCircleData();
         redrawPieData();
-  
+
         setIsMapbookData(false);
       }
     }
@@ -1110,14 +1104,16 @@ const Map = ({
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
           <i
-            className="undo bx bx-undo"
-            disabled={undoStack.length === 0}
+            className={`${
+              undoStack.current.length === 0 ? "disabled_undo" : "undo"
+            } bx bx-undo`}
             onClick={handleUndo}
           />
           <div className="vertical_line_container">|</div>
           <i
-            className="redo bx bx-redo"
-            disabled={redoStack.length === 0}
+            className={`${
+              redoStack.current.length === 0 ? "disabled_redo" : "redo"
+            } bx bx-redo`}
             onClick={handleRedo}
           />
         </div>
