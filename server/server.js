@@ -16,7 +16,6 @@ const mapRoutes = require("./routes/map.js");
 const mapCommentRoutes = require("./routes/mapComment.js");
 const mapReplyRoutes = require("./routes/mapReply.js");
 
-
 // IMPORTED CONTROLLERS
 const userController = require("./controllers/users");
 const socialController = require("./controllers/social");
@@ -60,21 +59,19 @@ app.put(
   socialController.createPost
 );
 
-
 // CREATE MAP
 app.post(
   "/api/map/createMap",
   // fileUpload.single("file"),
-  fileUpload.fields([{name: 'file'}, {name: 'mapPreviewImg'}]),
+  fileUpload.fields([{ name: "file" }, { name: "mapPreviewImg" }]),
 
-  
   // auth.verifyToken,
   mapController.createMap
 );
 // UPDATE MAP
 app.put(
   "/api/maps/:mapId",
-  fileUpload.fields([{name: 'file'}, {name: 'mapPreviewImg'}]),
+  fileUpload.fields([{ name: "file" }, { name: "mapPreviewImg" }]),
   // auth.verifyToken,
   mapController.editMap
 );
@@ -88,7 +85,6 @@ app.use("/api/socialCommentReply", socialCommentReplyRoutes);
 app.use("/api/maps", mapRoutes);
 app.use("/api/mapComment", mapCommentRoutes);
 app.use("/api/mapReply", mapReplyRoutes);
-
 
 // MONGOOSE SETUP
 const PORT = process.env.PORT || 3001;
