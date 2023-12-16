@@ -360,3 +360,22 @@
 .indicator-inactive {
   background-color: grey;
 }
+
+
+.editsocialpost_error_message {
+  background-color: #a3ffab;
+  color: #1f5924;
+  position: fixed;
+  top: 15rem;
+  right: 0;
+  width: 30rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 3px;
+  border: 1px solid rgb(0, 255, 30)
+}
+
+.editsocialpost_error_message_close {
+  cursor: pointer;
+}

@@ -28,6 +28,7 @@ const SocialPostDetails = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const [imgFullScreen, setImgFullScreen] = useState(false);
+  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
 
   const nextImage = () => {
     setCurrentIndex(
@@ -43,6 +44,29 @@ const SocialPostDetails = () => {
         (prevIndex - 1 + currentPost.post_images.length) %
         currentPost.post_images.length
     );
+  };
+
+  const handleClickDeleteSocialPost = () => {
+    if (showDeleteConfirmationModal) {
+      setShowDeleteConfirmationModal(false);
+    } else {
+      setShowDeleteConfirmationModal(id);
+    }
+  }
+
+  const handleDeleteSocialPost = async () => {
+    try {
+      console.log("removing social post");
+      const deleteSuccess = await deleteSocialPostAPIMethod(currentPost._id);
+
+      if (deleteSuccess) {
+        navigate("/socialpage");
+      } else {
+        alert("Error deleting post");
+      }
+    } catch (error) {
+      console.error("Error handling delete operation:", error);
+    }
   };
 
   useEffect(() => {
@@ -66,20 +90,6 @@ const SocialPostDetails = () => {
     fetchData();
   }, [id, user._id]);
 
-  const handleDeleteSocialPost = async () => {
-    try {
-      console.log("removing social post");
-      const deleteSuccess = await deleteSocialPostAPIMethod(currentPost._id);
-
-      if (deleteSuccess) {
-        navigate("/socialpage");
-      } else {
-        alert("Error deleting post");
-      }
-    } catch (error) {
-      console.error("Error handling delete operation:", error);
-    }
-  };
   const handleEditSocialPost = async () => {
     navigate(`/editsocialpost/${currentPost._id}`);
   };
@@ -104,6 +114,32 @@ const SocialPostDetails = () => {
 
   return (
     <div className={`socialpostdetails ${imgFullScreen ? "img_fullscreen" : ""}`}>
+      {showDeleteConfirmationModal != false && (
+        <div className="maps_overlay"></div>
+      )}
+      {showDeleteConfirmationModal && (
+        <div className="mappdetails_delete_confirmation_modal">
+          <div className="mapdetails_delete_confirmation_modal_top">
+            Are you sure you want to delete this post?
+          </div>
+          <div className="mapdetails_delete_confirmation_modal_bottom">
+            <button
+              className="mapdetails_delete_confirm"
+              onClick={handleDeleteSocialPost}
+            >
+              Yes
+            </button>
+            <button
+              className="mapdetails_cancel_delete"
+              onClick={() =>
+                setShowDeleteConfirmationModal(false)
+              }
+            >
+              No
+            </button>
+          </div>
+        </div>
+      )}
       <div className="socialpostdetails_container">
         <span
           className="back_btn_socialdetail"
@@ -170,7 +206,7 @@ const SocialPostDetails = () => {
                   delete
                 </button> */}
                 <EditButton onClick={handleEditSocialPost} />
-                <DeleteButton onClick={handleDeleteSocialPost} />
+                <DeleteButton onClick={handleClickDeleteSocialPost} />
               </>
             )}
             <LikeButton isAuth={isAuth} id={id} currentPost={currentPost} />
