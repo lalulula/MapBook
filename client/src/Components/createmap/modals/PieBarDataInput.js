@@ -18,10 +18,10 @@ const PieBarDataInput = ({
   regionName,
   feature,
 }) => {
-  useEffect( () =>  {
-    console.log("PieBar feature: ", feature)
-    console.log(feature[0].properties.mapbook_data)
-  }, [] );
+  useEffect(() => {
+    console.log("PieBar feature: ", feature);
+    console.log(feature[0].properties.mapbook_data);
+  }, []);
 
   const isAnyDataNameMissing =
     selectedMapFile["mapbook_datanames"].some((dataname) => !dataname) ||
@@ -58,9 +58,16 @@ const PieBarDataInput = ({
                             handlePieBarInputChange(data, e.target.value)
                           }
                           // placeholder="Enter data value"
-                          placeholder={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data[data["dataName"]].value : "Enter data value"}
-
-                          type="number"
+                          placeholder={
+                            feature[0].properties.mapbook_data
+                              ? feature[0].properties.mapbook_data[
+                                  data["dataName"]
+                                ].value
+                              : "Enter data value"
+                          }
+                          // type="number"
+                          // step="0.01"
+                          type="float"
                           required
                         />
                       </FormControl>
@@ -73,7 +80,7 @@ const PieBarDataInput = ({
                   onClick={(e) => {
                     e.preventDefault();
                     setShowModalBar(false);
-                    setShowModalPie(false)
+                    setShowModalPie(false);
                   }}
                 >
                   Close
@@ -87,67 +94,6 @@ const PieBarDataInput = ({
       </ModalDialog>
     </Modal>
   );
-
-  // return (
-  //   <Modal
-  //     open={showModalBar || showModalPie}
-  //     onClose={() => {
-  //       setShowModalBar(false);
-  //       setShowModalPie(false);
-  //     }}
-  //   >
-  //     <ModalDialog>
-  //       <DialogTitle>Enter Data for {regionName}</DialogTitle>
-  //       <form onSubmit={handleAddData}>
-  //         <Stack spacing={2}>
-  //           <div className="map_datainput_container">
-  //             {isAnyDataNameMissing ? (
-  //               <>
-  //                 <div className="inputdata_warning_txt">
-  //                   First enter data name(s) on the right side bar
-  //                 </div>{" "}
-  //               </>
-  //             ) : (
-  //               selectedMapFile["mapbook_datanames"].map((dataname, index) => (
-  //                 <div key={index} className="map_datainput_element">
-  //                   <FormControl>
-  //                     <h3 style={{ marginBottom: "0.5rem" }}>{dataname}</h3>
-  //                     <FormControl>
-  //                       <Input
-  //                         sx={{ marginBottom: "1rem" }}
-  //                         onChange={(e) =>
-  //                           handlePieBarInputChange(dataname, e.target.value)
-  //                         }
-  //                         type="number"
-  //                         placeholder={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data[dataname].value : "Enter data value"}
-
-  //                         // placeholder="Enter data value"
-  //                         required
-  //                       />
-  //                     </FormControl>
-  //                   </FormControl>
-  //                 </div>
-  //               ))
-  //             )}
-  //             {isAnyDataNameMissing ? (
-  //               <Button
-  //                 onClick={(e) => {
-  //                   e.preventDefault();
-  //                   setShowModalBar(false);
-  //                   setShowModalPie(false);
-  //                 }}
-  //               >
-  //                 Close
-  //               </Button>
-  //             ) : (
-  //               <Button type="submit">Submit</Button>
-  //             )}
-  //           </div>
-  //         </Stack>
-  //       </form>
-  //     </ModalDialog>
-  //   </Modal>
-  // );
 };
 
 export default PieBarDataInput;

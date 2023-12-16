@@ -49,9 +49,16 @@ const ThematicDataInput = ({
                             handleThematicData(data, e.target.value)
                           }
                           // placeholder="Enter data value"
-                          placeholder={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data[data["dataName"]].value : "Enter data value"}
-
-                          type="number"
+                          placeholder={
+                            feature[0].properties.mapbook_data
+                              ? feature[0].properties.mapbook_data[
+                                  data["dataName"]
+                                ].value
+                              : "Enter data value"
+                          }
+                          // type="number"
+                          // step="0.01"
+                          type="float"
                           required
                         />
                       </FormControl>
