@@ -5,10 +5,14 @@ import {
   editSocialPostAPIMethod,
 } from "../../api/social";
 import Dropdown from "react-dropdown";
+import { easeInOut, motion } from "framer-motion"
+
 
 const EditSocialPost = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [editedPost, setEditedPost] = useState({
     title: "",
     post_content: "",
@@ -40,10 +44,17 @@ const EditSocialPost = () => {
   }, [id]);
 
   const handleEditSocialPost = async () => {
+    if (editedPost.title.trim().length == 0 || editedPost.post_content.trim().length == 0) {
+      setShowErrorMessage(true);
+      return;
+    }
     try {
       await editSocialPostAPIMethod(id, editedPost);
-      alert("Edit Post Successfully");
-      handleBackToPost();
+      setShowSuccess(true);
+
+      setTimeout(() => {
+        handleBackToPost();
+      }, 1500); // Adjust the delay as needed
     } catch (error) {
       alert("Error updating social post:", error);
     }
@@ -73,6 +84,42 @@ const EditSocialPost = () => {
 
   return (
     <div className="editsocialpost_page">
+      <motion.div
+        initial={{ x: '200%' }}
+        animate={{ x: !showErrorMessage ? '200%' : 0 }}
+        transition={{ type: 'tween', duration: 0.5, ease: easeInOut }}
+        exit={{ x: '-100%' }}
+        style={{
+          position: 'fixed',
+          padding: '20px',
+          zIndex: '100',
+          top: '140px'
+        }}
+        className="createsocialpost_error_message">
+        Please fill everything out!
+        <div
+          className="createsocialpost_error_message_close" onClick={() => setShowErrorMessage(false)}>
+          X
+        </div>
+      </motion.div>
+      <motion.div
+        initial={{ x: '200%' }}
+        animate={{ x: !showSuccess ? '200%' : 0 }}
+        transition={{ type: 'tween', duration: 0.5, ease: easeInOut }}
+        exit={{ x: '-100%' }}
+        style={{
+          position: 'fixed',
+          padding: '20px',
+          zIndex: '100',
+          top: '140px'
+        }}
+        className="editsocialpost_error_message">
+        Success!
+        <div
+          className="editsocialpost_error_message_close" onClick={() => setShowErrorMessage(false)}>
+          X
+        </div>
+      </motion.div>
       {showModal && (
         <div className="editsocialpost_modal_cancel">
           <div className="editsocialpost_modal_content">
