@@ -68,7 +68,7 @@
 
 .map_details_options_container {
   display: flex;
-  gap: 2;
+  gap: 1rem;
 }
 
 .map_details_options_outer {
@@ -273,6 +273,56 @@ input[type="file"] {
 
 .map_details_name h5 {
   margin: 5px 0 5px 0;
+}
+
+.mappdetails_delete_confirmation_modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  background-color: white;
+  color: black;
+  height: 150px;
+  width: 450px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 30px 0 30px 0;
+  font-weight: 500;
+  border-radius: 7px;
+  z-index: 100;
+}
+
+.mapdetails_delete_confirmation_modal_bottom {
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mapdetails_delete_confirm,
+.mapdetails_cancel_delete {
+  color: black;
+  border: white;
+  padding: 8px 15px 8px 15px;
+  border-radius: 5px;
+}
+
+.mapdetails_delete {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.mapdetails_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0.3;
+  background-color: black;
+  z-index: 99;
 }
 
 @media all and (max-width: 1200px) {
