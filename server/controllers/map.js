@@ -137,14 +137,23 @@ const createMap = async (req, res) => {
         },
         { new: true }
       );
-
-      // Respond with success message
-      // return res.status(201).json({ success: true, message: "Map created successfully!" });
       return res.status(201).json(savedMap);
     }
   } catch (error) {
     console.error("Error creating map:", error);
-    // return res.status(500).json({ success: false, error: error.message });
+
+    // Check if it's a validation error
+    if (error.name === "ValidationError") {
+      const validationErrors = {};
+
+      // Extract field-specific errors
+      for (const field in error.errors) {
+        validationErrors[field] = error.errors[field].message;
+      }
+
+      return res.status(400).json({ validationErrors });
+    }
+
     return res.status(500).json({ error: error.message });
   }
 };

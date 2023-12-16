@@ -1057,11 +1057,30 @@ const Map = ({
     const res = await createMapAPIMethod(newMapObj);
     console.log("res: ", res);
     if (res.ok) {
-      // const responseMsg = await res.json;
       navigate("/mainpage");
     } else {
-      // alert(`Error: ${res.status} - ${res.statusText}`);
-      alert("Check that all input fields have values");
+      const responseData = await res.json();
+
+      if (res.status === 400 && responseData.validationErrors) {
+        console.log("Validation Errors:", responseData.validationErrors);
+        let map_description =
+          responseData.validationErrors["map_description"] ===
+          "Path `map_description` is required.";
+        let topic =
+          responseData.validationErrors["topic"] ===
+          "Path `topic` is required.";
+        let map_name =
+          responseData.validationErrors["map_name"] ===
+          "Path `map_name` is required.";
+
+        alert(
+          `Check if you entered field(s): ${
+            map_description && "map_description"
+          }, ${topic && "topic"},${map_name && "map_name"}.`
+        );
+      } else {
+        alert(`Error: ${res.status} - ${res.statusText}`);
+      }
     }
   };
 
