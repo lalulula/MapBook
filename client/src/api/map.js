@@ -31,7 +31,7 @@ export const createMapAPIMethod = async (mapData) => {
     if (keys[i] === "mapPreviewImg") {
       const isImageFile = typeof mapData[keys[i]] == "object";
       var dataName = keys[i];
-      console.log("mapData[dataName]: ", mapData[dataName])
+      console.log("mapData[dataName]: ", mapData[dataName]);
 
       if (isImageFile) {
         // read binary data
@@ -63,7 +63,7 @@ export const createMapAPIMethod = async (mapData) => {
   console.log("done for loop");
 
   const response = await fetch(`${API_BASE_URL}/api/map/createMap`, {
-    ...defaultHeaders,
+    // ...defaultHeaders,
     method: "POST",
     body: formData,
   });
