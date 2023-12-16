@@ -43,6 +43,7 @@ const Header = () => {
     } else {
       setAdmin(false);
     }
+    console.log(route);
   }, [user]);
 
   const openModal = () => {
@@ -58,7 +59,8 @@ const Header = () => {
     if (this.scrollY >= 50) header.classList.add("scroll_header");
     else header.classList.remove("scroll_header");
   });
-  if (!user) { //NOT AUTHENTICATED
+  if (!user) {
+    //NOT AUTHENTICATED
     return (
       <div className="header">
         <div className="header_container">
@@ -159,7 +161,8 @@ const Header = () => {
         </div>
       </div>
     );
-  } else { // AUTHENTICATED USER
+  } else {
+    // AUTHENTICATED USER
     return (
       <>
         <div className="header">
@@ -185,10 +188,16 @@ const Header = () => {
                     <h4>MyMaps</h4>
                   </div>
                   {console.log("IS BRO ADMIN?: ", user.user.is_admin)}
-                  {/* admin */user.user.is_admin && (
-                    <div className="dropdown">
-                      <h4 className="dropbtn" onClick={() => navigate("/manageusers")}>Manage Users</h4>
-                      {/* <div className="dropdown-content">
+                  {
+                    /* admin */ user.user.is_admin && (
+                      <div className="dropdown">
+                        <h4
+                          className="dropbtn"
+                          onClick={() => navigate("/manageusers")}
+                        >
+                          Manage Users
+                        </h4>
+                        {/* <div className="dropdown-content">
                         <div onClick={() => navigate("/managemaps")}>Manage Maps</div>
                         <div onClick={() => navigate("/managesocials")}>
                           Social Posts
@@ -197,8 +206,9 @@ const Header = () => {
                           Users
                         </div> 
                     </div>*/}
-                    </div>
-                  )}
+                      </div>
+                    )
+                  }
                   <div>
                     <img
                       // CHANGED HEREEREREEEEEEEEEEEE
@@ -263,7 +273,7 @@ const Header = () => {
               )}
             </div>
           </div>
-        </div >
+        </div>
       </>
     );
   }

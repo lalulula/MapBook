@@ -32,7 +32,6 @@ export const createMapAPIMethod = async (mapData) => {
   const keyLen = keys.length;
   for (var i = 0; i < keyLen; i++) {
     if (keys[i] == "mapPreviewImg") {
-
       const isImageFile = typeof mapData[keys[i]] == "object";
       var dataName = keys[i];
       console.log("mapData[dataName]: ", mapData[dataName])
@@ -121,9 +120,7 @@ export const editMapPostAPIMethod = async (mapId, updateMapPost) => {
   }
 };
 
-
 export const editMapPostAPIMethodWithFile = async (mapId, mapData) => {
-
   var keys = Object.keys(mapData);
   // console.log(keys);
 
@@ -133,7 +130,6 @@ export const editMapPostAPIMethodWithFile = async (mapId, mapData) => {
   const keyLen = keys.length;
   for (var i = 0; i < keyLen; i++) {
     if (keys[i] == "mapPreviewImg") {
-
       const isImageFile = typeof mapData[keys[i]] == "object";
       var dataName = keys[i];
 
@@ -183,7 +179,6 @@ export const editMapPostAPIMethodWithFile = async (mapId, mapData) => {
   }
 };
 
-
 export const deleteMapPostAPIMethod = (mapId) => {
   console.log(mapId);
   return fetch(`${API_BASE_URL}/api/maps/removeMap/${mapId}`, {
@@ -208,7 +203,7 @@ export const likeMapAPIMethod = (mapId, isAuth, userId) => {
 
 // Get All Map Comments
 export const getAllMapCommentsAPIMethod = (mapPostId) => {
-  console.log(`${API_BASE_URL}/api/mapComment/mapComments/${mapPostId}`)
+  console.log(`${API_BASE_URL}/api/mapComment/mapComments/${mapPostId}`);
   const res = fetch(`${API_BASE_URL}/api/mapComment/mapComments/${mapPostId}`, {
     ...defaultHeaders,
     method: "GET",
@@ -219,7 +214,8 @@ export const getAllMapCommentsAPIMethod = (mapPostId) => {
 };
 
 export const getAllExistingMapCommentsAPIMethod = () => {
-  return fetch(`${API_BASE_URL}/api/mapComment/existingMapComments`,
+  return fetch(
+    `${API_BASE_URL}/api/mapComment/existingMapComments`,
     //await fetch(`${API_BASE_URL}/api/users/${userId}`, {
     {
       ...defaultHeaders,
