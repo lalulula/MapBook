@@ -31,9 +31,8 @@ const MapDataInputPage = ({
   setSelectedMapFile,
   isMapbookData,
   setIsMapbookData,
-  mapId
 }) => {
-  
+
   const [mapImage, setMapImage] = useState(null);
   const [hoverData, setHoverData] = useState("Out of range");
   const [showHoverData, setShowHoverData] = useState(false);
@@ -87,10 +86,10 @@ const MapDataInputPage = ({
     "Thematic Map",
   ];
   const template = options["template"];
-  
+
   // When template changed, reset data
   useEffect(() => {
-    if(!isMapbookData){
+    if (!isMapbookData) {
       console.log("template changed!!")
       setPieBarData([]);
       setThemeData([]);
@@ -104,35 +103,35 @@ const MapDataInputPage = ({
     console.log("options: ", options)
   }, [options]);
 
-  useEffect(()  => {
-    if(isMapbookData){
-      console.log("selectedMapFile: mapdatainputpage", selectedMapFile);
-      // setSelectedMapFile({...selectedMapFile, mapbook_description: "", mapbook_owner: "", mapbook_visibility: false})
+  useEffect(() => {
+    if (isMapbookData) {
+      // setSelectedMapFile({ ...selectedMapFile, mapbook_description: "", mapbook_owner: "", mapbook_visibility: false })
 
-      if(selectedMapFile.mapbook_template == "Thematic Map"){
+      if (selectedMapFile.mapbook_template == "Thematic Map") {
         setThemeData(selectedMapFile.mapbook_themedata);
-        setOptions({ ...options, name: selectedMapFile.mapbook_mapname, description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic:selectedMapFile.mapbook_topic, customTopic:selectedMapFile.mapbook_customtopic});
+        setOptions({ ...options, name: selectedMapFile.mapbook_mapname , description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic });
       }
-      else if(selectedMapFile.mapbook_template == "Heat Map"){
+      else if (selectedMapFile.mapbook_template == "Heat Map") {
         setSelectedColors(selectedMapFile.mapbook_heat_selectedcolors);
         setHeatRange(selectedMapFile.mapbook_heatrange)
-        setOptions({ ...options, name: selectedMapFile.mapbook_mapname, description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic:selectedMapFile.mapbook_topic, customTopic:selectedMapFile.mapbook_customtopic, circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata });
+        setOptions({ ...options, name: selectedMapFile.mapbook_mapname , description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic, circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata });
       }
-      else if(selectedMapFile.mapbook_template == "Circle Map"){
+      else if (selectedMapFile.mapbook_template == "Circle Map") {
         console.log("Circle Map selected")
         console.log("selectedMapFile.mapbook_circleheatmapdata: ", selectedMapFile.mapbook_circleheatmapdata)
         // const newOption = { ...options, circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata }
-        setOptions({ ...options, name: selectedMapFile.mapbook_mapname, description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic:selectedMapFile.mapbook_topic, customTopic:selectedMapFile.mapbook_customtopic, circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata });
+        setOptions({ ...options, name: selectedMapFile.mapbook_mapname , description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic, circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata });
       }
-      else if(selectedMapFile.mapbook_template == "Pie Chart"){
+      else if (selectedMapFile.mapbook_template == "Pie Chart") {
+        console.log("Pie Map selected")
+        console.log("selectedMapFile.mapbook_datanames: ", selectedMapFile.mapbook_datanames)
         setPieBarData(selectedMapFile.mapbook_datanames);
-        setOptions({ ...options, name: selectedMapFile.mapbook_mapname, description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic:selectedMapFile.mapbook_topic, customTopic:selectedMapFile.mapbook_customtopic});
+        setOptions({ ...options, name: selectedMapFile.mapbook_mapname , description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic });
       }
-      else if(selectedMapFile.mapbook_template == "Bar Chart"){
+      else if (selectedMapFile.mapbook_template == "Bar Chart") {
         setPieBarData(selectedMapFile.mapbook_datanames);
-        setOptions({ ...options, name: selectedMapFile.mapbook_mapname, description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic:selectedMapFile.mapbook_topic, customTopic:selectedMapFile.mapbook_customtopic});
+        setOptions({ ...options, name: selectedMapFile.mapbook_mapname , description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic });
       }
-
 
       // console.log("Mapbook data: ", selectedMapFile)
 
@@ -234,20 +233,25 @@ const MapDataInputPage = ({
         heatRange={heatRange}
         selectedColors={selectedColors}
         themeData={themeData}
-        setMapImage={setMapImage}
-        mapImage={mapImage}
         template={template}
         hoverData={hoverData}
         setHoverData={setHoverData}
-        isMapbookData = {isMapbookData}
+        isMapbookData={isMapbookData}
         setIsMapbookData={setIsMapbookData}
-        mapId={mapId}
+        setMapImage={setMapImage}
+        mapImage={mapImage}
       />
       <div className="mapdatainput_right_sidebar">
         <h3>Data Names</h3>
         <div className="mapdatainput_templates">
           {(template === "Pie Chart" || template === "Bar Chart") && (
-            <PieBar pieBarData={pieBarData} setPieBarData={setPieBarData} />
+            <PieBar
+              pieBarData={pieBarData}
+              setPieBarData={setPieBarData}
+              // CIRCLE
+              options={options}
+              handleCircleHeatMapDataChange={handleCircleHeatMapDataChange}
+            />
           )}
           {template === "Circle Map" && (
             <Circle
