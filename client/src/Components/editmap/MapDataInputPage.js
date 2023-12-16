@@ -31,6 +31,7 @@ const MapDataInputPage = ({
   setSelectedMapFile,
   isMapbookData,
   setIsMapbookData,
+  mapId
 }) => {
 
   const [mapImage, setMapImage] = useState(null);
@@ -240,6 +241,7 @@ const MapDataInputPage = ({
         setIsMapbookData={setIsMapbookData}
         setMapImage={setMapImage}
         mapImage={mapImage}
+        mapId={mapId}
       />
       <div className="mapdatainput_right_sidebar">
         <h3>Data Names</h3>

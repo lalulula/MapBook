@@ -157,9 +157,9 @@ export const editMapPostAPIMethodWithFile = async (mapId, mapData) => {
       formData.append(keys[i], mapData[keys[i]]);
     }
   }
-
+  var response;
   try {
-    const response = await fetch(`${API_BASE_URL}/api/maps/${mapId}`, {
+    response = await fetch(`${API_BASE_URL}/api/maps/${mapId}`, {
       // ...defaultHeaders,
       method: "PUT",
       body: formData,
@@ -172,6 +172,7 @@ export const editMapPostAPIMethodWithFile = async (mapId, mapData) => {
     return response;
   } catch (error) {
     console.error("Error updating post:", error.message);
+    return response;
   }
 };
 

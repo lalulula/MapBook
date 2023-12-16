@@ -1233,7 +1233,7 @@ const Map = ({
           />
         </div>
 
-        <button onClick={handleEditMap}>Edit Map</button>
+        <button onClick={handleEditMap}>Save Changes</button>
       </div>
       <div ref={mapContainerRef} id="map">
         {/* Pie & Bar Modal - DONE*/}

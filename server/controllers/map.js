@@ -162,10 +162,9 @@ const createMap = async (req, res) => {
 const editMap = async (req, res) => {
   try {
     const { mapId } = req.params;
-
+    console.log("mapId:", mapId)
     if (req.files !== undefined) {
       console.log("editmap called");
-      console.log(req.body);
 
       const {
         map_name,
@@ -180,13 +179,11 @@ const editMap = async (req, res) => {
         view_count,
       } = req.body;
 
-      console.log("file", req.files["file"][0]);
-      console.log("mapPreviewImg", req.files["mapPreviewImg"][0]);
+
 
       const randomString = (new Date().getTime() + Math.random())
         .toString(36)
         .substring(2);
-      // console.log("randomString :", randomString)
 
       const fileBuffer = req.files["file"][0].buffer;
       const fileName = randomString + req.files["file"][0].originalname;
