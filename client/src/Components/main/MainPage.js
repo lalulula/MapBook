@@ -45,7 +45,7 @@ const MainPage = () => {
     );
     setTrendingMaps(sortedMapByViewCount.slice(0, 7));
   }, [allMaps]);
-  useEffect(() => {}, [searchFilterOption]);
+  useEffect(() => { }, [searchFilterOption]);
 
   // const filteredMaps = allMaps.filter((map) => {
   //   if (map.map_name.includes(searchTerm)) {
@@ -139,7 +139,7 @@ const MainPage = () => {
                 {showDeleteConfirmationModal == item._id && (
                   <div className="mappreview_delete_confirmation_modal">
                     <div className="mappreview_delete_confirmation_modal_top">
-                      Are you sure you want to delete this post?
+                      Are you sure you want to delete this map?
                     </div>
                     <div className="mappreview_delete_confirmation_modal_bottom">
                       <button

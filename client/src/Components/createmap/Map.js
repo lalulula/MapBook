@@ -271,10 +271,12 @@ const Map = ({
       console.log("featureDataAdded")
       featureDataAdded.forEach((element) => {
         console.log(element["properties"].mapbook_data.length)
-        if(Object.keys(element["properties"].mapbook_data).length < themeData.length){
-          delete element["properties"].mapbook_data
-        }
-        else{
+        if (Object.keys(element["properties"].mapbook_data).length < themeData.length) {
+          if (Object.keys(element["properties"].mapbook_data).length < themeData.length) {
+            delete element["properties"].mapbook_data
+          }
+          else {
+        else {
           namesDataAdded.push(element["properties"].name);
         }
       });
@@ -686,12 +688,12 @@ const Map = ({
       /// Haneul
       var expImageSelect = ["case"];
       // generate image object for region which data exist
-      try{
+      try {
         namesDataAdded.forEach((name) => {
           console.log("name:", name);
           // generate image
           // image = generateImage(data);
-          
+
           const canvasSave = document.getElementById(name + "pie");
           console.log("canvasSave:", canvasSave);
           var context = canvasSave.getContext("2d");
@@ -702,20 +704,20 @@ const Map = ({
             canvasSave.width,
             canvasSave.height
           );
-  
+
           // add image that we generate
           if (mapRef.current.hasImage(name)) {
             mapRef.current.removeImage(name);
           }
           mapRef.current.addImage(name, imgData);
-  
+
           // add expImageSelect on new image
           expImageSelect.push(["==", ["get", "name"], name]);
           expImageSelect.push(name);
         });
         //set default image (anything is okay)
         expImageSelect.push("aaa");
-  
+
         mapRef.current.setLayoutProperty(
           "counties-pie",
           "icon-image",
@@ -723,12 +725,12 @@ const Map = ({
         );
         setIsCanvasLoaded(true);
       }
-      catch (error){
+      catch (error) {
         // set isCanvasLoaded false
         setIsCanvasLoaded(false);
       }
-      
-      
+
+
     } else {
       if (mapRef.current.getLayer("counties-pie")) {
         mapRef.current.setLayoutProperty("counties-pie", "visibility", "none");
@@ -806,14 +808,14 @@ const Map = ({
       /// Haneul
       var expImageSelect = ["case"];
       // generate image object for region which data exist
-      try{
+      try {
         namesDataAdded.forEach((name) => {
           console.log("name:", name);
           // generate image
           // image = generateImage(data);
           const canvasSave = document.getElementById(name + "bar");
           console.log("canvasSave:", canvasSave);
-  
+
           var context = canvasSave.getContext("2d");
           var imgData = context.getImageData(
             0,
@@ -821,20 +823,20 @@ const Map = ({
             canvasSave.width,
             canvasSave.height
           );
-  
+
           // add image that we generate
           if (mapRef.current.hasImage(name)) {
             mapRef.current.removeImage(name);
           }
           mapRef.current.addImage(name, imgData);
-  
+
           // add expImageSelect on new image
           expImageSelect.push(["==", ["get", "name"], name]);
           expImageSelect.push(name);
         });
         //set default image (anything is okay)
         expImageSelect.push("aaa");
-  
+
         mapRef.current.setLayoutProperty(
           "counties-bar",
           "icon-image",
@@ -842,10 +844,10 @@ const Map = ({
         );
         setIsCanvasLoaded(true);
       }
-      catch(error){
+      catch (error) {
         setIsCanvasLoaded(false);
       }
-      
+
     } else {
       if (mapRef.current.getLayer("counties-bar")) {
         mapRef.current.setLayoutProperty("counties-bar", "visibility", "none");
@@ -1125,21 +1127,19 @@ const Map = ({
               return `<span>${Object.keys(obj)
                 .map((nestedKey) => {
                   const value = obj[nestedKey];
-                  return ` ${
-                    nestedKey.toLowerCase() === "color" ? `<font color="${value}">(${value})</font>` : value
-                  }`;
+                  return ` ${nestedKey.toLowerCase() === "color" ? `<font color="${value}">(${value})</font>` : value
+                    }`;
                 })
                 .join("<br/>")}</span>`;
             };
 
             if (data === undefined) {
               setHoverData(`No data for ${regions[0]["properties"].name}`);
-            } 
+            }
             else {
               const formatDataByKey = (key, value) => {
-                return `${key}  ${
-                  isObject(value) ? renderObject(value) : value
-                }`;
+                return `${key}  ${isObject(value) ? renderObject(value) : value
+                  }`;
               };
 
               const formatColorKey = (key, value) => {
@@ -1181,26 +1181,26 @@ const Map = ({
               } else if (templateHoverType.current === "Heat Map") {
                 const heatDataName =
                   mapFileData.current.mapbook_circleheatmapdata;
-                  var from = Number(mapFileData.current["mapbook_heatrange"]["from"]);
-                  var to = Number(mapFileData.current["mapbook_heatrange"]["to"]);
-                  
-                  const width = (to - from) / 5;
-                  const ranges = [
-                    from,
-                    from + width,
-                    from + width * 2,
-                    from + width * 3,
-                    from + width * 4,
-                    to,
-                  ];
-  
-                  var heatRangeColorText = "</br>"
-                  
-                  for(let i = 0; i < 5; i ++){
-                    heatRangeColorText = heatRangeColorText + `<font color="${mapFileData.current["mapbook_heat_selectedcolors"][i]}">${ranges[i].toFixed(2)} to ${(ranges[i + 1] - 1).toFixed(2)}</font></br>`
-                  }
-  
-                  setHoverData(regions[0]["properties"].name + "\n" + heatDataName + heatRangeColorText + formattedData);
+                var from = Number(mapFileData.current["mapbook_heatrange"]["from"]);
+                var to = Number(mapFileData.current["mapbook_heatrange"]["to"]);
+
+                const width = (to - from) / 5;
+                const ranges = [
+                  from,
+                  from + width,
+                  from + width * 2,
+                  from + width * 3,
+                  from + width * 4,
+                  to,
+                ];
+
+                var heatRangeColorText = "</br>"
+
+                for (let i = 0; i < 5; i++) {
+                  heatRangeColorText = heatRangeColorText + `<font color="${mapFileData.current["mapbook_heat_selectedcolors"][i]}">${ranges[i].toFixed(2)} to ${(ranges[i + 1] - 1).toFixed(2)}</font></br>`
+                }
+
+                setHoverData(regions[0]["properties"].name + "\n" + heatDataName + heatRangeColorText + formattedData);
               } else if (templateHoverType.current === "Thematic Map") {
                 setHoverData(
                   regions[0]["properties"].name + "<br/><br/>" + formattedData
@@ -1236,15 +1236,15 @@ const Map = ({
     }
   }, [isMapLoaded]);
 
-  
+
   useEffect(() => {
     if (!isCanvasLoaded) {
-        redrawPieData();
-        redrawBarData();
+      redrawPieData();
+      redrawBarData();
     }
   }, [isCanvasLoaded]);
 
-  
+
 
   // Convert data to GEOJSON //
   function saveGeoJSONToFile(geoJSONObject, filename) {
@@ -1292,6 +1292,8 @@ const Map = ({
       file: mapData,
       view_count: 1,
     };
+    console.log("NEW MAP OBJ: ", newMapObj.file);
+    return;
 
     const res = await createMapAPIMethod(newMapObj);
     console.log("res: ", res);
@@ -1359,16 +1361,14 @@ const Map = ({
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
           <i
-            className={`${
-              undoStack.current.length === 0 ? "disabled_undo" : "undo"
-            } bx bx-undo`}
+            className={`${undoStack.current.length === 0 ? "disabled_undo" : "undo"
+              } bx bx-undo`}
             onClick={handleUndo}
           />
           <div className="vertical_line_container">|</div>
           <i
-            className={`${
-              redoStack.current.length === 0 ? "disabled_redo" : "redo"
-            } bx bx-redo`}
+            className={`${redoStack.current.length === 0 ? "disabled_redo" : "redo"
+              } bx bx-redo`}
             onClick={handleRedo}
           />
         </div>
