@@ -270,12 +270,9 @@ const Map = ({
       var namesDataAdded = [];
       console.log("featureDataAdded")
       featureDataAdded.forEach((element) => {
-        console.log(element["properties"].mapbook_data.length)
         if (Object.keys(element["properties"].mapbook_data).length < themeData.length) {
-          if (Object.keys(element["properties"].mapbook_data).length < themeData.length) {
-            delete element["properties"].mapbook_data
-          }
-          else {
+            delete element["properties"].mapbook_data;
+        }
         else {
           namesDataAdded.push(element["properties"].name);
         }
