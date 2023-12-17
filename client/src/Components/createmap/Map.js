@@ -102,7 +102,7 @@ const Map = ({
   const navigate = useNavigate();
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [isCanvasLoaded, setIsCanvasLoaded] = useState(false);
+  const [isCanvasLoaded, setIsCanvasLoaded] = useState(true);
 
 
   const handleRerender = () => {
@@ -721,9 +721,11 @@ const Map = ({
           "icon-image",
           expImageSelect
         );
+        setIsCanvasLoaded(true);
       }
       catch (error){
         // set isCanvasLoaded false
+        setIsCanvasLoaded(false);
       }
       
       
@@ -838,9 +840,10 @@ const Map = ({
           "icon-image",
           expImageSelect
         );
+        setIsCanvasLoaded(true);
       }
       catch(error){
-
+        setIsCanvasLoaded(false);
       }
       
     } else {
@@ -1131,7 +1134,8 @@ const Map = ({
 
             if (data === undefined) {
               setHoverData(`No data for ${regions[0]["properties"].name}`);
-            } else {
+            } 
+            else {
               const formatDataByKey = (key, value) => {
                 return `${key}  ${
                   isObject(value) ? renderObject(value) : value
@@ -1212,6 +1216,16 @@ const Map = ({
       }
     }
   }, [isMapLoaded]);
+
+  
+  useEffect(() => {
+    if (!isCanvasLoaded) {
+        redrawPieData();
+        redrawBarData();
+    }
+  }, [isCanvasLoaded]);
+
+  
 
   // Convert data to GEOJSON //
   function saveGeoJSONToFile(geoJSONObject, filename) {
