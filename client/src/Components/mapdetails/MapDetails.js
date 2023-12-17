@@ -985,7 +985,7 @@ const MapDetails = () => {
     return newGeoJson;
   }
 
-  if (!currentMap.current || !users) {
+  if (!isMapLoaded || !users) {
     return (
       <div className="mapdetails_loadmap_container">
         <Lottie
@@ -1119,7 +1119,7 @@ const MapDetails = () => {
               setShowHoverData={setShowHoverData}
             />
           </div>
-          {showHoverData && isMapLoaded && (
+          {showHoverData && (
             <div className="mapdetails_hovered_data_container">
               <div className="mapdetails_hovered_data_header">
                 <h4 style={{ display: "inline-block", margin: 0 }}>Map Data</h4>
@@ -1132,7 +1132,6 @@ const MapDetails = () => {
               </div>
             </div>
           )}
-          {console.log("isMapLoaded: ", isMapLoaded)};
           {isMapLoaded ? (
             <div
               ref={mapContainerRef}
