@@ -85,6 +85,7 @@ describe("Profile Component", () => {
 
   it("Logout user", () => {
     cy.get(".logout").click();
-    cy.url().should("include", "http://localhost:3000");
+    cy.get(".profile_logout_btn").click();
+    cy.url().should("eq", "http://localhost:3000/");
   });
 });
