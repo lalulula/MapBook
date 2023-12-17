@@ -1,51 +1,43 @@
 describe("MainPage Test", () => {
   beforeEach(() => {
-    // Assuming you have a valid login. If not, adjust accordingly.
     cy.visit("http://localhost:3000/login");
-    cy.get('input[placeholder="Username"]').type("sam");
+    cy.get('input[placeholder="Username"]').type("ya");
     cy.get('input[placeholder="Password"]').type("Password123");
 
     cy.get(".login_btn").click();
     cy.url().should("eq", "http://localhost:3000/mainpage");
   });
 
-  it("displays the Trending Maps section", () => {
+  it("displays Trending Maps section", () => {
     cy.get(".mainpage_trending_header").should("be.visible");
     cy.get(".mainpage_trending_subheader").should("be.visible");
-    // Add more assertions based on your UI requirements
   });
 
-  it("displays the Search Bar and Filter Dropdown", () => {
+  it("displays Search Bar and Filter Dropdown", () => {
     cy.get(".search_wrapper").should("be.visible");
     cy.get(".mainpage_search_filter_dropdown").should("be.visible");
-    // Add more assertions based on your UI requirements
   });
 
   it("displays maps and handles deletion", () => {
-    // Assuming there are maps displayed on the page
+    // Or create a map before deleting one
     cy.get(".mainpage_maps_container").should("be.visible");
 
-    // Perform searches and filter actions
-    cy.get('input[placeholder="Search"]').type("YourSearchTerm");
-    cy.get(".mainpage_search_filter_dropdown").select("Map Name");
-
-    // Check if the maps are displayed after filtering
-    cy.get(".mainpage_maps .mainpage_mappreview_container").should(
-      "have.length.greaterThan",
-      0
-    );
-
-    // Click on the delete button of the first map (assuming there is at least one map)
+    cy.get('input[placeholder="Search Maps"]').type("data");
     cy.get(".mainpage_maps .mainpage_mappreview_container")
+      .should("have.length.greaterThan", 0)
       .first()
-      .find(".mappreview_delete_button")
+      .find(".bi.bi-three-dots-vertical")
+      .should("be.visible")
       .click();
 
-    // Confirm deletion
+    cy.get(".mappreview_options_menu")
+      .find(".mappreview_delete_option")
+      .should("be.visible")
+      .click();
+
     cy.get(".mappreview_delete_confirmation_modal").should("be.visible");
     cy.get(".mappreview_delete_confirm").click();
 
-    // Check if the map is removed from the list
     cy.get(".mainpage_maps .mainpage_mappreview_container").should(
       "have.length",
       0
@@ -53,7 +45,7 @@ describe("MainPage Test", () => {
   });
 
   it("handles no search results gracefully", () => {
-    cy.get('input[placeholder="Search"]').type("InvalidSearchTerm");
+    cy.get('input[placeholder="Search Maps"]').type("InvalidSearchTerm");
     cy.get(".mainpage_maps_no_search_container").should("be.visible");
     cy.get(".mainpage_maps_no_search h1").should(
       "contain.text",

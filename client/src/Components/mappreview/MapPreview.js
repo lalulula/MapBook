@@ -10,7 +10,11 @@ import { getUserById } from "../../api/user";
 
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
 
-const MapPreview = ({ data, showDeleteConfirmationModal, setShowDeleteConfirmationModal }) => {
+const MapPreview = ({
+  data,
+  showDeleteConfirmationModal,
+  setShowDeleteConfirmationModal,
+}) => {
   // console.log("data: ", data);
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const navigate = useNavigate();
@@ -92,7 +96,7 @@ const MapPreview = ({ data, showDeleteConfirmationModal, setShowDeleteConfirmati
       setShowDeleteConfirmationModal(id);
       setOptionsMenuVisible(!optionsMenuVisible);
     }
-  }
+  };
 
   // Convert data to GEOJSON //
   function saveGeoJSONToFile(geoJSONObject, filename) {
@@ -176,7 +180,12 @@ const MapPreview = ({ data, showDeleteConfirmationModal, setShowDeleteConfirmati
             <li onClick={handleShare}>Share</li>
             <li onClick={handleExport}>Export</li>
             {(isOwner || user.username === "Admin") && (
-              <li onClick={(e) => handleClickDeleteMapPost(e, data._id)}>Delete</li>
+              <li
+                className="mappreview_delete_option"
+                onClick={(e) => handleClickDeleteMapPost(e, data._id)}
+              >
+                Delete
+              </li>
             )}
           </ul>
         </div>

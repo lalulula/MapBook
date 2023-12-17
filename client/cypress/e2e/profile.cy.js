@@ -19,23 +19,10 @@ describe("Profile Component", () => {
       );
       cy.get(".profile_img").should("have.attr", "src", user.profile_img);
 
-      // cy.get(".username").invoke("prop", "disabled", false);
       cy.get(".edit_profile_btn").click();
       cy.get(".username_container")
         .find(".MuiInput-input")
         .should("have.value", "ya");
-      // cy.get(".username_container")
-      //   .find(".MuiInput-input css-1gw9vc6-JoyInput-input")
-      //   .should("have.value", "ya");
-      // // cy.get(".username").invoke("val").should("eq", "ya");
-      // cy.get(".username").invoke("prop", "disabled", true);
-      // // cy.get(".username_container")
-      // //   .find(".username")
-      // //   .should("have.attr", "value", "ya");
-      // cy.get(".username_container").invoke("prop", "disabled", false);
-      // cy.get(".username_container")
-      //   .find(".MuiInput-input Mui-disabled css-1gw9vc6-JoyInput-input")
-      //   .should("have.value", "ya");
 
       // cy.get(".email").should("have.value", user.email);
     });
