@@ -266,9 +266,15 @@ const Map = ({
         (f) => f["properties"].mapbook_data != null
       );
       var namesDataAdded = [];
+      console.log("featureDataAdded")
       featureDataAdded.forEach((element) => {
-        // console.log(element);
-        namesDataAdded.push(element["properties"].name);
+        console.log(element["properties"].mapbook_data.length)
+        if(Object.keys(element["properties"].mapbook_data).length < themeData.length){
+          delete element["properties"].mapbook_data
+        }
+        else{
+          namesDataAdded.push(element["properties"].name);
+        }
       });
 
       console.log("themeData", themeData);
