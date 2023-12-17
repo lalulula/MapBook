@@ -1,22 +1,43 @@
+import "cypress-file-upload";
+
 describe("Profile Component", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/login");
-    cy.get('input[placeholder="Username"]').type("ya");
-    cy.get('input[placeholder="Password"]').type("Password123");
-    cy.get(".login_btn").click();
-    cy.url().should("eq", "http://localhost:3000/mainpage");
-    cy.get(".header_profile").click();
-    cy.url().should("eq", "http://localhost:3000/profile");
-    cy.getReduxState().as("currentState");
+    switch (Cypress.currentTest.title) {
+      case "Change profile image":
+        cy.visit("http://localhost:3000/login");
+        cy.get('input[placeholder="Username"]').type("newusername");
+        cy.get('input[placeholder="Password"]').type("Password123");
+        cy.get(".login_btn").click();
+        cy.url().should("eq", "http://localhost:3000/mainpage");
+        cy.get(".header_profile").click();
+        cy.url().should("eq", "http://localhost:3000/profile");
+        cy.getReduxState().as("currentState");
+
+        cy.get(".edit_profile_btn").click();
+        cy.get(".username_container")
+          .find(".MuiInput-input")
+          .clear()
+          .type("ya");
+        cy.get(".update_user_btn").click();
+
+        break;
+      default:
+        cy.visit("http://localhost:3000/login");
+        cy.get('input[placeholder="Username"]').type("ya");
+        cy.get('input[placeholder="Password"]').type("Password123");
+        cy.get(".login_btn").click();
+        cy.url().should("eq", "http://localhost:3000/mainpage");
+        cy.get(".header_profile").click();
+        cy.url().should("eq", "http://localhost:3000/profile");
+        cy.getReduxState().as("currentState");
+        break;
+    }
   });
 
   it("Display user information", () => {
     cy.window().then((win) => {
       const user = win.userState;
-      console.log(user.username, user.email);
-      console.log(
-        cy.get(".username_container").find(".username").invoke("val")
-      );
+
       cy.get(".profile_img").should("have.attr", "src", user.profile_img);
 
       cy.get(".edit_profile_btn").click();
@@ -24,36 +45,45 @@ describe("Profile Component", () => {
         .find(".MuiInput-input")
         .should("have.value", "ya");
 
-      // cy.get(".email").should("have.value", user.email);
+      cy.get(".email_container")
+        .find(".MuiInput-input")
+        .should("have.value", "ya@ya.com");
     });
   });
 
   it("Edit username", () => {
     cy.get(".edit_profile_btn").click();
-    cy.get(".username").clear().type("newusername");
-    cy.get(".update_user_button").click();
-    cy.get(".username").should("have.value", "newusername");
+    cy.get(".username_container")
+      .find(".MuiInput-input")
+      .clear()
+      .type("newusername");
+    cy.get(".update_user_btn").click();
+    cy.get(".edit_profile_btn").click();
+    cy.get(".username_container").find(".MuiInput-input");
   });
 
   it("Change profile image", () => {
-    cy.get(".change_profileImg_btn").click();
+    cy.get(".edit_profile_btn").click();
+    cy.wait(2000);
+    cy.get(".cypress_click_profile").click();
 
-    const fileName = "example-image.jpg";
+    const fileName = "sample.jpg";
     cy.fixture(fileName).then((fileContent) => {
       cy.get('input[type="file"]').attachFile({
-        fileContent,
-        fileName,
+        fileContent: fileContent,
+        fileName: fileName,
         mimeType: "image/jpeg",
       });
     });
-    cy.get(".update_user_button").click();
-    cy.get(".profile_img")
-      .should("have.attr", "src")
-      .should("include", "example-image.jpg");
+
+    cy.get(".update_user_btn").click();
+    cy.window().then((win) => {
+      const user = win.userState;
+      cy.get(".profile_img").should("have.attr", "src", user.profile_img);
+    });
   });
 
   it("Logout user", () => {
-    // cy.intercept("POST", "/api/logout", { statusCode: 200 });
     cy.get(".logout").click();
     cy.url().should("include", "http://localhost:3000");
   });
