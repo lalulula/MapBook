@@ -46,17 +46,12 @@ const TrendingMaps = ({ trendingMaps }) => {
                   <br />
                   <span className="trending_maptopic">{map.topic}</span>
                   <br />
-                  <span className="trending_mapdescription">
-                    by {map.map_description}
-                  </span>
-                </div>
-                <div>
-                  <div className="trending_likes_views">
+                  <span className="trending_likes_views">
                     <i className="bi bi-heart" /> &nbsp;
                     {map.map_users_liked.length} &nbsp;
                     <i className="bi bi-eye" /> &nbsp;
                     {map.view_count}
-                  </div>
+                  </span>
                 </div>
               </div>
             )}

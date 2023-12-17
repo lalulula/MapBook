@@ -51,33 +51,32 @@
 .trendingmap_preview {
   width: 25rem;
   height: 18rem;
-  padding: 0rem 1rem 1.5rem 1rem;
+  padding: 0rem 1.5rem 2rem 1.5rem;
   background-color: rgba(28, 28, 28, 0.497);
   border-radius: 5px;
   position: absolute;
   z-index: 1;
   display: flex;
   align-items: flex-end;
-  justify-content: space-around;
   transition: 0.8s;
   cursor: pointer;
 }
 
 .trendingmap_preview:hover {
-  transform: translateZ(0.5rem);
+  transform: translateZ(0.2rem);
 }
 
 .trending_mapname {
-  font-size: 2rem;
-  font-weight: 600;
+  font-size: 1.8rem;
+  font-weight: 500;
 }
 
 .trending_maptopic {
-  font-size: medium;
+  font-size: 1rem;
   font-weight: 400;
 }
 
-.trending_mapdescription {
+.trending_likes_views {
   font-size: small;
   font-weight: 300;
 }
