@@ -325,7 +325,10 @@ const MapDataInputPage = ({
           <div className="mapdatainput_hovered_data">
             {showHoverData ? (
               // <span>{hoverData}</span>
-              <div dangerouslySetInnerHTML={{ __html: hoverData }} />
+              <div
+                dangerouslySetInnerHTML={{ __html: hoverData }}
+                style={{ fontSize: "1rem", fontWeight: 300 }}
+              />
             ) : (
               <div
                 style={{

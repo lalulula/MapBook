@@ -62,13 +62,18 @@
 }
 
 .mapdatainput_hovered_data {
-  height: 8rem;
+  height: 9rem;
   border: 1px gray dashed;
   padding: 0.5rem;
   background-color: rgba(44, 44, 44, 0.46);
   transition: 0.2s ease;
   display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.pieFormattedData {
+  color: #1f6baf;
 }
 
 .mapdatainput_image_drop {
@@ -156,7 +161,8 @@
   flex: 2;
 }
 
-.data_input_delete {}
+.data_input_delete {
+}
 
 .data_input_container_thematic {
   max-height: 27rem;

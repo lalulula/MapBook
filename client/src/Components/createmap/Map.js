@@ -1100,8 +1100,9 @@ const Map = ({
               return `<span>${Object.keys(obj)
                 .map((nestedKey) => {
                   const value = obj[nestedKey];
-                  return ` ${nestedKey.toLowerCase() === "color" ? `(${value})` : value
-                    }`;
+                  return ` ${
+                    nestedKey.toLowerCase() === "color" ? `(${value})` : value
+                  }`;
                 })
                 .join("<br/>")}</span>`;
             };
@@ -1110,8 +1111,9 @@ const Map = ({
               setHoverData(`No data for ${regions[0]["properties"].name}`);
             } else {
               const formatDataByKey = (key, value) => {
-                return `${key}: ${isObject(value) ? renderObject(value) : value
-                  }`;
+                return `${key}  ${
+                  isObject(value) ? renderObject(value) : value
+                }`;
               };
 
               const formatColorKey = (key, value) => {
@@ -1144,11 +1146,11 @@ const Map = ({
 
               if (templateHoverType.current === "Pie Chart") {
                 setHoverData(
-                  regions[0]["properties"].name + "<br/>" + formattedData
+                  regions[0]["properties"].name + "<br/><br/>" + formattedData
                 );
               } else if (templateHoverType.current === "Bar Chart") {
                 setHoverData(
-                  regions[0]["properties"].name + "<br/>" + formattedData
+                  regions[0]["properties"].name + "<br/><br/>" + formattedData
                 );
               } else if (templateHoverType.current === "Heat Map") {
                 const heatDataName =
@@ -1156,13 +1158,13 @@ const Map = ({
                 setHoverData(heatDataName + formattedData);
               } else if (templateHoverType.current === "Thematic Map") {
                 setHoverData(
-                  regions[0]["properties"].name + "<br/>" + formattedData
+                  regions[0]["properties"].name + "<br/><br/>" + formattedData
                 );
               } else if (templateHoverType.current === "Circle Map") {
                 const circleDataName =
                   mapFileData.current.mapbook_circleheatmapdata;
 
-                setHoverData(circleDataName + "<br/>" + formattedData);
+                setHoverData(circleDataName + "<br/><br/>" + formattedData);
               }
             }
           }
@@ -1256,7 +1258,6 @@ const Map = ({
       //     responseData.validationErrors["map_name"] ===
       //     "Path `map_name` is required.";
 
-
       //   alert(
       //     `Check if you entered field(s): ${map_description && "map_description"
       //     }, ${topic && "topic"},${map_name && "map_name"}.`
@@ -1303,14 +1304,16 @@ const Map = ({
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
           <i
-            className={`${undoStack.current.length === 0 ? "disabled_undo" : "undo"
-              } bx bx-undo`}
+            className={`${
+              undoStack.current.length === 0 ? "disabled_undo" : "undo"
+            } bx bx-undo`}
             onClick={handleUndo}
           />
           <div className="vertical_line_container">|</div>
           <i
-            className={`${redoStack.current.length === 0 ? "disabled_redo" : "redo"
-              } bx bx-redo`}
+            className={`${
+              redoStack.current.length === 0 ? "disabled_redo" : "redo"
+            } bx bx-redo`}
             onClick={handleRedo}
           />
         </div>
@@ -1409,7 +1412,7 @@ const Map = ({
             />
           ))}
 
-        {barChartData.current.length !== 0 && 
+        {barChartData.current.length !== 0 &&
           barChartData.current.map((item, index) => (
             <Bar
               id={item[0] + "bar"}
