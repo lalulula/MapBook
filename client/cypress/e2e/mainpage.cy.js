@@ -84,7 +84,6 @@ describe("MainPage Test", () => {
   //   );
   // });
   it("handles showing map details", () => {
-    // cy.get(".mappreview_delete_confirm").click();
     cy.get(".mainpage_maps .mainpage_mappreview_container").last().click();
   });
 });
