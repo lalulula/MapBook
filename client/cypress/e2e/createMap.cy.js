@@ -1,6 +1,8 @@
 // export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 export const API_BASE_URL = process.env.REACT_APP_HOME_URL;
-const filePath = "/Users/Samuel/Desktop/SBU Semester 7/cse416/MapBook/client/src/assets/test_files/Average Age of Marriage by State.geojson";
+// const filePath = "/Users/Samuel/Desktop/SBU Semester 7/cse416/MapBook/client/src/assets/test_files/Average Age of Marriage by State.geojson";
+const filePath =
+  "/Users/yunah/Documents/SBU/CSE416/mapbook/client/src/assets/test_files/MapbookMap.geojson";
 
 // import "cypress-file-upload";
 
@@ -53,41 +55,40 @@ const filePath = "/Users/Samuel/Desktop/SBU Semester 7/cse416/MapBook/client/src
 //   });
 // });
 
-
 describe("API Test: Create a map", () => {
   it("should successfully create a map via API", () => {
-    // You can add any necessary setup steps for authentication or other prerequisites
-
-    let mapPayload = null;
     // Define the request payload
+    let geojsonData;
     cy.readFile(filePath).then((geoJsonContent) => {
-      // Assign the JSON content to the file property in mapPayload
-      mapPayload = {
-        map_name: "Test map (cypress)",
-        topic: "Health",
-        is_visible: true,
-        user_id: "655a62936afeccd8dd9366c1",
-        map_description: "Test description",
-        mapPreviewImg: "https://umbrellacreative.com.au/wp-content/uploads/2020/01/hide-the-pain-harold-why-you-should-not-use-stock-photos.jpg",
-        file: geoJsonContent,
-        view_count: 1,
-      };
+      geojsonData = geoJsonContent;
+      console.log("geojsonData", geoJsonContent);
     });
+    let mapPayload = {
+      map_name: "Test map (cypress)",
+      topic: "Health",
+      is_visible: true,
+      user_id: "655a62936afeccd8dd9366c1",
+      map_description: "Test description",
+      mapPreviewImg:
+        "https://umbrellacreative.com.au/wp-content/uploads/2020/01/hide-the-pain-harold-why-you-should-not-use-stock-photos.jpg",
+      file: geojsonData,
+      view_count: 1,
+    };
+    console.log("Request Payload", mapPayload);
 
     // Make a POST request to create a map
     cy.request({
-      method: 'POST',
+      method: "POST",
       url: "http://localhost:3001/api/map/createMap",
       body: mapPayload,
     }).then((response) => {
       // Assertions on the response
       expect(response.status).to.eq(201); // Assuming a successful creation returns a 201 status code
-      expect(response.body).to.have.property('mapId');
+      console.log(response.body);
+      expect(response.body).to.have.property("_id");
     });
 
     // Optionally, you can check the created map on the UI
     cy.visit("http://localhost:3000/mainpage");
-
-    // Add any UI assertions related to the created map
   });
 });
