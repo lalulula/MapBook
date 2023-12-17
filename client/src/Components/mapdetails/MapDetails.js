@@ -3,9 +3,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { Divider } from "semantic-ui-react";
 import "./mapdetails.css";
-import MapTools from "../maptools/MapTools";
-import Comment from "./Comment";
-import * as turf from '@turf/turf';
+import * as turf from "@turf/turf";
 import {
   getMapAPI,
   deleteMapPostAPIMethod,
@@ -14,25 +12,28 @@ import {
 import MapComments from "../comments/MapComments";
 import { getAllUsersAPIMethod, getUserById } from "../../api/user";
 import optionsIcon from "../../assets/img/options.png";
-import { fb, storage } from "../../firebase";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
-
+import { storage } from "../../firebase";
+import { ref, getDownloadURL } from "firebase/storage";
 import mapboxgl from "mapbox-gl"; // Import mapboxgl
 import DeleteButton from "../widgets/DeleteButton";
 import EditButton from "../widgets/EditButton";
-import { async } from "@firebase/util";
-
 import Lottie from "lottie-react";
 import ImageLoader from "../../assets/Lottie/ImageLoader.json";
 import Typewriter from "typewriter-effect";
 import CustomSwitch from "../widgets/CustomSwitch";
-import polylabel from "polylabel"
+import polylabel from "polylabel";
+import LikeButton from "../widgets/LikeButton";
 
-import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement } from 'chart.js';
-import { Pie, Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+} from "chart.js";
+import { Pie, Bar } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement);
-
 
 export const API_BASE_URL = process.env.REACT_APP_API_ROOT;
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
@@ -57,7 +58,8 @@ const MapDetails = () => {
   const mapContainerRef = useRef(null);
   const navigate = useNavigate();
   const [showHoverData, setShowHoverData] = useState(false);
-  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
+  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
+    useState(false);
   const pieChartData = useRef([]);
   const barChartData = useRef([]);
   const mapRef = useRef();
@@ -140,12 +142,12 @@ const MapDetails = () => {
 
     for (var i = 0, l = vertices.length; i < l; i++) {
       var addX = vertices[i][0];
-      var addY = vertices[i == vertices.length - 1 ? 0 : i + 1][1];
-      var subX = vertices[i == vertices.length - 1 ? 0 : i + 1][0];
+      var addY = vertices[i === vertices.length - 1 ? 0 : i + 1][1];
+      var subX = vertices[i === vertices.length - 1 ? 0 : i + 1][0];
       var subY = vertices[i][1];
 
-      total += (addX * addY * 0.5);
-      total -= (subX * subY * 0.5);
+      total += addX * addY * 0.5;
+      total -= subX * subY * 0.5;
     }
 
     return Math.abs(total);
@@ -157,30 +159,30 @@ const MapDetails = () => {
     let count = 0;
 
     // Loop through features and sum up coordinates
-    features.forEach(feature => {
+    features.forEach((feature) => {
       const coordinates = feature.geometry.coordinates[0]; // Assuming the first ring of the polygon
       if (typeof coordinates == "number") {
         return;
       }
       if (coordinates.length > 1) {
-        coordinates.forEach(coord => {
-          if (typeof coord[0] == 'number' && typeof coord[0] == 'number') {
+        coordinates.forEach((coord) => {
+          if (typeof coord[0] == "number" && typeof coord[0] == "number") {
             totalX += coord[0];
             totalY += coord[1];
             count++;
           } else {
-            coord.forEach(c => {
-              if (typeof coord[0] == 'number' && typeof coord[0] == 'number') {
+            coord.forEach((c) => {
+              if (typeof coord[0] == "number" && typeof coord[0] == "number") {
                 totalX += coord[0];
                 totalY += coord[1];
                 count++;
               }
-            })
+            });
           }
         });
       } else {
-        coordinates[0].forEach(coord => {
-          if (typeof coord[0] == 'number' && typeof coord[0] == 'number') {
+        coordinates[0].forEach((coord) => {
+          if (typeof coord[0] == "number" && typeof coord[0] == "number") {
             totalX += coord[0];
             totalY += coord[1];
             count++;
@@ -195,49 +197,25 @@ const MapDetails = () => {
     return [avgX, avgY];
   }
 
-  // function calculateBoundingBox(features) {
-  //   let minX = Number.MAX_VALUE;
-  //   let minY = Number.MAX_VALUE;
-  //   let maxX = Number.MIN_VALUE;
-  //   let maxY = Number.MIN_VALUE;
-
-  //   // Loop through polygon features and find the minimum and maximum coordinates
-  //   features.forEach(feature => {
-  //     const coordinates = feature.geometry.coordinates[0]; // Assuming the first ring of the polygon
-  //     coordinates.forEach(coord => {
-  //       if (typeof coordinates == "number") {
-  //         return;
-  //       }
-  //       // minX = Math.min(minX, coord[0]);
-  //       // minY = Math.min(minY, coord[1]);
-  //       // maxX = Math.max(maxX, coord[0]);
-  //       // maxY = Math.max(maxY, coord[1]);
-  //       minX = coord[0];
-  //       minY = coord[1];
-  //       maxX = coord[0];
-  //       maxY = coord[1];
-  //     });
-  //   });
-
-  //   // Return bounding box [minX, minY, maxX, maxY]
-  //   return [[minX, minY], [maxX, maxY]];
-  // }
-
   const handleClickDeleteMapPost = (id) => {
     if (showDeleteConfirmationModal) {
       setShowDeleteConfirmationModal(false);
     } else {
       setShowDeleteConfirmationModal(id);
     }
-  }
+  };
 
   useEffect(() => {
     getMap();
   }, [mapId, user._id]);
 
   async function drawPieData(namesDataAdded) {
+<<<<<<< HEAD
     if(selectedMapFile.mapbook_template === "Pie Chart"){
       await new Promise(resolve => setTimeout(resolve, 500));
+=======
+    await new Promise((resolve) => setTimeout(resolve, 500));
+>>>>>>> ya
 
       mapRef.current.addLayer({
         id: "counties-pie",
@@ -248,6 +226,7 @@ const MapDetails = () => {
         },
       });
 
+<<<<<<< HEAD
 
       mapRef.current.setFilter("counties-pie", ["in", "name", ...namesDataAdded]);
 
@@ -287,6 +266,27 @@ const MapDetails = () => {
           expImageSelect
         );
         setIsCanvasLoaded(true);
+=======
+    mapRef.current.setFilter("counties-pie", ["in", "name", ...namesDataAdded]);
+
+    /// Haneul
+    var expImageSelect = ["case"];
+    // generate image object for region which data exist
+    namesDataAdded.forEach((name) => {
+      console.log("name:", name);
+      // generate image
+      // image = generateImage(data);
+      const canvasSave = document.getElementById(name + "pie");
+      console.log("canvasSave:", canvasSave);
+      var context = canvasSave.getContext("2d");
+      console.log("context", context);
+      var imgData = context.getImageData(
+        0,
+        0,
+        canvasSave.width,
+        canvasSave.height
+      );
+>>>>>>> ya
 
       }
       catch(error) {
@@ -296,9 +296,13 @@ const MapDetails = () => {
     }
   }
   async function drawBarData(namesDataAdded) {
+<<<<<<< HEAD
     if(selectedMapFile.mapbook_template === "Bar Chart"){
 
       await new Promise(resolve => setTimeout(resolve, 500));
+=======
+    await new Promise((resolve) => setTimeout(resolve, 500));
+>>>>>>> ya
 
       mapRef.current.addLayer({
         id: "counties-bar",
@@ -311,6 +315,7 @@ const MapDetails = () => {
 
       mapRef.current.setFilter("counties-bar", ["in", "name", ...namesDataAdded]);
 
+<<<<<<< HEAD
       /// Haneul
       var expImageSelect = ["case"];
       try{
@@ -324,6 +329,25 @@ const MapDetails = () => {
 
           var context = canvasSave.getContext('2d');
           var imgData = context.getImageData(0, 0, canvasSave.width, canvasSave.height)
+=======
+    /// Haneul
+    var expImageSelect = ["case"];
+    // generate image object for region which data exist
+    namesDataAdded.forEach((name) => {
+      console.log("name:", name);
+      // generate image
+      // image = generateImage(data);
+      const canvasSave = document.getElementById(name + "bar");
+      console.log("canvasSave:", canvasSave);
+
+      var context = canvasSave.getContext("2d");
+      var imgData = context.getImageData(
+        0,
+        0,
+        canvasSave.width,
+        canvasSave.height
+      );
+>>>>>>> ya
 
           // add image that we generate
           if (mapRef.current.hasImage(name)) {
@@ -348,6 +372,7 @@ const MapDetails = () => {
         );
         setIsCanvasLoaded(true);
       }
+<<<<<<< HEAD
       catch(error){
         dataAddedRegions.current = namesDataAdded;
         setIsCanvasLoaded(false);
@@ -363,6 +388,23 @@ const MapDetails = () => {
     }
   },[isCanvasLoaded]);
 
+=======
+
+      // add expImageSelect on new image
+      expImageSelect.push(["==", ["get", "name"], name]);
+      expImageSelect.push(name);
+    });
+    //set default image (anything is okay)
+    expImageSelect.push("aaa");
+
+    mapRef.current.setLayoutProperty(
+      "counties-bar",
+      "icon-image",
+      expImageSelect
+    );
+  }
+
+>>>>>>> ya
   useEffect(() => {
     if (selectedMapFile != null) {
       // console.log("selectedMapFile: useEffect: ", selectedMapFile);
@@ -371,7 +413,7 @@ const MapDetails = () => {
         const area = turf.area(feature);
         return acc + area;
       }, 0);
-      console.log('Total Area:', totalArea, 'square meters');
+      console.log("Total Area:", totalArea, "square meters");
 
       let map;
 
@@ -612,16 +654,30 @@ const MapDetails = () => {
             for (var i = 0; i < selectedMapFile["features"].length; i++) {
               // console.log(selectedMapFile["features"][i])
               if (selectedMapFile["features"][i].geometry.type == "Polygon") {
-                newGeometry = { type: "Point", coordinates: polylabel(selectedMapFile["features"][i].geometry.coordinates, 1.0) };
-              }
-              else {
+                newGeometry = {
+                  type: "Point",
+                  coordinates: polylabel(
+                    selectedMapFile["features"][i].geometry.coordinates,
+                    1.0
+                  ),
+                };
+              } else {
                 let maxArea = 0;
                 let maxPoint = [];
-                for (var j = 0; j < selectedMapFile["features"][i].geometry.coordinates.length; j++) {
-                  var polygonArea = calcPolygonArea(selectedMapFile["features"][i].geometry.coordinates[j][0])
+                for (
+                  var j = 0;
+                  j <
+                  selectedMapFile["features"][i].geometry.coordinates.length;
+                  j++
+                ) {
+                  var polygonArea = calcPolygonArea(
+                    selectedMapFile["features"][i].geometry.coordinates[j][0]
+                  );
                   if (maxArea < polygonArea) {
-                    maxArea = polygonArea
-                    maxPoint = polylabel(selectedMapFile["features"][i].geometry.coordinates[j])
+                    maxArea = polygonArea;
+                    maxPoint = polylabel(
+                      selectedMapFile["features"][i].geometry.coordinates[j]
+                    );
                   }
                 }
                 newGeometry = { type: "Point", coordinates: maxPoint };
@@ -691,13 +747,11 @@ const MapDetails = () => {
               map.getPaintProperty("clusters", "circle-color")
             );
           } else if (selectedMapFile.mapbook_template === "Bar Chart") {
-
-
             const featureDataAdded = selectedMapFile["features"].filter(
               (f) => f["properties"].mapbook_data != null
             );
 
-            const newBarChartData = []
+            const newBarChartData = [];
 
             var namesDataAdded = [];
             featureDataAdded.forEach((element) => {
@@ -705,35 +759,38 @@ const MapDetails = () => {
               namesDataAdded.push(element["properties"].name);
 
               var tempBarChartData = {
-                labels: [''],
+                labels: [""],
                 datasets: [],
               };
-              console.log("tempBarChartData: ", tempBarChartData)
+              console.log("tempBarChartData: ", tempBarChartData);
               var keys = Object.keys(element["properties"].mapbook_data);
               keys.forEach((name) => {
-                var tempDataset = { data: [] }
-                tempDataset.label = name
-                tempDataset.data.push(element["properties"].mapbook_data[name].value)
-                tempDataset.backgroundColor = element["properties"].mapbook_data[name].color
+                var tempDataset = { data: [] };
+                tempDataset.label = name;
+                tempDataset.data.push(
+                  element["properties"].mapbook_data[name].value
+                );
+                tempDataset.backgroundColor =
+                  element["properties"].mapbook_data[name].color;
 
-                tempBarChartData.datasets.push(tempDataset)
+                tempBarChartData.datasets.push(tempDataset);
               });
-              newBarChartData.push([element["properties"].name, tempBarChartData])
-
+              newBarChartData.push([
+                element["properties"].name,
+                tempBarChartData,
+              ]);
             });
 
             barChartData.current = newBarChartData;
 
             // wait till canvas is re-rander
             drawBarData(namesDataAdded);
-
           } else if (selectedMapFile.mapbook_template === "Pie Chart") {
-
             const featureDataAdded = selectedMapFile["features"].filter(
               (f) => f["properties"].mapbook_data != null
             );
 
-            const newPieChartData = []
+            const newPieChartData = [];
 
             var namesDataAdded = [];
             featureDataAdded.forEach((element) => {
@@ -749,27 +806,37 @@ const MapDetails = () => {
                   },
                 ],
               };
-              console.log("tempPieChartData: ", tempPieChartData)
+              console.log("tempPieChartData: ", tempPieChartData);
               var keys = Object.keys(element["properties"].mapbook_data);
               keys.forEach((name) => {
-                console.log("name: ", name)
-                console.log('element["properties"].mapbook_data', element["properties"].mapbook_data)
+                console.log("name: ", name);
+                console.log(
+                  'element["properties"].mapbook_data',
+                  element["properties"].mapbook_data
+                );
 
-                console.log('element["properties"].mapbook_data.name', element["properties"].mapbook_data[name])
+                console.log(
+                  'element["properties"].mapbook_data.name',
+                  element["properties"].mapbook_data[name]
+                );
                 tempPieChartData.labels.push(name);
-                tempPieChartData.datasets[0].data.push(element["properties"].mapbook_data[name].value);
-                tempPieChartData.datasets[0].backgroundColor.push(element["properties"].mapbook_data[name].color);
+                tempPieChartData.datasets[0].data.push(
+                  element["properties"].mapbook_data[name].value
+                );
+                tempPieChartData.datasets[0].backgroundColor.push(
+                  element["properties"].mapbook_data[name].color
+                );
               });
-              newPieChartData.push([element["properties"].name, tempPieChartData])
-
+              newPieChartData.push([
+                element["properties"].name,
+                tempPieChartData,
+              ]);
             });
 
             pieChartData.current = newPieChartData;
 
             // wait till canvas is re-rander
             drawPieData(namesDataAdded);
-
-
           }
 
           map.on("mousemove", (event) => {
@@ -912,15 +979,15 @@ const MapDetails = () => {
   };
 
   const handleFork = () => {
-    navigate('/createmap', { state: { mapFile: selectedMapFile } })
+    navigate("/createmap", { state: { mapFile: selectedMapFile } });
   };
 
-
   const handleEdit = () => {
-    if(isMapLoaded){
-      navigate('/editmap', { state: { mapFile: selectedMapFile, mapId: mapId } })
-    }
-    else{
+    if (isMapLoaded) {
+      navigate("/editmap", {
+        state: { mapFile: selectedMapFile, mapId: mapId },
+      });
+    } else {
       // popup
     }
   };
@@ -962,7 +1029,7 @@ const MapDetails = () => {
   } else {
     return (
       <div className="map_details">
-        {showDeleteConfirmationModal != false && (
+        {showDeleteConfirmationModal !== false && (
           <div className="maps_overlay"></div>
         )}
         {showDeleteConfirmationModal && (
@@ -979,9 +1046,7 @@ const MapDetails = () => {
               </button>
               <button
                 className="mapdetails_cancel_delete"
-                onClick={() =>
-                  setShowDeleteConfirmationModal(false)
-                }
+                onClick={() => setShowDeleteConfirmationModal(false)}
               >
                 No
               </button>
@@ -1015,14 +1080,20 @@ const MapDetails = () => {
             </div>
             <div className="map_details_options_outer">
               <div className="map_details_options_container">
+                <LikeButton
+                  isAuth={isAuth}
+                  id={mapId}
+                  currentPost={currentMap}
+                  postType={"Map"}
+                />
                 {(isOwner || user.username === "Admin") && (
                   <>
                     <DeleteButton
-                      onClick={() => handleClickDeleteMapPost(currentMap.current._id)}
+                      onClick={() =>
+                        handleClickDeleteMapPost(currentMap.current._id)
+                      }
                     />
-                    <EditButton
-                      onClick={() => handleEdit()}
-                    />
+                    <EditButton onClick={() => handleEdit()} />
                   </>
                 )}
               </div>
@@ -1058,9 +1129,12 @@ const MapDetails = () => {
                 </div>
               )}
             </div>
-
           </div>
-          <div className={`mapdetails_hoverdata_switch${showHoverData ? "_showing" : ""}`}>
+          <div
+            className={`mapdetails_hoverdata_switch${
+              showHoverData ? "_showing" : ""
+            }`}
+          >
             <CustomSwitch
               showHoverData={showHoverData}
               setShowHoverData={setShowHoverData}
@@ -1109,71 +1183,76 @@ const MapDetails = () => {
           <Divider section inverted style={{ margin: "20px 0" }} />
         </div>
 
-
-
-        <div style={{
-          width: 50,
-          height: 50,
-          top: 100,
-          left: -200,
-          position: 'absolute'
-          // display:'none'
-        }}>
+        <div
+          style={{
+            width: 50,
+            height: 50,
+            top: 100,
+            left: -200,
+            position: "absolute",
+            // display:'none'
+          }}
+        >
           {pieChartData.current.length !== 0 &&
             pieChartData.current.map((item, index) => (
-              <Pie id={item[0] + 'pie'} data={item[1]} options={{
-                animation: {
-                  duration: 0
-                },
-                plugins: {
-                  legend: {
-                    display: false,
+              <Pie
+                id={item[0] + "pie"}
+                data={item[1]}
+                options={{
+                  animation: {
+                    duration: 0,
                   },
-                },
-              }} />
+                  plugins: {
+                    legend: {
+                      display: false,
+                    },
+                  },
+                }}
+              />
             ))}
 
           {barChartData.current.length !== 0 &&
             barChartData.current.map((item, index) => (
-              <Bar id={item[0] + 'bar'} data={item[1]} options={{
-                animation: {
-                  duration: 0
-                },
-                plugins: {
-                  legend: {
-                    display: false,
+              <Bar
+                id={item[0] + "bar"}
+                data={item[1]}
+                options={{
+                  animation: {
+                    duration: 0,
                   },
-                },
-                scales: {
-
-                  x: {
-                    grid: {
-                      display: false
+                  plugins: {
+                    legend: {
+                      display: false,
                     },
-                    ticks: {
-                      display: false
-                    },
-                    border: {
-                      display: false
-                    }
                   },
-                  y: {
-                    grid: {
-                      display: false
+                  scales: {
+                    x: {
+                      grid: {
+                        display: false,
+                      },
+                      ticks: {
+                        display: false,
+                      },
+                      border: {
+                        display: false,
+                      },
                     },
-                    ticks: {
-                      display: false
+                    y: {
+                      grid: {
+                        display: false,
+                      },
+                      ticks: {
+                        display: false,
+                      },
+                      border: {
+                        display: false,
+                      },
                     },
-                    border: {
-                      display: false
-                    }
-                  }
-                },
-              }} />
+                  },
+                }}
+              />
             ))}
-
         </div>
-
       </div>
     );
   }
