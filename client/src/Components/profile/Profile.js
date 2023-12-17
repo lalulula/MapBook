@@ -18,12 +18,14 @@ const Profile = () => {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedImg, setSelectedImg] = useState();
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const userId = useSelector((state) => state.user.id);
   const currentUser = useSelector((state) => state.user.user);
+  console.log(currentUser.profile_img);
 
   useEffect(() => {
     setUser(currentUser);
@@ -32,6 +34,9 @@ const Profile = () => {
     window.userState = currentUser;
   }, [user]);
 
+  useEffect(() => {
+  }, [selectedFile, selectedImg]);
+
   if (!user) return null;
 
   const handleUsernameChange = (event) => {
@@ -39,15 +44,22 @@ const Profile = () => {
   };
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    setSelectedFile(event.target.files["0"]);
+    setSelectedImg(URL.createObjectURL(event.target.files[0]));
   };
 
   const updateUser = async () => {
-    dispatch(updateUsername(username));
-
-    updateUserAPIMethod(username, selectedFile, userId, isAuth).catch(
+    const updatedUser = await updateUserAPIMethod(username, selectedFile, userId, isAuth).catch(
       (err) => {}
     );
+
+    console.log(updatedUser);
+
+    const paylaod = {
+      username: username,
+      profile_img: updatedUser.profile_img,
+    }
+    dispatch(updateUsername(paylaod));
 
     setIsEditing(!isEditing);
   };
@@ -88,7 +100,7 @@ const Profile = () => {
       <div className="profile_container">
         <div className="profile_top">
           <div className="profile_left">
-            <img alt="" className="profile_img" src={user.profile_img}></img>
+            <img alt="" className="profile_img" src={selectedImg ? selectedImg : currentUser.profile_img}></img>
             {isEditing && (
               <div className="cypress_click_profile">
                 <Button
@@ -139,7 +151,8 @@ const Profile = () => {
                   placeholder="username"
                   size="lg"
                   variant="soft"
-                  value={username}
+                  // value={currentUser.username}
+                  defaultValue={currentUser.username}
                   className="username"
                   style={
                     isEditing
@@ -183,7 +196,12 @@ const Profile = () => {
                 />
               </div>
             </div>
-            {isEditing && <UpdateUserButton onClick={updateUser} />}
+            {isEditing && 
+              <div style={{display: "flex", justifyContent: "space-between"}}>
+                <UpdateUserButton onClick={() => setIsEditing(false)} text={"Cancel"} />
+                <UpdateUserButton onClick={updateUser} text={"Update User"} />
+              </div>
+            }
           </div>
         </div>
         <div className="profile_bottom">

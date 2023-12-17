@@ -75,7 +75,9 @@ const MapPreview = ({
 
   const getUserName = async () => {
     const user = await getUserById(data.user_id);
-    setUsername(user.username);
+    if (user) {
+      setUsername(user.username);
+    }
   };
 
   const handleShare = (e) => {

@@ -49,7 +49,8 @@ export const updateUserAPIMethod = async (
     }
 
     const responseData = await response.json();
-    console.log("User updated successfully:", responseData.message);
+    return responseData;
+    console.log("User updated successfully:", responseData);
   } catch (error) {
     console.error("Error updating user:", error.message);
   }
