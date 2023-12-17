@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./manage.css";
-
-import SearchBar from "../searchbar/SearchBar";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -15,7 +13,8 @@ const ManageUsers = () => {
   useEffect(() => {
     const fetchData = async () => {
       const users = await getAllUsersAPIMethod();
-      setAllUsers(users);
+      const filteredUsers = users.filter((user) => !user.is_admin);
+      setAllUsers(filteredUsers);
       try {
       } catch (error) {
         alert("Error fetching user data:", error);
@@ -31,7 +30,7 @@ const ManageUsers = () => {
     } else {
       setShowDeleteConfirmationModal(userId);
     }
-  }
+  };
   const handleDeleteUser = async (userId) => {
     setShowDeleteConfirmationModal(false);
     const filteredUsers = allUsers.filter((c) => c._id !== userId);
@@ -100,9 +99,7 @@ const ManageUsers = () => {
                       </button>
                       <button
                         className="cancel_delete_user"
-                        onClick={() =>
-                          setShowDeleteConfirmationModal(false)
-                        }
+                        onClick={() => setShowDeleteConfirmationModal(false)}
                       >
                         No
                       </button>
