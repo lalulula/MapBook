@@ -1,28 +1,22 @@
+const LOCALHOST = "http://localhost:3000";
+
 describe("CreateSocialPost Component", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/login");
+    cy.visit(`${LOCALHOST}/login`);
 
     // Fill out the login form
-    /* cy.get('input[placeholder="Username"]').type("Jasson");
-    cy.get('input[placeholder="Password"]').type("Jasson123"); */
-    cy.get('input[placeholder="Username"]').type("ya");
-
+    cy.get('input[placeholder="Username"]').type("sam");
     cy.get('input[placeholder="Password"]').type("Password123");
     //  Submit the form
     cy.get(".login_btn").click();
 
-    cy.url().should("eq", "http://localhost:3000/mainpage");
-
-
-    // Assuming your React app is running at http://localhost:3000
-    cy.visit("http://localhost:3000/createsocialpost");
+    cy.url().should("eq", `${LOCALHOST}/mainpage`);
+    cy.visit(`${LOCALHOST}/createsocialpost`);
   });
 
 
   it("should create a social post using UI", () => {
-
     // Assuming your elements have specific class names
-
     // Click on the dropdown to open it
     cy.get(".Dropdown-control").click();
 
@@ -38,33 +32,32 @@ describe("CreateSocialPost Component", () => {
     cy.wait(2000);
 
     // Assuming the navigation takes some time, wait for the destination page to load
-    cy.url().should("eq", "http://localhost:3000/socialpage");
+    cy.url().should("eq", `${LOCALHOST}/socialpage`);
+    cy.get('.socialpage_middle').should('contain', "Test Title");
   });
 });
 
 describe("CreateSocialPost API Test", () => {
   it("should create a social post using API", () => {
-    cy.visit("http://localhost:3000/login");
+    cy.visit(`${LOCALHOST}/login`);
 
     // Fill out the login form
-    /* cy.get('input[placeholder="Username"]').type("Jasson");
-    cy.get('input[placeholder="Password"]').type("Jasson123"); */
-    cy.get('input[placeholder="Username"]').type("ya");
+    cy.get('input[placeholder="Username"]').type("sam");
 
     cy.get('input[placeholder="Password"]').type("Password123");
     //  Submit the form
     cy.get(".login_btn").click();
 
-    cy.url().should("eq", "http://localhost:3000/mainpage");
+    cy.url().should("eq", `${LOCALHOST}/mainpage`);
 
     // Assuming you have set up a test API endpoint for social post creation
     cy.intercept("PUT", "/api/social/createSocialPost").as("createPost");
 
     // Make a request to your component's URL (assuming it's http://localhost:3000)
-    cy.visit("http://localhost:3000/createsocialpost");
+    cy.visit(`${LOCALHOST}/createsocialpost`);
     // Assuming your elements have specific class names
     cy.get('.createsocialpost_container_inner input[name="title"]').type(
-      "Test Title"
+      "Test Title API"
     );
     cy.get('.createsocialpost_description textarea[name="post_content"]').type(
       "Test Description"
@@ -92,7 +85,7 @@ describe("CreateSocialPost API Test", () => {
       expect(interception.response.statusCode).to.eq(201);
 
       // Assuming the navigation takes some time, wait for the destination page to load
-      cy.url().should("include", "/socialpage");
+      cy.url().should("include", `${LOCALHOST}/socialpage`);
     });
   });
 });
