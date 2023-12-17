@@ -179,6 +179,10 @@ const editMap = async (req, res) => {
         view_count,
       } = req.body;
 
+      if (req.body.map_name === "" || req.body.map_description == "") {
+        return res.status(500).json({ error: error.message });
+      }
+
       const randomString = (new Date().getTime() + Math.random())
         .toString(36)
         .substring(2);
