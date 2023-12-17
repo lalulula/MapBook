@@ -814,7 +814,12 @@ const MapDetails = () => {
 
 
   const handleEdit = () => {
-    navigate('/editmap', { state: { mapFile: selectedMapFile, mapId: mapId } })
+    if(isMapLoaded){
+      navigate('/editmap', { state: { mapFile: selectedMapFile, mapId: mapId } })
+    }
+    else{
+      // popup
+    }
   };
 
   const handleShare = () => {
