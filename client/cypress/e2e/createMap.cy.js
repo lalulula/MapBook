@@ -35,13 +35,15 @@ describe("CreateMap-File Import Page", () => {
 
     cy.url().should("include", "/createmap");
 
-    cy.get('.addmapdata_left_sidebar input').eq(0).type("Test Map (cypress)");
-    cy.get('.addmapdata_left_sidebar textarea').eq(0).type("Test map description");
-    cy.get('.Dropdown-control').eq(0).click();
-    cy.get('.Dropdown-menu').contains("Economy").click();
-    cy.get('.Dropdown-control').eq(1).click();
-    cy.get('.Dropdown-menu').contains("Circle Map").click();
-    cy.get('.map_toolbar_container button').click({ force: true });
+    cy.get(".addmapdata_left_sidebar input").eq(0).type("Test Map (cypress)");
+    cy.get(".addmapdata_left_sidebar textarea")
+      .eq(0)
+      .type("Test map description");
+    cy.get(".Dropdown-control").eq(0).click();
+    cy.get(".Dropdown-menu").contains("Economy").click();
+    cy.get(".Dropdown-control").eq(1).click();
+    cy.get(".Dropdown-menu").contains("Circle Map").click();
+    cy.get(".map_toolbar_container button").click({ force: true });
 
     cy.wait(2000);
     cy.url().should("eq", "http://localhost:3000/mainpage");

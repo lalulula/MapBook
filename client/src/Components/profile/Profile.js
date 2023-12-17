@@ -90,19 +90,24 @@ const Profile = () => {
           <div className="profile_left">
             <img alt="" className="profile_img" src={user.profile_img}></img>
             {isEditing && (
-              <Button
-                className="change_profileImg_btn"
-                style={{
-                  backgroundColor: "transparent",
-                  marginTop: "1rem",
-                  textDecoration: "underline",
-                }}
-                component="label"
-                variant="contained"
-              >
-                Change Profile Image
-                <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-              </Button>
+              <div className="cypress_click_profile">
+                <Button
+                  className="change_profileImg_btn"
+                  style={{
+                    backgroundColor: "transparent",
+                    marginTop: "1rem",
+                    textDecoration: "underline",
+                  }}
+                  component="label"
+                  variant="contained"
+                >
+                  Change Profile Image
+                  <VisuallyHiddenInput
+                    type="file"
+                    onChange={handleFileChange}
+                  />
+                </Button>
+              </div>
             )}
           </div>
 
