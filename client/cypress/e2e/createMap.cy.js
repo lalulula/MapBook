@@ -3,7 +3,7 @@ export const API_BASE_URL = process.env.REACT_APP_HOME_URL;
 
 import "cypress-file-upload";
 
-describe("Create a map", () => {
+describe("CreateMap-File Import Page", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/login");
     cy.get('input[placeholder="Username"]').type("sam");
@@ -31,6 +31,7 @@ describe("Create a map", () => {
       });
     });
 
+    cy.wait(2000);
     cy.wait(2000);
     cy.get(".cypress_click_create").click();
 
