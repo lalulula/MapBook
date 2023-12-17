@@ -16,7 +16,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import DeleteButton from "../widgets/DeleteButton";
 import EditButton from "../widgets/EditButton";
-import Carousel from 'react-bootstrap/Carousel';
+import Carousel from "react-bootstrap/Carousel";
 
 const SocialPostDetails = () => {
   const { id } = useParams();
@@ -28,7 +28,8 @@ const SocialPostDetails = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const [imgFullScreen, setImgFullScreen] = useState(false);
-  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
+  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
+    useState(false);
 
   const nextImage = () => {
     setCurrentIndex(
@@ -52,7 +53,7 @@ const SocialPostDetails = () => {
     } else {
       setShowDeleteConfirmationModal(id);
     }
-  }
+  };
 
   const handleDeleteSocialPost = async () => {
     try {
@@ -113,7 +114,9 @@ const SocialPostDetails = () => {
   }
 
   return (
-    <div className={`socialpostdetails ${imgFullScreen ? "img_fullscreen" : ""}`}>
+    <div
+      className={`socialpostdetails ${imgFullScreen ? "img_fullscreen" : ""}`}
+    >
       {showDeleteConfirmationModal != false && (
         <div className="maps_overlay"></div>
       )}
@@ -131,9 +134,7 @@ const SocialPostDetails = () => {
             </button>
             <button
               className="mapdetails_cancel_delete"
-              onClick={() =>
-                setShowDeleteConfirmationModal(false)
-              }
+              onClick={() => setShowDeleteConfirmationModal(false)}
             >
               No
             </button>
@@ -193,23 +194,16 @@ const SocialPostDetails = () => {
           <div className="socialpostdetails_top_right_container">
             {isOwner && (
               <>
-                {/* <button
-                  className="social_edit_btn"
-                  onClick={() => handleEditSocialPost()}
-                >
-                  edit
-                </button> */}
-                {/* <button
-                  className="social_edit_btn"
-                  onClick={() => handleDeleteSocialPost()}
-                  >
-                  delete
-                </button> */}
                 <EditButton onClick={handleEditSocialPost} />
                 <DeleteButton onClick={handleClickDeleteSocialPost} />
               </>
             )}
-            <LikeButton isAuth={isAuth} id={id} currentPost={currentPost} />
+            <LikeButton
+              isAuth={isAuth}
+              id={id}
+              currentPost={currentPost}
+              postType={"Social"}
+            />
           </div>
         </div>
         <div className="socialpostdetails_middle">
@@ -229,14 +223,19 @@ const SocialPostDetails = () => {
                   />
                 )}
                 {imgFullScreen && (
-                  <div className="overlay" onClick={() => setImgFullScreen(!imgFullScreen)}></div>
+                  <div
+                    className="overlay"
+                    onClick={() => setImgFullScreen(!imgFullScreen)}
+                  ></div>
                 )}
                 <div className="fullscreen_img_container">
                   <img
                     alt=""
                     id="post_details_img"
                     src={currentPost.post_images[currentIndex]}
-                    className={`socialpostdetails_img${imgFullScreen ? "_fullscreen" : ""}`}
+                    className={`socialpostdetails_img${
+                      imgFullScreen ? "_fullscreen" : ""
+                    }`}
                     onClick={() => setImgFullScreen(!imgFullScreen)}
                   />
                   {imgFullScreen && (
@@ -261,9 +260,11 @@ const SocialPostDetails = () => {
                       <button
                         key={idx}
                         className={
-                          currentIndex === idx ? "post_img_indicator" : "post_img_indicator indicator-inactive"
+                          currentIndex === idx
+                            ? "post_img_indicator"
+                            : "post_img_indicator indicator-inactive"
                         }
-                      /* onClick={() => setSlide(idx)} */
+                        /* onClick={() => setSlide(idx)} */
                       ></button>
                     );
                   })}

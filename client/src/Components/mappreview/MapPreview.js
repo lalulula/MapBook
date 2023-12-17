@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./mapPreview.css";
 import { useNavigate } from "react-router-dom";
-import { fb, storage } from "../../firebase";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { storage } from "../../firebase";
+import { ref, getDownloadURL } from "firebase/storage";
 import { useSelector } from "react-redux";
-import Lottie from "lottie-react";
-import ImageLoader from "../../assets/Lottie/ImageLoader.json";
+
 import { getUserById } from "../../api/user";
 
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
@@ -15,30 +14,18 @@ const MapPreview = ({
   showDeleteConfirmationModal,
   setShowDeleteConfirmationModal,
 }) => {
-  // console.log("data: ", data);
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const navigate = useNavigate();
   const [optionsMenuVisible, setOptionsMenuVisible] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false); // New state to track image loading
   const [username, setUsername] = useState();
   const user = useSelector((state) => state.user.user);
-  const [isOwner, setIsOwner] = useState(data.user_id === user._id);
+  const isOwner = data.user_id === user._id;
 
   useEffect(() => {
     // console.log(data);
     getUserName();
-    if (data.mapPreviewImg) {
-      setTimeout(() => {
-        handleImageLoad();
-      }, 2000);
-    }
   }, []);
-  const handleImageLoad = () => {
-    // Called when the image has finished loading
-    setTimeout(() => {
-      setImageLoaded(true);
-    });
-  };
+
   const handleShowMapDetail = (id) => {
     navigate(`/mapdetails/${id}`);
   };
@@ -57,7 +44,6 @@ const MapPreview = ({
     let fileName = url
       .substring(57, url.indexOf("geojson") + 7)
       .replaceAll("%20", " ");
-    // console.log(fileName)
     const mapUrl = await getDownloadURL(ref(storage, fileName));
 
     // This can be downloaded directly:
@@ -69,8 +55,6 @@ const MapPreview = ({
     };
     xhr.open("GET", mapUrl);
     xhr.send();
-
-    console.log("Fork clicked");
   };
 
   const getUserName = async () => {
@@ -79,13 +63,9 @@ const MapPreview = ({
   };
 
   const handleShare = (e) => {
-    // Handle share action
     e.stopPropagation();
-    console.log(HOME_URL + "/mapdetails/" + data._id);
     navigator.clipboard.writeText(HOME_URL + "/mapdetails/" + data._id);
     alert("Link Copied!");
-
-    console.log("Share clicked");
   };
 
   const handleClickDeleteMapPost = (e, id) => {
@@ -101,7 +81,6 @@ const MapPreview = ({
   // Convert data to GEOJSON //
   function saveGeoJSONToFile(geoJSONObject, filename) {
     const geoJSONString = JSON.stringify(geoJSONObject);
-    // console.log("geoJSONString: ", geoJSONString)
     const newGeoJson = new File([geoJSONString], filename, {
       type: "application/json",
     });
@@ -110,7 +89,6 @@ const MapPreview = ({
 
   function downloadGeoJSON(geoJSONObject, filename) {
     const newGeoJson = saveGeoJSONToFile(geoJSONObject, filename);
-    // console.log(newGeoJson)
     // Create a download link
     const link = document.createElement("a");
     link.href = URL.createObjectURL(newGeoJson);
@@ -120,7 +98,6 @@ const MapPreview = ({
     link.click();
     // RM link from DOM
     document.body.removeChild(link);
-    // console.log(`GeoJSON saved as ${filename}`);
     return newGeoJson;
   }
 
@@ -133,38 +110,17 @@ const MapPreview = ({
     let fileName = url
       .substring(57, url.indexOf("geojson") + 7)
       .replaceAll("%20", " ");
-    // console.log(fileName)
     const mapUrl = await getDownloadURL(ref(storage, fileName));
 
     // This can be downloaded directly:
     const xhr = new XMLHttpRequest();
     xhr.responseType = "json";
     xhr.onload = (event) => {
-      // console.log("response: ", xhr.response);
       downloadGeoJSON(xhr.response, data.map_name + ".geojson");
-      // setSelectedMapFile(xhr.response);
     };
     xhr.open("GET", mapUrl);
     xhr.send();
-
-    console.log("Export clicked");
   };
-
-  // const handleDeleteMapPost = async (mapId) => {
-  //   console.log(mapId);
-  //   try {
-  //     console.log("removing map post");
-  //     const res = await deleteMapPostAPIMethod(mapId);
-  //     if (res) {
-  //       alert("Map has been deleted successfully.");
-  //       navigate("/mainpage");
-  //     } else {
-  //       alert("Error deleting post", res);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error handling delete operation:", error);
-  //   }
-  // };
 
   return (
     <div
@@ -197,26 +153,12 @@ const MapPreview = ({
           style={{ color: "black" }}
         ></i>
       )}
-      {imageLoaded ? (
-        <img
-          className="mappreview_img"
-          src={data.mapPreviewImg}
-          alt={data.map_name}
-          onLoad={handleImageLoad}
-        />
-      ) : (
-        <div className="mappreview_img">
-          <Lottie
-            animationData={ImageLoader}
-            style={{
-              width: "100%",
-              height: "100%",
-              alignSelf: "center",
-              opacity: 0.1,
-            }}
-          />
-        </div>
-      )}
+
+      <img
+        className="mappreview_img"
+        src={data.mapPreviewImg}
+        alt={data.map_name}
+      />
 
       <div className="mappreview_content">
         <div className="mappreview_name_container">
