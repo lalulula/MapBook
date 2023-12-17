@@ -1,19 +1,12 @@
 import React, { useState } from "react";
 import Input from "@mui/joy/Input";
 
-const PieBar = ({ 
-  pieBarData, 
-  setPieBarData ,
-}) => {
+const PieBar = ({ pieBarData, setPieBarData }) => {
   const [selectedDataIndexes, setSelectedDataIndexes] = useState([]);
 
   const handleAddPieBarData = () => {
     setPieBarData([...pieBarData, { dataName: "", color: "#000000" }]);
     setSelectedDataIndexes([...selectedDataIndexes, null]);
-    // const updatedData = [...pieBarData, ""];
-    // pieBarData = updatedData
-    // setPieBarData(updatedData);
-    // console.log("piebar updatedData: ", pieBarData)
   };
 
   const handlePieBarDataInput = (index, newData) => {
@@ -41,14 +34,14 @@ const PieBar = ({
       <div className="data_container">
         {pieBarData.map((data, index) => (
           <div className="" key={index}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "0.5rem",
-              }}
-            >
-              <div>Color for data #{index}&nbsp;&nbsp;</div>
+            <div className="data_input_container">
+              <Input
+                placeholder="Data Name"
+                required
+                name={`data_name_${index}`}
+                value={data.dataName}
+                onChange={(e) => handlePieBarDataInput(index, e.target.value)}
+              />
               <input
                 className="createMap_color_picker"
                 style={{ width: "3rem", height: "3rem" }}
@@ -61,62 +54,21 @@ const PieBar = ({
                   setSelectedDataIndexes(updatedIndexes);
                 }}
               />
-            </div>
-            <div className="data_input_container">
-              <Input
-                placeholder="Enter Data"
-                required
-                name={`data_name_${index}`}
-                value={data.dataName}
-                onChange={(e) => handlePieBarDataInput(index, e.target.value)}
-              />
               <i
-                className="bi bi-x-circle"
+                className="createmap_remove_data_btn bi bi-x-lg"
                 onClick={() => handleRemovePieBarData(index)}
               />
             </div>
           </div>
         ))}
       </div>
-      <div>
-        <i
-          style={{ display: "flex", justifyContent: "center" }}
-          className="bi bi-plus-circle"
-          onClick={handleAddPieBarData}
-        ></i>
+      <div style={{ textAlign: "center" }}>
+        <span onClick={handleAddPieBarData} className="createmap_add_data_btn">
+          Add Data
+        </span>
       </div>
     </div>
   );
-  // return (
-  //   <div>
-  //     <div className="data_container">
-  //       <div style={{ maxHeight: "300px", overflowY: "auto" }}>
-  //         {pieBarData.map((data, index) => (
-  //           <div className="data_input_container" key={index}>
-  //             <Input
-  //               className="data_input_value"
-  //               placeholder="Enter Data"
-  //               required
-  //               name={`data_name_${index}`}
-  //               value={data}
-  //               onChange={(e) => handlePieBarDataInput(index, e.target.value)}
-  //             />
-  //             <i
-  //               className="data_input_delete bi bi-x-circle "
-  //               onClick={(e) => handleRemovePieBarData(index, e)}
-  //             />
-  //           </div>
-  //         ))}
-  //       </div>
-  //     </div>
-  //     <div>
-  //       <i
-  //         className="add_data_btn bi bi-plus-circle"
-  //         onClick={handleAddPieBarData}
-  //       ></i>
-  //     </div>
-  //   </div>
-  // );
 };
 
 export default PieBar;

@@ -25,12 +25,10 @@ const Heat = ({
   ];
 
   useEffect(() => {
-    console.log("Heat map options: ", options)
-    console.log("Heat map heatRange: ", heatRange)
-    console.log("Heat map selectedColors: ", selectedColors)
-
+    console.log("Heat map options: ", options);
+    console.log("Heat map heatRange: ", heatRange);
+    console.log("Heat map selectedColors: ", selectedColors);
   }, []);
-
 
   const handleRangeChange = (e) => {
     const { name, value } = e.target;
@@ -44,7 +42,7 @@ const Heat = ({
       <Input
         required
         value={options.circleHeatMapData}
-        placeholder="Enter Data Name"
+        placeholder="Data Name"
         onChange={(e) => handleCircleHeatMapDataChange(e.target.value)}
       />
       <h3>Enter Data Range</h3>
@@ -53,7 +51,6 @@ const Heat = ({
         type="number"
         name="from"
         value={heatRange.from}
-
         placeholder="From"
         onChange={handleRangeChange}
       />
@@ -63,7 +60,6 @@ const Heat = ({
         type="number"
         name="to"
         value={heatRange.to}
-
         placeholder="To"
         onChange={handleRangeChange}
       />

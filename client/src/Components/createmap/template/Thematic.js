@@ -32,14 +32,14 @@ const Thematic = ({ themeData, setThemeData }) => {
       <div className="data_container data_input_container_thematic">
         {themeData.map((theme, index) => (
           <div className="" key={index}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "0.5rem",
-              }}
-            >
-              <div>Color for data #{index}&nbsp;&nbsp;</div>
+            <div className="data_input_container">
+              <Input
+                placeholder="Data Name"
+                required
+                name={`data_name_${index}`}
+                value={theme.dataName}
+                onChange={(e) => handleThemeDataInput(index, e.target.value)}
+              />
               <input
                 className="createMap_color_picker"
                 style={{ width: "3rem", height: "3rem" }}
@@ -52,29 +52,18 @@ const Thematic = ({ themeData, setThemeData }) => {
                   setSelectedDataIndexes(updatedIndexes);
                 }}
               />
-            </div>
-            <div className="data_input_container">
-              <Input
-                placeholder="Enter Data"
-                required
-                name={`data_name_${index}`}
-                value={theme.dataName}
-                onChange={(e) => handleThemeDataInput(index, e.target.value)}
-              />
               <i
-                className="bi bi-x-circle"
+                className="createmap_remove_data_btn bi bi-x-lg"
                 onClick={() => handleRemoveThemeData(index)}
               />
             </div>
           </div>
         ))}
       </div>
-      <div>
-        <i
-          style={{ display: "flex", justifyContent: "center" }}
-          className="bi bi-plus-circle"
-          onClick={handleAddThemeData}
-        ></i>
+      <div style={{ textAlign: "center" }}>
+        <span onClick={handleAddThemeData} className="createmap_add_data_btn">
+          Add Data
+        </span>
       </div>
     </div>
   );

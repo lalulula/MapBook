@@ -152,16 +152,33 @@
 
 /* END*/
 
-/* RIGHT SIDEBAR DATA IMPUT */
+/* RIGHT SIDEBAR DATA INPUT */
 .data_input_container {
   display: flex;
 }
-
+.createmap_add_data_btn {
+  border: 2px solid gray;
+  border-radius: 4px;
+  padding: 0.4rem;
+  font-size: small;
+  font-weight: 200;
+  cursor: pointer;
+}
+.createmap_add_data_btn:hover {
+  color: var(--main-color);
+  border: 2px solid var(--main-color);
+  transition: all 0.2s ease-in-out;
+  background-color: #1f6caf2b;
+}
 .data_input_value {
   flex: 2;
 }
 
-.data_input_delete {
+.createmap_remove_data_btn {
+  cursor: pointer;
+}
+.createmap_remove_data_btn:hover {
+  color: var(--main-color);
 }
 
 .data_input_container_thematic {
@@ -169,7 +186,6 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  margin-bottom: 2rem;
 }
 
 .add_data_btn {
