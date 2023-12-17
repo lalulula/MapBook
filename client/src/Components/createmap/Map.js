@@ -102,6 +102,8 @@ const Map = ({
   const navigate = useNavigate();
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isCanvasLoaded, setIsCanvasLoaded] = useState(true);
+
 
   const handleRerender = () => {
     setRerenderFlag(!rerenderFlag);
@@ -684,39 +686,49 @@ const Map = ({
       /// Haneul
       var expImageSelect = ["case"];
       // generate image object for region which data exist
-      namesDataAdded.forEach((name) => {
-        console.log("name:", name);
-        // generate image
-        // image = generateImage(data);
-        const canvasSave = document.getElementById(name + "pie");
-        console.log("canvasSave:", canvasSave);
-        var context = canvasSave.getContext("2d");
-        console.log("context", context);
-        var imgData = context.getImageData(
-          0,
-          0,
-          canvasSave.width,
-          canvasSave.height
+      try{
+        namesDataAdded.forEach((name) => {
+          console.log("name:", name);
+          // generate image
+          // image = generateImage(data);
+          
+          const canvasSave = document.getElementById(name + "pie");
+          console.log("canvasSave:", canvasSave);
+          var context = canvasSave.getContext("2d");
+          console.log("context", context);
+          var imgData = context.getImageData(
+            0,
+            0,
+            canvasSave.width,
+            canvasSave.height
+          );
+  
+          // add image that we generate
+          if (mapRef.current.hasImage(name)) {
+            mapRef.current.removeImage(name);
+          }
+          mapRef.current.addImage(name, imgData);
+  
+          // add expImageSelect on new image
+          expImageSelect.push(["==", ["get", "name"], name]);
+          expImageSelect.push(name);
+        });
+        //set default image (anything is okay)
+        expImageSelect.push("aaa");
+  
+        mapRef.current.setLayoutProperty(
+          "counties-pie",
+          "icon-image",
+          expImageSelect
         );
-
-        // add image that we generate
-        if (mapRef.current.hasImage(name)) {
-          mapRef.current.removeImage(name);
-        }
-        mapRef.current.addImage(name, imgData);
-
-        // add expImageSelect on new image
-        expImageSelect.push(["==", ["get", "name"], name]);
-        expImageSelect.push(name);
-      });
-      //set default image (anything is okay)
-      expImageSelect.push("aaa");
-
-      mapRef.current.setLayoutProperty(
-        "counties-pie",
-        "icon-image",
-        expImageSelect
-      );
+        setIsCanvasLoaded(true);
+      }
+      catch (error){
+        // set isCanvasLoaded false
+        setIsCanvasLoaded(false);
+      }
+      
+      
     } else {
       if (mapRef.current.getLayer("counties-pie")) {
         mapRef.current.setLayoutProperty("counties-pie", "visibility", "none");
@@ -794,39 +806,46 @@ const Map = ({
       /// Haneul
       var expImageSelect = ["case"];
       // generate image object for region which data exist
-      namesDataAdded.forEach((name) => {
-        console.log("name:", name);
-        // generate image
-        // image = generateImage(data);
-        const canvasSave = document.getElementById(name + "bar");
-        console.log("canvasSave:", canvasSave);
-
-        var context = canvasSave.getContext("2d");
-        var imgData = context.getImageData(
-          0,
-          0,
-          canvasSave.width,
-          canvasSave.height
+      try{
+        namesDataAdded.forEach((name) => {
+          console.log("name:", name);
+          // generate image
+          // image = generateImage(data);
+          const canvasSave = document.getElementById(name + "bar");
+          console.log("canvasSave:", canvasSave);
+  
+          var context = canvasSave.getContext("2d");
+          var imgData = context.getImageData(
+            0,
+            0,
+            canvasSave.width,
+            canvasSave.height
+          );
+  
+          // add image that we generate
+          if (mapRef.current.hasImage(name)) {
+            mapRef.current.removeImage(name);
+          }
+          mapRef.current.addImage(name, imgData);
+  
+          // add expImageSelect on new image
+          expImageSelect.push(["==", ["get", "name"], name]);
+          expImageSelect.push(name);
+        });
+        //set default image (anything is okay)
+        expImageSelect.push("aaa");
+  
+        mapRef.current.setLayoutProperty(
+          "counties-bar",
+          "icon-image",
+          expImageSelect
         );
-
-        // add image that we generate
-        if (mapRef.current.hasImage(name)) {
-          mapRef.current.removeImage(name);
-        }
-        mapRef.current.addImage(name, imgData);
-
-        // add expImageSelect on new image
-        expImageSelect.push(["==", ["get", "name"], name]);
-        expImageSelect.push(name);
-      });
-      //set default image (anything is okay)
-      expImageSelect.push("aaa");
-
-      mapRef.current.setLayoutProperty(
-        "counties-bar",
-        "icon-image",
-        expImageSelect
-      );
+        setIsCanvasLoaded(true);
+      }
+      catch(error){
+        setIsCanvasLoaded(false);
+      }
+      
     } else {
       if (mapRef.current.getLayer("counties-bar")) {
         mapRef.current.setLayoutProperty("counties-bar", "visibility", "none");
@@ -1115,7 +1134,8 @@ const Map = ({
 
             if (data === undefined) {
               setHoverData(`No data for ${regions[0]["properties"].name}`);
-            } else {
+            } 
+            else {
               const formatDataByKey = (key, value) => {
                 return `${key}  ${
                   isObject(value) ? renderObject(value) : value
@@ -1196,6 +1216,16 @@ const Map = ({
       }
     }
   }, [isMapLoaded]);
+
+  
+  useEffect(() => {
+    if (!isCanvasLoaded) {
+        redrawPieData();
+        redrawBarData();
+    }
+  }, [isCanvasLoaded]);
+
+  
 
   // Convert data to GEOJSON //
   function saveGeoJSONToFile(geoJSONObject, filename) {

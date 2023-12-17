@@ -194,6 +194,9 @@ export const likeMapAPIMethod = (mapId, isAuth, userId) => {
       "Content-Type": "application/json; charset=UTF-8",
     },
     body: JSON.stringify(userId),
+    // ...defaultHeaders,
+    // method: "PUT", // The method defaults to GET
+    // body: JSON.stringify(userId),
   });
   return res;
 };

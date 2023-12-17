@@ -140,31 +140,13 @@ const MapPreview = ({
     const xhr = new XMLHttpRequest();
     xhr.responseType = "json";
     xhr.onload = (event) => {
-      // console.log("response: ", xhr.response);
       downloadGeoJSON(xhr.response, data.map_name + ".geojson");
-      // setSelectedMapFile(xhr.response);
     };
     xhr.open("GET", mapUrl);
     xhr.send();
 
     console.log("Export clicked");
   };
-
-  // const handleDeleteMapPost = async (mapId) => {
-  //   console.log(mapId);
-  //   try {
-  //     console.log("removing map post");
-  //     const res = await deleteMapPostAPIMethod(mapId);
-  //     if (res) {
-  //       alert("Map has been deleted successfully.");
-  //       navigate("/mainpage");
-  //     } else {
-  //       alert("Error deleting post", res);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error handling delete operation:", error);
-  //   }
-  // };
 
   return (
     <div

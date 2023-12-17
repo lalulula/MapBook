@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import mapboxgl from "mapbox-gl"; // Import mapboxgl
-import { createMapAPIMethod } from "../../api/map";
+import { editMapPostAPIMethodWithFile } from "../../api/map";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./createMap.css";
@@ -41,6 +41,7 @@ const Map = ({
   setIsMapbookData,
   setMapImage,
   mapImage,
+  mapId,
 }) => {
   const mapFileData = useRef(selectedMapFile);
   const mapRef = useRef();
@@ -102,6 +103,7 @@ const Map = ({
   const navigate = useNavigate();
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isCanvasLoaded, setIsCanvasLoaded] = useState(true);
 
   const handleRerender = () => {
     setRerenderFlag(!rerenderFlag);
@@ -682,39 +684,47 @@ const Map = ({
       /// Haneul
       var expImageSelect = ["case"];
       // generate image object for region which data exist
-      namesDataAdded.forEach((name) => {
-        console.log("name:", name);
-        // generate image
-        // image = generateImage(data);
-        const canvasSave = document.getElementById(name + "pie");
-        console.log("canvasSave:", canvasSave);
-        var context = canvasSave.getContext("2d");
-        console.log("context", context);
-        var imgData = context.getImageData(
-          0,
-          0,
-          canvasSave.width,
-          canvasSave.height
+      try{
+        namesDataAdded.forEach((name) => {
+          console.log("name:", name);
+          // generate image
+          // image = generateImage(data);
+          const canvasSave = document.getElementById(name + "pie");
+          console.log("canvasSave:", canvasSave);
+          var context = canvasSave.getContext("2d");
+          console.log("context", context);
+          var imgData = context.getImageData(
+            0,
+            0,
+            canvasSave.width,
+            canvasSave.height
+          );
+
+          // add image that we generate
+          if (mapRef.current.hasImage(name)) {
+            mapRef.current.removeImage(name);
+          }
+          mapRef.current.addImage(name, imgData);
+
+          // add expImageSelect on new image
+          expImageSelect.push(["==", ["get", "name"], name]);
+          expImageSelect.push(name);
+        });
+        //set default image (anything is okay)
+        expImageSelect.push("aaa");
+
+        mapRef.current.setLayoutProperty(
+          "counties-pie",
+          "icon-image",
+          expImageSelect
         );
+        setIsCanvasLoaded(true);
 
-        // add image that we generate
-        if (mapRef.current.hasImage(name)) {
-          mapRef.current.removeImage(name);
-        }
-        mapRef.current.addImage(name, imgData);
-
-        // add expImageSelect on new image
-        expImageSelect.push(["==", ["get", "name"], name]);
-        expImageSelect.push(name);
-      });
-      //set default image (anything is okay)
-      expImageSelect.push("aaa");
-
-      mapRef.current.setLayoutProperty(
-        "counties-pie",
-        "icon-image",
-        expImageSelect
-      );
+      }
+      catch (error){
+        // set isCanvasLoaded false
+        setIsCanvasLoaded(false);
+      }
     } else {
       if (mapRef.current.getLayer("counties-pie")) {
         mapRef.current.setLayoutProperty("counties-pie", "visibility", "none");
@@ -791,40 +801,48 @@ const Map = ({
 
       /// Haneul
       var expImageSelect = ["case"];
-      // generate image object for region which data exist
-      namesDataAdded.forEach((name) => {
-        console.log("name:", name);
-        // generate image
-        // image = generateImage(data);
-        const canvasSave = document.getElementById(name + "bar");
-        console.log("canvasSave:", canvasSave);
+      try{
+        // generate image object for region which data exist
+        namesDataAdded.forEach((name) => {
+          console.log("name:", name);
+          // generate image
+          // image = generateImage(data);
+          const canvasSave = document.getElementById(name + "bar");
+          console.log("canvasSave:", canvasSave);
 
-        var context = canvasSave.getContext("2d");
-        var imgData = context.getImageData(
-          0,
-          0,
-          canvasSave.width,
-          canvasSave.height
+          var context = canvasSave.getContext("2d");
+          var imgData = context.getImageData(
+            0,
+            0,
+            canvasSave.width,
+            canvasSave.height
+          );
+
+          // add image that we generate
+          if (mapRef.current.hasImage(name)) {
+            mapRef.current.removeImage(name);
+          }
+          mapRef.current.addImage(name, imgData);
+
+          // add expImageSelect on new image
+          expImageSelect.push(["==", ["get", "name"], name]);
+          expImageSelect.push(name);
+        });
+        //set default image (anything is okay)
+        expImageSelect.push("aaa");
+
+        mapRef.current.setLayoutProperty(
+          "counties-bar",
+          "icon-image",
+          expImageSelect
         );
+        setIsCanvasLoaded(true);
 
-        // add image that we generate
-        if (mapRef.current.hasImage(name)) {
-          mapRef.current.removeImage(name);
-        }
-        mapRef.current.addImage(name, imgData);
-
-        // add expImageSelect on new image
-        expImageSelect.push(["==", ["get", "name"], name]);
-        expImageSelect.push(name);
-      });
-      //set default image (anything is okay)
-      expImageSelect.push("aaa");
-
-      mapRef.current.setLayoutProperty(
-        "counties-bar",
-        "icon-image",
-        expImageSelect
-      );
+      }
+      catch (error){
+        // set isCanvasLoaded false
+        setIsCanvasLoaded(false);
+      }
     } else {
       if (mapRef.current.getLayer("counties-bar")) {
         mapRef.current.setLayoutProperty("counties-bar", "visibility", "none");
@@ -1194,6 +1212,16 @@ const Map = ({
       }
     }
   }, [isMapLoaded]);
+  
+  
+  useEffect(() => {
+    if (!isCanvasLoaded) {
+        redrawPieData();
+        redrawBarData();
+    }
+  }, [isCanvasLoaded]);
+
+  
 
   // Convert data to GEOJSON //
   function saveGeoJSONToFile(geoJSONObject, filename) {
@@ -1221,15 +1249,14 @@ const Map = ({
     return newGeoJson;
   }
 
-  const createMap = async (mapData) => {
+  
+  const editMap = async (mapData) => {
     const canvas = await html2canvas(
       document.querySelector(".mapboxgl-canvas")
     );
 
     // console.log("canvas", canvas);
-    if (mapImage == null) {
-      mapImage = canvas.toDataURL();
-    }
+    const mapImage = canvas.toDataURL();
 
     const newMapObj = {
       map_name: options.name,
@@ -1239,48 +1266,34 @@ const Map = ({
       map_description: options.description,
       mapPreviewImg: mapImage,
       file: mapData,
-      view_count: 1,
     };
 
-    const res = await createMapAPIMethod(newMapObj);
+    console.log("mapId", mapId);
+    console.log("newMapObj", newMapObj);
+
+    const res = await editMapPostAPIMethodWithFile(mapId, newMapObj);
     console.log("res: ", res);
     if (res.ok) {
+      // const responseMsg = await res.json;
       navigate("/mainpage");
     } else {
-      setShowErrorMessage(true);
-      // const responseData = await res.json();
-
-      // if (res.status === 400 && responseData.validationErrors) {
-      //   console.log("Validation Errors:", responseData.validationErrors);
-      //   let map_description =
-      //     responseData.validationErrors["map_description"] ===
-      //     "Path `map_description` is required.";
-      //   let topic =
-      //     responseData.validationErrors["topic"] ===
-      //     "Path `topic` is required.";
-      //   let map_name =
-      //     responseData.validationErrors["map_name"] ===
-      //     "Path `map_name` is required.";
-
-      //   alert(
-      //     `Check if you entered field(s): ${map_description && "map_description"
-      //     }, ${topic && "topic"},${map_name && "map_name"}.`
-      //   );
-      // } else {
-      //   alert(`Error: ${res.status} - ${res.statusText}`);
-      // }
+      // alert(`Error: ${res.status} - ${res.statusText}`);
+      alert("Check that all input fields have values");
     }
   };
 
-  // Click Create Map Btn
-  const handleCreateMap = async () => {
+  // Click Edit Map Btn
+  const handleEditMap = async () => {
+    // console.log("mapId: ", mapId);
+
     const geoJSONObject = mapFileData.current;
     const mapFile = saveGeoJSONToFile(
       geoJSONObject,
       `${mapFileData.current["mapbook_mapname"]}.geojson`
     );
-    createMap(mapFile);
+    editMap(mapFile);
   };
+
 
   return (
     <div className="addmapdata_center">
@@ -1322,7 +1335,7 @@ const Map = ({
           />
         </div>
 
-        <button onClick={handleCreateMap}>Create Map</button>
+        <button onClick={handleEditMap}>Save Changes</button>
       </div>
       <div ref={mapContainerRef} id="map">
         {/* Pie & Bar Modal - DONE*/}

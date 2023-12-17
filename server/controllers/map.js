@@ -162,7 +162,7 @@ const createMap = async (req, res) => {
 const editMap = async (req, res) => {
   try {
     const { mapId } = req.params;
-    console.log("mapId:", mapId)
+    console.log("mapId:", mapId);
     if (req.files !== undefined) {
       console.log("editmap called");
 
@@ -178,8 +178,6 @@ const editMap = async (req, res) => {
         created_at,
         view_count,
       } = req.body;
-
-
 
       const randomString = (new Date().getTime() + Math.random())
         .toString(36)
@@ -318,6 +316,7 @@ const removeMap = async (req, res) => {
 
 // Update map like
 const likeMap = async (req, res) => {
+  console.log(req.body);
   try {
     const { sMapId } = req.params;
     const { userId } = req.body;
