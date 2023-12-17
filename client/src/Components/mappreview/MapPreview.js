@@ -25,20 +25,9 @@ const MapPreview = ({
   const [isOwner, setIsOwner] = useState(data.user_id === user._id);
 
   useEffect(() => {
-    // console.log(data);
     getUserName();
-    if (data.mapPreviewImg) {
-      setTimeout(() => {
-        handleImageLoad();
-      }, 2000);
-    }
   }, []);
-  const handleImageLoad = () => {
-    // Called when the image has finished loading
-    setTimeout(() => {
-      setImageLoaded(true);
-    });
-  };
+
   const handleShowMapDetail = (id) => {
     navigate(`/mapdetails/${id}`);
   };
@@ -72,11 +61,11 @@ const MapPreview = ({
 
     console.log("Fork clicked");
   };
+
   const getUserName = async () => {
-    if (user && user._id) {
-      const userResponse = await getUserById(user._id);
-      setUsername(userResponse ? userResponse.username : null);
-    }
+    const user = await getUserById(data.user_id);
+    console.log(user);
+    setUsername(user && user.username ? user.username : "");
   };
 
   const handleShare = (e) => {
@@ -141,9 +130,7 @@ const MapPreview = ({
     const xhr = new XMLHttpRequest();
     xhr.responseType = "json";
     xhr.onload = (event) => {
-      // console.log("response: ", xhr.response);
       downloadGeoJSON(xhr.response, data.map_name + ".geojson");
-      // setSelectedMapFile(xhr.response);
     };
     xhr.open("GET", mapUrl);
     xhr.send();
@@ -165,7 +152,10 @@ const MapPreview = ({
             <li onClick={handleShare}>Share</li>
             <li onClick={handleExport}>Export</li>
             {(isOwner || user.username === "Admin") && (
-              <li onClick={(e) => handleClickDeleteMapPost(e, data._id)}>
+              <li
+                className="mappreview_delete_option"
+                onClick={(e) => handleClickDeleteMapPost(e, data._id)}
+              >
                 Delete
               </li>
             )}
@@ -184,7 +174,6 @@ const MapPreview = ({
         className="mappreview_img"
         src={data.mapPreviewImg}
         alt={data.map_name}
-        onLoad={handleImageLoad}
       />
 
       <div className="mappreview_content">
