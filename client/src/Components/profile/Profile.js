@@ -24,20 +24,10 @@ const Profile = () => {
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const userId = useSelector((state) => state.user.id);
   const currentUser = useSelector((state) => state.user.user);
-  console.log("THIS IS THE CURRENT USER: ", currentUser);
-
-  const getUser = async () => {
-    const response = await fetch(`${API_BASE_URL}/api/users/${userId}`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${isAuth}` },
-    });
-    const data = await response.json();
-    setUser(data);
-  };
 
   useEffect(() => {
     setUser(currentUser);
-    setUsername(currentUser.username)
+    setUsername(currentUser.username);
   }, [user]);
 
   if (!user) return null;
@@ -47,16 +37,15 @@ const Profile = () => {
   };
 
   const handleFileChange = (event) => {
-    console.log(event.target.files[0]);
     setSelectedFile(event.target.files[0]);
   };
 
   const updateUser = async () => {
     dispatch(updateUsername(username));
 
-    updateUserAPIMethod(username, selectedFile, userId, isAuth).catch((err) => {
-      console.error("Error updating user:", err.message);
-    });
+    updateUserAPIMethod(username, selectedFile, userId, isAuth).catch(
+      (err) => {}
+    );
 
     setIsEditing(!isEditing);
   };
@@ -67,7 +56,7 @@ const Profile = () => {
         handleLogout();
       })
       .catch((err) => {
-        console.error("Error removing user:", err.message);
+        // console.error("Error removing user:", err.message);
       });
   };
 
@@ -98,20 +87,26 @@ const Profile = () => {
         <div className="profile_top">
           <div className="profile_left">
             <img alt="" className="profile_img" src={user.profile_img}></img>
-            <Button
-              className="change_profileImg_btn"
-              style={{ backgroundColor: "transparent", marginTop: "1rem", textDecoration: "underline" }}
-              component="label"
-              variant="contained"
-            >
-              Change Profile Image
-              <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-            </Button>
+            {isEditing && (
+              <Button
+                className="change_profileImg_btn"
+                style={{
+                  backgroundColor: "transparent",
+                  marginTop: "1rem",
+                  textDecoration: "underline",
+                }}
+                component="label"
+                variant="contained"
+              >
+                Change Profile Image
+                <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+              </Button>
+            )}
           </div>
 
           <div className="profile_right">
             <div className="username_container">
-              <div style={{alignItems: "center", textAlign: "center"}}>
+              <div style={{ alignItems: "center", textAlign: "center" }}>
                 <FormLabel
                   style={{
                     color: "white",
@@ -129,6 +124,7 @@ const Profile = () => {
                     ></i>
                   )}
                 </FormLabel>
+
                 <Input
                   onChange={handleUsernameChange}
                   color="neutral"
@@ -141,13 +137,13 @@ const Profile = () => {
                   style={
                     isEditing
                       ? {
-                        fontSize: "13px",
-                      }
+                          fontSize: "13px",
+                        }
                       : {
-                        padding: 0,
-                        background: "transparent",
-                        fontSize: "2rem",
-                      }
+                          padding: 0,
+                          background: "transparent",
+                          fontSize: "2rem",
+                        }
                   }
                 />
               </div>
@@ -157,6 +153,7 @@ const Profile = () => {
                 <FormLabel style={{ color: "white" }}>
                   <h2>Email</h2>
                 </FormLabel>
+
                 <Input
                   className="email"
                   color="neutral"
@@ -168,13 +165,13 @@ const Profile = () => {
                   style={
                     isEditing
                       ? {
-                        fontSize: "13px",
-                      }
+                          fontSize: "13px",
+                        }
                       : {
-                        padding: 0,
-                        background: "transparent",
-                        fontSize: "2rem",
-                      }
+                          padding: 0,
+                          background: "transparent",
+                          fontSize: "2rem",
+                        }
                   }
                 />
               </div>
@@ -201,8 +198,15 @@ const Profile = () => {
                 </div>
 
                 <div className="modal_btn_container">
-                  <button onClick={handleLogout}>Logout</button>
-                  <button onClick={() => close()}>Keep Me Signed In</button>
+                  <button onClick={handleLogout} className="profile_logout_btn">
+                    Logout
+                  </button>
+                  <button
+                    onClick={() => close()}
+                    className="profile_signedin_btn"
+                  >
+                    Keep Me Signed In
+                  </button>
                 </div>
               </div>
             )}
@@ -210,9 +214,7 @@ const Profile = () => {
           <Popup
             trigger={
               user.username !== "Admin" ? (
-                <div className="remove_account">
-                  remove account
-                </div>
+                <div className="remove_account">remove account</div>
               ) : (
                 <></>
               )
@@ -233,7 +235,12 @@ const Profile = () => {
                 </div>
 
                 <div className="modal_btn_container">
-                  <button onClick={handleRemoveUser}>Remove Account</button>
+                  <button
+                    onClick={handleRemoveUser}
+                    className="profile_remove_btn"
+                  >
+                    Remove Account
+                  </button>
                   <button onClick={() => close()}>Keep My Account</button>
                 </div>
               </div>

@@ -93,8 +93,12 @@
   margin-top: 10px;
   text-decoration: underline;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
 }
-
+.logout:hover,
+.remove_account:hover {
+  color: var(--main-color);
+}
 .username_line,
 .name_line,
 .email_line {
@@ -140,9 +144,14 @@
   padding: 8px 15px 8px 15px;
   border-radius: 5px;
 }
+.modal_btn_container .profile_logout_btn:hover,
+.modal_btn_container .profile_remove_btn:hover {
+  color: rgb(120, 47, 47);
+  background-color: rgba(120, 47, 47, 0.141);
+}
 
 .modal_btn_container button:hover {
-  color: rgb(47, 85, 120);
+  color: var(--main-color);
   background-color: rgba(47, 85, 120, 0.141);
 }
 
