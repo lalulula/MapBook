@@ -272,11 +272,10 @@ const Map = ({
       featureDataAdded.forEach((element) => {
         console.log(element["properties"].mapbook_data.length)
         if (Object.keys(element["properties"].mapbook_data).length < themeData.length) {
-          if (Object.keys(element["properties"].mapbook_data).length < themeData.length) {
-            delete element["properties"].mapbook_data
-          }
-          else {
+          delete element["properties"].mapbook_data
+        }
         else {
+
           namesDataAdded.push(element["properties"].name);
         }
       });
@@ -1292,9 +1291,6 @@ const Map = ({
       file: mapData,
       view_count: 1,
     };
-    console.log("NEW MAP OBJ: ", newMapObj.file);
-    return;
-
     const res = await createMapAPIMethod(newMapObj);
     console.log("res: ", res);
     if (res.ok) {
