@@ -64,8 +64,9 @@ const MapPreview = ({
 
   const getUserName = async () => {
     const user = await getUserById(data.user_id);
-    console.log(user);
-    setUsername(user && user.username ? user.username : "");
+    if (user) {
+      setUsername(user.username);
+    }
   };
 
   const handleShare = (e) => {
