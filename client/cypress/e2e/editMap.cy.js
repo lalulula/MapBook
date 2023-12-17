@@ -25,9 +25,9 @@ describe("Editing map", () => {
         cy.get('.Dropdown-menu').contains("Health").click();
         cy.get('.Dropdown-control').eq(1).click();
         cy.get('.map_toolbar_container button').click({ force: true });
-        cy.wait(2000);
+        cy.wait(3000);
         cy.get(".header_begin h4").eq(2).click();
-        cy.wait(2000);
-        cy.get(".mymaps_container").should('include', 'CYPRESS EDIT');
+        cy.wait(3000);
+        cy.get(".mappreview_name_container").eq(0).should('contain', 'CYPRESS EDIT');
     });
 });
