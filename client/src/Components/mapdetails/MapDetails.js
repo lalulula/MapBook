@@ -806,7 +806,7 @@ const MapDetails = () => {
                   .map((nestedKey) => {
                     const value = obj[nestedKey];
                     return ` ${
-                      nestedKey.toLowerCase() === "color" ? `(${value})` : value
+                      nestedKey.toLowerCase() === "color" ? `<font color="${value}">(${value})</font>` : value
                     }`;
                   })
                   .join("<br/>")}</span>`;
@@ -825,7 +825,7 @@ const MapDetails = () => {
 
                 const formatColorKey = (key, value) => {
                   const formattedValue =
-                    key.toLowerCase() === "color" ? `(${value})` : value;
+                    key.toLowerCase() === "color" ? `<font color="${value}"> (${value})</font>` : value;
                   return `${formattedValue}`;
                 };
 
@@ -860,20 +860,37 @@ const MapDetails = () => {
                     regions[0]["properties"].name + "<br/><br/>" + formattedData
                   );
                 } else if (selectedMapFile.mapbook_template === "Heat Map") {
-                  const heatDataName =
-                    selectedMapFile.mapbook_circleheatmapdata;
-                  setHoverData(heatDataName + formattedData);
-                } else if (
-                  selectedMapFile.mapbook_template === "Thematic Map"
-                ) {
+                  const heatDataName = selectedMapFile.mapbook_circleheatmapdata;
+
+                  var from = Number(selectedMapFile["mapbook_heatrange"]["from"]);
+                  var to = Number(selectedMapFile["mapbook_heatrange"]["to"]);
+                  
+                  const width = (to - from) / 5;
+                  const ranges = [
+                    from,
+                    from + width,
+                    from + width * 2,
+                    from + width * 3,
+                    from + width * 4,
+                    to,
+                  ];
+
+                  var heatRangeColorText = "</br>"
+                  
+                  for(let i = 0; i < 5; i ++){
+                    heatRangeColorText = heatRangeColorText + `<font color="${selectedMapFile["mapbook_heat_selectedcolors"][i]}">${ranges[i].toFixed(2)} to ${(ranges[i + 1] - 1).toFixed(2)}</font></br>`
+                  }
+
+                  setHoverData(regions[0]["properties"].name + "\n" + heatDataName + heatRangeColorText + formattedData);
+                } else if (selectedMapFile.mapbook_template === "Thematic Map") {
                   setHoverData(
                     regions[0]["properties"].name + "<br/><br/>" + formattedData
                   );
                 } else if (selectedMapFile.mapbook_template === "Circle Map") {
                   const circleDataName =
-                    selectedMapFile.mapbook_circleheatmapdata;
-
-                  setHoverData(circleDataName + "<br/><br/>" + formattedData);
+                  selectedMapFile.mapbook_circleheatmapdata;
+  
+                  setHoverData(regions[0]["properties"].name + "\n" + circleDataName + "<br/><br/>" + formattedData);
                 }
                 // setHoverData(
                 //   JSON.stringify(tempFeature["properties"].mapbook_data)

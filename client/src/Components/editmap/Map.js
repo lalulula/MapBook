@@ -1123,7 +1123,7 @@ const Map = ({
                 .map((nestedKey) => {
                   const value = obj[nestedKey];
                   return ` ${
-                    nestedKey.toLowerCase() === "color" ? `(${value})` : value
+                    nestedKey.toLowerCase() === "color" ? `<font color="${value}">(${value})</font>` : value
                   }`;
                 })
                 .join("<br/>")}</span>`;
@@ -1140,7 +1140,7 @@ const Map = ({
 
               const formatColorKey = (key, value) => {
                 const formattedValue =
-                  key.toLowerCase() === "color" ? `(${value})` : value;
+                  key.toLowerCase() === "color" ? `<font color="${value}"> (${value})</font>` : value;
                 return `${formattedValue}`;
               };
 
@@ -1177,7 +1177,26 @@ const Map = ({
               } else if (templateHoverType.current === "Heat Map") {
                 const heatDataName =
                   mapFileData.current.mapbook_circleheatmapdata;
-                setHoverData(heatDataName + formattedData);
+                var from = Number(mapFileData.current["mapbook_heatrange"]["from"]);
+                var to = Number(mapFileData.current["mapbook_heatrange"]["to"]);
+                
+                const width = (to - from) / 5;
+                const ranges = [
+                  from,
+                  from + width,
+                  from + width * 2,
+                  from + width * 3,
+                  from + width * 4,
+                  to,
+                ];
+
+                var heatRangeColorText = "</br>"
+                
+                for(let i = 0; i < 5; i ++){
+                  heatRangeColorText = heatRangeColorText + `<font color="${mapFileData.current["mapbook_heat_selectedcolors"][i]}">${ranges[i].toFixed(2)} to ${(ranges[i + 1] - 1).toFixed(2)}</font></br>`
+                }
+
+                setHoverData(regions[0]["properties"].name + "\n" + heatDataName + heatRangeColorText + formattedData);
               } else if (templateHoverType.current === "Thematic Map") {
                 setHoverData(
                   regions[0]["properties"].name + "<br/><br/>" + formattedData
@@ -1186,7 +1205,7 @@ const Map = ({
                 const circleDataName =
                   mapFileData.current.mapbook_circleheatmapdata;
 
-                setHoverData(circleDataName + "<br/><br/>" + formattedData);
+                setHoverData(regions[0]["properties"].name + "\n" + circleDataName + "<br/><br/>" + formattedData);
               }
             }
           }
