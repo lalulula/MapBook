@@ -28,6 +28,8 @@ const Profile = () => {
   useEffect(() => {
     setUser(currentUser);
     setUsername(currentUser.username);
+    //  For cypress test
+    window.userState = currentUser;
   }, [user]);
 
   if (!user) return null;

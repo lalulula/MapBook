@@ -23,3 +23,8 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+Cypress.Commands.add("getReduxState", () => {
+  cy.window().then((win) => {
+    return win && win.store ? win.store.getState() : null;
+  });
+});
