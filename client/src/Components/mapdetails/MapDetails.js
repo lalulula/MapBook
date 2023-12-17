@@ -210,12 +210,8 @@ const MapDetails = () => {
   }, [mapId, user._id]);
 
   async function drawPieData(namesDataAdded) {
-<<<<<<< HEAD
-    if(selectedMapFile.mapbook_template === "Pie Chart"){
-      await new Promise(resolve => setTimeout(resolve, 500));
-=======
-    await new Promise((resolve) => setTimeout(resolve, 500));
->>>>>>> ya
+    if (selectedMapFile.mapbook_template === "Pie Chart") {
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       mapRef.current.addLayer({
         id: "counties-pie",
@@ -226,23 +222,30 @@ const MapDetails = () => {
         },
       });
 
-<<<<<<< HEAD
-
-      mapRef.current.setFilter("counties-pie", ["in", "name", ...namesDataAdded]);
+      mapRef.current.setFilter("counties-pie", [
+        "in",
+        "name",
+        ...namesDataAdded,
+      ]);
 
       /// Haneul
       var expImageSelect = ["case"];
       // generate image object for region which data exist
-      try{
+      try {
         namesDataAdded.forEach((name) => {
-          console.log("name:", name)
-          // generate image 
+          console.log("name:", name);
+          // generate image
           // image = generateImage(data);
-          const canvasSave = document.getElementById(name + 'pie');
-          console.log("canvasSave:", canvasSave)
-          var context = canvasSave.getContext('2d');
-          console.log("context", context)
-          var imgData = context.getImageData(0, 0, canvasSave.width, canvasSave.height)
+          const canvasSave = document.getElementById(name + "pie");
+          console.log("canvasSave:", canvasSave);
+          var context = canvasSave.getContext("2d");
+          console.log("context", context);
+          var imgData = context.getImageData(
+            0,
+            0,
+            canvasSave.width,
+            canvasSave.height
+          );
 
           // add image that we generate
           if (mapRef.current.hasImage(name)) {
@@ -266,43 +269,15 @@ const MapDetails = () => {
           expImageSelect
         );
         setIsCanvasLoaded(true);
-=======
-    mapRef.current.setFilter("counties-pie", ["in", "name", ...namesDataAdded]);
-
-    /// Haneul
-    var expImageSelect = ["case"];
-    // generate image object for region which data exist
-    namesDataAdded.forEach((name) => {
-      console.log("name:", name);
-      // generate image
-      // image = generateImage(data);
-      const canvasSave = document.getElementById(name + "pie");
-      console.log("canvasSave:", canvasSave);
-      var context = canvasSave.getContext("2d");
-      console.log("context", context);
-      var imgData = context.getImageData(
-        0,
-        0,
-        canvasSave.width,
-        canvasSave.height
-      );
->>>>>>> ya
-
-      }
-      catch(error) {
+      } catch (error) {
         dataAddedRegions.current = namesDataAdded;
         setIsCanvasLoaded(false);
       }
     }
   }
   async function drawBarData(namesDataAdded) {
-<<<<<<< HEAD
-    if(selectedMapFile.mapbook_template === "Bar Chart"){
-
-      await new Promise(resolve => setTimeout(resolve, 500));
-=======
-    await new Promise((resolve) => setTimeout(resolve, 500));
->>>>>>> ya
+    if (selectedMapFile.mapbook_template === "Bar Chart") {
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       mapRef.current.addLayer({
         id: "counties-bar",
@@ -313,41 +288,30 @@ const MapDetails = () => {
         },
       });
 
-      mapRef.current.setFilter("counties-bar", ["in", "name", ...namesDataAdded]);
+      mapRef.current.setFilter("counties-bar", [
+        "in",
+        "name",
+        ...namesDataAdded,
+      ]);
 
-<<<<<<< HEAD
       /// Haneul
       var expImageSelect = ["case"];
-      try{
+      try {
         // generate image object for region which data exist
         namesDataAdded.forEach((name) => {
-          console.log("name:", name)
-          // generate image 
+          console.log("name:", name);
+          // generate image
           // image = generateImage(data);
-          const canvasSave = document.getElementById(name + 'bar');
-          console.log("canvasSave:", canvasSave)
+          const canvasSave = document.getElementById(name + "bar");
+          console.log("canvasSave:", canvasSave);
 
-          var context = canvasSave.getContext('2d');
-          var imgData = context.getImageData(0, 0, canvasSave.width, canvasSave.height)
-=======
-    /// Haneul
-    var expImageSelect = ["case"];
-    // generate image object for region which data exist
-    namesDataAdded.forEach((name) => {
-      console.log("name:", name);
-      // generate image
-      // image = generateImage(data);
-      const canvasSave = document.getElementById(name + "bar");
-      console.log("canvasSave:", canvasSave);
-
-      var context = canvasSave.getContext("2d");
-      var imgData = context.getImageData(
-        0,
-        0,
-        canvasSave.width,
-        canvasSave.height
-      );
->>>>>>> ya
+          var context = canvasSave.getContext("2d");
+          var imgData = context.getImageData(
+            0,
+            0,
+            canvasSave.width,
+            canvasSave.height
+          );
 
           // add image that we generate
           if (mapRef.current.hasImage(name)) {
@@ -371,40 +335,20 @@ const MapDetails = () => {
           expImageSelect
         );
         setIsCanvasLoaded(true);
-      }
-<<<<<<< HEAD
-      catch(error){
+      } catch (error) {
         dataAddedRegions.current = namesDataAdded;
         setIsCanvasLoaded(false);
       }
     }
-
   }
 
   useEffect(() => {
-    if(!isCanvasLoaded){
+    if (!isCanvasLoaded) {
       drawBarData(dataAddedRegions.current);
       drawPieData(dataAddedRegions.current);
     }
-  },[isCanvasLoaded]);
+  }, [isCanvasLoaded]);
 
-=======
-
-      // add expImageSelect on new image
-      expImageSelect.push(["==", ["get", "name"], name]);
-      expImageSelect.push(name);
-    });
-    //set default image (anything is okay)
-    expImageSelect.push("aaa");
-
-    mapRef.current.setLayoutProperty(
-      "counties-bar",
-      "icon-image",
-      expImageSelect
-    );
-  }
-
->>>>>>> ya
   useEffect(() => {
     if (selectedMapFile != null) {
       // console.log("selectedMapFile: useEffect: ", selectedMapFile);
@@ -843,7 +787,7 @@ const MapDetails = () => {
             const regions = map.queryRenderedFeatures(event.point, {
               layers: ["counties"],
             });
-            console.log("regions[0]: ", regions[0])
+            console.log("regions[0]: ", regions[0]);
             if (regions.length == 0) {
               setHoverData("Out of range");
             }
@@ -868,29 +812,26 @@ const MapDetails = () => {
                   .join("<br/>")}</span>`;
               };
 
-         
               //console.log("tempFeature: ", tempFeature);
               var data = tempFeature["properties"].mapbook_data;
               if (data === undefined) {
                 setHoverData(`No data for ${regions[0]["properties"].name}`);
-
               } else {
-
                 const formatDataByKey = (key, value) => {
                   return `${key}  ${
                     isObject(value) ? renderObject(value) : value
                   }`;
                 };
-  
+
                 const formatColorKey = (key, value) => {
                   const formattedValue =
                     key.toLowerCase() === "color" ? `(${value})` : value;
                   return `${formattedValue}`;
                 };
-  
+
                 const formattedData = (() => {
                   const dataKeys = Object.keys(data);
-  
+
                   switch (selectedMapFile.mapbook_template) {
                     case "Thematic Map":
                     case "Pie Chart":
@@ -898,10 +839,10 @@ const MapDetails = () => {
                       return dataKeys
                         .map((key) => formatDataByKey(key, data[key]))
                         .join("<br/>");
-  
+
                     case "Circle Map":
                       return dataKeys.map((key) => `${data[key]}`).join("\n");
-  
+
                     default:
                       return dataKeys
                         .sort((a, b) => (a.toLowerCase() === "color" ? -1 : 1))
@@ -920,16 +861,18 @@ const MapDetails = () => {
                   );
                 } else if (selectedMapFile.mapbook_template === "Heat Map") {
                   const heatDataName =
-                  selectedMapFile.mapbook_circleheatmapdata;
+                    selectedMapFile.mapbook_circleheatmapdata;
                   setHoverData(heatDataName + formattedData);
-                } else if (selectedMapFile.mapbook_template === "Thematic Map") {
+                } else if (
+                  selectedMapFile.mapbook_template === "Thematic Map"
+                ) {
                   setHoverData(
                     regions[0]["properties"].name + "<br/><br/>" + formattedData
                   );
                 } else if (selectedMapFile.mapbook_template === "Circle Map") {
                   const circleDataName =
-                  selectedMapFile.mapbook_circleheatmapdata;
-  
+                    selectedMapFile.mapbook_circleheatmapdata;
+
                   setHoverData(circleDataName + "<br/><br/>" + formattedData);
                 }
                 // setHoverData(
@@ -1147,8 +1090,8 @@ const MapDetails = () => {
               </div>
               <div className="mapdetails_input_hovered_data">
                 <div
-                dangerouslySetInnerHTML={{ __html: hoverData }}
-                style={{ fontSize: "1rem", fontWeight: 300 }}
+                  dangerouslySetInnerHTML={{ __html: hoverData }}
+                  style={{ fontSize: "1rem", fontWeight: 300 }}
                 />
               </div>
             </div>
