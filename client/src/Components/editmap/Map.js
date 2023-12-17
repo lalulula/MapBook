@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import mapboxgl from "mapbox-gl"; // Import mapboxgl
-import { createMapAPIMethod } from "../../api/map";
+import { editMapPostAPIMethodWithFile } from "../../api/map";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./createMap.css";
@@ -41,6 +41,7 @@ const Map = ({
   setIsMapbookData,
   setMapImage,
   mapImage,
+  mapId,
 }) => {
   const mapFileData = useRef(selectedMapFile);
   const mapRef = useRef();
@@ -1248,15 +1249,14 @@ const Map = ({
     return newGeoJson;
   }
 
-  const createMap = async (mapData) => {
+  
+  const editMap = async (mapData) => {
     const canvas = await html2canvas(
       document.querySelector(".mapboxgl-canvas")
     );
 
     // console.log("canvas", canvas);
-    if (mapImage == null) {
-      mapImage = canvas.toDataURL();
-    }
+    const mapImage = canvas.toDataURL();
 
     const newMapObj = {
       map_name: options.name,
@@ -1266,48 +1266,34 @@ const Map = ({
       map_description: options.description,
       mapPreviewImg: mapImage,
       file: mapData,
-      view_count: 1,
     };
 
-    const res = await createMapAPIMethod(newMapObj);
+    console.log("mapId", mapId);
+    console.log("newMapObj", newMapObj);
+
+    const res = await editMapPostAPIMethodWithFile(mapId, newMapObj);
     console.log("res: ", res);
     if (res.ok) {
+      // const responseMsg = await res.json;
       navigate("/mainpage");
     } else {
-      setShowErrorMessage(true);
-      // const responseData = await res.json();
-
-      // if (res.status === 400 && responseData.validationErrors) {
-      //   console.log("Validation Errors:", responseData.validationErrors);
-      //   let map_description =
-      //     responseData.validationErrors["map_description"] ===
-      //     "Path `map_description` is required.";
-      //   let topic =
-      //     responseData.validationErrors["topic"] ===
-      //     "Path `topic` is required.";
-      //   let map_name =
-      //     responseData.validationErrors["map_name"] ===
-      //     "Path `map_name` is required.";
-
-      //   alert(
-      //     `Check if you entered field(s): ${map_description && "map_description"
-      //     }, ${topic && "topic"},${map_name && "map_name"}.`
-      //   );
-      // } else {
-      //   alert(`Error: ${res.status} - ${res.statusText}`);
-      // }
+      // alert(`Error: ${res.status} - ${res.statusText}`);
+      alert("Check that all input fields have values");
     }
   };
 
-  // Click Create Map Btn
-  const handleCreateMap = async () => {
+  // Click Edit Map Btn
+  const handleEditMap = async () => {
+    // console.log("mapId: ", mapId);
+
     const geoJSONObject = mapFileData.current;
     const mapFile = saveGeoJSONToFile(
       geoJSONObject,
       `${mapFileData.current["mapbook_mapname"]}.geojson`
     );
-    createMap(mapFile);
+    editMap(mapFile);
   };
+
 
   return (
     <div className="addmapdata_center">
@@ -1349,7 +1335,7 @@ const Map = ({
           />
         </div>
 
-        <button onClick={handleCreateMap}>Create Map</button>
+        <button onClick={handleEditMap}>Save Changes</button>
       </div>
       <div ref={mapContainerRef} id="map">
         {/* Pie & Bar Modal - DONE*/}
