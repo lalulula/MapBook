@@ -123,11 +123,12 @@ const MapDetails = () => {
             xhr.onload = (event) => {
               // console.log("response: ", xhr.response);
               setSelectedMapFile(xhr.response);
+              setIsMapLoaded(true);
             };
             xhr.open("GET", mapUrl);
             xhr.send();
 
-            setIsMapLoaded(true);
+            
           }, 3500);
         }
       } catch (error) {
@@ -943,7 +944,7 @@ const MapDetails = () => {
   };
 
   const handleEdit = () => {
-    if (isMapLoaded) {
+    if (isMapLoaded && selectedMapFile != null) {
       navigate("/editmap", {
         state: { mapFile: selectedMapFile, mapId: mapId },
       });
@@ -985,7 +986,25 @@ const MapDetails = () => {
   }
 
   if (!currentMap.current || !users) {
-    return <></>;
+    return (
+      <div className="mapdetails_loadmap_container">
+        <Lottie
+          animationData={ImageLoader}
+          style={{
+            width: "45%",
+            height: "45%",
+            opacity: 0.2,
+          }}
+        />
+        <Typewriter
+          onInit={(typewriter) => {
+            typewriter
+              .typeString("L o a d i n g     m a p . . .")
+              .start();
+          }}
+        />
+      </div>
+    );
   } else {
     return (
       <div className="map_details">
@@ -1100,7 +1119,7 @@ const MapDetails = () => {
               setShowHoverData={setShowHoverData}
             />
           </div>
-          {showHoverData && (
+          {showHoverData && isMapLoaded && (
             <div className="mapdetails_hovered_data_container">
               <div className="mapdetails_hovered_data_header">
                 <h4 style={{ display: "inline-block", margin: 0 }}>Map Data</h4>
@@ -1113,7 +1132,7 @@ const MapDetails = () => {
               </div>
             </div>
           )}
-
+          {console.log("isMapLoaded: ", isMapLoaded)};
           {isMapLoaded ? (
             <div
               ref={mapContainerRef}
