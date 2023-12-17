@@ -123,11 +123,12 @@ const MapDetails = () => {
             xhr.onload = (event) => {
               // console.log("response: ", xhr.response);
               setSelectedMapFile(xhr.response);
+              setIsMapLoaded(true);
             };
             xhr.open("GET", mapUrl);
             xhr.send();
 
-            setIsMapLoaded(true);
+            
           }, 3500);
         }
       } catch (error) {
@@ -943,7 +944,7 @@ const MapDetails = () => {
   };
 
   const handleEdit = () => {
-    if (isMapLoaded) {
+    if (isMapLoaded && selectedMapFile != null) {
       navigate("/editmap", {
         state: { mapFile: selectedMapFile, mapId: mapId },
       });
@@ -984,8 +985,26 @@ const MapDetails = () => {
     return newGeoJson;
   }
 
-  if (!currentMap.current || !users) {
-    return <></>;
+  if (!isMapLoaded || !users) {
+    return (
+      <div className="mapdetails_loadmap_container">
+        <Lottie
+          animationData={ImageLoader}
+          style={{
+            width: "45%",
+            height: "45%",
+            opacity: 0.2,
+          }}
+        />
+        <Typewriter
+          onInit={(typewriter) => {
+            typewriter
+              .typeString("L o a d i n g     m a p . . .")
+              .start();
+          }}
+        />
+      </div>
+    );
   } else {
     return (
       <div className="map_details">
@@ -1113,7 +1132,6 @@ const MapDetails = () => {
               </div>
             </div>
           )}
-
           {isMapLoaded ? (
             <div
               ref={mapContainerRef}
