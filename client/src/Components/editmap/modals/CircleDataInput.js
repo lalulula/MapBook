@@ -51,7 +51,8 @@ const CircleDataInput = ({
                       // placeholder={options.circleHeatMapData}
                       placeholder={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data[options.circleHeatMapData] : "Enter data value"}
 
-                      type="number"
+                      slotProps={{ input: { type:"number",step:"0.01" } }}
+
                       required
                     />
                   </FormControl>

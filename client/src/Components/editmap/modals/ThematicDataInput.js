@@ -51,7 +51,8 @@ const ThematicDataInput = ({
                           // placeholder="Enter data value"
                           placeholder={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data[data["dataName"]].value : "Enter data value"}
 
-                          type="number"
+                          slotProps={{ input: { type:"number",step:"0.01" } }}
+
                           required
                         />
                       </FormControl>

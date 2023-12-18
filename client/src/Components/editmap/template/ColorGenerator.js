@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const ColorGenerator = ({ selectedColors, setSelectedColors }) => {
+const ColorGenerator = ({ selectedColors, setSelectedColors, fixData }) => {
   const [baseColor, setBaseColor] = useState("#b09289");
   const [colorArray, setColorArray] = useState([]);
   useEffect(() => {
@@ -44,12 +44,23 @@ const ColorGenerator = ({ selectedColors, setSelectedColors }) => {
 
   return (
     <div style={{ display: "flex" }}>
-      <input
-        type="color"
-        className="createMap_color_picker"
-        value={selectedColors.length == 0 ? baseColor : selectedColors[0]}
-        onChange={handleBaseColorChange}
-      />
+      {fixData? 
+        <input
+          type="color"
+          className="createMap_color_picker"
+          value={selectedColors.length == 0 ? baseColor : selectedColors[0]}
+          onChange={handleBaseColorChange}
+          disabled
+        />
+        :
+        <input
+          type="color"
+          className="createMap_color_picker"
+          value={selectedColors.length == 0 ? baseColor : selectedColors[0]}
+          onChange={handleBaseColorChange}
+        />
+      }
+      
     </div>
   );
 };

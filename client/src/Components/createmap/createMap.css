@@ -331,3 +331,44 @@
   z-index: 9999;
   pointer-events: none;
 } */
+
+
+
+.mappdetails_reset_confirmation_modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  background-color: white;
+  color: black;
+  height: 150px;
+  width: 450px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 30px 0 30px 0;
+  font-weight: 500;
+  border-radius: 7px;
+  z-index: 100;
+}
+
+.mapdetails_reset_confirmation_modal_bottom {
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mapdetails_edit_confirmation_modal_bottom {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.mapdetails_reset_confirm,
+.mapdetails_cancel_reset {
+  color: black;
+  border: white;
+  padding: 8px 15px 8px 15px;
+  border-radius: 5px;
+}
