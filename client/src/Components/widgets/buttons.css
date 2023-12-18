@@ -83,9 +83,9 @@
   color: rgba(105, 163, 255, 0.901);
   border-color: rgba(105, 163, 255, 0.901);
 }
-.update_user_btn_container {
+.update_user_btn_container, .update_cancel_user_btn_container {
   align-self: center;
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 .update_user_btn {
   border: none;
