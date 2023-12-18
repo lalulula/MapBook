@@ -5,12 +5,8 @@ describe("Login Page", () => {
     cy.visit("http://localhost:3000/login");
 
     // Fill out the login form
-    /* cy.get('input[placeholder="Username"]').type("Jasson");
-    cy.get('input[placeholder="Password"]').type("Jasson123"); */
     cy.get('input[placeholder="Username"]').type("ya");
-
     cy.get('input[placeholder="Password"]').type("Password123");
-    //  Submit the form
     cy.get(".login_btn").click();
 
     // Ensure the registration was successful (you might need to assert the URL or page content)
@@ -29,9 +25,6 @@ describe("Login Page", () => {
 
     cy.wait(2000);
 
-    cy.get(".pwd_err").should(
-      "contain",
-      "Incorrect username or"
-    );
+    cy.get(".pwd_err").should("contain", "Incorrect username or");
   });
 });
