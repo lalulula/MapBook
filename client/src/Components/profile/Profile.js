@@ -25,7 +25,7 @@ const Profile = () => {
   const isAuth = useSelector((state) => state.user.isAuthenticated);
   const userId = useSelector((state) => state.user.id);
   const currentUser = useSelector((state) => state.user.user);
-  console.log(currentUser.profile_img);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     setUser(currentUser);
@@ -53,17 +53,18 @@ const Profile = () => {
       selectedFile,
       userId,
       isAuth
-    ).catch((err) => {});
-
-    console.log(updatedUser);
-
-    const paylaod = {
-      username: username,
-      profile_img: updatedUser.profile_img,
-    };
-    dispatch(updateUsername(paylaod));
-
-    setIsEditing(!isEditing);
+    ).then(() => {
+      const paylaod = {
+        username: username,
+        profile_img: updatedUser.profile_img,
+      };
+      dispatch(updateUsername(paylaod));
+  
+      setIsEditing(!isEditing);
+    }).catch((err) => {
+      console.log("error");
+      setErrorMessage("Username already existed.");
+    });
   };
 
   const handleRemoveUser = async () => {
@@ -172,6 +173,20 @@ const Profile = () => {
                         }
                   }
                 />
+                {errorMessage && (
+                  <div 
+                    style={{
+                      color: '#d9534f',
+                      padding: '5px',
+                      margin: '10px 0 0 0',
+                      fontSize: '12px',
+                      width: '20rem',
+                      textAlign: 'left',
+                    }}
+                  >
+                    {errorMessage}
+                  </div>
+                )}
               </div>
             </div>
             <div className="email_container">
@@ -205,7 +220,7 @@ const Profile = () => {
             {isEditing && (
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <UpdateUserButton
-                  onClick={() => setIsEditing(false)}
+                  onClick={() => {setIsEditing(false); setErrorMessage(null); setSelectedImg(null)}}
                   text={"Cancel"}
                 />
                 <UpdateUserButton onClick={updateUser} text={"Update User"} />

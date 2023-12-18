@@ -50,6 +50,10 @@ const updateUser = async (req, res) => {
     if (!req.file && !req.body.username) {
       res.status(404).json({ message: "Both fields can't be empty" });
     } else if (!req.file) {
+      const existingUser = await User.findOne({username: req.body.username});
+      if (existingUser)
+        res.status(400).json({ message: "Username is already used." });
+
       const updatedUser = await User.findByIdAndUpdate(
         id,
         {
@@ -86,6 +90,10 @@ const updateUser = async (req, res) => {
             message: "Error",
           });
         }
+
+        const existingUser = await User.findOne({username: req.body.username});
+        if (existingUser)
+          return res.status(400).json({ msg: "Username is already used." });
 
         const updatedUser = await User.findByIdAndUpdate(
           id,
