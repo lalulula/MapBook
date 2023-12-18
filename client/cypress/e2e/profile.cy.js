@@ -5,7 +5,7 @@ describe("Profile Component", () => {
     switch (Cypress.currentTest.title) {
       case "Change profile image":
         cy.visit("http://localhost:3000/login");
-        cy.get('input[placeholder="Username"]').type("ya");
+        cy.get('input[placeholder="Username"]').type("newusername");
         cy.get('input[placeholder="Password"]').type("Password123");
         cy.get(".login_btn").click();
         cy.url().should("eq", "http://localhost:3000/mainpage");
@@ -33,35 +33,35 @@ describe("Profile Component", () => {
         break;
     }
   });
+  // TEST1 display user information
+  it("Display user information", () => {
+    cy.window().then((win) => {
+      const user = win.userState;
 
-  // it("Display user information", () => {
-  //   cy.window().then((win) => {
-  //     const user = win.userState;
+      cy.get(".profile_img").should("have.attr", "src", user.profile_img);
 
-  //     cy.get(".profile_img").should("have.attr", "src", user.profile_img);
+      cy.get(".edit_profile_btn").click();
+      cy.get(".username_container")
+        .find(".MuiInput-input")
+        .should("have.value", "ya");
 
-  //     cy.get(".edit_profile_btn").click();
-  //     cy.get(".username_container")
-  //       .find(".MuiInput-input")
-  //       .should("have.value", "ya");
-
-  //     cy.get(".email_container")
-  //       .find(".MuiInput-input")
-  //       .should("have.value", "ya@ya.com");
-  //   });
-  // });
-
-  // it("Edit username", () => {
-  //   cy.get(".edit_profile_btn").click();
-  //   cy.get(".username_container")
-  //     .find(".MuiInput-input")
-  //     .clear()
-  //     .type("newusername");
-  //   cy.get(".update_user_btn_container").click();
-  //   cy.get(".edit_profile_btn").click();
-  //   cy.get(".username_container").find(".MuiInput-input");
-  // });
-
+      cy.get(".email_container")
+        .find(".MuiInput-input")
+        .should("have.value", "ya@ya.com");
+    });
+  });
+  // TEST2 Edit username
+  it("Edit username", () => {
+    cy.get(".edit_profile_btn").click();
+    cy.get(".username_container")
+      .find(".MuiInput-input")
+      .clear()
+      .type("newusername");
+    cy.get(".update_user_btn_container").click();
+    // cy.get(".edit_profile_btn").click();
+    cy.get(".username_container").find(".MuiInput-input");
+  });
+  // TEST3 Change profile image
   it("Change profile image", () => {
     cy.get(".edit_profile_btn").click();
     cy.get(".cypress_click_profile").click();
@@ -71,7 +71,7 @@ describe("Profile Component", () => {
       cy.get('input[type="file"]').attachFile({
         fileContent: fileContent,
         fileName: fileName,
-        mimeType: "image/jpg",
+        mimeType: "image/jpeg",
       });
     });
 
@@ -82,11 +82,16 @@ describe("Profile Component", () => {
       cy.wait(2000);
       console.log("Current", user.profile_img);
     });
+    cy.get(".username_container")
+      .find(".MuiInput-input")
+      .clear()
+      .type("newusername");
+    cy.get(".update_user_btn_container").click();
   });
-
-  // it("Logout user", () => {
-  //   cy.get(".logout").click();
-  //   cy.get(".profile_logout_btn").click();
-  //   cy.url().should("eq", "http://localhost:3000/");
-  // });
+  // TEST4 logout
+  it("Logout user", () => {
+    cy.get(".logout").click();
+    cy.get(".profile_logout_btn").click();
+    cy.url().should("eq", "http://localhost:3000/");
+  });
 });
