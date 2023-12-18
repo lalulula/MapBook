@@ -35,9 +35,16 @@ const MapDataInputPage = ({
   const [mapImage, setMapImage] = useState(null);
   const [hoverData, setHoverData] = useState("Out of range");
   const [showHoverData, setShowHoverData] = useState(false);
+  const [fixData, setFixData] = useState(false);
+  const [isDataCorrect, setIsDataCorrect] = useState(false);
+
   useEffect(() => {
     console.log(showHoverData);
   }, [showHoverData]);
+
+  const handleFixData = () =>{
+    setFixData(true);
+  }
 
   const handleMapNameChange = (name) => {
     setOptions({ ...options, name });
@@ -270,6 +277,8 @@ const MapDataInputPage = ({
         setIsMapbookData={setIsMapbookData}
         setMapImage={setMapImage}
         mapImage={mapImage}
+        fixData={fixData}
+        setFixData={setFixData}
       />
       <div className="mapdatainput_right_sidebar">
         <h3>Data Names</h3>
@@ -281,17 +290,29 @@ const MapDataInputPage = ({
               // CIRCLE
               options={options}
               handleCircleHeatMapDataChange={handleCircleHeatMapDataChange}
+              fixData={fixData}
+              setFixData={setFixData}
+              isDataCorrect={isDataCorrect}
+              setIsDataCorrect={setIsDataCorrect}
             />
           )}
           {template === "Circle Map" && (
             <Circle
               options={options}
               handleCircleHeatMapDataChange={handleCircleHeatMapDataChange}
+              fixData={fixData}
+              setFixData={setFixData}
+              isDataCorrect={isDataCorrect}
+              setIsDataCorrect={setIsDataCorrect}
             />
           )}
           {template === "Thematic Map" && (
             <>
-              <Thematic themeData={themeData} setThemeData={setThemeData} />
+              <Thematic themeData={themeData} setThemeData={setThemeData} 
+                fixData={fixData}
+                setFixData={setFixData}
+                isDataCorrect={isDataCorrect}
+                setIsDataCorrect={setIsDataCorrect}/>
             </>
           )}
           {template === "Heat Map" && (
@@ -304,9 +325,19 @@ const MapDataInputPage = ({
                 options={options}
                 handleCircleHeatMapDataChange={handleCircleHeatMapDataChange}
                 selectedMapFile={selectedMapFile}
+                fixData={fixData}
+                setFixData={setFixData}
+                isDataCorrect={isDataCorrect}
+                setIsDataCorrect={setIsDataCorrect}
               />
             </>
           )}
+        </div>
+
+        <div className="mapdatainput_fix_data" style={{ textAlign: "center" }}>
+          <span onClick={handleFixData} className="createmap_fix_data_btn">
+            Fix Data
+          </span>
         </div>
 
         <div className="mapdatainput_image_drop">

@@ -54,6 +54,7 @@ const createMap = async (req, res) => {
   try {
     const { map_name, topic, user_id, is_visible, map_description } = req.body;
     if (req.files !== undefined) {
+      console.log("req.files: ", req.files)
       const randomString = (new Date().getTime() + Math.random())
         .toString(36)
         .substring(2);

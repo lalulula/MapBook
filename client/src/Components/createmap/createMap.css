@@ -170,6 +170,16 @@
   transition: all 0.2s ease-in-out;
   background-color: #1f6caf2b;
 }
+
+.createmap_fix_data_btn {
+  border: 2px solid gray;
+  border-radius: 4px;
+  padding: 0.4rem;
+  font-size: small;
+  font-weight: 200;
+  cursor: pointer;
+}
+
 .data_input_value {
   flex: 2;
 }

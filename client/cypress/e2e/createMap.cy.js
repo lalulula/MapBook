@@ -31,18 +31,28 @@ describe("CreateMap-File Import Page", () => {
       const fileName = "Server.geojson";
 
       cy.fixture(fileName).then((geoJsonContent) => {
-        cy.fixture("sample.jpg", "base64").then((imageContent) => {
+        const geoJSONString = JSON.stringify(geoJsonContent);
+
+        const geojsonFile = new File([geoJSONString], "Server.geojson", {
+          type: "application/json",
+        });
+
+        cy.fixture("sample.jpg", null).then((imageContent) => {
           console.log(imageContent);
+          var imgFile = new File([imageContent], "mapPreviewImg.png", {
+            type: "image/png",
+          }); // Blob 생성
+          console.log("imgFile: ", imgFile);
 
           const formData = new FormData();
-          formData.append("file", geoJsonContent);
+          formData.append("file", geojsonFile);
           formData.append("map_name", "Test Cypress");
           formData.append("topic", "Health");
           formData.append("is_visible", true);
           formData.append("user_id", "657f85f2d2dcca77a0d9524e");
           formData.append("map_description", "Test description");
 
-          formData.append("mapPreviewImg", imageContent);
+          formData.append("mapPreviewImg", imgFile);
 
           formData.append("view_count", 1);
 
@@ -54,8 +64,8 @@ describe("CreateMap-File Import Page", () => {
             body: formData,
           }).then((response) => {
             expect(response.status).to.eq(201);
-            console.log(response.body);
-            expect(response.body).to.have.property("_id");
+            console.log("response.body: ", JSON.parse(String.fromCharCode.apply(null, new Uint8Array(response.body))));
+            expect(JSON.parse(String.fromCharCode.apply(null, new Uint8Array(response.body)))).to.have.property("_id");
           });
         });
       });
