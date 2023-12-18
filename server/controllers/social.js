@@ -41,7 +41,7 @@ const createPost = async (req, res) => {
 
     const { title, post_content, post_images, topic, customTopic, post_owner } =
       req.body;
-    if (req.files == null ||req.files.length == 0) {
+    if (req.files == null || req.files.length == 0) {
       // if not, continue
       const newPost = new SocialPost({
         title,
@@ -60,7 +60,7 @@ const createPost = async (req, res) => {
       // console.log(req.file)
       const imagesUrl = [];
 
-      for(var i = 0; i < req.files.length; i++){
+      for (var i = 0; i < req.files.length; i++) {
         var temp = await cloudinary.uploader.upload(req.files[i].path, async function (err, result) {
           if (err) {
             console.log(err);
@@ -74,7 +74,7 @@ const createPost = async (req, res) => {
         console.log(temp["secure_url"])
         imagesUrl.push(temp["secure_url"]);
       }
-     
+
       // if not, continue
       const newPost = new SocialPost({
         title,
@@ -97,11 +97,12 @@ const createPost = async (req, res) => {
 
 // Update Post by post id
 const editPost = async (req, res) => {
+  console.log("req.files: ", req.files);
   try {
     const { sPostId } = req.params;
     const { title, post_content, post_images, topic, customTopic, view_count } =
       req.body;
-    if (req.files == null ||req.files.length == 0) {
+    if (req.files == null || req.files.length == 0) {
       const updatedPost = await SocialPost.findByIdAndUpdate(
         sPostId,
         {
@@ -117,11 +118,11 @@ const editPost = async (req, res) => {
       );
       res.status(200).json(updatedPost);
     }
-    else{
+    else {
       // console.log(req.file)
       const imagesUrl = [];
 
-      for(var i = 0; i < req.files.length; i++){
+      for (var i = 0; i < req.files.length; i++) {
         var temp = await cloudinary.uploader.upload(req.files[i].path, async function (err, result) {
           if (err) {
             console.log(err);
@@ -135,7 +136,7 @@ const editPost = async (req, res) => {
         console.log(temp["secure_url"])
         imagesUrl.push(temp["secure_url"]);
       }
-     
+
 
       const updatedPost = await SocialPost.findByIdAndUpdate(
         sPostId,
@@ -150,7 +151,7 @@ const editPost = async (req, res) => {
         { new: true }
       );
 
-   
+
       res.status(200).json(updatedPost);
 
 
