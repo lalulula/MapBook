@@ -44,10 +44,10 @@ const MapDataInputPage = ({
     console.log(showHoverData);
   }, [showHoverData]);
 
-  const setFixDataToTrue = () =>{
+  const setFixDataToTrue = () => {
     setFixData(true);
   }
-  const setFixDataToFalse = () =>{
+  const setFixDataToFalse = () => {
     setResetDataModal(false);
     setFixData(false);
   }
@@ -76,6 +76,7 @@ const MapDataInputPage = ({
     setOptions({ ...options, circleHeatMapData: newVal });
   };
   const handlePrivacy = (e) => {
+    console.log("E>TAERGET>CHAECK: ", e.target.checked);
     setOptions({ ...options, isPrivate: e.target.checked });
   };
   const topics = [
@@ -120,28 +121,28 @@ const MapDataInputPage = ({
 
       if (selectedMapFile.mapbook_template == "Thematic Map") {
         setThemeData(selectedMapFile.mapbook_themedata);
-        setOptions({ ...options, name: selectedMapFile.mapbook_mapname , description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic });
+        setOptions({ ...options, name: selectedMapFile.mapbook_mapname, description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic });
       }
       else if (selectedMapFile.mapbook_template == "Heat Map") {
         setSelectedColors(selectedMapFile.mapbook_heat_selectedcolors);
         setHeatRange(selectedMapFile.mapbook_heatrange)
-        setOptions({ ...options, name: selectedMapFile.mapbook_mapname , description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic, circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata });
+        setOptions({ ...options, name: selectedMapFile.mapbook_mapname, description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic, circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata });
       }
       else if (selectedMapFile.mapbook_template == "Circle Map") {
         console.log("Circle Map selected")
         console.log("selectedMapFile.mapbook_circleheatmapdata: ", selectedMapFile.mapbook_circleheatmapdata)
         // const newOption = { ...options, circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata }
-        setOptions({ ...options, name: selectedMapFile.mapbook_mapname , description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic, circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata });
+        setOptions({ ...options, name: selectedMapFile.mapbook_mapname, description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic, circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata });
       }
       else if (selectedMapFile.mapbook_template == "Pie Chart") {
         console.log("Pie Map selected")
         console.log("selectedMapFile.mapbook_datanames: ", selectedMapFile.mapbook_datanames)
         setPieBarData(selectedMapFile.mapbook_datanames);
-        setOptions({ ...options, name: selectedMapFile.mapbook_mapname , description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic });
+        setOptions({ ...options, name: selectedMapFile.mapbook_mapname, description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic });
       }
       else if (selectedMapFile.mapbook_template == "Bar Chart") {
         setPieBarData(selectedMapFile.mapbook_datanames);
-        setOptions({ ...options, name: selectedMapFile.mapbook_mapname , description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic });
+        setOptions({ ...options, name: selectedMapFile.mapbook_mapname, description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic });
       }
 
       // console.log("Mapbook data: ", selectedMapFile)
@@ -226,6 +227,7 @@ const MapDataInputPage = ({
                     color: blueGrey[600],
                   },
                 }}
+                checked={options.isPrivate}
               />
             }
             label="Private"
@@ -279,7 +281,7 @@ const MapDataInputPage = ({
           )}
           {template === "Thematic Map" && (
             <>
-              <Thematic themeData={themeData} setThemeData={setThemeData} 
+              <Thematic themeData={themeData} setThemeData={setThemeData}
                 fixData={fixData}
                 setFixData={setFixData}
               />
@@ -303,16 +305,16 @@ const MapDataInputPage = ({
         </div>
         <div className="mapdatainput_fix_data" style={{ textAlign: "center" }}>
           {
-            fixData? 
-            <span onClick={() => setResetDataModal(true)} className="createmap_fix_data_btn">
-              reset Data
-            </span>
-            :
-            <span onClick={setFixDataToTrue} className="createmap_fix_data_btn">
-              Start editing data
-            </span>
+            fixData ?
+              <span onClick={() => setResetDataModal(true)} className="createmap_fix_data_btn">
+                reset Data
+              </span>
+              :
+              <span onClick={setFixDataToTrue} className="createmap_fix_data_btn">
+                Start editing data
+              </span>
           }
-          
+
         </div>
         {resetDataModal && (
           <div className="mappdetails_reset_confirmation_modal">
@@ -352,8 +354,8 @@ const MapDataInputPage = ({
           <div className="mapdatainput_hovered_data">
             {showHoverData ? (
               <div
-              dangerouslySetInnerHTML={{ __html: hoverData }}
-              style={{ fontSize: "1rem", fontWeight: 300 }}
+                dangerouslySetInnerHTML={{ __html: hoverData }}
+                style={{ fontSize: "1rem", fontWeight: 300 }}
               />
             ) : (
               <div

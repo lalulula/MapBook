@@ -379,3 +379,8 @@
 .editsocialpost_error_message_close {
   cursor: pointer;
 }
+
+.editsocialpost_images {
+  margin: 10px 0 10px 0;
+  display: flex;
+}

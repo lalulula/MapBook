@@ -6,19 +6,23 @@ import {
 } from "../../api/social";
 import Dropdown from "react-dropdown";
 import { easeInOut, motion } from "framer-motion"
-
+import ImageIcon from "@mui/icons-material/Image";
+import CancelTwoToneIcon from "@mui/icons-material/CancelTwoTone";
 
 const EditSocialPost = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [uploadedImages, setUploadedImages] = useState([]);
+  const [uploadedFileObj, setUploadedFileObj] = useState([]);
   const [editedPost, setEditedPost] = useState({
     title: "",
     post_content: "",
     topic: "",
     customTopic: "",
-    post_images: [],
+    post_owner: "",
+    view_count: 1,
   });
   const [showModal, setShowModal] = useState(false);
   const topics = [
@@ -32,10 +36,12 @@ const EditSocialPost = () => {
     "Other",
   ];
   useEffect(() => {
+    console.log("USEEFFECT CALLED");
     const fetchData = async () => {
       try {
         const currentPost = await getSocialPostAPIMethod(id);
         setEditedPost(currentPost);
+        setUploadedImages(currentPost.post_images);
       } catch (error) {
         console.error("Error fetching social post:", error);
       }
@@ -48,6 +54,8 @@ const EditSocialPost = () => {
       setShowErrorMessage(true);
       return;
     }
+    console.log("UPLOADED IMAGES: ", uploadedImages.data);
+    editedPost.post_images = uploadedImages.data;
     try {
       await editSocialPostAPIMethod(id, editedPost);
       setShowSuccess(true);
@@ -68,18 +76,42 @@ const EditSocialPost = () => {
     setEditedPost({ ...editedPost, [e.target.name]: e.target.value });
   };
   const handleRemoveImage = (index) => {
-    let uploadedImages = editedPost.post_images;
+    let uploaded = uploadedImages;
     let newUploadedImages = [
-      ...uploadedImages.slice(0, index),
-      ...uploadedImages.slice(index + 1),
+      ...uploaded.slice(0, index),
+      ...uploaded.slice(index + 1),
     ];
-    setEditedPost(newUploadedImages);
+    setUploadedImages(newUploadedImages);
   };
   const handleClickCancel = () => {
     setShowModal(true);
   };
   const handleBackToPost = () => {
     navigate(-1);
+  };
+
+  const handleImageUpload = (event) => {
+    let tempFileArray = uploadedImages;
+    // tempFileArray.push(event.target.files[0]);
+    tempFileArray.push(event.target.files[0]);
+    console.log("TEMPFILEARR: ", tempFileArray);
+
+    setEditedPost({
+      ...editedPost,
+      post_images: tempFileArray,
+    });
+
+    const files = event.target.files; // Get the first file from the selected files
+    console.log("FILES: ", files);
+    if (files.length > 0) {
+      const newImages = Array.from(files).map((file) => ({
+        data: URL.createObjectURL(file),
+        file,
+      }));
+      console.log("SDFDSKFJ:", uploadedImages);
+      console.log("NEWIMAGE: ", newImages[0]);
+      setUploadedImages([...uploadedImages, newImages[0]]);
+    }
   };
 
   return (
@@ -182,29 +214,48 @@ const EditSocialPost = () => {
               className="editsocialpost_description_textarea"
             />
           </div>
+          <div className="editsocialpost_img_container">
+            {/* <label htmlFor="imageUpload" className="upload-label">
+              <ImageIcon />
+              Upload Image
+            </label>
+            <input
+              type="file"
+              id="imageUpload"
+              accept="image/*" // Only image files are allowed
+              onChange={handleImageUpload}
+              className="upload-input"
+            /> */}
+            <div className="editsocialpost_images">
+              {uploadedImages.map((img, index) => (
+                <div className="createsocialpost_image_container">
+                  {/* <CancelTwoToneIcon
+                    className="remove_uploaded_image"
+                    onClick={() => handleRemoveImage(index)}
+                  /> */}
+                  {typeof img === 'object' ? (
+                    <img
+                      key={index}
+                      src={img.data}
+                      alt={`nothing`}
+                      className="uploaded_image"
+                      style={{ width: "100px", height: "100px" }}
+                    />
+                  ) : (
+                    <img
+                      key={index}
+                      src={img}
+                      alt={`nothing`}
+                      className="uploaded_image"
+                      style={{ width: "100px", height: "100px" }}
+                    />
+                  )}
 
-          {editedPost.post_images.map((img, index) => (
-            // <div className="editsocialpost_image_container">
-            //   <CancelTwoToneIcon
-            //     className="remove_uploaded_image"
-            //     onClick={() => handleRemoveImage(index)}
-            //   />
-            //   <img
-            //     key={index}
-            //     src={img.data}
-            //     alt={`Uploaded${editedPost.post_images.length}`}
-            //     className="uploaded_image"
-            //     style={{ width: "100px", height: "100px" }}
-            //   />
-            // </div>
-            <img
-              key={index}
-              src={img.data}
-              alt={`Uploaded ${editedPost.post_images.length}`}
-              className="uploaded-image"
-              style={{ width: "100px", height: "100px" }}
-            />
-          ))}
+                </div>
+              ))}
+            </div>
+
+          </div>
         </div>
         <br />
         <hr className="editsocialpost_hr"></hr>

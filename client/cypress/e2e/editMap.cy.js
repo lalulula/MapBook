@@ -12,7 +12,7 @@ describe("Editing map", () => {
         // Visit the page
         cy.visit("http://localhost:3000/mymap");
         cy.wait(2000);
-        cy.get('.mymap_mappreview_container:contains("dont?")').click();
+        cy.get('.mymap_mappreview_container:contains("dont")').click();
 
         cy.wait(2000);
         cy.url().should("include", "/mapdetails");

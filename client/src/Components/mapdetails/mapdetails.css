@@ -69,12 +69,12 @@
 .map_details_options_container {
   display: flex;
   gap: 1rem;
+  margin-right: 1rem;
 }
 
 .map_details_options_outer {
   display: flex;
   flex-direction: row;
-  width: 20%;
   justify-content: space-between;
 }
 

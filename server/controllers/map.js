@@ -160,8 +160,6 @@ const createMap = async (req, res) => {
 const editMap = async (req, res) => {
   try {
     const { mapId } = req.params;
-    console.log("mapIdCALLLLLLLLED:", mapId);
-    console.log("req: ", req.body);
     if (req.files !== undefined) {
       console.log("editmap called");
 
