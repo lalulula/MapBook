@@ -53,6 +53,7 @@ const getMap = async (req, res) => {
 const createMap = async (req, res) => {
   try {
     const { map_name, topic, user_id, is_visible, map_description } = req.body;
+    console.log("REQ.BODY CRETMAPE: ", req.body);
     if (req.files !== undefined) {
       console.log("req.files: ", req.files)
       const randomString = (new Date().getTime() + Math.random())
@@ -159,7 +160,8 @@ const createMap = async (req, res) => {
 const editMap = async (req, res) => {
   try {
     const { mapId } = req.params;
-    console.log("mapId:", mapId);
+    console.log("mapIdCALLLLLLLLED:", mapId);
+    console.log("req: ", req.body);
     if (req.files !== undefined) {
       console.log("editmap called");
 
@@ -224,6 +226,7 @@ const editMap = async (req, res) => {
       // return res.status(201).json({ success: true, message: "Map created successfully!" });
       return res.status(201).json(updatedMap);
     } else {
+      console.log("REQ.BODY: ", req.body);
       const {
         map_name,
         topic,

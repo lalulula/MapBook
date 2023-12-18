@@ -38,7 +38,7 @@ const EditMap = () => {
   useEffect(() => {
     console.log("mapInfo: ", mapInfo.mapFile)
     // mapInfo
-    if(mapInfo.mapFile){
+    if (mapInfo.mapFile) {
       setIsMapbookData(true);
       setSelectedMapFile(mapInfo.mapFile);
       setImportDataOpen(false);
@@ -49,7 +49,7 @@ const EditMap = () => {
 
   useEffect(() => {
     // console.log("useEffect: selectedMapFile: ", selectedMapFile);
-    if(mapInfo.mapFile == null){
+    if (mapInfo.mapFile == null) {
       const newGeojsonData = {
         ...selectedMapFile,
         mapbook_mapname: options.name,
@@ -73,7 +73,6 @@ const EditMap = () => {
     setImportDataOpen(false);
   };
 
-  
 
   useEffect(() => {
     // console.log("isMapbookData: CreateMap.js: ", isMapbookData)
@@ -91,8 +90,8 @@ const EditMap = () => {
           setSelectedMapFile={setSelectedMapFile}
           selectedMapFile={selectedMapFile}
           setImportDataOpen={setImportDataOpen}
-          isMapbookData = {isMapbookData}
-          setIsMapbookData = {setIsMapbookData}
+          isMapbookData={isMapbookData}
+          setIsMapbookData={setIsMapbookData}
         />
         <div></div>
       </Popup>
@@ -115,9 +114,9 @@ const EditMap = () => {
             setSelectedMapFile={setSelectedMapFile}
             showMapEdit={showMapEdit}
             setShowMapEdit={setShowMapEdit}
-            isMapbookData = {isMapbookData}
-            setIsMapbookData = {setIsMapbookData}
-            mapId = {mapInfo.mapId}
+            isMapbookData={isMapbookData}
+            setIsMapbookData={setIsMapbookData}
+            mapId={mapInfo.mapId}
 
           />
         </div>
