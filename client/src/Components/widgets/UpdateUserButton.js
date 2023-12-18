@@ -1,6 +1,5 @@
 import React from "react";
 import "./buttons.css";
-import { Button } from "semantic-ui-react";
 
 const UpdateUserButton = ({ onClick, text }) => {
   return (

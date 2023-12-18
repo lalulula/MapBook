@@ -13,12 +13,12 @@ describe("Profile Component", () => {
         cy.url().should("eq", "http://localhost:3000/profile");
         cy.getReduxState().as("currentState");
 
-        cy.get(".edit_profile_btn").click();
-        cy.get(".username_container")
-          .find(".MuiInput-input")
-          .clear()
-          .type("ya");
-        cy.get(".update_user_btn_container").click();
+        // cy.get(".edit_profile_btn").click();
+        // cy.get(".username_container")
+        //   .find(".MuiInput-input")
+        //   .clear()
+        //   .type("ya");
+        // // cy.get(".update_user_btn_container").click();
 
         break;
       default:
@@ -58,15 +58,19 @@ describe("Profile Component", () => {
       .clear()
       .type("newusername");
     cy.get(".update_user_btn_container").click();
-    // cy.get(".edit_profile_btn").click();
-    cy.get(".username_container").find(".MuiInput-input");
+    cy.get(".edit_profile_btn").click();
+    cy.get(".username_container")
+      .find(".MuiInput-input")
+      .should("have.value", "newusername");
   });
   // TEST3 Change profile image
   it("Change profile image", () => {
     cy.get(".edit_profile_btn").click();
+
+    cy.get(".username_container").find(".MuiInput-input").clear().type("ya");
     cy.get(".cypress_click_profile").click();
 
-    const fileName = "sample.jpg";
+    const fileName = "YAprofiletest.jpg";
     cy.fixture(fileName).then((fileContent) => {
       cy.get('input[type="file"]').attachFile({
         fileContent: fileContent,
@@ -75,18 +79,19 @@ describe("Profile Component", () => {
       });
     });
 
-    cy.get(".update_user_btn_container").click();
+    // cy.get(".update_user_btn_container").click();
+    cy.get(".profile_update_btn").click();
     cy.window().then((win) => {
       const user = win.userState;
       console.log("Current", user);
       cy.wait(2000);
       console.log("Current", user.profile_img);
     });
-    cy.get(".username_container")
-      .find(".MuiInput-input")
-      .clear()
-      .type("newusername");
-    cy.get(".update_user_btn_container").click();
+    // cy.get(".username_container")
+    //   .find(".MuiInput-input")
+    //   .clear()
+    //   .type("newusername");
+    // cy.get(".update_user_btn_container").click();
   });
   // TEST4 logout
   it("Logout user", () => {
