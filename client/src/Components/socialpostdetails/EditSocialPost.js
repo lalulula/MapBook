@@ -24,6 +24,7 @@ const EditSocialPost = () => {
     post_owner: "",
     view_count: 1,
     post_images: [],
+    post_images: [],
   });
   const [showModal, setShowModal] = useState(false);
   const topics = [
@@ -207,7 +208,7 @@ const EditSocialPost = () => {
             />
           </div>
           <div className="editsocialpost_img_container">
-            <label htmlFor="imageUpload" className="upload-label">
+            <label htmlFor="imageUpload" className="upload_label">
               <ImageIcon />
               Upload Image
             </label>

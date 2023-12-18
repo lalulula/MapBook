@@ -6,29 +6,15 @@ describe("ManageUsers Component", () => {
     cy.visit("http://localhost:3000/register");
 
     // Check if the user already exists
-    cy.request("GET", `/api/checkUser/${username}`).then((response) => {
-      if (response.status === 200) {
-        cy.get('input[placeholder="Username"]').type(username);
-        cy.get('input[placeholder="Email"]').type("yala@email.com");
-        cy.get('input[placeholder="Password"]').type(password);
-        cy.get('input[placeholder="Confirm Password"]').type(password);
-        cy.get(".register_btn").click();
-        console.log("User exists");
-      } else {
-        // User is not registered, proceed with registration
-        console.log("User does not exist");
-        cy.get('input[placeholder="Username"]').type(username);
-        cy.get('input[placeholder="Email"]').type("yala@email.com");
-        cy.get('input[placeholder="Password"]').type(password);
-        cy.get('input[placeholder="Confirm Password"]').type(password);
-        cy.get(".register_btn").click();
+    console.log("User does not exist");
+    cy.get('input[placeholder="Username"]').type(username);
+    cy.get('input[placeholder="Email"]').type("yala@email.com");
+    cy.get('input[placeholder="Password"]').type(password);
+    cy.get('input[placeholder="Confirm Password"]').type(password);
+    cy.get(".register_btn").click();
 
-        // Check if the registration was successful (the user is redirected to the login page)
-        cy.url().should("eq", "http://localhost:3000/login");
-
-        // Perform actions after successful registration
-      }
-    });
+    // Check if the registration was successful (the user is redirected to the login page)
+    cy.url().should("eq", "http://localhost:3000/login");
     cy.visit("http://localhost:3000/login");
     cy.get('input[placeholder="Username"]').type("Admin");
     cy.get('input[placeholder="Password"]').type("Password123");

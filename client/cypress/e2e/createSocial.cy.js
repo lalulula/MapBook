@@ -6,7 +6,7 @@ describe("CreateSocialPost Component", () => {
     cy.visit(`${LOCALHOST}/login`);
 
     // Fill out the login form
-    cy.get('input[placeholder="Username"]').type("sam");
+    cy.get('input[placeholder="Username"]').type("ct1");
     cy.get('input[placeholder="Password"]').type("Password123");
     //  Submit the form
     cy.get(".login_btn").click();

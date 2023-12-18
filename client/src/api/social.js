@@ -62,7 +62,7 @@ export const createSocialPostAPIMethod = async (socialPost) => {
   }
   // formData.append("image", selectedFile);
   // formData.append("username", username);
-  console.log(formData);
+  console.log("FORMDATA CREATE", formData);
 
   const response = await fetch(`${API_BASE_URL}/api/social/createSocialPost`, {
     // ...defaultHeaders,
@@ -136,6 +136,8 @@ export const editSocialPostAPIMethod = async (sPostId, socialpost) => {
         formData.append(keys[i], socialpost[keys[i]]);
       }
     }
+    console.log("FORMDATA EDIT", formData);
+
     const response = await fetch(
       `${API_BASE_URL}/api/social/editSocialPost/${sPostId}`,
       {
