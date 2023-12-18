@@ -121,9 +121,14 @@ const MapDetails = () => {
             const xhr = new XMLHttpRequest();
             xhr.responseType = "json";
             xhr.onload = (event) => {
-              console.log("RESPONSE: ", xhr.response.feature);
+              // console.log(
+              //   "RESPONSE: ",
+              //   typeof xhr.response,
+              //   xhr.response.feature
+              // );
+
               setSelectedMapFile(
-                xhr.response.feature === undefined
+                typeof xhr.response === "string"
                   ? JSON.parse(xhr.response)
                   : xhr.response
               );
