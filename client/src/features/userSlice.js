@@ -22,7 +22,7 @@ export const userSlice = createSlice({
     },
     updateUsername: (state, { payload }) => {
       // Assuming payload contains the new username
-      console.log(payload);
+      console.log("payload: ", payload);
       state.user.username = payload.username;
       state.user.profile_img = payload.profile_img;
     },

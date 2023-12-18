@@ -26,6 +26,7 @@ const Profile = () => {
   const userId = useSelector((state) => state.user.id);
   const currentUser = useSelector((state) => state.user.user);
   const [errorMessage, setErrorMessage] = useState(null);
+  console.log(username);
 
   useEffect(() => {
     setUser(currentUser);
@@ -47,24 +48,49 @@ const Profile = () => {
     setSelectedImg(URL.createObjectURL(event.target.files[0]));
   };
 
+  // const updateUser = async () => {
+  //   const updatedUser = await updateUserAPIMethod(
+  //     username,
+  //     selectedFile,
+  //     userId,
+  //     isAuth
+  //   ).then((res) => {
+  //     if (res.ok) {
+  //       console.log("ok");
+  //       const paylaod = {
+  //         username: username,
+  //         profile_img: updatedUser.profile_img,
+  //       };
+  //       dispatch(updateUsername(paylaod));
+    
+  //       setIsEditing(!isEditing);
+  //     }
+  //   }).catch((err) => {
+  //     console.log("error");
+  //     setErrorMessage("Username already existed.");
+  //   });
+  // };
+
   const updateUser = async () => {
     const updatedUser = await updateUserAPIMethod(
       username,
       selectedFile,
       userId,
       isAuth
-    ).then(() => {
-      const paylaod = {
+    );
+    if (updatedUser) {
+      console.log("shouldn't");
+      const payload = {
         username: username,
         profile_img: updatedUser.profile_img,
       };
-      dispatch(updateUsername(paylaod));
+      dispatch(updateUsername(payload));
   
       setIsEditing(!isEditing);
-    }).catch((err) => {
+    } else {
       console.log("error");
-      setErrorMessage("Username already existed.");
-    });
+      setErrorMessage("Username already existed");
+    }
   };
 
   const handleRemoveUser = async () => {
@@ -158,8 +184,8 @@ const Profile = () => {
                   placeholder="username"
                   size="lg"
                   variant="soft"
-                  // value={currentUser.username}
-                  defaultValue={currentUser.username}
+                  value={username}
+                  // defaultValue={currentUser.username}
                   className="username"
                   style={
                     isEditing
@@ -220,7 +246,7 @@ const Profile = () => {
             {isEditing && (
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <UpdateUserButton
-                  onClick={() => {setIsEditing(false); setErrorMessage(null); setSelectedImg(null)}}
+                  onClick={() => {setIsEditing(false); setErrorMessage(null); setSelectedImg(null); setUsername(currentUser.username)}}
                   text={"Cancel"}
                 />
                 <UpdateUserButton onClick={updateUser} text={"Update User"} />

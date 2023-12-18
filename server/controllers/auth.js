@@ -3,10 +3,10 @@ const bcrypt = require("bcrypt");
 const { OAuth2Client } = require('google-auth-library');
 const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
+const Verifier = require("email-verifier");
 
 const User = require("../models/User");
 const ResetToken = require("../models/ResetToken");
-const { log } = require("console");
 
 // LOGIN
 const login = async (req, res) => {
@@ -147,6 +147,14 @@ const register = async (req, res) => {
     try {
       const { email, username, password, is_admin, profile_img, maps_created } =
         req.body;
+
+      // verify input email
+      // let verifier = new Verifier(process.env.EMAIL_VERIFIER);
+      // verifier.verify(email, (err, data) => {
+      //   if (err)
+      //     return res.status(406).json({ msg: "Email does not exist." });
+      //   console.log("valid email");
+      // });
   
       // check for duplicate username or email
       const existingUser = await User.findOne({
