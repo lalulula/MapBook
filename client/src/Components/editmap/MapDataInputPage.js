@@ -37,10 +37,20 @@ const MapDataInputPage = ({
   const [mapImage, setMapImage] = useState(null);
   const [hoverData, setHoverData] = useState("Out of range");
   const [showHoverData, setShowHoverData] = useState(false);
+  const [fixData, setFixData] = useState(false);
+  const [resetDataModal, setResetDataModal] = useState(false)
+
   useEffect(() => {
     console.log(showHoverData);
   }, [showHoverData]);
 
+  const setFixDataToTrue = () =>{
+    setFixData(true);
+  }
+  const setFixDataToFalse = () =>{
+    setResetDataModal(false);
+    setFixData(false);
+  }
 
   const handleMapNameChange = (name) => {
     setOptions({ ...options, name });
@@ -242,6 +252,8 @@ const MapDataInputPage = ({
         setMapImage={setMapImage}
         mapImage={mapImage}
         mapId={mapId}
+        fixData={fixData}
+        setFixData={setFixData}
       />
       <div className="mapdatainput_right_sidebar">
         <h3>Data Names</h3>
@@ -253,17 +265,24 @@ const MapDataInputPage = ({
               // CIRCLE
               options={options}
               handleCircleHeatMapDataChange={handleCircleHeatMapDataChange}
+              fixData={fixData}
+              setFixData={setFixData}
             />
           )}
           {template === "Circle Map" && (
             <Circle
               options={options}
               handleCircleHeatMapDataChange={handleCircleHeatMapDataChange}
+              fixData={fixData}
+              setFixData={setFixData}
             />
           )}
           {template === "Thematic Map" && (
             <>
-              <Thematic themeData={themeData} setThemeData={setThemeData} />
+              <Thematic themeData={themeData} setThemeData={setThemeData} 
+                fixData={fixData}
+                setFixData={setFixData}
+              />
             </>
           )}
           {template === "Heat Map" && (
@@ -276,10 +295,46 @@ const MapDataInputPage = ({
                 options={options}
                 handleCircleHeatMapDataChange={handleCircleHeatMapDataChange}
                 selectedMapFile={selectedMapFile}
+                fixData={fixData}
+                setFixData={setFixData}
               />
             </>
           )}
         </div>
+        <div className="mapdatainput_fix_data" style={{ textAlign: "center" }}>
+          {
+            fixData? 
+            <span onClick={() => setResetDataModal(true)} className="createmap_fix_data_btn">
+              reset Data
+            </span>
+            :
+            <span onClick={setFixDataToTrue} className="createmap_fix_data_btn">
+              Start editing data
+            </span>
+          }
+          
+        </div>
+        {resetDataModal && (
+          <div className="mappdetails_reset_confirmation_modal">
+            <div className="mapdetails_reset_confirmation_modal_top">
+              Are you sure you want to reset datas?
+            </div>
+            <div className="mapdetails_reset_confirmation_modal_bottom">
+              <button
+                className="mapdetails_reset_confirm"
+                onClick={() => setFixDataToFalse()}
+              >
+                Yes
+              </button>
+              <button
+                className="mapdetails_cancel_reset"
+                onClick={() => setResetDataModal(false)}
+              >
+                No
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="mapdatainput_image_drop">
           <h3>Map Preview Image</h3>

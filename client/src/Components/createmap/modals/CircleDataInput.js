@@ -57,7 +57,7 @@ const CircleDataInput = ({
                       }
                       // type="number"
                       // step="0.01"
-                      type="float"
+                      slotProps={{ input: { type:"number",step:"0.01" } }}
                       required
                     />
                   </FormControl>

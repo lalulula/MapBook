@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useMemo } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl"; // Import mapboxgl
 import { createMapAPIMethod } from "../../api/map";
 import { useSelector } from "react-redux";
@@ -41,15 +41,29 @@ const Map = ({
   setIsMapbookData,
   setMapImage,
   mapImage,
+  fixData,
+  setFixData,
 }) => {
   const mapFileData = useRef(selectedMapFile);
   const mapRef = useRef();
+  const fixDataRef = useRef(fixData)
 
   const [regionName, setRegionName] = useState("");
 
   useEffect(() => {
     console.log(template);
   }, [template]);
+
+  useEffect(() => {
+    console.log("fixDataRef.current: ", fixDataRef.current)
+    console.log("fixData: ", fixData)
+    if(fixDataRef.current){
+      if(!fixData){
+        resetMap();
+      }
+    }
+    fixDataRef.current = fixData;
+  }, [fixData]);
 
   useEffect(() => {
     mapFileData.current = {
@@ -103,7 +117,7 @@ const Map = ({
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isCanvasLoaded, setIsCanvasLoaded] = useState(true);
-
+  const [startDataEditModal, setStartDataEditModal] = useState(false);
 
   const handleRerender = () => {
     setRerenderFlag(!rerenderFlag);
@@ -157,32 +171,38 @@ const Map = ({
       //  barChartData.current = [];
       resetMap();
       console.log("resetMap called:", selectedMapFile);
+      setFixData(false);
     }
   }, [template]);
 
   const handleClickRegion = () => {
-    // setShowPopup(false);
-    setSelectedMapFile((prevMapFile) => {
-      // console.log(prevMapFile);
-      if (prevMapFile["mapbook_template"] === "Bar Chart") {
-        // setTemplate("Bar Chart");
-        setShowModalBar(!showModalBar);
-      } else if (prevMapFile["mapbook_template"] === "Pie Chart") {
-        // setTemplate("Pie Chart");
-        setShowModalPie(!showModalPie);
-      } else if (prevMapFile["mapbook_template"] === "Circle Map") {
-        // setTemplate("Circle Map");
-        setShowModalCircle(!showModalCircle);
-      } else if (prevMapFile["mapbook_template"] === "Thematic Map") {
-        // setTemplate("Thematic Map");
-        setShowModalThematic(!showModalThematic);
-      } else if (prevMapFile["mapbook_template"] === "Heat Map") {
-        // setTemplate("Heat Map");
-        setShowModalHeat(!showModalHeat);
-      }
+    if(fixDataRef.current){
+      // setShowPopup(false);
+      setSelectedMapFile((prevMapFile) => {
+        // console.log(prevMapFile);
+        if (prevMapFile["mapbook_template"] === "Bar Chart") {
+          // setTemplate("Bar Chart");
+          setShowModalBar(!showModalBar);
+        } else if (prevMapFile["mapbook_template"] === "Pie Chart") {
+          // setTemplate("Pie Chart");
+          setShowModalPie(!showModalPie);
+        } else if (prevMapFile["mapbook_template"] === "Circle Map") {
+          // setTemplate("Circle Map");
+          setShowModalCircle(!showModalCircle);
+        } else if (prevMapFile["mapbook_template"] === "Thematic Map") {
+          // setTemplate("Thematic Map");
+          setShowModalThematic(!showModalThematic);
+        } else if (prevMapFile["mapbook_template"] === "Heat Map") {
+          // setTemplate("Heat Map");
+          setShowModalHeat(!showModalHeat);
+        }
 
-      return prevMapFile; // Return the unchanged state
-    });
+        return prevMapFile; // Return the unchanged state
+      });
+    }
+    else{
+      setStartDataEditModal(true)
+    }
   };
 
   const handlePieBarInputChange = (data, value) => {
@@ -1433,6 +1453,22 @@ const Map = ({
           />
         )}
       </div>
+
+      {startDataEditModal && (
+          <div className="mappdetails_reset_confirmation_modal">
+            <div className="mapdetails_reset_confirmation_modal_top">
+              You can not edit Data. Click Start editing data.
+            </div>
+            <div className="mapdetails_edit_confirmation_modal_bottom">
+              <button
+                className="mapdetails_reset_confirm"
+                onClick={() => setStartDataEditModal(false)}
+              >
+                Ok
+              </button>
+            </div>
+          </div>
+        )}
 
       <div
         style={{

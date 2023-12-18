@@ -10,6 +10,8 @@ const Heat = ({
   options,
   handleCircleHeatMapDataChange,
   selectedMapFile,
+  fixData,
+  setFixData,
 }) => {
   const from = Number(selectedMapFile["mapbook_heatrange"]["from"]);
   const to = Number(selectedMapFile["mapbook_heatrange"]["to"]);
@@ -25,12 +27,10 @@ const Heat = ({
   ];
 
   useEffect(() => {
-    console.log("Heat map options: ", options)
-    console.log("Heat map heatRange: ", heatRange)
-    console.log("Heat map selectedColors: ", selectedColors)
-
+    console.log("Heat map options: ", options);
+    console.log("Heat map heatRange: ", heatRange);
+    console.log("Heat map selectedColors: ", selectedColors);
   }, []);
-
 
   const handleRangeChange = (e) => {
     const { name, value } = e.target;
@@ -41,32 +41,66 @@ const Heat = ({
   };
   return (
     <div className="heat_data_container">
-      <Input
-        required
-        value={options.circleHeatMapData}
-        placeholder="Enter Data Name"
-        onChange={(e) => handleCircleHeatMapDataChange(e.target.value)}
-      />
+      {fixData?
+        <Input
+          required
+          value={options.circleHeatMapData}
+          placeholder="Data Name"
+          onChange={(e) => handleCircleHeatMapDataChange(e.target.value)}
+          disabled
+        />
+        :
+        <Input
+          required
+          value={options.circleHeatMapData}
+          placeholder="Data Name"
+          onChange={(e) => handleCircleHeatMapDataChange(e.target.value)}
+        />
+      }
+
       <h3>Enter Data Range</h3>
-      <Input
-        required
-        type="number"
-        name="from"
-        value={heatRange.from}
-
-        placeholder="From"
-        onChange={handleRangeChange}
-      />
+      {fixData?
+        <Input
+          required
+          type="number"
+          name="from"
+          value={heatRange.from}
+          placeholder="From"
+          onChange={handleRangeChange}
+          disabled
+        />
+        :
+        <Input
+          required
+          type="number"
+          name="from"
+          value={heatRange.from}
+          placeholder="From"
+          onChange={handleRangeChange}
+        />
+      }
       <br />
-      <Input
-        required
-        type="number"
-        name="to"
-        value={heatRange.to}
-
-        placeholder="To"
-        onChange={handleRangeChange}
-      />
+      {fixData?
+        <Input
+          required
+          type="number"
+          name="to"
+          value={heatRange.to}
+          placeholder="To"
+          onChange={handleRangeChange}
+          disabled
+        />
+        :
+        <Input
+          required
+          type="number"
+          name="to"
+          value={heatRange.to}
+          placeholder="To"
+          onChange={handleRangeChange}
+        />
+      }
+      
       <br />
       <div className="heat_data_tooltip">
         <h3 style={{ display: "flex", alignItems: "center" }}>
@@ -81,6 +115,7 @@ const Heat = ({
         <ColorGenerator
           selectedColors={selectedColors}
           setSelectedColors={setSelectedColors}
+          fixData
         />
       </div>
 

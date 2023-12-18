@@ -74,7 +74,7 @@ const PieBarDataInput = ({
                           //   null :
                           //   feature[0].properties.mapbook_data[data["dataName"]].value
                           // }
-                          type="float"
+                          slotProps={{ input: { type:"number",step:"0.01" } }}
                           required
                         />
                       </FormControl>

@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import Input from "@mui/joy/Input";
 import { useEffect } from "react";
 
-const Thematic = ({ themeData, setThemeData }) => {
+const Thematic = ({ themeData, setThemeData, 
+  fixData,
+  setFixData,
+}) => {
   const [selectedDataIndexes, setSelectedDataIndexes] = useState([]);
   const handleAddThemeData = () => {
     setThemeData([...themeData, { dataName: "", color: "#000000" }]);
@@ -30,52 +33,77 @@ const Thematic = ({ themeData, setThemeData }) => {
   return (
     <div>
       <div className="data_container data_input_container_thematic">
-        {themeData.map((theme, index) => (
-          <div className="" key={index}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "0.5rem",
-              }}
-            >
-              <div>Color for data #{index}&nbsp;&nbsp;</div>
-              <input
-                className="createMap_color_picker"
-                style={{ width: "3rem", height: "3rem" }}
-                type="color"
-                value={theme.color}
-                onChange={(e) => {
-                  handleThemeDataColorChange(index, e.target.value);
-                  const updatedIndexes = [...selectedDataIndexes];
-                  updatedIndexes[index] = null;
-                  setSelectedDataIndexes(updatedIndexes);
-                }}
-              />
+        {fixData? 
+          themeData.map((theme, index) => (
+            <div className="" key={index}>
+              <div className="data_input_container">
+                <Input
+                  placeholder="Data Name"
+                  required
+                  name={`data_name_${index}`}
+                  value={theme.dataName}
+                  onChange={(e) => handleThemeDataInput(index, e.target.value)}
+                  disabled
+                />
+                <input
+                  className="createMap_color_picker"
+                  style={{ width: "3rem", height: "3rem" }}
+                  type="color"
+                  value={theme.color}
+                  onChange={(e) => {
+                    handleThemeDataColorChange(index, e.target.value);
+                    const updatedIndexes = [...selectedDataIndexes];
+                    updatedIndexes[index] = null;
+                    setSelectedDataIndexes(updatedIndexes);
+                  }}
+                  disabled
+                />
+              </div>
             </div>
-            <div className="data_input_container">
-              <Input
-                placeholder="Enter Data"
-                required
-                name={`data_name_${index}`}
-                value={theme.dataName}
-                onChange={(e) => handleThemeDataInput(index, e.target.value)}
-              />
-              <i
-                className="bi bi-x-circle"
-                onClick={() => handleRemoveThemeData(index)}
-              />
-            </div>
-          </div>
-        ))}
+          ))
+          : 
+            themeData.map((theme, index) => (
+              <div className="" key={index}>
+                <div className="data_input_container">
+                  <Input
+                    placeholder="Data Name"
+                    required
+                    name={`data_name_${index}`}
+                    value={theme.dataName}
+                    onChange={(e) => handleThemeDataInput(index, e.target.value)}
+                  />
+                  <input
+                    className="createMap_color_picker"
+                    style={{ width: "3rem", height: "3rem" }}
+                    type="color"
+                    value={theme.color}
+                    onChange={(e) => {
+                      handleThemeDataColorChange(index, e.target.value);
+                      const updatedIndexes = [...selectedDataIndexes];
+                      updatedIndexes[index] = null;
+                      setSelectedDataIndexes(updatedIndexes);
+                    }}
+                  />
+                  <i
+                    className="createmap_remove_data_btn bi bi-x-lg"
+                    onClick={() => handleRemoveThemeData(index)}
+                  />
+                </div>
+              </div>
+            ))
+        }
+        
       </div>
-      <div>
-        <i
-          style={{ display: "flex", justifyContent: "center" }}
-          className="bi bi-plus-circle"
-          onClick={handleAddThemeData}
-        ></i>
-      </div>
+      {fixData?
+        <></>
+        :
+        <div style={{ textAlign: "center" }}>
+          <span onClick={handleAddThemeData} className="createmap_add_data_btn">
+            Add Data
+          </span>
+        </div>
+      }
+      
     </div>
   );
 };
