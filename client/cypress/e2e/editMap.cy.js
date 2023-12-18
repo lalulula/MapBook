@@ -42,15 +42,9 @@ describe("Editing map", () => {
         cy.get(".social_edit_btn").click();
         cy.wait(2000);
         cy.url().should("include", "/editmap");
-        cy.get('.addmapdata_left_sidebar input').eq(0).type("CYPRESS EDIT");
-        cy.get('.addmapdata_left_sidebar textarea').eq(0).type("Test map description edited");
-        cy.get('.Dropdown-control').eq(0).click();
-        cy.get('.Dropdown-menu').contains("Health").click();
-        cy.get('.Dropdown-control').eq(1).click();
+        cy.get('.addmapdata_left_sidebar input').eq(0).clear();
         cy.get('.map_toolbar_container button').click({ force: true });
-        cy.wait(3000);
-        cy.get(".header_begin h4").eq(2).click();
-        cy.wait(3000);
-        cy.get(".mappreview_name_container").eq(0).should('contain', 'CYPRESS EDIT');
+        cy.wait(1000);
+        cy.get(".createsocialpost_error_message").should('contain', "Please fill everything out!")
     });
 });
