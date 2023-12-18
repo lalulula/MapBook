@@ -353,7 +353,7 @@ const MapDataInputPage = ({
               onClick={() => setResetDataModal(true)}
               className="createmap_fix_data_btn"
             >
-              reset Data
+              Edit Data
             </span>
           ) : (
             <span onClick={setFixDataToTrue} className="createmap_fix_data_btn">
@@ -364,7 +364,7 @@ const MapDataInputPage = ({
         {resetDataModal && (
           <div className="mappdetails_reset_confirmation_modal">
             <div className="mapdetails_reset_confirmation_modal_top">
-              Are you sure you want to reset datas?
+              Are you sure you want to reset/edit data(s)?
             </div>
             <div className="mapdetails_reset_confirmation_modal_bottom">
               <button
