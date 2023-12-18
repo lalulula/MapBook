@@ -28,7 +28,7 @@ const Heat = ({
 
   useEffect(() => {
     console.log("Heat map options: ", options);
-    console.log("Heat map heatRange: ", heatRange);
+    console.log("Heat map heatRange: ", heatRange, ranges);
     console.log("Heat map selectedColors: ", selectedColors);
   }, []);
 
@@ -41,7 +41,7 @@ const Heat = ({
   };
   return (
     <div className="heat_data_container">
-      {fixData?
+      {fixData ? (
         <Input
           required
           value={options.circleHeatMapData}
@@ -49,17 +49,17 @@ const Heat = ({
           onChange={(e) => handleCircleHeatMapDataChange(e.target.value)}
           disabled
         />
-        :
+      ) : (
         <Input
           required
           value={options.circleHeatMapData}
           placeholder="Data Name"
           onChange={(e) => handleCircleHeatMapDataChange(e.target.value)}
         />
-      }
+      )}
 
       <h3>Enter Data Range</h3>
-      {fixData?
+      {fixData ? (
         <Input
           required
           type="number"
@@ -69,7 +69,7 @@ const Heat = ({
           onChange={handleRangeChange}
           disabled
         />
-        :
+      ) : (
         <Input
           required
           type="number"
@@ -78,9 +78,9 @@ const Heat = ({
           placeholder="From"
           onChange={handleRangeChange}
         />
-      }
+      )}
       <br />
-      {fixData?
+      {fixData ? (
         <Input
           required
           type="number"
@@ -90,7 +90,7 @@ const Heat = ({
           onChange={handleRangeChange}
           disabled
         />
-        :
+      ) : (
         <Input
           required
           type="number"
@@ -99,8 +99,8 @@ const Heat = ({
           placeholder="To"
           onChange={handleRangeChange}
         />
-      }
-      
+      )}
+
       <br />
       <div className="heat_data_tooltip">
         <h3 style={{ display: "flex", alignItems: "center" }}>
@@ -142,7 +142,7 @@ const Heat = ({
                 }}
               >
                 {ranges[index].toFixed(2)}
-                <br /> to {(ranges[index + 1] - 1).toFixed(2)}
+                <br /> to {ranges[index + 1].toFixed(2)}
               </div>
             </div>
           ))}

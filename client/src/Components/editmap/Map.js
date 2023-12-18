@@ -47,7 +47,7 @@ const Map = ({
 }) => {
   const mapFileData = useRef(selectedMapFile);
   const mapRef = useRef();
-  const fixDataRef = useRef(fixData)
+  const fixDataRef = useRef(fixData);
 
   const [regionName, setRegionName] = useState("");
 
@@ -56,8 +56,8 @@ const Map = ({
   }, [template]);
 
   useEffect(() => {
-    console.log("fixDataRef.current: ", fixDataRef.current)
-    console.log("fixData: ", fixData)
+    console.log("fixDataRef.current: ", fixDataRef.current);
+    console.log("fixData: ", fixData);
     if (fixDataRef.current) {
       if (!fixData) {
         resetMap();
@@ -173,13 +173,11 @@ const Map = ({
       resetMap();
       console.log("resetMap called:", selectedMapFile);
       setFixData(false);
-
     }
   }, [template]);
 
   const handleClickRegion = () => {
     if (fixDataRef.current) {
-
       // setShowPopup(false);
       setSelectedMapFile((prevMapFile) => {
         // console.log(prevMapFile);
@@ -202,9 +200,8 @@ const Map = ({
 
         return prevMapFile; // Return the unchanged state
       });
-    }
-    else {
-      setStartDataEditModal(true)
+    } else {
+      setStartDataEditModal(true);
     }
   };
 
@@ -292,11 +289,13 @@ const Map = ({
       );
       var namesDataAdded = [];
       featureDataAdded.forEach((element) => {
-        console.log(element["properties"].mapbook_data.length)
-        if (Object.keys(element["properties"].mapbook_data).length < themeData.length) {
-          delete element["properties"].mapbook_data
-        }
-        else {
+        console.log(element["properties"].mapbook_data.length);
+        if (
+          Object.keys(element["properties"].mapbook_data).length <
+          themeData.length
+        ) {
+          delete element["properties"].mapbook_data;
+        } else {
           namesDataAdded.push(element["properties"].name);
         }
       });
@@ -742,9 +741,7 @@ const Map = ({
           expImageSelect
         );
         setIsCanvasLoaded(true);
-
-      }
-      catch (error) {
+      } catch (error) {
         // set isCanvasLoaded false
         setIsCanvasLoaded(false);
       }
@@ -860,9 +857,7 @@ const Map = ({
           expImageSelect
         );
         setIsCanvasLoaded(true);
-
-      }
-      catch (error) {
+      } catch (error) {
         // set isCanvasLoaded false
         setIsCanvasLoaded(false);
       }
@@ -1145,8 +1140,11 @@ const Map = ({
               return `<span>${Object.keys(obj)
                 .map((nestedKey) => {
                   const value = obj[nestedKey];
-                  return ` ${nestedKey.toLowerCase() === "color" ? `<font color="${value}">(${value})</font>` : value
-                    }`;
+                  return ` ${
+                    nestedKey.toLowerCase() === "color"
+                      ? `<font color="${value}">(${value})</font>`
+                      : value
+                  }`;
                 })
                 .join("<br/>")}</span>`;
             };
@@ -1155,13 +1153,16 @@ const Map = ({
               setHoverData(`No data for ${regions[0]["properties"].name}`);
             } else {
               const formatDataByKey = (key, value) => {
-                return `${key}  ${isObject(value) ? renderObject(value) : value
-                  }`;
+                return `${key}  ${
+                  isObject(value) ? renderObject(value) : value
+                }`;
               };
 
               const formatColorKey = (key, value) => {
                 const formattedValue =
-                  key.toLowerCase() === "color" ? `<font color="${value}"> (${value})</font>` : value;
+                  key.toLowerCase() === "color"
+                    ? `<font color="${value}"> (${value})</font>`
+                    : value;
                 return `${formattedValue}`;
               };
 
@@ -1198,7 +1199,9 @@ const Map = ({
               } else if (templateHoverType.current === "Heat Map") {
                 const heatDataName =
                   mapFileData.current.mapbook_circleheatmapdata;
-                var from = Number(mapFileData.current["mapbook_heatrange"]["from"]);
+                var from = Number(
+                  mapFileData.current["mapbook_heatrange"]["from"]
+                );
                 var to = Number(mapFileData.current["mapbook_heatrange"]["to"]);
 
                 const width = (to - from) / 5;
@@ -1211,13 +1214,25 @@ const Map = ({
                   to,
                 ];
 
-                var heatRangeColorText = "</br>"
+                var heatRangeColorText = "</br>";
 
                 for (let i = 0; i < 5; i++) {
-                  heatRangeColorText = heatRangeColorText + `<font color="${mapFileData.current["mapbook_heat_selectedcolors"][i]}">${ranges[i].toFixed(2)} to ${(ranges[i + 1] - 1).toFixed(2)}</font></br>`
+                  heatRangeColorText =
+                    heatRangeColorText +
+                    `<font color="${
+                      mapFileData.current["mapbook_heat_selectedcolors"][i]
+                    }">${ranges[i].toFixed(2)} to ${(ranges[i + 1] - 1).toFixed(
+                      2
+                    )}</font></br>`;
                 }
 
-                setHoverData(regions[0]["properties"].name + "\n" + heatDataName + heatRangeColorText + formattedData);
+                setHoverData(
+                  regions[0]["properties"].name +
+                    "\n" +
+                    heatDataName +
+                    heatRangeColorText +
+                    formattedData
+                );
               } else if (templateHoverType.current === "Thematic Map") {
                 setHoverData(
                   regions[0]["properties"].name + "<br/><br/>" + formattedData
@@ -1226,7 +1241,13 @@ const Map = ({
                 const circleDataName =
                   mapFileData.current.mapbook_circleheatmapdata;
 
-                setHoverData(regions[0]["properties"].name + "\n" + circleDataName + "<br/><br/>" + formattedData);
+                setHoverData(
+                  regions[0]["properties"].name +
+                    "\n" +
+                    circleDataName +
+                    "<br/><br/>" +
+                    formattedData
+                );
               }
             }
           }
@@ -1253,15 +1274,12 @@ const Map = ({
     }
   }, [isMapLoaded]);
 
-
   useEffect(() => {
     if (!isCanvasLoaded) {
       redrawPieData();
       redrawBarData();
     }
   }, [isCanvasLoaded]);
-
-
 
   // Convert data to GEOJSON //
   function saveGeoJSONToFile(geoJSONObject, filename) {
@@ -1288,7 +1306,6 @@ const Map = ({
     // console.log(`GeoJSON saved as ${filename}`);
     return newGeoJson;
   }
-
 
   const editMap = async (mapData) => {
     const canvas = await html2canvas(
@@ -1317,7 +1334,6 @@ const Map = ({
       // const responseMsg = await res.json;
       navigate("/mainpage");
       window.location.reload();
-
     } else {
       // alert(`Error: ${res.status} - ${res.statusText}`);
       setShowErrorMessage(true);
@@ -1336,7 +1352,6 @@ const Map = ({
     );
     editMap(mapFile);
   };
-
 
   return (
     <div className="addmapdata_center">
@@ -1364,14 +1379,16 @@ const Map = ({
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
           <i
-            className={`${undoStack.current.length === 0 ? "disabled_undo" : "undo"
-              } bx bx-undo`}
+            className={`${
+              undoStack.current.length === 0 ? "disabled_undo" : "undo"
+            } bx bx-undo`}
             onClick={handleUndo}
           />
           <div className="vertical_line_container">|</div>
           <i
-            className={`${redoStack.current.length === 0 ? "disabled_redo" : "redo"
-              } bx bx-redo`}
+            className={`${
+              redoStack.current.length === 0 ? "disabled_redo" : "redo"
+            } bx bx-redo`}
             onClick={handleRedo}
           />
         </div>
@@ -1442,7 +1459,6 @@ const Map = ({
         )}
       </div>
 
-
       {startDataEditModal && (
         <div className="mappdetails_reset_confirmation_modal">
           <div className="mapdetails_reset_confirmation_modal_top">
@@ -1458,7 +1474,6 @@ const Map = ({
           </div>
         </div>
       )}
-
 
       <div
         style={{
