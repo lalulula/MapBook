@@ -52,12 +52,21 @@ app.put(
   auth.verifyToken,
   userController.updateUser
 );
-// Create Post
+
+// Create social Post
 app.put(
   "/api/social/createSocialPost",
   upload.array("post_images"),
   socialController.createPost
 );
+
+// Create social Post
+app.put(
+  "/api/social/editSocialPost/:sPostId",
+  upload.array("post_images"),
+  socialController.editPost
+);
+
 
 // CREATE MAP
 app.post(
@@ -68,6 +77,7 @@ app.post(
   // auth.verifyToken,
   mapController.createMap
 );
+
 // UPDATE MAP
 app.put(
   "/api/maps/:mapId",

@@ -101,20 +101,59 @@ const editPost = async (req, res) => {
     const { sPostId } = req.params;
     const { title, post_content, post_images, topic, customTopic, view_count } =
       req.body;
+    if (req.files == null ||req.files.length == 0) {
+      const updatedPost = await SocialPost.findByIdAndUpdate(
+        sPostId,
+        {
+          title: title,
+          post_content: post_content,
+          post_images: post_images,
+          topic: topic,
+          customTopic: customTopic,
+          view_count: view_count,
+        },
+        { new: true }
+      );
+      res.status(200).json(updatedPost);
+    }
+    else{
+      // console.log(req.file)
+      const imagesUrl = [];
 
-    const updatedPost = await SocialPost.findByIdAndUpdate(
-      sPostId,
-      {
-        title: title,
-        post_content: post_content,
-        post_images: post_images,
-        topic: topic,
-        customTopic: customTopic,
-        view_count: view_count,
-      },
-      { new: true }
-    );
-    res.status(200).json(updatedPost);
+      for(var i = 0; i < req.files.length; i++){
+        var temp = await cloudinary.uploader.upload(req.files[i].path, async function (err, result) {
+          if (err) {
+            console.log(err);
+            return res.status(500).json({
+              success: false,
+              message: "Error",
+            });
+          }
+        });
+
+        console.log(temp["secure_url"])
+        imagesUrl.push(temp["secure_url"]);
+      }
+     
+
+      const updatedPost = await SocialPost.findByIdAndUpdate(
+        sPostId,
+        {
+          title: title,
+          post_content: post_content,
+          post_images: imagesUrl,
+          topic: topic,
+          customTopic: customTopic,
+          view_count: view_count,
+        },
+        { new: true }
+      );
+
+   
+      res.status(200).json(updatedPost);
+
+
+    }
   } catch (err) {
     res.status(404).json({ message: err.message });
   }

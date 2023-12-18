@@ -16,7 +16,7 @@ router.get("/mySocialPost/:userId", social.getMySocialPosts);
 router.post("/createSocialPost", social.createPost);
 
 // UpdatePost
-router.put("/editSocialPost/:sPostId", social.editPost);
+// router.put("/editSocialPost/:sPostId", social.editPost);
 
 // Delete Post
 router.delete("/deleteSocialPost/:sPostId", social.deletePost);
