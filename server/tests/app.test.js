@@ -409,4 +409,3 @@ describe("MapBook API tests:", () => {
     });
   });
 });
-// FIXED
