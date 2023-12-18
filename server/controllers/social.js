@@ -109,6 +109,7 @@ const editPost = async (req, res) => {
           post_content: post_content,
           post_images: post_images,
           topic: topic,
+          post_images: [],
           customTopic: customTopic,
           view_count: view_count,
         },
@@ -141,7 +142,7 @@ const editPost = async (req, res) => {
         {
           title: title,
           post_content: post_content,
-          post_images: [],
+          post_images: imagesUrl,
           topic: topic,
           customTopic: customTopic,
           view_count: view_count,
