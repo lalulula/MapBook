@@ -2,9 +2,6 @@ const LOCALHOST = "http://localhost:3000";
 const sampleSocialPostUrl = "socialpostdetails/657e6a430d5f991a81dda5ca";
 
 describe("Social Details", () => {
-  //const baseUrl = Cypress.env('http://localhost:3000' || 'https://mapbook-f381d1faf354.herokuapp.com');
-  //const baseUrl = 'http://localhost:3000';
-
   beforeEach(() => {
     cy.visit(`${LOCALHOST}/login`);
     // Fill out the login form
