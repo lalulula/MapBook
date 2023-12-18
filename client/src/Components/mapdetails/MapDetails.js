@@ -23,6 +23,8 @@ import Typewriter from "typewriter-effect";
 import CustomSwitch from "../widgets/CustomSwitch";
 import polylabel from "polylabel";
 import LikeButton from "../widgets/LikeButton";
+import copy from 'copy-to-clipboard';
+
 
 import {
   Chart as ChartJS,
@@ -997,9 +999,11 @@ const MapDetails = () => {
 
   const handleShare = () => {
     // Handle share action
-    navigator.clipboard.writeText(
-      HOME_URL + "/mapdetails/" + currentMap.current._id
-    );
+    // navigator.clipboard.writeText(
+    //   HOME_URL + "/mapdetails/" + currentMap.current._id
+    // );
+    copy(HOME_URL + "/mapdetails/" + currentMap.current._id);
+
     alert("Link Copied!");
 
     console.log("Share clicked");

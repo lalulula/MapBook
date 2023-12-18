@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import Lottie from "lottie-react";
 import ImageLoader from "../../assets/Lottie/ImageLoader.json";
 import { getUserById } from "../../api/user";
+import copy from 'copy-to-clipboard';
+
 
 export const HOME_URL = process.env.REACT_APP_HOME_URL;
 
@@ -73,7 +75,9 @@ const MapPreview = ({
     // Handle share action
     e.stopPropagation();
     console.log(HOME_URL + "/mapdetails/" + data._id);
-    navigator.clipboard.writeText(HOME_URL + "/mapdetails/" + data._id);
+    // navigator.clipboard.writeText(HOME_URL + "/mapdetails/" + data._id);
+    copy(HOME_URL + "/mapdetails/" + data._id);
+
     alert("Link Copied!");
 
     console.log("Share clicked");
