@@ -36,22 +36,29 @@ const MapDataInputPage = ({
   const [hoverData, setHoverData] = useState("Out of range");
   const [showHoverData, setShowHoverData] = useState(false);
   const [fixData, setFixData] = useState(false);
-  const [resetDataModal, setResetDataModal] = useState(false)
+  const [resetDataModal, setResetDataModal] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     console.log(showHoverData);
   }, [showHoverData]);
 
-  const setFixDataToTrue = () =>{
+  const setFixDataToTrue = () => {
     setFixData(true);
-  }
-  const setFixDataToFalse = () =>{
+  };
+  const setFixDataToFalse = () => {
     setResetDataModal(false);
     setFixData(false);
-  }
+  };
 
   const handleMapNameChange = (name) => {
-    setOptions({ ...options, name });
+    if (!/^[a-zA-Z0-9\s]*$/.test(name)) {
+      setErrorMsg(`[?!,.#] are not allowed.`);
+      return;
+    } else {
+      setErrorMsg("");
+      setOptions({ ...options, name });
+    }
   };
   const handleMapDescriptionChange = (description) => {
     setOptions({ ...options, description });
@@ -192,7 +199,14 @@ const MapDataInputPage = ({
               name="map_name"
               placeholder="Enter Map Name"
               required
+              style={{
+                borderColor: errorMsg ? "var(--warning-color)" : "", // Set border color to red if there's an error, otherwise default to empty string
+                color: errorMsg ? "var(--warning-color)" : "", // Set text color to red if there's an error, otherwise default to empty string
+              }}
             />
+            <div className="createmap_mapname_error">
+              {errorMsg && errorMsg}
+            </div>
           </FormControl>
         </div>
         <div>
@@ -304,12 +318,13 @@ const MapDataInputPage = ({
               handleCircleHeatMapDataChange={handleCircleHeatMapDataChange}
               fixData={fixData}
               setFixData={setFixData}
-             
             />
           )}
           {template === "Thematic Map" && (
             <>
-              <Thematic themeData={themeData} setThemeData={setThemeData} 
+              <Thematic
+                themeData={themeData}
+                setThemeData={setThemeData}
                 fixData={fixData}
                 setFixData={setFixData}
               />
@@ -333,17 +348,18 @@ const MapDataInputPage = ({
         </div>
 
         <div className="mapdatainput_fix_data" style={{ textAlign: "center" }}>
-          {
-            fixData? 
-            <span onClick={() => setResetDataModal(true)} className="createmap_fix_data_btn">
+          {fixData ? (
+            <span
+              onClick={() => setResetDataModal(true)}
+              className="createmap_fix_data_btn"
+            >
               reset Data
             </span>
-            :
+          ) : (
             <span onClick={setFixDataToTrue} className="createmap_fix_data_btn">
               Start editing data
             </span>
-          }
-          
+          )}
         </div>
         {resetDataModal && (
           <div className="mappdetails_reset_confirmation_modal">

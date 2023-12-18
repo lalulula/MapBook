@@ -1,5 +1,6 @@
 :root {
   --main-color: rgba(105, 163, 255, 0.901);
+  --warning-color: rgb(186, 68, 68);
 }
 * {
   margin: 0;
