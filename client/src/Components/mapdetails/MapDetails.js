@@ -823,11 +823,10 @@ const MapDetails = () => {
                 return `<span>${Object.keys(obj)
                   .map((nestedKey) => {
                     const value = obj[nestedKey];
-                    return ` ${
-                      nestedKey.toLowerCase() === "color"
-                        ? `<font color="${value}">(${value})</font>`
-                        : value
-                    }`;
+                    return ` ${nestedKey.toLowerCase() === "color"
+                      ? `<font color="${value}">(${value})</font>`
+                      : value
+                      }`;
                   })
                   .join("<br/>")}</span>`;
               };
@@ -838,9 +837,8 @@ const MapDetails = () => {
                 setHoverData(`No data for ${regions[0]["properties"].name}`);
               } else {
                 const formatDataByKey = (key, value) => {
-                  return `${key}  ${
-                    isObject(value) ? renderObject(value) : value
-                  }`;
+                  return `${key}  ${isObject(value) ? renderObject(value) : value
+                    }`;
                 };
 
                 const formatColorKey = (key, value) => {
@@ -905,8 +903,7 @@ const MapDetails = () => {
                   for (let i = 0; i < 5; i++) {
                     heatRangeColorText =
                       heatRangeColorText +
-                      `<font color="${
-                        selectedMapFile["mapbook_heat_selectedcolors"][i]
+                      `<font color="${selectedMapFile["mapbook_heat_selectedcolors"][i]
                       }">${ranges[i].toFixed(2)} to ${(
                         ranges[i + 1] - 1
                       ).toFixed(2)}</font></br>`;
@@ -914,10 +911,10 @@ const MapDetails = () => {
 
                   setHoverData(
                     regions[0]["properties"].name +
-                      "\n" +
-                      heatDataName +
-                      heatRangeColorText +
-                      formattedData
+                    "\n" +
+                    heatDataName +
+                    heatRangeColorText +
+                    formattedData
                   );
                 } else if (
                   selectedMapFile.mapbook_template === "Thematic Map"
@@ -931,10 +928,10 @@ const MapDetails = () => {
 
                   setHoverData(
                     regions[0]["properties"].name +
-                      "\n" +
-                      circleDataName +
-                      "<br/><br/>" +
-                      formattedData
+                    "\n" +
+                    circleDataName +
+                    "<br/><br/>" +
+                    formattedData
                   );
                 }
                 // setHoverData(
@@ -996,6 +993,7 @@ const MapDetails = () => {
       // popup
     }
   };
+
 
   const handleShare = () => {
     // Handle share action
@@ -1154,9 +1152,8 @@ const MapDetails = () => {
             </div>
           </div>
           <div
-            className={`mapdetails_hoverdata_switch${
-              showHoverData ? "_showing" : ""
-            }`}
+            className={`mapdetails_hoverdata_switch${showHoverData ? "_showing" : ""
+              }`}
           >
             <CustomSwitch
               showHoverData={showHoverData}

@@ -58,8 +58,8 @@ const Map = ({
   useEffect(() => {
     console.log("fixDataRef.current: ", fixDataRef.current)
     console.log("fixData: ", fixData)
-    if(fixDataRef.current){
-      if(!fixData){
+    if (fixDataRef.current) {
+      if (!fixData) {
         resetMap();
       }
     }
@@ -178,7 +178,7 @@ const Map = ({
   }, [template]);
 
   const handleClickRegion = () => {
-    if(fixDataRef.current){
+    if (fixDataRef.current) {
 
       // setShowPopup(false);
       setSelectedMapFile((prevMapFile) => {
@@ -203,7 +203,7 @@ const Map = ({
         return prevMapFile; // Return the unchanged state
       });
     }
-    else{
+    else {
       setStartDataEditModal(true)
     }
   };
@@ -1316,6 +1316,8 @@ const Map = ({
     if (res.ok) {
       // const responseMsg = await res.json;
       navigate("/mainpage");
+      window.location.reload();
+
     } else {
       // alert(`Error: ${res.status} - ${res.statusText}`);
       setShowErrorMessage(true);
@@ -1440,22 +1442,22 @@ const Map = ({
         )}
       </div>
 
-      
+
       {startDataEditModal && (
-          <div className="mappdetails_reset_confirmation_modal">
-            <div className="mapdetails_reset_confirmation_modal_top">
-              You can not edit Data. Click Start editing data.
-            </div>
-            <div className="mapdetails_edit_confirmation_modal_bottom">
-              <button
-                className="mapdetails_reset_confirm"
-                onClick={() => setStartDataEditModal(false)}
-              >
-                Ok
-              </button>
-            </div>
+        <div className="mappdetails_reset_confirmation_modal">
+          <div className="mapdetails_reset_confirmation_modal_top">
+            You can not edit Data. Click Start editing data.
           </div>
-        )}
+          <div className="mapdetails_edit_confirmation_modal_bottom">
+            <button
+              className="mapdetails_reset_confirm"
+              onClick={() => setStartDataEditModal(false)}
+            >
+              Ok
+            </button>
+          </div>
+        </div>
+      )}
 
 
       <div

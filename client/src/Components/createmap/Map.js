@@ -57,8 +57,8 @@ const Map = ({
   useEffect(() => {
     console.log("fixDataRef.current: ", fixDataRef.current)
     console.log("fixData: ", fixData)
-    if(fixDataRef.current){
-      if(!fixData){
+    if (fixDataRef.current) {
+      if (!fixData) {
         resetMap();
       }
     }
@@ -176,7 +176,7 @@ const Map = ({
   }, [template]);
 
   const handleClickRegion = () => {
-    if(fixDataRef.current){
+    if (fixDataRef.current) {
       // setShowPopup(false);
       setSelectedMapFile((prevMapFile) => {
         // console.log(prevMapFile);
@@ -200,7 +200,7 @@ const Map = ({
         return prevMapFile; // Return the unchanged state
       });
     }
-    else{
+    else {
       setStartDataEditModal(true)
     }
   };
@@ -291,7 +291,7 @@ const Map = ({
       console.log("featureDataAdded")
       featureDataAdded.forEach((element) => {
         if (Object.keys(element["properties"].mapbook_data).length < themeData.length) {
-            delete element["properties"].mapbook_data;
+          delete element["properties"].mapbook_data;
         }
         else {
 
@@ -1314,6 +1314,7 @@ const Map = ({
     console.log("res: ", res);
     if (res.ok) {
       navigate("/mainpage");
+      window.location.reload();
     } else {
       setShowErrorMessage(true);
       // const responseData = await res.json();
@@ -1455,20 +1456,20 @@ const Map = ({
       </div>
 
       {startDataEditModal && (
-          <div className="mappdetails_reset_confirmation_modal">
-            <div className="mapdetails_reset_confirmation_modal_top">
-              You can not edit Data. Click Start editing data.
-            </div>
-            <div className="mapdetails_edit_confirmation_modal_bottom">
-              <button
-                className="mapdetails_reset_confirm"
-                onClick={() => setStartDataEditModal(false)}
-              >
-                Ok
-              </button>
-            </div>
+        <div className="mappdetails_reset_confirmation_modal">
+          <div className="mapdetails_reset_confirmation_modal_top">
+            You can not edit Data. Click Start editing data.
           </div>
-        )}
+          <div className="mapdetails_edit_confirmation_modal_bottom">
+            <button
+              className="mapdetails_reset_confirm"
+              onClick={() => setStartDataEditModal(false)}
+            >
+              Ok
+            </button>
+          </div>
+        </div>
+      )}
 
       <div
         style={{

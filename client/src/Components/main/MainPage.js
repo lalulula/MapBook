@@ -45,7 +45,7 @@ const MainPage = () => {
     );
     setTrendingMaps(sortedMapByViewCount.slice(0, 7));
   }, [allMaps]);
-  useEffect(() => {}, [searchFilterOption]);
+  useEffect(() => { }, [searchFilterOption]);
 
   // const filteredMaps = allMaps.filter((map) => {
   //   if (map.map_name.includes(searchTerm)) {
