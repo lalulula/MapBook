@@ -44,22 +44,21 @@ const ColorGenerator = ({ selectedColors, setSelectedColors, fixData }) => {
 
   return (
     <div style={{ display: "flex" }}>
-      {fixData? 
+      {fixData ? (
         <input
           type="color"
           className="createMap_color_picker"
-          value={selectedColors.length == 0 ? baseColor : selectedColors[0]}
+          value={selectedColors.length === 0 ? baseColor : selectedColors[0]}
           onChange={handleBaseColorChange}
         />
-        :
+      ) : (
         <input
           type="color"
           className="createMap_color_picker"
-          value={selectedColors.length == 0 ? baseColor : selectedColors[0]}
+          value={selectedColors.length === 0 ? baseColor : selectedColors[0]}
           onChange={handleBaseColorChange}
         />
-      }
-      
+      )}
     </div>
   );
 };
