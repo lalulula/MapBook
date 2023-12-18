@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import {
   deleteSocialPostAPIMethod,
   getSocialPostAPIMethod,
-  editSocialPostAPIMethod,
+  addViewCountSocialPostAPIMethod,
 } from "../../api/social";
 import { getUserById } from "../../api/user";
 import LikeButton from "../widgets/LikeButton";
@@ -78,9 +78,9 @@ const SocialPostDetails = () => {
         setCurrentPost(currentPost);
         setPostOwner(post_owner_data);
         const updatedViewCount = currentPost.view_count + 1;
-        const updatedPost = { ...currentPost, view_count: updatedViewCount };
+        // const updatedPost = { ...currentPost, view_count: updatedViewCount };
 
-        await editSocialPostAPIMethod(currentPost._id, updatedPost);
+        await addViewCountSocialPostAPIMethod(currentPost._id);
         if (currentPost.post_owner === user._id) {
           setIsOwner(true);
         }
@@ -233,9 +233,8 @@ const SocialPostDetails = () => {
                     alt=""
                     id="post_details_img"
                     src={currentPost.post_images[currentIndex]}
-                    className={`socialpostdetails_img${
-                      imgFullScreen ? "_fullscreen" : ""
-                    }`}
+                    className={`socialpostdetails_img${imgFullScreen ? "_fullscreen" : ""
+                      }`}
                     onClick={() => setImgFullScreen(!imgFullScreen)}
                   />
                   {imgFullScreen && (
@@ -264,7 +263,7 @@ const SocialPostDetails = () => {
                             ? "post_img_indicator"
                             : "post_img_indicator indicator-inactive"
                         }
-                        /* onClick={() => setSlide(idx)} */
+                      /* onClick={() => setSlide(idx)} */
                       ></button>
                     );
                   })}

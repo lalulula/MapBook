@@ -155,6 +155,29 @@ export const editSocialPostAPIMethod = async (sPostId, socialpost) => {
     console.error("Error updating post:", error.message);
   }
 };
+
+export const addViewCountSocialPostAPIMethod = async (socialPostId) => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/api/social/addViewCount/${socialPostId}`,
+      {
+        ...defaultHeaders,
+        method: "put",
+      }
+    ).then(checkStatus);
+
+    // Check if the delete operation was successful
+    if (response) {
+      return true; // Indicates success
+    } else {
+      return false; // Indicates failure
+    }
+  } catch (error) {
+    console.error("Error deleting social post:", error);
+    return false; // Indicates failure
+  }
+};
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
