@@ -134,6 +134,8 @@ const MapDataInputPage = ({
         setThemeData(selectedMapFile.mapbook_themedata);
         setOptions({
           ...options,
+          name:selectedMapFile.mapbook_mapname,
+          description: selectedMapFile.mapbook_description,
           template: selectedMapFile.mapbook_template,
           topic: selectedMapFile.mapbook_topic,
           customTopic: selectedMapFile.mapbook_customtopic,
@@ -143,6 +145,8 @@ const MapDataInputPage = ({
         setHeatRange(selectedMapFile.mapbook_heatrange);
         setOptions({
           ...options,
+          name:selectedMapFile.mapbook_mapname,
+          description: selectedMapFile.mapbook_description,
           template: selectedMapFile.mapbook_template,
           topic: selectedMapFile.mapbook_topic,
           customTopic: selectedMapFile.mapbook_customtopic,
@@ -157,6 +161,8 @@ const MapDataInputPage = ({
         // const newOption = { ...options, circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata }
         setOptions({
           ...options,
+          name:selectedMapFile.mapbook_mapname,
+          description: selectedMapFile.mapbook_description,
           template: selectedMapFile.mapbook_template,
           topic: selectedMapFile.mapbook_topic,
           customTopic: selectedMapFile.mapbook_customtopic,
@@ -171,6 +177,8 @@ const MapDataInputPage = ({
         setPieBarData(selectedMapFile.mapbook_datanames);
         setOptions({
           ...options,
+          name:selectedMapFile.mapbook_mapname,
+          description: selectedMapFile.mapbook_description,
           template: selectedMapFile.mapbook_template,
           topic: selectedMapFile.mapbook_topic,
           customTopic: selectedMapFile.mapbook_customtopic,
@@ -179,6 +187,8 @@ const MapDataInputPage = ({
         setPieBarData(selectedMapFile.mapbook_datanames);
         setOptions({
           ...options,
+          name:selectedMapFile.mapbook_mapname,
+          description: selectedMapFile.mapbook_description,
           template: selectedMapFile.mapbook_template,
           topic: selectedMapFile.mapbook_topic,
           customTopic: selectedMapFile.mapbook_customtopic,
