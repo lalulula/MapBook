@@ -18,7 +18,7 @@ const UpdateUserButton = ({ onClick, text }) => {
         primary
       /> */}
       <button
-        className="profile_update_cancel_btn"
+        className="profile_update_btn"
         onClick={onClick}
         style={{
           marginTop: "20px",
