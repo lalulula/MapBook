@@ -199,6 +199,27 @@ const likePost = async (req, res) => {
   }
 };
 
+
+// Update Post by post id
+const addViewCount = async (req, res) => {
+  try {
+    const { sPostId } = req.params;
+    const socialPost = await SocialPost.findById(sPostId);
+    var cur_view_count = socialPost.view_count;
+
+    const updatedPost = await SocialPost.findByIdAndUpdate(
+      sPostId,
+      {
+        view_count: cur_view_count + 1,
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
 module.exports = {
   getAllPost: getAllPost,
   getPostDetails: getPostDetails,
@@ -207,4 +228,5 @@ module.exports = {
   deletePost: deletePost,
   getMySocialPosts: getMySocialPosts,
   likePost: likePost,
+  addViewCount: addViewCount,
 };

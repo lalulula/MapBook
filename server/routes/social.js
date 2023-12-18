@@ -24,4 +24,7 @@ router.delete("/deleteSocialPost/:sPostId", social.deletePost);
 // like and dislike Psot
 router.put("/likePost/:sPostId", social.likePost);
 
+router.put("/addViewCount/:sPostId", social.addViewCount);
+
+
 module.exports = router;
