@@ -1,4 +1,5 @@
 const LOCALHOST = "http://localhost:3000";
+import "cypress-file-upload";
 
 describe("CreateSocialPost Component", () => {
   beforeEach(() => {
@@ -14,7 +15,6 @@ describe("CreateSocialPost Component", () => {
     cy.visit(`${LOCALHOST}/createsocialpost`);
   });
 
-
   it("should create a social post using UI", () => {
     // Assuming your elements have specific class names
     // Click on the dropdown to open it
@@ -23,8 +23,17 @@ describe("CreateSocialPost Component", () => {
     // Select a topic from the dropdown
     cy.get(".Dropdown-menu").contains("Economy").click();
 
-    cy.get('.createsocialpost_title_input').type('Test Title');
-    cy.get('.createsocialpost_description_textarea').type("Test Description");
+    cy.get(".createsocialpost_title_input").type("Test Title");
+    cy.get(".createsocialpost_description_textarea").type("Test Description");
+    cy.get(".upload_label").click();
+    const fileName = "YAprofiletest.jpg";
+    cy.fixture(fileName, null).then((imageContent) => {
+      cy.get('input[type="file"]').attachFile({
+        fileContent: imageContent,
+        fileName: fileName,
+        mimeType: "image/jpeg",
+      });
+    });
 
     // Click on the Post button
     cy.get(".createsocialpost_submit").click();
@@ -33,7 +42,7 @@ describe("CreateSocialPost Component", () => {
 
     // Assuming the navigation takes some time, wait for the destination page to load
     cy.url().should("eq", `${LOCALHOST}/socialpage`);
-    cy.get('.socialpage_middle').should('contain', "Test Title");
+    cy.get(".socialpage_middle").should("contain", "Test Title");
   });
 });
 
@@ -63,28 +72,17 @@ describe("CreateSocialPost API Test", () => {
       "Test Description"
     );
 
-    // // Upload an image (assuming you have set data-testid for the image input)
-    // cy.fixture("example-image.jpg").then((fileContent) => {
-    //   cy.get('[data-testid="image-upload"]').attachFile({
-    //     fileContent: fileContent.toString(),
-    //     fileName: "example-image.jpg",
-    //     mimeType: "image/jpeg",
-    //   });
-    // });
-
     // Select a topic from the dropdown
     cy.get(".Dropdown-control").click();
 
     cy.get(".Dropdown-menu").contains("Economy").click();
     // Click on the Post button
-    cy.get('.createsocialpost_submit').click();
+    cy.get(".createsocialpost_submit").click();
 
     // Wait for the API request to complete
     cy.wait("@createPost").then((interception) => {
-      // Check if the API request was successful
       expect(interception.response.statusCode).to.eq(201);
 
-      // Assuming the navigation takes some time, wait for the destination page to load
       cy.url().should("include", `${LOCALHOST}/socialpage`);
     });
   });
