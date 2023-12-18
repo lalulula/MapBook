@@ -121,14 +121,16 @@ const MapDetails = () => {
             const xhr = new XMLHttpRequest();
             xhr.responseType = "json";
             xhr.onload = (event) => {
-              // console.log("response: ", xhr.response);
-              setSelectedMapFile(xhr.response);
+              console.log("RESPONSE: ", xhr.response.feature);
+              setSelectedMapFile(
+                xhr.response.feature === undefined
+                  ? JSON.parse(xhr.response)
+                  : xhr.response
+              );
               setIsMapLoaded(true);
             };
             xhr.open("GET", mapUrl);
             xhr.send();
-
-            
           }, 3500);
         }
       } catch (error) {
@@ -158,7 +160,13 @@ const MapDetails = () => {
     let totalX = 0;
     let totalY = 0;
     let count = 0;
-
+    // console.log(features);
+    // if (features === undefined) {
+    //   // 윤아 테스트
+    //   console.log("FEATURE IS NULL WTF");
+    //   console.log("selectedMapFile", JSON.parse(selectedMapFile).features);
+    //   features = JSON.parse(selectedMapFile).features;
+    // }
     // Loop through features and sum up coordinates
     features.forEach((feature) => {
       const coordinates = feature.geometry.coordinates[0]; // Assuming the first ring of the polygon
@@ -353,7 +361,9 @@ const MapDetails = () => {
   useEffect(() => {
     if (selectedMapFile != null) {
       // console.log("selectedMapFile: useEffect: ", selectedMapFile);
+      // console.log("selectedMapFile", JSON.parse(selectedMapFile).features);
       const centroid = calculateCentroid(selectedMapFile.features);
+      // features === undefined
       const totalArea = selectedMapFile.features.reduce((acc, feature) => {
         const area = turf.area(feature);
         return acc + area;
@@ -807,7 +817,9 @@ const MapDetails = () => {
                   .map((nestedKey) => {
                     const value = obj[nestedKey];
                     return ` ${
-                      nestedKey.toLowerCase() === "color" ? `<font color="${value}">(${value})</font>` : value
+                      nestedKey.toLowerCase() === "color"
+                        ? `<font color="${value}">(${value})</font>`
+                        : value
                     }`;
                   })
                   .join("<br/>")}</span>`;
@@ -826,7 +838,9 @@ const MapDetails = () => {
 
                 const formatColorKey = (key, value) => {
                   const formattedValue =
-                    key.toLowerCase() === "color" ? `<font color="${value}"> (${value})</font>` : value;
+                    key.toLowerCase() === "color"
+                      ? `<font color="${value}"> (${value})</font>`
+                      : value;
                   return `${formattedValue}`;
                 };
 
@@ -861,11 +875,14 @@ const MapDetails = () => {
                     regions[0]["properties"].name + "<br/><br/>" + formattedData
                   );
                 } else if (selectedMapFile.mapbook_template === "Heat Map") {
-                  const heatDataName = selectedMapFile.mapbook_circleheatmapdata;
+                  const heatDataName =
+                    selectedMapFile.mapbook_circleheatmapdata;
 
-                  var from = Number(selectedMapFile["mapbook_heatrange"]["from"]);
+                  var from = Number(
+                    selectedMapFile["mapbook_heatrange"]["from"]
+                  );
                   var to = Number(selectedMapFile["mapbook_heatrange"]["to"]);
-                  
+
                   const width = (to - from) / 5;
                   const ranges = [
                     from,
@@ -876,22 +893,42 @@ const MapDetails = () => {
                     to,
                   ];
 
-                  var heatRangeColorText = "</br>"
-                  
-                  for(let i = 0; i < 5; i ++){
-                    heatRangeColorText = heatRangeColorText + `<font color="${selectedMapFile["mapbook_heat_selectedcolors"][i]}">${ranges[i].toFixed(2)} to ${(ranges[i + 1] - 1).toFixed(2)}</font></br>`
+                  var heatRangeColorText = "</br>";
+
+                  for (let i = 0; i < 5; i++) {
+                    heatRangeColorText =
+                      heatRangeColorText +
+                      `<font color="${
+                        selectedMapFile["mapbook_heat_selectedcolors"][i]
+                      }">${ranges[i].toFixed(2)} to ${(
+                        ranges[i + 1] - 1
+                      ).toFixed(2)}</font></br>`;
                   }
 
-                  setHoverData(regions[0]["properties"].name + "\n" + heatDataName + heatRangeColorText + formattedData);
-                } else if (selectedMapFile.mapbook_template === "Thematic Map") {
+                  setHoverData(
+                    regions[0]["properties"].name +
+                      "\n" +
+                      heatDataName +
+                      heatRangeColorText +
+                      formattedData
+                  );
+                } else if (
+                  selectedMapFile.mapbook_template === "Thematic Map"
+                ) {
                   setHoverData(
                     regions[0]["properties"].name + "<br/><br/>" + formattedData
                   );
                 } else if (selectedMapFile.mapbook_template === "Circle Map") {
                   const circleDataName =
-                  selectedMapFile.mapbook_circleheatmapdata;
-  
-                  setHoverData(regions[0]["properties"].name + "\n" + circleDataName + "<br/><br/>" + formattedData);
+                    selectedMapFile.mapbook_circleheatmapdata;
+
+                  setHoverData(
+                    regions[0]["properties"].name +
+                      "\n" +
+                      circleDataName +
+                      "<br/><br/>" +
+                      formattedData
+                  );
                 }
                 // setHoverData(
                 //   JSON.stringify(tempFeature["properties"].mapbook_data)
@@ -998,9 +1035,7 @@ const MapDetails = () => {
         />
         <Typewriter
           onInit={(typewriter) => {
-            typewriter
-              .typeString("L o a d i n g     m a p . . .")
-              .start();
+            typewriter.typeString("L o a d i n g     m a p . . .").start();
           }}
         />
       </div>
