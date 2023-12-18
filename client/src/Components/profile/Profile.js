@@ -34,8 +34,7 @@ const Profile = () => {
     window.userState = currentUser;
   }, [user]);
 
-  useEffect(() => {
-  }, [selectedFile, selectedImg]);
+  useEffect(() => {}, [selectedFile, selectedImg]);
 
   if (!user) return null;
 
@@ -49,16 +48,19 @@ const Profile = () => {
   };
 
   const updateUser = async () => {
-    const updatedUser = await updateUserAPIMethod(username, selectedFile, userId, isAuth).catch(
-      (err) => {}
-    );
+    const updatedUser = await updateUserAPIMethod(
+      username,
+      selectedFile,
+      userId,
+      isAuth
+    ).catch((err) => {});
 
     console.log(updatedUser);
 
     const paylaod = {
       username: username,
       profile_img: updatedUser.profile_img,
-    }
+    };
     dispatch(updateUsername(paylaod));
 
     setIsEditing(!isEditing);
@@ -100,7 +102,11 @@ const Profile = () => {
       <div className="profile_container">
         <div className="profile_top">
           <div className="profile_left">
-            <img alt="" className="profile_img" src={selectedImg ? selectedImg : currentUser.profile_img}></img>
+            <img
+              alt=""
+              className="profile_img"
+              src={selectedImg ? selectedImg : currentUser.profile_img}
+            ></img>
             {isEditing && (
               <div className="cypress_click_profile">
                 <Button
@@ -196,12 +202,15 @@ const Profile = () => {
                 />
               </div>
             </div>
-            {isEditing && 
-              <div style={{display: "flex", justifyContent: "space-between"}}>
-                <UpdateUserButton onClick={() => setIsEditing(false)} text={"Cancel"} />
+            {isEditing && (
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <UpdateUserButton
+                  onClick={() => setIsEditing(false)}
+                  text={"Cancel"}
+                />
                 <UpdateUserButton onClick={updateUser} text={"Update User"} />
               </div>
-            }
+            )}
           </div>
         </div>
         <div className="profile_bottom">
