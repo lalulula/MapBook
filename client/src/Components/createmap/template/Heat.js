@@ -91,14 +91,27 @@ const Heat = ({
           disabled
         />
       ) : (
-        <Input
-          required
-          type="number"
-          name="to"
-          value={heatRange.to}
-          placeholder="To"
-          onChange={handleRangeChange}
-        />
+        <>
+          <Input
+            required
+            type="number"
+            name="to"
+            value={heatRange.to}
+            placeholder="To"
+            onChange={handleRangeChange}
+          />
+          <div
+            style={{
+              marginTop: "0.2rem",
+              alignSelf: "end",
+              fontSize: "12px",
+              fontWeight: 300,
+              color: "gray",
+            }}
+          >
+            (exclusive)
+          </div>
+        </>
       )}
 
       <br />

@@ -1214,23 +1214,22 @@ const Map = ({
                   to,
                 ];
 
-                var heatRangeColorText = "</br>";
+                // var heatRangeColorText = "</br>";
 
-                for (let i = 0; i < 5; i++) {
-                  heatRangeColorText =
-                    heatRangeColorText +
-                    `<font color="${
-                      mapFileData.current["mapbook_heat_selectedcolors"][i]
-                    }">${ranges[i].toFixed(2)} to ${(ranges[i + 1] - 1).toFixed(
-                      2
-                    )}</font></br>`;
-                }
+                // for (let i = 0; i < 5; i++) {
+                //   heatRangeColorText =
+                //     heatRangeColorText +
+                //     `<font color="${
+                //       mapFileData.current["mapbook_heat_selectedcolors"][i]
+                //     }">${ranges[i].toFixed(2)} to ${(ranges[i + 1] - 1).toFixed(
+                //       2
+                //     )}</font></br>`;
+                // }
 
                 setHoverData(
                   regions[0]["properties"].name +
                     "\n" +
                     heatDataName +
-                    heatRangeColorText +
                     formattedData
                 );
               } else if (templateHoverType.current === "Thematic Map") {
