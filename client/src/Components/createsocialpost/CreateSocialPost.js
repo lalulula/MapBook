@@ -83,7 +83,7 @@ const CreateSocialPost = () => {
   const handleSocialPostCreate = async () => {
     setClickedPost(true);
     const newPost = { ...options, post_owner: userId };
-    // console.log(newPost)
+    console.log("NEWPSOT: ", newPost);
     const res = await createSocialPostAPIMethod(newPost);
     if (res.ok) {
       // const responseMsg = await res.json;

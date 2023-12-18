@@ -23,6 +23,7 @@ const EditSocialPost = () => {
     customTopic: "",
     post_owner: "",
     view_count: 1,
+    post_images: [],
   });
   const [showModal, setShowModal] = useState(false);
   const topics = [
@@ -41,7 +42,7 @@ const EditSocialPost = () => {
       try {
         const currentPost = await getSocialPostAPIMethod(id);
         setEditedPost(currentPost);
-        setUploadedImages(currentPost.post_images);
+        // setUploadedImages(currentPost.post_images);
       } catch (error) {
         console.error("Error fetching social post:", error);
       }
@@ -54,8 +55,7 @@ const EditSocialPost = () => {
       setShowErrorMessage(true);
       return;
     }
-    console.log("UPLOADED IMAGES: ", uploadedImages.data);
-    editedPost.post_images = uploadedImages.data;
+    console.log("EDITED POST: ", editedPost);
     try {
       await editSocialPostAPIMethod(id, editedPost);
       setShowSuccess(true);
@@ -76,12 +76,13 @@ const EditSocialPost = () => {
     setEditedPost({ ...editedPost, [e.target.name]: e.target.value });
   };
   const handleRemoveImage = (index) => {
-    let uploaded = uploadedImages;
+    let uploaded = editedPost.post_images;
     let newUploadedImages = [
       ...uploaded.slice(0, index),
       ...uploaded.slice(index + 1),
     ];
-    setUploadedImages(newUploadedImages);
+    const newEditedPost = { ...editedPost, post_images: newUploadedImages }
+    setEditedPost(newEditedPost);
   };
   const handleClickCancel = () => {
     setShowModal(true);
@@ -91,31 +92,22 @@ const EditSocialPost = () => {
   };
 
   const handleImageUpload = (event) => {
-    let tempFileArray = uploadedImages;
-    // tempFileArray.push(event.target.files[0]);
-    tempFileArray.push(event.target.files[0]);
-    console.log("TEMPFILEARR: ", tempFileArray);
-
-    setEditedPost({
-      ...editedPost,
-      post_images: tempFileArray,
-    });
-
     const files = event.target.files; // Get the first file from the selected files
-    console.log("FILES: ", files);
-    if (files.length > 0) {
+    if (files.length >= 0) {
       const newImages = Array.from(files).map((file) => ({
         data: URL.createObjectURL(file),
         file,
       }));
-      console.log("SDFDSKFJ:", uploadedImages);
-      console.log("NEWIMAGE: ", newImages[0]);
-      setUploadedImages([...uploadedImages, newImages[0]]);
+      setEditedPost({
+        ...editedPost,
+        post_images: [...editedPost.post_images, newImages[0].data],
+      });
     }
   };
 
   return (
     <div className="editsocialpost_page">
+      {console.log("SDFDSKFJ:", editedPost.post_images)}
       <motion.div
         initial={{ x: '200%' }}
         animate={{ x: !showErrorMessage ? '200%' : 0 }}
@@ -215,7 +207,7 @@ const EditSocialPost = () => {
             />
           </div>
           <div className="editsocialpost_img_container">
-            {/* <label htmlFor="imageUpload" className="upload-label">
+            <label htmlFor="imageUpload" className="upload-label">
               <ImageIcon />
               Upload Image
             </label>
@@ -225,15 +217,15 @@ const EditSocialPost = () => {
               accept="image/*" // Only image files are allowed
               onChange={handleImageUpload}
               className="upload-input"
-            /> */}
+            />
             <div className="editsocialpost_images">
-              {uploadedImages.map((img, index) => (
+              {editedPost.post_images.map((img, index) => (
                 <div className="createsocialpost_image_container">
-                  {/* <CancelTwoToneIcon
+                  <CancelTwoToneIcon
                     className="remove_uploaded_image"
                     onClick={() => handleRemoveImage(index)}
-                  /> */}
-                  {typeof img === 'object' ? (
+                  />
+                  {/* {typeof img === 'object' ? (
                     <img
                       key={index}
                       src={img.data}
@@ -242,6 +234,15 @@ const EditSocialPost = () => {
                       style={{ width: "100px", height: "100px" }}
                     />
                   ) : (
+                    <img
+                      key={index}
+                      src={img}
+                      alt={`nothing`}
+                      className="uploaded_image"
+                      style={{ width: "100px", height: "100px" }}
+                    />
+                  )} */}
+                  {typeof img === "string" && (
                     <img
                       key={index}
                       src={img}

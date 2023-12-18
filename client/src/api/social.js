@@ -121,12 +121,27 @@ export const deleteSocialPostAPIMethod = async (socialPostId) => {
 export const editSocialPostAPIMethod = async (sPostId, socialpost) => {
   console.log("POSt", socialpost, sPostId);
   try {
+
+    var keys = Object.keys(socialpost);
+    const formData = new FormData();
+
+    for (var i = 0; i < keys.length; i++) {
+      console.log(typeof keys[i]);
+      if (keys[i] === "post_images") {
+        console.log("socialpost[keys[i]]: ", socialpost[keys[i]])
+        for (var j = 0; j < socialpost[keys[i]].length; j++) {
+          formData.append(keys[i], socialpost[keys[i]][j]);
+        }
+      } else {
+        formData.append(keys[i], socialpost[keys[i]]);
+      }
+    }
     const response = await fetch(
       `${API_BASE_URL}/api/social/editSocialPost/${sPostId}`,
       {
-        ...defaultHeaders,
+        // ...defaultHeaders,
         method: "PUT",
-        body: JSON.stringify(socialpost),
+        body: formData,
       }
     );
 
