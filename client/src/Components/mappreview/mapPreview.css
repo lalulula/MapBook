@@ -61,7 +61,6 @@
   color: #000000;
 }
 
-
 .mappreview_count_container {
   display: flex;
   justify-content: space-between;
@@ -111,20 +110,17 @@
   padding: 5px 10px;
   transition: background-color 0.3s;
   z-index: 2;
-
 }
 
 .mappreview_options_menu li:hover {
   background-color: rgb(109, 109, 109);
   border-radius: 3px;
   z-index: 2;
-
 }
 
 .mappreview_options {
   background-color: white;
   z-index: 2;
-
 }
 
 .bi-three-dots-vertical {
@@ -133,9 +129,7 @@
   padding: 10px;
   font-size: 25px;
   z-index: 2;
-
 }
-
 
 .mappreview_delete_confirmation_modal {
   display: flex;
@@ -170,6 +164,18 @@
   border-radius: 5px;
 }
 
+.mappreview_delete_confirm:hover {
+  transition: ease-in-out 0.1s;
+  color: rgb(120, 47, 47);
+  background-color: rgba(120, 47, 47, 0.141);
+  cursor: pointer;
+}
+.mappreview_cancel_delete:hover {
+  transition: ease-in-out 0.1s;
+  color: var(--main-color);
+  background-color: rgba(47, 85, 120, 0.141);
+  cursor: pointer;
+}
 .mappreview_delete {
   display: flex;
   align-items: center;
