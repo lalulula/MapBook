@@ -79,14 +79,33 @@
   padding: 5px 10px;
   border: 2px solid #333;
 }
+.profile_update_canel_btn:hover,
+.profile_update_btn:hover,
 .change_profileImg_btn:hover {
   color: rgba(105, 163, 255, 0.901);
   border-color: rgba(105, 163, 255, 0.901);
 }
-.update_user_btn_container, .update_cancel_user_btn_container {
+.profile_update_canel_btn:hover {
+  color: rgba(213, 85, 71, 0.901);
+  border-color: rgba(255, 105, 105, 0.901);
+}
+
+.profile_update_canel_btn,
+.profile_update_btn {
+  margin-top: 20px;
+  outline: none;
+  background-color: transparent;
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  padding: 5px 10px;
+  border: 2px solid #333;
   align-self: center;
   margin-top: 1rem;
 }
+
 .update_user_btn {
   border: none;
   outline: none;
