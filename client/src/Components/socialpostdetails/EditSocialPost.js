@@ -108,7 +108,6 @@ const EditSocialPost = () => {
 
   return (
     <div className="editsocialpost_page">
-      {console.log("SDFDSKFJ:", editedPost.post_images)}
       <motion.div
         initial={{ x: '200%' }}
         animate={{ x: !showErrorMessage ? '200%' : 0 }}
@@ -207,7 +206,7 @@ const EditSocialPost = () => {
               className="editsocialpost_description_textarea"
             />
           </div>
-          <div className="editsocialpost_img_container">
+          {/* <div className="editsocialpost_img_container">
             <label htmlFor="imageUpload" className="upload_label">
               <ImageIcon />
               Upload Image
@@ -226,23 +225,6 @@ const EditSocialPost = () => {
                     className="remove_uploaded_image"
                     onClick={() => handleRemoveImage(index)}
                   />
-                  {/* {typeof img === 'object' ? (
-                    <img
-                      key={index}
-                      src={img.data}
-                      alt={`nothing`}
-                      className="uploaded_image"
-                      style={{ width: "100px", height: "100px" }}
-                    />
-                  ) : (
-                    <img
-                      key={index}
-                      src={img}
-                      alt={`nothing`}
-                      className="uploaded_image"
-                      style={{ width: "100px", height: "100px" }}
-                    />
-                  )} */}
                   {typeof img === "string" && (
                     <img
                       key={index}
@@ -257,7 +239,7 @@ const EditSocialPost = () => {
               ))}
             </div>
 
-          </div>
+          </div> */}
         </div>
         <br />
         <hr className="editsocialpost_hr"></hr>
