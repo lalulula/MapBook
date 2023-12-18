@@ -29,12 +29,13 @@
 
 .mappreview_img {
   width: 100%;
-  height: 100%;
+  height: 250px;
   object-fit: cover;
   z-index: 1;
 }
 
 .mappreview_content {
+  height: 150px;
   border-top: 2px dotted black;
   background-color: #ffffff;
   padding: 15px;
@@ -170,12 +171,14 @@
   background-color: rgba(120, 47, 47, 0.141);
   cursor: pointer;
 }
+
 .mappreview_cancel_delete:hover {
   transition: ease-in-out 0.1s;
   color: var(--main-color);
   background-color: rgba(47, 85, 120, 0.141);
   cursor: pointer;
 }
+
 .mappreview_delete {
   display: flex;
   align-items: center;

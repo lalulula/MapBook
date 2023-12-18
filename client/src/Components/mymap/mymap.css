@@ -40,7 +40,7 @@
   margin-bottom: 20px;
 }
 
-@media all and (max-width: 1000px) {
+@media all and (max-width: 700px) {
   .mymaps_container {
     grid-template-columns: repeat(2, 1fr);
     /* Single column layout on smaller screens */
@@ -86,7 +86,7 @@
   }
 }
 
-@media all and (max-width: 600px) {
+@media all and (max-width: 700px) {
   .mymaps_container {
     grid-template-columns: repeat(2, 1fr);
   }
