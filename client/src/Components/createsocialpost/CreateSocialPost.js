@@ -77,7 +77,9 @@ const CreateSocialPost = () => {
       ...uploadedImages.slice(0, index),
       ...uploadedImages.slice(index + 1),
     ];
+    console.log("NEWUPLAODED IMAGES: ", newUploadedImages);
     setUploadedImages(newUploadedImages);
+    setOptions({ ...options, post_images: newUploadedImages })
   };
 
   const handleSocialPostCreate = async () => {
@@ -269,7 +271,7 @@ const CreateSocialPost = () => {
               <button
                 onClick={handleSocialPostCreate}
                 className="createsocialpost_submit"
-                /* disabled={options.title.trim() === ''} */
+              /* disabled={options.title.trim() === ''} */
               >
                 Post
               </button>
