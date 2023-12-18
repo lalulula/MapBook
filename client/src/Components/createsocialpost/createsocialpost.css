@@ -266,7 +266,7 @@
   border: 0.2px solid grey;
 }
 
-.upload-label {
+.upload_label {
   background-color: #1a1a1b;
   color: white;
   padding: 8px 13px;
@@ -299,7 +299,7 @@
   position: relative;
 }
 
-.upload-label:hover {
+.upload_label:hover {
   background-color: #656565;
   color: white;
 }
@@ -423,7 +423,7 @@
   display: flex;
   justify-content: space-between;
   border-radius: 3px;
-  border: 1px solid rgb(148, 86, 99)
+  border: 1px solid rgb(148, 86, 99);
 }
 
 .createsocialpost_error_message_close {
