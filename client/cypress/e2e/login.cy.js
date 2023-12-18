@@ -5,7 +5,7 @@ describe("Login Page", () => {
     cy.visit("http://localhost:3000/login");
 
     // Fill out the login form
-    cy.get('input[placeholder="Username"]').type("ya");
+    cy.get('input[placeholder="Username"]').type("ct1");
     cy.get('input[placeholder="Password"]').type("Password123");
     cy.get(".login_btn").click();
 

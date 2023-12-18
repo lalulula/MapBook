@@ -5,7 +5,7 @@ describe("Social Details", () => {
   beforeEach(() => {
     cy.visit(`${LOCALHOST}/login`);
     // Fill out the login form
-    cy.get('input[placeholder="Username"]').type("sam");
+    cy.get('input[placeholder="Username"]').type("ct1");
     cy.get('input[placeholder="Password"]').type("Password123");
     //  Submit the form
     cy.get(".login_btn").click();
@@ -17,7 +17,7 @@ describe("Social Details", () => {
   it("Logins in sam, clicks the first map, and creates a comment", () => {
     // click the first social post
     // cy.get(".mainpage_mappreview_container").eq(0).click();
-    cy.get('.mainpage_mappreview_container:contains("DONT DELETE THIS")').click();
+    cy.get('.mainpage_mappreview_container').eq(0).click();
     cy.wait(3000);
 
     cy.get(".show_map_comments").click();
@@ -33,7 +33,7 @@ describe("Social Details", () => {
   it("Logins in sam, clicks on the first map, and replies to the comment", () => {
     // click the first social post
     // cy.get(".mainpage_mappreview_container").eq(0).click();
-    cy.get('.mainpage_mappreview_container:contains("DONT DELETE THIS")').click();
+    cy.get('.mainpage_mappreview_container').eq(0).click();
     cy.wait(3000);
 
     cy.get(".show_map_comments").click();
@@ -54,7 +54,7 @@ describe("Social Details", () => {
 
     // click the first social post
     // cy.get(".mainpage_mappreview_container").eq(0).click();
-    cy.get('.mainpage_mappreview_container:contains("DONT DELETE THIS")').click();
+    cy.get('.mainpage_mappreview_container').eq(0).click();
     cy.wait(3000);
 
     cy.get(".show_map_comments").click();
@@ -76,7 +76,7 @@ describe("Social Details", () => {
   it("Logins in sam, navigates to social page, and delete the comment", () => {
     // click the first social post
     // cy.get(".social_post_preview_container").eq(0).click();
-    cy.get('.mainpage_mappreview_container:contains("DONT DELETE THIS")').click();
+    cy.get('.mainpage_mappreview_container').eq(0).click();
     cy.wait(3000);
 
     cy.get(".show_map_comments").click();

@@ -207,7 +207,7 @@ const EditSocialPost = () => {
             />
           </div>
           <div className="editsocialpost_img_container">
-            <label htmlFor="imageUpload" className="upload-label">
+            <label htmlFor="imageUpload" className="upload_label">
               <ImageIcon />
               Upload Image
             </label>

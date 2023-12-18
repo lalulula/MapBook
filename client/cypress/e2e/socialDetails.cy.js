@@ -5,7 +5,7 @@ describe("Social Details", () => {
   beforeEach(() => {
     cy.visit(`${LOCALHOST}/login`);
     // Fill out the login form
-    cy.get('input[placeholder="Username"]').type("sam");
+    cy.get('input[placeholder="Username"]').type("ct1");
     cy.get('input[placeholder="Password"]').type("Password123");
     //  Submit the form
     cy.get(".login_btn").click();
@@ -14,7 +14,7 @@ describe("Social Details", () => {
     cy.url().should("eq", `${LOCALHOST}/mainpage`);
   });
 
-  it("Logins in sam, navigates to social page, and creates a comment", () => {
+  it("Logins in ct1, navigates to social page, and creates a comment", () => {
     // Navigate to social page
     cy.visit(`${LOCALHOST}/socialpage`);
 
@@ -31,7 +31,7 @@ describe("Social Details", () => {
     cy.get(".social_comments_container").should("contain", sampleComment);
   });
 
-  it("Logins in sam, navigates to social page, and replies to the comment", () => {
+  it("Logins in ct1, navigates to social page, and replies to the comment", () => {
     // Navigate to social page
     cy.visit(`${LOCALHOST}/socialpage`);
 
@@ -49,7 +49,7 @@ describe("Social Details", () => {
     cy.get(".social_comment_reply").eq(0).should('contain', sampleReply);
   });
 
-  it("Logins in sam, navigates to social page, and edits the comment and reply", () => {
+  it("Logins in ct1, navigates to social page, and edits the comment and reply", () => {
     // Navigate to social page
     const sampleCommentEdit = "CYPRESS EDITED THIS COMEMNT";
     const sampleReplyEdit = "CYPRESS EDITED THIS REPLY";
@@ -74,10 +74,8 @@ describe("Social Details", () => {
     cy.get(".social_comment_replies_container").should('contain', sampleReplyEdit);
   });
 
-  it("Logins in sam, navigates to social page, and delete the comment", () => {
+  it("Logins in ct1, navigates to social page, and delete the comment", () => {
     // Navigate to social page
-    const sampleCommentEdit = "CYPRESS EDITED THIS COMEMNT";
-    const sampleReplyEdit = "CYPRESS EDITED THIS REPLY";
     cy.visit(`${LOCALHOST}/socialpage`);
 
     // click the first social post

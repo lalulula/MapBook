@@ -15,7 +15,7 @@ describe("Profile Component", () => {
         break;
       default:
         cy.visit("http://localhost:3000/login");
-        cy.get('input[placeholder="Username"]').type("ya");
+        cy.get('input[placeholder="Username"]').type("ct1");
         cy.get('input[placeholder="Password"]').type("Password123");
         cy.get(".login_btn").click();
         cy.url().should("eq", "http://localhost:3000/mainpage");
@@ -35,11 +35,11 @@ describe("Profile Component", () => {
       cy.get(".edit_profile_btn").click();
       cy.get(".username_container")
         .find(".MuiInput-input")
-        .should("have.value", "ya");
+        .should("have.value", "ct1");
 
       cy.get(".email_container")
         .find(".MuiInput-input")
-        .should("have.value", "ya@ya.com");
+        .should("have.value", "ct1@ct1.com");
     });
   });
   // TEST2 Edit username
@@ -59,7 +59,7 @@ describe("Profile Component", () => {
   it("Change profile image", () => {
     cy.get(".edit_profile_btn").click();
 
-    cy.get(".username_container").find(".MuiInput-input").clear().type("ya");
+    cy.get(".username_container").find(".MuiInput-input").clear().type("ct1");
     cy.get(".cypress_click_profile").click();
 
     const fileName = "YAprofiletest.jpg";

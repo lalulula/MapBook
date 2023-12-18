@@ -1,7 +1,7 @@
 describe("Editing map", () => {
     beforeEach(() => {
         cy.visit("http://localhost:3000/login");
-        cy.get('input[placeholder="Username"]').type("sam");
+        cy.get('input[placeholder="Username"]').type("ct1");
         cy.get('input[placeholder="Password"]').type("Password123");
 
         cy.get(".login_btn").click();
@@ -12,7 +12,7 @@ describe("Editing map", () => {
         // Visit the page
         cy.visit("http://localhost:3000/mymap");
         cy.wait(2000);
-        cy.get('.mymap_mappreview_container:contains("dont")').click();
+        cy.get('.mymap_mappreview_container').eq(0).click();
 
         cy.wait(2000);
         cy.url().should("include", "/mapdetails");
@@ -28,7 +28,8 @@ describe("Editing map", () => {
 
         cy.get(".createmap_fix_data_btn").click();
         cy.get(".mapboxgl-map").click("center");
-        cy.get(".map_datainput_container input").type(50);
+        cy.get(".map_datainput_container input").eq(0).type(50);
+        cy.get(".map_datainput_container input").eq(1).type(20);
         cy.get(".map_datainput_container button").click();
         cy.get(".createmap_fix_data_btn").click();
 

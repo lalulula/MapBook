@@ -2,7 +2,7 @@ import "cypress-file-upload";
 describe("MainPage Test", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/login");
-    cy.get('input[placeholder="Username"]').type("ya");
+    cy.get('input[placeholder="Username"]').type("ct1");
     cy.get('input[placeholder="Password"]').type("Password123");
 
     cy.get(".login_btn").click();

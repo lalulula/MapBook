@@ -3,7 +3,7 @@ import "cypress-file-upload";
 describe("CreateMap-File Import Page", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/login");
-    cy.get('input[placeholder="Username"]').type("sam");
+    cy.get('input[placeholder="Username"]').type("ct1");
     cy.get('input[placeholder="Password"]').type("Password123");
 
     cy.get(".login_btn").click();
@@ -33,7 +33,7 @@ describe("CreateMap-File Import Page", () => {
           formData.append("map_name", "Test Cypress");
           formData.append("topic", "Health");
           formData.append("is_visible", true);
-          formData.append("user_id", "657f7f8cd2dcca77a0d9514c");
+          formData.append("user_id", "6580845b80f91d7411d3b11d");
           formData.append("map_description", "Test description");
 
           formData.append("mapPreviewImg", imgFile);

@@ -5,6 +5,7 @@ import "./createMap.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import Popup from "reactjs-popup";
 import ImportFilePage from "./ImportFilePage";
+import { useSelector } from "react-redux";
 
 
 const CreateMap = () => {
@@ -28,28 +29,30 @@ const CreateMap = () => {
   const [heatRange, setHeatRange] = useState({ from: 0, to: 0 }); //HEATMAP: range value
   const [importDataOpen, setImportDataOpen] = useState(true);
   const [showMapEdit, setShowMapEdit] = useState(false);
-  const [isMapbookData, setIsMapbookData] = useState(false)
+  const [isMapbookData, setIsMapbookData] = useState(false);
+  const currentUser = useSelector((state) => state.user.user);
   const DEFAULT_GEOJSON =
     "https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/us-income.geojson";
 
   const [selectedMapFile, setSelectedMapFile] = useState(DEFAULT_GEOJSON);
   // const [selectedMapFile, setSelectedMapFile] = useState(null);
 
+
   useEffect(() => {
     console.log("mapInfo: ", mapInfo.mapFile)
     // mapInfo
-    if(mapInfo.mapFile){
+    if (mapInfo.mapFile) {
       setIsMapbookData(true);
       setSelectedMapFile(mapInfo.mapFile);
       setImportDataOpen(false);
     }
-
+    window.userState = currentUser;
   }, []);
 
 
   useEffect(() => {
     // console.log("useEffect: selectedMapFile: ", selectedMapFile);
-    if(mapInfo.mapFile == null){
+    if (mapInfo.mapFile == null) {
       const newGeojsonData = {
         ...selectedMapFile,
         mapbook_mapname: options.name,
@@ -73,7 +76,7 @@ const CreateMap = () => {
     setImportDataOpen(false);
   };
 
-  
+
 
   useEffect(() => {
     // console.log("isMapbookData: CreateMap.js: ", isMapbookData)
@@ -91,8 +94,8 @@ const CreateMap = () => {
           setSelectedMapFile={setSelectedMapFile}
           selectedMapFile={selectedMapFile}
           setImportDataOpen={setImportDataOpen}
-          isMapbookData = {isMapbookData}
-          setIsMapbookData = {setIsMapbookData}
+          isMapbookData={isMapbookData}
+          setIsMapbookData={setIsMapbookData}
         />
         <div></div>
       </Popup>
@@ -115,8 +118,8 @@ const CreateMap = () => {
             setSelectedMapFile={setSelectedMapFile}
             showMapEdit={showMapEdit}
             setShowMapEdit={setShowMapEdit}
-            isMapbookData = {isMapbookData}
-            setIsMapbookData = {setIsMapbookData}
+            isMapbookData={isMapbookData}
+            setIsMapbookData={setIsMapbookData}
 
           />
         </div>

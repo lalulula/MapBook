@@ -4,8 +4,8 @@ describe("Register Form", () => {
   });
   //CASE1 : User Already exists
   it("should navigate to the login page and register if not already registered", () => {
-    cy.get('input[placeholder="Username"]').type("ya");
-    cy.get('input[placeholder="Email"]').type("ya@ya.com");
+    cy.get('input[placeholder="Username"]').type("ct1");
+    cy.get('input[placeholder="Email"]').type("ct1@ct1.com");
     cy.get('input[placeholder="Password"]').type("Passwowrd123");
     cy.get('input[placeholder="Confirm Password"]').type("Passwowrd123");
     cy.get(".register_btn").click();
