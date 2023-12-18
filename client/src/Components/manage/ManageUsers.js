@@ -63,13 +63,13 @@ const ManageUsers = () => {
             <h1>All Users</h1>
           </div>
           <div className="manage_users_top_right">
-            <div className="sort_by">
+            {/* <div className="sort_by">
               <Dropdown
                 options={options}
                 placeholder="Sort by"
                 className="manage_users_dropdown"
               />
-            </div>
+            </div> */}
           </div>
         </div>
 
