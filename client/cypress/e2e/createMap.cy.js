@@ -12,22 +12,6 @@ describe("CreateMap-File Import Page", () => {
 
   describe("API Test: Create a map", () => {
     it("should successfully create a map via API", () => {
-      // Define the request payload
-      // const geojsonData = JSON.stringify(geoJsonContent);
-      // console.log(geojsonData);
-
-      // const mapPayload = {
-      //   map_name: "Test Cypress",
-      //   topic: "Health",
-      //   is_visible: true,
-      //   user_id: "657f85f2d2dcca77a0d9524e",
-      //   map_description: "Test description",
-      //   mapPreviewImg:
-      //     "https://umbrellacreative.com.au/wp-content/uploads/2020/01/hide-the-pain-harold-why-you-should-not-use-stock-photos.jpg",
-      //   file: geojsonData,
-      //   view_count: 1,
-      // };
-
       const fileName = "Server.geojson";
 
       cy.fixture(fileName).then((geoJsonContent) => {
@@ -64,8 +48,17 @@ describe("CreateMap-File Import Page", () => {
             body: formData,
           }).then((response) => {
             expect(response.status).to.eq(201);
-            console.log("response.body: ", JSON.parse(String.fromCharCode.apply(null, new Uint8Array(response.body))));
-            expect(JSON.parse(String.fromCharCode.apply(null, new Uint8Array(response.body)))).to.have.property("_id");
+            console.log(
+              "response.body: ",
+              JSON.parse(
+                String.fromCharCode.apply(null, new Uint8Array(response.body))
+              )
+            );
+            expect(
+              JSON.parse(
+                String.fromCharCode.apply(null, new Uint8Array(response.body))
+              )
+            ).to.have.property("_id");
           });
         });
       });
@@ -74,3 +67,19 @@ describe("CreateMap-File Import Page", () => {
     });
   });
 });
+
+// Define the request payload
+// const geojsonData = JSON.stringify(geoJsonContent);
+// console.log(geojsonData);
+
+// const mapPayload = {
+//   map_name: "Test Cypress",
+//   topic: "Health",
+//   is_visible: true,
+//   user_id: "657f85f2d2dcca77a0d9524e",
+//   map_description: "Test description",
+//   mapPreviewImg:
+//     "https://umbrellacreative.com.au/wp-content/uploads/2020/01/hide-the-pain-harold-why-you-should-not-use-stock-photos.jpg",
+//   file: geojsonData,
+//   view_count: 1,
+// };
