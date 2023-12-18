@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import ImageIcon from "@mui/icons-material/Image";
 import CancelTwoToneIcon from "@mui/icons-material/CancelTwoTone";
 import "./createsocialpost.css";
-import { easeInOut, motion } from "framer-motion"
+import { easeInOut, motion } from "framer-motion";
 
 const CreateSocialPost = () => {
   const navigate = useNavigate();
@@ -102,7 +102,7 @@ const CreateSocialPost = () => {
     position: "relative",
     width: "2.3rem",
     height: "2.3rem",
-    boxSizing: "border-box"
+    boxSizing: "border-box",
   };
   const circleStyle = {
     display: "block",
@@ -114,30 +114,33 @@ const CreateSocialPost = () => {
     boxSizing: "border-box",
     marginLeft: "2px",
     top: 0,
-    left: 0
+    left: 0,
   };
 
   const spinTransition = {
     loop: Infinity,
     ease: "linear",
-    duration: 12
+    duration: 12,
   };
 
   return (
     <div className="createsocialpost_page">
       <motion.div
-        initial={{ x: '200%' }}
-        animate={{ x: !showErrorMessage ? '200%' : 0 }}
-        transition={{ type: 'tween', duration: 0.5, ease: easeInOut }}
-        exit={{ x: '-100%' }}
+        initial={{ x: "200%" }}
+        animate={{ x: !showErrorMessage ? "200%" : 0 }}
+        transition={{ type: "tween", duration: 0.5, ease: easeInOut }}
+        exit={{ x: "-100%" }}
         style={{
-          position: 'fixed',
-          padding: '20px',
+          position: "fixed",
+          padding: "20px",
         }}
-        className="createsocialpost_error_message">
+        className="createsocialpost_error_message"
+      >
         Please fill everything out!
         <div
-          className="createsocialpost_error_message_close" onClick={() => setShowErrorMessage(false)}>
+          className="createsocialpost_error_message_close"
+          onClick={() => setShowErrorMessage(false)}
+        >
           X
         </div>
       </motion.div>
@@ -217,7 +220,7 @@ const CreateSocialPost = () => {
             />
           </div>
           <div className="createsocialpost_img">
-            <label htmlFor="imageUpload" className="upload-label">
+            <label htmlFor="imageUpload" className="upload_label">
               <ImageIcon />
               Upload Image
             </label>
@@ -266,12 +269,11 @@ const CreateSocialPost = () => {
               <button
                 onClick={handleSocialPostCreate}
                 className="createsocialpost_submit"
-              /* disabled={options.title.trim() === ''} */
+                /* disabled={options.title.trim() === ''} */
               >
                 Post
               </button>
             )}
-
           </div>
         </div>
       </div>
