@@ -29,7 +29,21 @@ const Thematic = ({ themeData, setThemeData,
     updatedIndexes.splice(index, 1);
     setSelectedDataIndexes(updatedIndexes);
   };
-
+  useEffect(() => {
+    if(fixData){
+      // check that data is duplicated or not
+      console.log("themeData:", themeData)
+      for(var i = 0; i < themeData.length; i++){
+        for(var j = i+1; j < themeData.length; j++){
+          if(themeData[i].dataName == themeData[j].dataName){
+            setFixData(false);
+            console.log("DataName duplicated! Cannot fix Data")
+            break;
+          }
+        }
+      }
+    }
+  }, [fixData]);
   return (
     <div>
       <div className="data_container data_input_container_thematic">
