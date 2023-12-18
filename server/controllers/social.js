@@ -141,7 +141,7 @@ const editPost = async (req, res) => {
         {
           title: title,
           post_content: post_content,
-          post_images: imagesUrl,
+          post_images: [],
           topic: topic,
           customTopic: customTopic,
           view_count: view_count,
