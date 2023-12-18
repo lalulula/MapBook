@@ -22,7 +22,7 @@ const CircleDataInput = ({
   useEffect(() => {
     console.log("Circle feature: ", feature);
     console.log(feature[0].properties.mapbook_data);
-    console.log("options.circleHeatMapData: ", options.circleHeatMapData);
+    // console.log("options.circleHeatMapData: ", options.circleHeatMapData);
   }, []);
 
   const handleCircleDataSubmit = () => {

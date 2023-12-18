@@ -39,6 +39,7 @@ const MapDataInputPage = ({
   const [showHoverData, setShowHoverData] = useState(false);
   const [fixData, setFixData] = useState(false);
   const [resetDataModal, setResetDataModal] = useState(false)
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     console.log(showHoverData);
@@ -46,14 +47,20 @@ const MapDataInputPage = ({
 
   const setFixDataToTrue = () => {
     setFixData(true);
-  }
+  };
   const setFixDataToFalse = () => {
     setResetDataModal(false);
     setFixData(false);
-  }
+  };
 
   const handleMapNameChange = (name) => {
-    setOptions({ ...options, name });
+    if (!/^[a-zA-Z0-9\s]*$/.test(name)) {
+      setErrorMsg(`[?!,.#] are not allowed.`);
+      return;
+    } else {
+      setErrorMsg("");
+      setOptions({ ...options, name });
+    }
   };
   const handleMapDescriptionChange = (description) => {
     setOptions({ ...options, description });
@@ -76,7 +83,6 @@ const MapDataInputPage = ({
     setOptions({ ...options, circleHeatMapData: newVal });
   };
   const handlePrivacy = (e) => {
-    console.log("E>TAERGET>CHAECK: ", e.target.checked);
     setOptions({ ...options, isPrivate: e.target.checked });
   };
   const topics = [
@@ -102,54 +108,86 @@ const MapDataInputPage = ({
   // When template changed, reset data
   useEffect(() => {
     if (!isMapbookData) {
-      console.log("template changed!!")
+      console.log("template changed!!");
       setPieBarData([]);
       setThemeData([]);
       setSelectedColors([]);
-      setHeatRange({ from: 0, to: 0 })
+      setHeatRange({ from: 0, to: 0 });
       setOptions({ ...options, circleHeatMapData: "" });
     }
   }, [template]);
 
   useEffect(() => {
-    console.log("options: ", options)
+    console.log("options: ", options);
   }, [options]);
 
   useEffect(() => {
     if (isMapbookData) {
-      // setSelectedMapFile({ ...selectedMapFile, mapbook_description: "", mapbook_owner: "", mapbook_visibility: false })
+      setSelectedMapFile({
+        ...selectedMapFile,
+        mapbook_description: "",
+        mapbook_owner: "",
+        mapbook_visibility: false,
+      });
 
       if (selectedMapFile.mapbook_template == "Thematic Map") {
         setThemeData(selectedMapFile.mapbook_themedata);
-        setOptions({ ...options, name: selectedMapFile.mapbook_mapname, description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic });
-      }
-      else if (selectedMapFile.mapbook_template == "Heat Map") {
+        setOptions({
+          ...options,
+          template: selectedMapFile.mapbook_template,
+          topic: selectedMapFile.mapbook_topic,
+          customTopic: selectedMapFile.mapbook_customtopic,
+        });
+      } else if (selectedMapFile.mapbook_template == "Heat Map") {
         setSelectedColors(selectedMapFile.mapbook_heat_selectedcolors);
-        setHeatRange(selectedMapFile.mapbook_heatrange)
-        setOptions({ ...options, name: selectedMapFile.mapbook_mapname, description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic, circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata });
-      }
-      else if (selectedMapFile.mapbook_template == "Circle Map") {
-        console.log("Circle Map selected")
-        console.log("selectedMapFile.mapbook_circleheatmapdata: ", selectedMapFile.mapbook_circleheatmapdata)
+        setHeatRange(selectedMapFile.mapbook_heatrange);
+        setOptions({
+          ...options,
+          template: selectedMapFile.mapbook_template,
+          topic: selectedMapFile.mapbook_topic,
+          customTopic: selectedMapFile.mapbook_customtopic,
+          circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata,
+        });
+      } else if (selectedMapFile.mapbook_template == "Circle Map") {
+        console.log("Circle Map selected");
+        console.log(
+          "selectedMapFile.mapbook_circleheatmapdata: ",
+          selectedMapFile.mapbook_circleheatmapdata
+        );
         // const newOption = { ...options, circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata }
-        setOptions({ ...options, name: selectedMapFile.mapbook_mapname, description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic, circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata });
-      }
-      else if (selectedMapFile.mapbook_template == "Pie Chart") {
-        console.log("Pie Map selected")
-        console.log("selectedMapFile.mapbook_datanames: ", selectedMapFile.mapbook_datanames)
+        setOptions({
+          ...options,
+          template: selectedMapFile.mapbook_template,
+          topic: selectedMapFile.mapbook_topic,
+          customTopic: selectedMapFile.mapbook_customtopic,
+          circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata,
+        });
+      } else if (selectedMapFile.mapbook_template == "Pie Chart") {
+        console.log("Pie Map selected");
+        console.log(
+          "selectedMapFile.mapbook_datanames: ",
+          selectedMapFile.mapbook_datanames
+        );
         setPieBarData(selectedMapFile.mapbook_datanames);
-        setOptions({ ...options, name: selectedMapFile.mapbook_mapname, description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic });
-      }
-      else if (selectedMapFile.mapbook_template == "Bar Chart") {
+        setOptions({
+          ...options,
+          template: selectedMapFile.mapbook_template,
+          topic: selectedMapFile.mapbook_topic,
+          customTopic: selectedMapFile.mapbook_customtopic,
+        });
+      } else if (selectedMapFile.mapbook_template == "Bar Chart") {
         setPieBarData(selectedMapFile.mapbook_datanames);
-        setOptions({ ...options, name: selectedMapFile.mapbook_mapname, description: selectedMapFile.mapbook_description, template: selectedMapFile.mapbook_template, topic: selectedMapFile.mapbook_topic, customTopic: selectedMapFile.mapbook_customtopic });
+        setOptions({
+          ...options,
+          template: selectedMapFile.mapbook_template,
+          topic: selectedMapFile.mapbook_topic,
+          customTopic: selectedMapFile.mapbook_customtopic,
+        });
       }
 
       // console.log("Mapbook data: ", selectedMapFile)
-
     }
   }, []);
-
 
   return (
     <>
