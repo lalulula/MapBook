@@ -48,29 +48,6 @@ const Profile = () => {
     setSelectedImg(URL.createObjectURL(event.target.files[0]));
   };
 
-  // const updateUser = async () => {
-  //   const updatedUser = await updateUserAPIMethod(
-  //     username,
-  //     selectedFile,
-  //     userId,
-  //     isAuth
-  //   ).then((res) => {
-  //     if (res.ok) {
-  //       console.log("ok");
-  //       const paylaod = {
-  //         username: username,
-  //         profile_img: updatedUser.profile_img,
-  //       };
-  //       dispatch(updateUsername(paylaod));
-    
-  //       setIsEditing(!isEditing);
-  //     }
-  //   }).catch((err) => {
-  //     console.log("error");
-  //     setErrorMessage("Username already existed.");
-  //   });
-  // };
-
   const updateUser = async () => {
     const updatedUser = await updateUserAPIMethod(
       username,
@@ -79,7 +56,6 @@ const Profile = () => {
       isAuth
     );
     if (updatedUser) {
-      console.log("shouldn't");
       const payload = {
         username: username,
         profile_img: updatedUser.profile_img,
