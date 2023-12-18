@@ -2,7 +2,7 @@
 export const API_BASE_URL = process.env.REACT_APP_HOME_URL;
 // const filePath = "/Users/Samuel/Desktop/SBU Semester 7/cse416/MapBook/client/src/assets/test_files/Average Age of Marriage by State.geojson";
 const filePath =
-  "/Users/yunah/Documents/SBU/CSE416/mapbook/client/src/assets/test_files/MapbookMap.geojson";
+  "/Users/Samuel/Desktop/SBU Semester 7/cse416/MapBook/client/cypress/fixtures/MapbookMap.geojson";
 
 // import "cypress-file-upload";
 

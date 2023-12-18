@@ -26,7 +26,7 @@ const SocialPage = () => {
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
   const searchFilterOps = ["Title", "Topics", "Description"];
   const currentUserId = useSelector((state) => state.user.id);
-  const isAuth = useSelector((state) => state.user.isAuthenticates);
+  const isAuth = useSelector((state) => state.user.isAuthenticated);
   // useEffect(() => {
   //   console.log(currentUserId);
   // }, []);
@@ -119,6 +119,7 @@ const SocialPage = () => {
           </div>
         </div>
         <div className="socialpage_middle">
+          {console.log("ISAUTH: ", isAuth)}
           {isAuth && (
             <FormControlLabel
               style={{ alignSelf: "self-end", marginBottom: "1rem" }}
