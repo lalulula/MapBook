@@ -33,4 +33,66 @@ describe("Social Details", () => {
     cy.wait(2000);
     cy.get(".social_comments_container").should("contain", sampleComment);
   });
+
+  it("Logins in sam, navigates to social page, and replies to the comment", () => {
+    // Navigate to social page
+    cy.visit(`${LOCALHOST}/socialpage`);
+
+    // click the first social post
+    cy.get(".social_post_preview_container").eq(0).click();
+
+    cy.get(".show_post_comments").click();
+    cy.get(".show_post_comments").click();
+    cy.get(".show_post_comments").click();
+
+    const sampleReply = "This is a sample reply.";
+    cy.get(".reply_comment_btn").eq(0).click();
+    cy.get(".reply_text_field textarea").type(sampleReply);
+    cy.get(".post_reply_btn").click();
+    cy.get(".social_comment_reply").eq(0).should('contain', sampleReply);
+  });
+
+  it("Logins in sam, navigates to social page, and edits the comment and reply", () => {
+    // Navigate to social page
+    const sampleCommentEdit = "CYPRESS EDITED THIS COMEMNT";
+    const sampleReplyEdit = "CYPRESS EDITED THIS REPLY";
+    cy.visit(`${LOCALHOST}/socialpage`);
+
+    // click the first social post
+    cy.get(".social_post_preview_container").eq(0).click();
+
+    cy.get(".show_post_comments").click();
+    cy.get(".show_post_comments").click();
+    cy.get(".show_post_comments").click();
+
+    cy.get(".edit_comment_btn").eq(0).click();
+    cy.get(".edit_comment_input").eq(0).type(sampleCommentEdit);
+    cy.get(".save_comment_changes").click();
+
+    cy.get(".social_comment_content").eq(0).should('contain', sampleCommentEdit);
+
+    cy.get(".social_reply_dotted_menu").eq(0).click();
+    cy.get(".edit_reply_btn").click();
+    cy.get(".social_comment_reply_input").type(sampleReplyEdit);
+    cy.get(".social_comment_replies_container").should('contain', sampleReplyEdit);
+  });
+
+  it("Logins in sam, navigates to social page, and delete the comment", () => {
+    // Navigate to social page
+    const sampleCommentEdit = "CYPRESS EDITED THIS COMEMNT";
+    const sampleReplyEdit = "CYPRESS EDITED THIS REPLY";
+    cy.visit(`${LOCALHOST}/socialpage`);
+
+    // click the first social post
+    cy.get(".social_post_preview_container").eq(0).click();
+
+    cy.get(".show_post_comments").click();
+    cy.get(".show_post_comments").click();
+    cy.get(".show_post_comments").click();
+
+    cy.get(".delete_comment_btn").eq(0).click();
+    cy.get(".delete_comment_confirm").click();
+
+    cy.get(".social_comment_header").should('not.exist');
+  });
 });
