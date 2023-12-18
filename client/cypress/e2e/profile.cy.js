@@ -12,14 +12,6 @@ describe("Profile Component", () => {
         cy.get(".header_profile").click();
         cy.url().should("eq", "http://localhost:3000/profile");
         cy.getReduxState().as("currentState");
-
-        // cy.get(".edit_profile_btn").click();
-        // cy.get(".username_container")
-        //   .find(".MuiInput-input")
-        //   .clear()
-        //   .type("ya");
-        // // cy.get(".update_user_btn_container").click();
-
         break;
       default:
         cy.visit("http://localhost:3000/login");
@@ -71,27 +63,21 @@ describe("Profile Component", () => {
     cy.get(".cypress_click_profile").click();
 
     const fileName = "YAprofiletest.jpg";
-    cy.fixture(fileName).then((fileContent) => {
+    cy.fixture(fileName, null).then((imageContent) => {
       cy.get('input[type="file"]').attachFile({
-        fileContent: fileContent,
+        fileContent: imageContent,
         fileName: fileName,
         mimeType: "image/jpeg",
       });
     });
 
-    // cy.get(".update_user_btn_container").click();
-    cy.get(".profile_update_btn").click();
+    cy.get(".update_user_btn_container").click();
     cy.window().then((win) => {
       const user = win.userState;
       console.log("Current", user);
       cy.wait(2000);
       console.log("Current", user.profile_img);
     });
-    // cy.get(".username_container")
-    //   .find(".MuiInput-input")
-    //   .clear()
-    //   .type("newusername");
-    // cy.get(".update_user_btn_container").click();
   });
   // TEST4 logout
   it("Logout user", () => {

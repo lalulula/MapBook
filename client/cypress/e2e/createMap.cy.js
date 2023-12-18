@@ -33,7 +33,7 @@ describe("CreateMap-File Import Page", () => {
           formData.append("map_name", "Test Cypress");
           formData.append("topic", "Health");
           formData.append("is_visible", true);
-          formData.append("user_id", "657f85f2d2dcca77a0d9524e");
+          formData.append("user_id", "657f7f8cd2dcca77a0d9514c");
           formData.append("map_description", "Test description");
 
           formData.append("mapPreviewImg", imgFile);

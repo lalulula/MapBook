@@ -1,4 +1,3 @@
-//////////////////////////////////////////////
 describe("Register Form", () => {
   //CASE1 : When User inputs valid register information
   it("should navigate to the login page and register if not already registered", () => {
@@ -21,10 +20,7 @@ describe("Register Form", () => {
         cy.get(".register_btn").click();
 
         // Check if the registration was successful (the user is redirected to the login page)
-        cy.url().should(
-          "eq",
-          "http://localhost:3000/login"
-        );
+        cy.url().should("eq", "http://localhost:3000/login");
 
         // Perform actions after successful registration
       }
