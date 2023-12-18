@@ -61,31 +61,28 @@ describe("API Test: Create a map", () => {
     let geojsonData;
     cy.readFile(filePath).then((geoJsonContent) => {
       geojsonData = geoJsonContent;
-      console.log("geojsonData", geoJsonContent);
-    });
-    let mapPayload = {
-      map_name: "Test map (cypress)",
-      topic: "Health",
-      is_visible: true,
-      user_id: "655a62936afeccd8dd9366c1",
-      map_description: "Test description",
-      mapPreviewImg:
-        "https://umbrellacreative.com.au/wp-content/uploads/2020/01/hide-the-pain-harold-why-you-should-not-use-stock-photos.jpg",
-      file: geojsonData,
-      view_count: 1,
-    };
-    console.log("Request Payload", mapPayload);
-
-    // Make a POST request to create a map
-    cy.request({
-      method: "POST",
-      url: "http://localhost:3001/api/map/createMap",
-      body: mapPayload,
-    }).then((response) => {
-      // Assertions on the response
-      expect(response.status).to.eq(201); // Assuming a successful creation returns a 201 status code
-      console.log(response.body);
-      expect(response.body).to.have.property("_id");
+      let mapPayload = {
+        map_name: "Test map (cypress)",
+        topic: "Health",
+        is_visible: true,
+        user_id: "657f85f2d2dcca77a0d9524e",
+        map_description: "Test description",
+        mapPreviewImg:
+          "https://umbrellacreative.com.au/wp-content/uploads/2020/01/hide-the-pain-harold-why-you-should-not-use-stock-photos.jpg",
+        file: geojsonData,
+        view_count: 1,
+      };
+      // Make a POST request to create a map
+      cy.request({
+        method: "POST",
+        url: "http://localhost:3001/api/map/createMap",
+        body: mapPayload,
+      }).then((response) => {
+        // Assertions on the response
+        expect(response.status).to.eq(201); // Assuming a successful creation returns a 201 status code
+        console.log(response.body);
+        expect(response.body).to.have.property("_id");
+      });
     });
 
     // Optionally, you can check the created map on the UI

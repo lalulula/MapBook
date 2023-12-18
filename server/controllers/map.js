@@ -54,6 +54,7 @@ const createMap = async (req, res) => {
   try {
     const { map_name, topic, user_id, is_visible, map_description } = req.body;
     // console.log(req.files);
+    console.log(user_id);
     if (req.files !== undefined) {
       console.log("file", req.files["file"][0]);
       console.log("mapPreviewImg", req.files["mapPreviewImg"][0]);
@@ -128,6 +129,7 @@ const createMap = async (req, res) => {
       const savedMap = await newMap.save();
 
       const user = await User.findById(user_id);
+      console.log("user?", user);
       const mapsCreated = user["maps_created"];
       mapsCreated.push(savedMap["_id"]);
       await User.findByIdAndUpdate(
