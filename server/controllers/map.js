@@ -53,16 +53,10 @@ const getMap = async (req, res) => {
 const createMap = async (req, res) => {
   try {
     const { map_name, topic, user_id, is_visible, map_description } = req.body;
-    // console.log(req.files);
-    console.log(user_id);
     if (req.files !== undefined) {
-      console.log("file", req.files["file"][0]);
-      console.log("mapPreviewImg", req.files["mapPreviewImg"][0]);
-
       const randomString = (new Date().getTime() + Math.random())
         .toString(36)
         .substring(2);
-      // console.log("randomString :", randomString)
 
       const fileBuffer = req.files["file"][0].buffer;
       const fileName = randomString + req.files["file"][0].originalname;
