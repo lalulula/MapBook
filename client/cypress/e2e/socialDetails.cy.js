@@ -46,7 +46,7 @@ describe("Social Details", () => {
     cy.get(".reply_comment_btn").eq(0).click();
     cy.get(".reply_text_field textarea").type(sampleReply);
     cy.get(".post_reply_btn").click();
-    cy.get(".social_comment_reply").eq(0).should('contain', sampleReply);
+    cy.get(".social_comment_reply").eq(0).should("contain", sampleReply);
   });
 
   it("Logins in ct1, navigates to social page, and edits the comment and reply", () => {
@@ -66,12 +66,17 @@ describe("Social Details", () => {
     cy.get(".edit_comment_input").eq(0).type(sampleCommentEdit);
     cy.get(".save_comment_changes").click();
 
-    cy.get(".social_comment_content").eq(0).should('contain', sampleCommentEdit);
+    cy.get(".social_comment_content")
+      .eq(0)
+      .should("contain", sampleCommentEdit);
 
     cy.get(".social_reply_dotted_menu").eq(0).click();
     cy.get(".edit_reply_btn").click();
     cy.get(".social_comment_reply_input").type(sampleReplyEdit);
-    cy.get(".social_comment_replies_container").should('contain', sampleReplyEdit);
+    cy.get(".social_comment_replies_container").should(
+      "contain",
+      sampleReplyEdit
+    );
   });
 
   it("Logins in ct1, navigates to social page, and delete the comment", () => {
@@ -88,6 +93,6 @@ describe("Social Details", () => {
     cy.get(".delete_comment_btn").eq(0).click();
     cy.get(".delete_comment_confirm").click();
 
-    cy.get(".social_comment_header").should('not.exist');
+    cy.get(".social_comment_header").should("not.exist");
   });
 });
