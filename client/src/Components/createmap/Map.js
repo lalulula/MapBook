@@ -126,6 +126,7 @@ const Map = ({
     console.log(undoStack.current.length === 0);
     console.log(redoStack.current.length === 0);
   }, [undoStack, redoStack]);
+
   const resetMap = () => {
     undoStack.current = [];
     redoStack.current = [];
@@ -154,8 +155,8 @@ const Map = ({
       redrawThematicData();
       redrawHeatData();
       redrawCircleData();
-      redrawPieData();
-      redrawBarData();
+      // redrawPieData();
+      // redrawBarData();
     }
   };
 
@@ -758,10 +759,14 @@ const Map = ({
     if (templateHoverType.current === "Bar Chart") {
       if (mapRef.current.getLayer("counties-bar")) {
         mapRef.current.removeLayer("counties-bar");
+        console.log("remove bar layer")
       }
       if (mapRef.current.getSource("bar")) {
         mapRef.current.removeSource("bar");
+        console.log("remove bar source")
+
       }
+      console.log("redrawBarData Called")
 
       const featureDataAdded = mapFileData.current["features"].filter(
         (f) => f["properties"].mapbook_data != null
