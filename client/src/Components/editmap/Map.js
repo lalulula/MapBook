@@ -1322,6 +1322,8 @@ const Map = ({
   }
 
   const editMap = async (mapData) => {
+    console.log("MAPIMG in editmap: ", mapImage);
+
     const canvas = await html2canvas(
       document.querySelector(".mapboxgl-canvas")
     );
@@ -1330,9 +1332,13 @@ const Map = ({
     // const mapImage2 = canvas.toDataURL();
     // console.log("mapimg2: ", mapImage2);
 
-    const fileName = "image.jpg";
-    const finalMapImg = await imageUrlToFile(mapImage, fileName);
+    let finalMapImg = mapImage;
+    if (!(mapImage instanceof File)) {
+      const fileName = "image.jpg";
+      finalMapImg = await imageUrlToFile(mapImage, fileName);
+    }
 
+    console.log("finalmapimg: ", finalMapImg);
 
     const newMapObj = {
       map_name: options.name,
@@ -1348,7 +1354,7 @@ const Map = ({
     console.log("newmapobj img: ", newMapObj.mapPreviewImg);
 
     const res = await editMapPostAPIMethodWithFile(mapId, newMapObj);
-    console.log("res: ", res);
+
     if (res.ok) {
       // const responseMsg = await res.json;
       navigate("/mainpage");

@@ -176,6 +176,7 @@ const editMap = async (req, res) => {
         created_at,
         view_count,
       } = req.body;
+      console.log("mapPreviewImg before conversion: ", req.files["file"][0]);
 
       if (req.body.map_name === "" || req.body.map_description == "") {
         return res.status(500).json({ error: error.message });
@@ -205,6 +206,7 @@ const editMap = async (req, res) => {
         action: "read",
         expires: "03-09-2025", // Replace with an expiration date
       });
+      console.log("mapPreviewImgUrl: ", mapPreviewImgUrl);
 
       const updatedMap = await MapObj.findByIdAndUpdate(
         mapId,
