@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import JSZip from "jszip";
 import * as shapefile from "shapefile";
 import { useSelector } from "react-redux";
 import { FileInput, Label } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 
-function ImportFilePage({ setSelectedMapFile, setImportDataOpen, isMapbookData, setIsMapbookData }) {
+function ImportFilePage({
+  setSelectedMapFile,
+  setImportDataOpen,
+  isMapbookData,
+  setIsMapbookData,
+}) {
   const [backgroundColor, setBackgroundColor] = useState("fff");
   const [textColor, setTextColor] = useState("rgba(128, 128, 128)");
   const [createTextColor, setCreateTextColor] = useState("rgba(128, 128, 128)");
@@ -15,7 +20,6 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen, isMapbookData, 
   const navigate = useNavigate();
   const processFile = async (file) => {
     try {
-      console.log(file);
       const texts = await file.text();
       let parsedData;
 
@@ -46,7 +50,6 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen, isMapbookData, 
           // You can use a library like 'shapefile' to read the contents
 
           const geojson = await shapefile.read(shpBuffer, dbfBuffer);
-          // console.log(geojson.features[0]);
           for (const data in geojson.features) {
             var i = 0;
 
@@ -61,16 +64,13 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen, isMapbookData, 
             var feature_name = geojson.features[data].properties[name + i];
 
             const keys = Object.keys(geojson.features[data].properties);
-            // console.log("keys: ", keys);
-            // console.log(keys.length)
+
             for (let j = 0; j < keys.length; j++) {
-              // console.log("keys[j]: ", keys[j])
               delete geojson.features[data].properties[keys[j]];
             }
 
             geojson.features[data].properties["name"] = feature_name;
           }
-          // console.log("geojson: ", geojson)
 
           parsedData = geojson;
         } catch (error) {
@@ -80,18 +80,9 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen, isMapbookData, 
       }
       // Check if the "template" key exists at the top level
       if ("mapbook_template" in parsedData) {
-        console.log(
-          'The "mapbook_template" key exists with value:',
-          parsedData.mapbook_template
-        );
         setSelectedMapFile(parsedData);
         setIsMapbookData(true);
-        // console.log("isMapbookData: ", isMapbookData);
-
       } else {
-        console.log(
-          'The "mapbook_template" key does not exist at the top level.'
-        );
         const newGeojsonData = {
           ...parsedData,
           mapbook_mapname: "",

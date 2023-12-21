@@ -33,19 +33,16 @@ const MapDataInputPage = ({
   setSelectedMapFile,
   isMapbookData,
   setIsMapbookData,
-  mapId
+  mapId,
 }) => {
-
   const [mapImage, setMapImage] = useState(null);
   const [hoverData, setHoverData] = useState("Out of range");
   const [showHoverData, setShowHoverData] = useState(false);
   const [fixData, setFixData] = useState(false);
-  const [resetDataModal, setResetDataModal] = useState(false)
+  const [resetDataModal, setResetDataModal] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  useEffect(() => {
-    console.log(showHoverData);
-  }, [showHoverData]);
+  useEffect(() => {}, [showHoverData]);
 
   useEffect(() => {
     getMapAPI(mapId).then((m) => {
@@ -84,7 +81,6 @@ const MapDataInputPage = ({
   const handleTemplateClick = (template) => {
     const newVal = template.value;
     setOptions({ ...options, template: newVal });
-    console.log("Changing template");
   };
   const handleCircleHeatMapDataChange = (circleData) => {
     const newVal = circleData;
@@ -116,7 +112,6 @@ const MapDataInputPage = ({
   // When template changed, reset data
   useEffect(() => {
     if (!isMapbookData) {
-      console.log("template changed!!");
       setPieBarData([]);
       setThemeData([]);
       setSelectedColors([]);
@@ -125,9 +120,7 @@ const MapDataInputPage = ({
     }
   }, [template]);
 
-  useEffect(() => {
-    console.log("options: ", options);
-  }, [options]);
+  useEffect(() => {}, [options]);
 
   useEffect(() => {
     if (isMapbookData) {
@@ -138,7 +131,7 @@ const MapDataInputPage = ({
         mapbook_visibility: false,
       });
 
-      if (selectedMapFile.mapbook_template == "Thematic Map") {
+      if (selectedMapFile.mapbook_template === "Thematic Map") {
         setThemeData(selectedMapFile.mapbook_themedata);
         setOptions({
           ...options,
@@ -148,7 +141,7 @@ const MapDataInputPage = ({
           topic: selectedMapFile.mapbook_topic,
           customTopic: selectedMapFile.mapbook_customtopic,
         });
-      } else if (selectedMapFile.mapbook_template == "Heat Map") {
+      } else if (selectedMapFile.mapbook_template === "Heat Map") {
         setSelectedColors(selectedMapFile.mapbook_heat_selectedcolors);
         setHeatRange(selectedMapFile.mapbook_heatrange);
         setOptions({
@@ -160,13 +153,7 @@ const MapDataInputPage = ({
           customTopic: selectedMapFile.mapbook_customtopic,
           circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata,
         });
-      } else if (selectedMapFile.mapbook_template == "Circle Map") {
-        console.log("Circle Map selected");
-        console.log(
-          "selectedMapFile.mapbook_circleheatmapdata: ",
-          selectedMapFile.mapbook_circleheatmapdata
-        );
-        // const newOption = { ...options, circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata }
+      } else if (selectedMapFile.mapbook_template === "Circle Map") {
         setOptions({
           ...options,
           name: selectedMapFile.mapbook_mapname,
@@ -176,12 +163,7 @@ const MapDataInputPage = ({
           customTopic: selectedMapFile.mapbook_customtopic,
           circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata,
         });
-      } else if (selectedMapFile.mapbook_template == "Pie Chart") {
-        console.log("Pie Map selected");
-        console.log(
-          "selectedMapFile.mapbook_datanames: ",
-          selectedMapFile.mapbook_datanames
-        );
+      } else if (selectedMapFile.mapbook_template === "Pie Chart") {
         setPieBarData(selectedMapFile.mapbook_datanames);
         setOptions({
           ...options,
@@ -191,7 +173,7 @@ const MapDataInputPage = ({
           topic: selectedMapFile.mapbook_topic,
           customTopic: selectedMapFile.mapbook_customtopic,
         });
-      } else if (selectedMapFile.mapbook_template == "Bar Chart") {
+      } else if (selectedMapFile.mapbook_template === "Bar Chart") {
         setPieBarData(selectedMapFile.mapbook_datanames);
         setOptions({
           ...options,
@@ -202,8 +184,6 @@ const MapDataInputPage = ({
           customTopic: selectedMapFile.mapbook_customtopic,
         });
       }
-
-      // console.log("Mapbook data: ", selectedMapFile)
     }
   }, []);
 
@@ -337,7 +317,9 @@ const MapDataInputPage = ({
           )}
           {template === "Thematic Map" && (
             <>
-              <Thematic themeData={themeData} setThemeData={setThemeData}
+              <Thematic
+                themeData={themeData}
+                setThemeData={setThemeData}
                 fixData={fixData}
                 setFixData={setFixData}
               />
@@ -360,17 +342,18 @@ const MapDataInputPage = ({
           )}
         </div>
         <div className="mapdatainput_fix_data" style={{ textAlign: "center" }}>
-          {
-            fixData ?
-              <span onClick={() => setResetDataModal(true)} className="createmap_fix_data_btn">
-                reset Data
-              </span>
-              :
-              <span onClick={setFixDataToTrue} className="createmap_fix_data_btn">
-                Start editing data
-              </span>
-          }
-
+          {fixData ? (
+            <span
+              onClick={() => setResetDataModal(true)}
+              className="createmap_fix_data_btn"
+            >
+              reset Data
+            </span>
+          ) : (
+            <span onClick={setFixDataToTrue} className="createmap_fix_data_btn">
+              Start editing data
+            </span>
+          )}
         </div>
         {resetDataModal && (
           <div className="mappdetails_reset_confirmation_modal">

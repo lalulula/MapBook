@@ -18,22 +18,12 @@ const PieBarDataInput = ({
   regionName,
   feature,
 }) => {
-  useEffect( () =>  {
-    console.log("PieBar feature: ", feature)
-    console.log(feature[0].properties.mapbook_data)
-  }, [] );
-  // const [showCloseBtn, setShowCloseBtn] = useState(false);
+  useEffect(() => {}, []);
 
-  // useEffect(() => {
-  //   setShowCloseBtn(
-  //     selectedMapFile["mapbook_datanames"].length === 1 &&
-  //       selectedMapFile["mapbook_datanames"][0] === ""
-  //   );
-  // }, [selectedMapFile]);
   const isAnyDataNameMissing =
     selectedMapFile["mapbook_datanames"].some((dataname) => !dataname) ||
     selectedMapFile["mapbook_datanames"].length === 0;
-  console.log("isAnyDataNameMissing:", isAnyDataNameMissing, selectedMapFile["mapbook_datanames"]);
+
   return (
     <Modal
       open={showModalBar || showModalPie}
@@ -66,7 +56,6 @@ const PieBarDataInput = ({
                           onChange={(e) =>
                             handlePieBarInputChange(data, e.target.value)
                           }
-                          // placeholder="Enter data value"
                           placeholder={
                             feature[0].properties.mapbook_data
                               ? feature[0].properties.mapbook_data[
@@ -74,9 +63,9 @@ const PieBarDataInput = ({
                                 ].value
                               : "Enter data value"
                           }
-                          // type="number"
-                          // step="0.01"
-                          slotProps={{ input: { type:"number",step:"0.01" } }}
+                          slotProps={{
+                            input: { type: "number", step: "0.01" },
+                          }}
                           required
                         />
                       </FormControl>

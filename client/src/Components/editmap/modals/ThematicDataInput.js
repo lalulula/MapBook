@@ -16,11 +16,6 @@ const ThematicDataInput = ({
   regionName,
   feature,
 }) => {
-  // useEffect( () =>  {
-  //   console.log("ThematicDataInput feature: ", feature)
-  //   console.log(feature[0].properties.mapbook_data)
-  // }, [] );
-
   const isAnyDataMissing =
     selectedMapFile["mapbook_themedata"].some((data) => !data.dataName) ||
     selectedMapFile["mapbook_themedata"].length === 0;
@@ -48,11 +43,16 @@ const ThematicDataInput = ({
                           onChange={(e) =>
                             handleThematicData(data, e.target.value)
                           }
-                          // placeholder="Enter data value"
-                          placeholder={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data[data["dataName"]].value : "Enter data value"}
-
-                          slotProps={{ input: { type:"number",step:"0.01" } }}
-
+                          placeholder={
+                            feature[0].properties.mapbook_data
+                              ? feature[0].properties.mapbook_data[
+                                  data["dataName"]
+                                ].value
+                              : "Enter data value"
+                          }
+                          slotProps={{
+                            input: { type: "number", step: "0.01" },
+                          }}
                           required
                         />
                       </FormControl>

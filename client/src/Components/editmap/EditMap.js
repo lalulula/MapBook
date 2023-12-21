@@ -1,17 +1,14 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import MapDataInputPage from "./MapDataInputPage";
 import { useState } from "react";
 import "./createMap.css";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Popup from "reactjs-popup";
 import ImportFilePage from "./ImportFilePage";
 
-
 const EditMap = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const mapInfo = { ...location.state };
-
 
   const [options, setOptions] = useState({
     name: "",
@@ -28,7 +25,7 @@ const EditMap = () => {
   const [heatRange, setHeatRange] = useState({ from: 0, to: 0 }); //HEATMAP: range value
   const [importDataOpen, setImportDataOpen] = useState(true);
   const [showMapEdit, setShowMapEdit] = useState(false);
-  const [isMapbookData, setIsMapbookData] = useState(false)
+  const [isMapbookData, setIsMapbookData] = useState(false);
   const DEFAULT_GEOJSON =
     "https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/us-income.geojson";
 
@@ -36,19 +33,15 @@ const EditMap = () => {
   // const [selectedMapFile, setSelectedMapFile] = useState(null);
 
   useEffect(() => {
-    console.log("mapInfo: ", mapInfo.mapFile)
     // mapInfo
     if (mapInfo.mapFile) {
       setIsMapbookData(true);
       setSelectedMapFile(mapInfo.mapFile);
       setImportDataOpen(false);
     }
-
   }, []);
 
-
   useEffect(() => {
-    // console.log("useEffect: selectedMapFile: ", selectedMapFile);
     if (mapInfo.mapFile == null) {
       const newGeojsonData = {
         ...selectedMapFile,
@@ -68,15 +61,11 @@ const EditMap = () => {
     }
   }, [options, pieBarData, heatRange, selectedColors, themeData]);
 
-
   const closeImportDataPopup = () => {
     setImportDataOpen(false);
   };
 
-
-  useEffect(() => {
-    // console.log("isMapbookData: CreateMap.js: ", isMapbookData)
-  }, [isMapbookData]);
+  useEffect(() => {}, [isMapbookData]);
 
   return (
     <div className="createmap_container">
@@ -117,7 +106,6 @@ const EditMap = () => {
             isMapbookData={isMapbookData}
             setIsMapbookData={setIsMapbookData}
             mapId={mapInfo.mapId}
-
           />
         </div>
       )}

@@ -13,8 +13,12 @@ const Heat = ({
   fixData,
   setFixData,
 }) => {
-  const [from, setFrom] = useState(Number(selectedMapFile["mapbook_heatrange"]["from"]));
-  const [to, setTo] = useState(Number(selectedMapFile["mapbook_heatrange"]["to"]));
+  const [from, setFrom] = useState(
+    Number(selectedMapFile["mapbook_heatrange"]["from"])
+  );
+  const [to, setTo] = useState(
+    Number(selectedMapFile["mapbook_heatrange"]["to"])
+  );
 
   const width = (to - from) / 5;
   const ranges = [
@@ -26,20 +30,11 @@ const Heat = ({
     to,
   ];
 
-  useEffect(() => {
-    console.log("Heat map options: ", options);
-    console.log("Heat map heatRange: ", heatRange, ranges);
-    console.log("Heat map selectedColors: ", selectedColors);
-  }, []);
+  useEffect(() => {}, []);
 
-  
   useEffect(() => {
-    console.log("heat ranges: ", heatRange);
-    console.log(selectedMapFile["mapbook_heatrange"]["from"])
-    console.log(selectedMapFile["mapbook_heatrange"]["to"])
     setFrom(Number(heatRange.from));
     setTo(Number(heatRange.to));
-
   }, [heatRange]);
 
   const handleRangeChange = (e) => {

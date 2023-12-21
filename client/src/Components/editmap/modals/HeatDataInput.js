@@ -19,10 +19,7 @@ const HeatDataInput = ({
   selectedColors,
   feature,
 }) => {
-  useEffect(() => {
-    console.log("Heat feature: ", feature);
-    console.log(feature[0].properties.mapbook_data);
-  }, []);
+  useEffect(() => {}, []);
 
   const [renderedColor, setRenderedColor] = useState(null);
   const [invalidColor, setInvalidColor] = useState(false);
@@ -47,9 +44,7 @@ const HeatDataInput = ({
 
   // Example of using the isEmpty function
   const isAnyDataMissing = isEmpty();
-  useEffect(() => {
-    console.log(isAnyDataMissing);
-  }, []);
+  useEffect(() => {}, []);
   return (
     <Modal open={showModalHeat} onClose={() => setShowModalHeat(false)}>
       <ModalDialog>
