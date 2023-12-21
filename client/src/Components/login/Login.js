@@ -28,7 +28,6 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
   } = useForm();
 
   const dispatch = useDispatch();
@@ -36,18 +35,15 @@ const Login = () => {
   const onSubmit2 = async (user) => {
     setLoginIsLoading(true);
     user.password = SHA256(user.password).toString(enc.Hex);
-    console.log(user.password);
 
     loginUserAPIMethod(user)
       .then((res) => {
         if (res.ok) {
           res.json().then((jsonResult) => {
-            console.log("logged in!");
             dispatch(login(jsonResult));
             setIsLoggedIn(true);
           });
         } else {
-          console.log("Unsuccessful login");
           setIsLoggedIn(false);
           setErrorMessage("Incorrect username or password");
         }
@@ -66,7 +62,7 @@ const Login = () => {
     if (isLoggedIn) {
       navigate("/mainpage");
     } else {
-      console.log("user is NOT logged in in profile!");
+      // console.log("user is NOT logged in in profile!");
     }
   }, [isLoggedIn]);
 
@@ -82,25 +78,23 @@ const Login = () => {
       .then((res) => {
         if (res.ok) {
           res.json().then((jsonResult) => {
-            console.log("logged in with Google!");
             dispatch(login(jsonResult));
             setIsLoggedIn(true);
           });
         } else {
           // if a user sign in with a valid google acc but hasn't been existed in the DB yet, it will automatically signs that google account up and sign in
-          console.log(
+          console.error(
             "This Google account hasn't been signed up yet. This Google account will be signed up automatically."
           );
           createUserAPIMethod(req)
             .then((response) => {
               if (response.ok) {
                 response.json().then((jsonResult) => {
-                  console.log("Successfully logged in with Google");
                   dispatch(login(jsonResult));
                   navigate("/");
                 });
               } else {
-                console.log("Invalid login with Google");
+                console.error("Invalid login with Google");
               }
             })
             .catch((err) => {
@@ -121,8 +115,8 @@ const Login = () => {
   };
 
   const googleFailure = (error) => {
-    console.log(error);
-    console.log("Google Sign In was unsuccessful.");
+    // console.log(error);
+    // console.log("Google Sign In was unsuccessful.");
   };
 
   return (
