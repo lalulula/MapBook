@@ -680,6 +680,11 @@ const Map = ({
       // wait till canvas is re-rander
       await new Promise((resolve) => setTimeout(resolve, 100));
 
+      if (mapRef.current.getSource("pie")) {
+        mapRef.current.removeLayer("counties-pie");
+        mapRef.current.removeSource("pie");
+      }
+
       mapRef.current.addSource("pie", {
         type: "geojson",
         data: mapFileData.current,
@@ -1140,11 +1145,10 @@ const Map = ({
               return `<span>${Object.keys(obj)
                 .map((nestedKey) => {
                   const value = obj[nestedKey];
-                  return ` ${
-                    nestedKey.toLowerCase() === "color"
-                      ? `<font color="${value}">(${value})</font>`
-                      : value
-                  }`;
+                  return ` ${nestedKey.toLowerCase() === "color"
+                    ? `<font color="${value}">(${value})</font>`
+                    : value
+                    }`;
                 })
                 .join("<br/>")}</span>`;
             };
@@ -1153,9 +1157,8 @@ const Map = ({
               setHoverData(`No data for ${regions[0]["properties"].name}`);
             } else {
               const formatDataByKey = (key, value) => {
-                return `${key}  ${
-                  isObject(value) ? renderObject(value) : value
-                }`;
+                return `${key}  ${isObject(value) ? renderObject(value) : value
+                  }`;
               };
 
               const formatColorKey = (key, value) => {
@@ -1216,9 +1219,9 @@ const Map = ({
 
                 setHoverData(
                   regions[0]["properties"].name +
-                    "\n" +
-                    heatDataName +
-                    formattedData
+                  "\n" +
+                  heatDataName +
+                  formattedData
                 );
               } else if (templateHoverType.current === "Thematic Map") {
                 setHoverData(
@@ -1230,10 +1233,10 @@ const Map = ({
 
                 setHoverData(
                   regions[0]["properties"].name +
-                    "\n" +
-                    circleDataName +
-                    "<br/><br/>" +
-                    formattedData
+                  "\n" +
+                  circleDataName +
+                  "<br/><br/>" +
+                  formattedData
                 );
               }
             }
@@ -1381,16 +1384,14 @@ const Map = ({
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
           <i
-            className={`${
-              undoStack.current.length === 0 ? "disabled_undo" : "undo"
-            } bx bx-undo`}
+            className={`${undoStack.current.length === 0 ? "disabled_undo" : "undo"
+              } bx bx-undo`}
             onClick={handleUndo}
           />
           <div className="vertical_line_container">|</div>
           <i
-            className={`${
-              redoStack.current.length === 0 ? "disabled_redo" : "redo"
-            } bx bx-redo`}
+            className={`${redoStack.current.length === 0 ? "disabled_redo" : "redo"
+              } bx bx-redo`}
             onClick={handleRedo}
           />
         </div>

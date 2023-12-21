@@ -25,7 +25,7 @@ const Header = () => {
     } else {
       setAdmin(false);
     }
-    console.log(isCreateMapPage);
+    // console.log(isCreateMapPage);
   }, [user]);
 
   const openModal = () => {
@@ -67,10 +67,10 @@ const Header = () => {
                     style={
                       isCreateMapPage
                         ? {
-                            cursor: "default",
-                            transform: "none",
-                            color: "#6a6a6abf",
-                          }
+                          cursor: "default",
+                          transform: "none",
+                          color: "#6a6a6abf",
+                        }
                         : {}
                     }
                   >
@@ -82,10 +82,10 @@ const Header = () => {
                     style={
                       isCreateMapPage
                         ? {
-                            cursor: "default",
-                            transform: "none",
-                            color: "#6a6a6abf",
-                          }
+                          cursor: "default",
+                          transform: "none",
+                          color: "#6a6a6abf",
+                        }
                         : {}
                     }
                   >
@@ -157,10 +157,10 @@ const Header = () => {
                     style={
                       isCreateMapPage
                         ? {
-                            cursor: "default",
-                            transform: "none",
-                            color: "#6a6a6abf",
-                          }
+                          cursor: "default",
+                          transform: "none",
+                          color: "#6a6a6abf",
+                        }
                         : {}
                     }
                   >
@@ -210,10 +210,10 @@ const Header = () => {
                       style={
                         isCreateMapPage
                           ? {
-                              cursor: "default",
-                              transform: "none",
-                              color: "#6a6a6abf",
-                            }
+                            cursor: "default",
+                            transform: "none",
+                            color: "#6a6a6abf",
+                          }
                           : {}
                       }
                     >
@@ -225,10 +225,10 @@ const Header = () => {
                       style={
                         isCreateMapPage
                           ? {
-                              cursor: "default",
-                              transform: "none",
-                              color: "#6a6a6abf",
-                            }
+                            cursor: "default",
+                            transform: "none",
+                            color: "#6a6a6abf",
+                          }
                           : {}
                       }
                     >
