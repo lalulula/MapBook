@@ -14,7 +14,7 @@ const Intro1 = () => {
 
   useEffect(() => {
     if (inView) {
-      console.log("in intro 1");
+      // console.log("in intro 1");
       setAnimationPlayed(true);
     } else {
       setAnimationPlayed(false);
