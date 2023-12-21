@@ -7,7 +7,7 @@ const TrendingMaps = ({ trendingMaps }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(trendingMaps);
+    // console.log(trendingMaps);
   }, [trendingMaps]);
 
   if (!trendingMaps) {

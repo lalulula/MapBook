@@ -69,13 +69,13 @@ const SocialReplies = ({ commentId, replyingCommentId, setReplyingCommentId, set
         setDropdownVisible(false);
         if (showDeleteConfirmationModal) {
             setShowDeleteConfirmationModal(false);
-            return;
         } else {
             setShowDeleteConfirmationModal(replyId);
         }
     }
 
     const handleDeleteReply = (replyId) => {
+        setShowDeleteConfirmationModal(false);
         const filteredReplies = allReplies.filter((c) => c._id !== replyId);
         setAllReplies(filteredReplies);
         deleteSocialReplyAPIMethod(replyId);

@@ -124,7 +124,6 @@ const MainPage = () => {
       </div>
       <div className="mainpage_maps_container">
         <div className="mainpage_maps">
-          {console.log("FILTERED MAPS: ", filteredMaps)}
           {filteredMaps.length !== 0 &&
             filteredMaps.map((item, index) => (
               <div className="mainpage_mappreview_container">
