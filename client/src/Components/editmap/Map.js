@@ -48,6 +48,7 @@ const Map = ({
   const mapFileData = useRef(selectedMapFile);
   const mapRef = useRef();
   const fixDataRef = useRef(fixData);
+  const [currentMapImg, setCurrentMapImg] = useState(null);
 
   const [regionName, setRegionName] = useState("");
 
@@ -1140,11 +1141,10 @@ const Map = ({
               return `<span>${Object.keys(obj)
                 .map((nestedKey) => {
                   const value = obj[nestedKey];
-                  return ` ${
-                    nestedKey.toLowerCase() === "color"
-                      ? `<font color="${value}">(${value})</font>`
-                      : value
-                  }`;
+                  return ` ${nestedKey.toLowerCase() === "color"
+                    ? `<font color="${value}">(${value})</font>`
+                    : value
+                    }`;
                 })
                 .join("<br/>")}</span>`;
             };
@@ -1153,9 +1153,8 @@ const Map = ({
               setHoverData(`No data for ${regions[0]["properties"].name}`);
             } else {
               const formatDataByKey = (key, value) => {
-                return `${key}  ${
-                  isObject(value) ? renderObject(value) : value
-                }`;
+                return `${key}  ${isObject(value) ? renderObject(value) : value
+                  }`;
               };
 
               const formatColorKey = (key, value) => {
@@ -1228,9 +1227,9 @@ const Map = ({
 
                 setHoverData(
                   regions[0]["properties"].name +
-                    "\n" +
-                    heatDataName +
-                    formattedData
+                  "\n" +
+                  heatDataName +
+                  formattedData
                 );
               } else if (templateHoverType.current === "Thematic Map") {
                 setHoverData(
@@ -1242,10 +1241,10 @@ const Map = ({
 
                 setHoverData(
                   regions[0]["properties"].name +
-                    "\n" +
-                    circleDataName +
-                    "<br/><br/>" +
-                    formattedData
+                  "\n" +
+                  circleDataName +
+                  "<br/><br/>" +
+                  formattedData
                 );
               }
             }
@@ -1306,13 +1305,34 @@ const Map = ({
     return newGeoJson;
   }
 
+  async function imageUrlToFile(imageUrl, fileName) {
+    try {
+      // Fetch the image data
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
+
+      // Create a File object
+      const file = new File([blob], fileName, { type: response.headers.get('content-type') });
+
+      return file;
+    } catch (error) {
+      console.error('Error converting image URL to File:', error);
+      return null;
+    }
+  }
+
   const editMap = async (mapData) => {
     const canvas = await html2canvas(
       document.querySelector(".mapboxgl-canvas")
     );
 
     // console.log("canvas", canvas);
-    const mapImage = canvas.toDataURL();
+    // const mapImage2 = canvas.toDataURL();
+    // console.log("mapimg2: ", mapImage2);
+
+    const fileName = "image.jpg";
+    const finalMapImg = await imageUrlToFile(mapImage, fileName);
+
 
     const newMapObj = {
       map_name: options.name,
@@ -1320,12 +1340,12 @@ const Map = ({
       is_visible: !options.isPrivate,
       user_id: userId,
       map_description: options.description,
-      mapPreviewImg: mapImage,
+      mapPreviewImg: finalMapImg,
       file: mapData,
     };
 
-    console.log("mapId", mapId);
     console.log("newMapObj", newMapObj);
+    console.log("newmapobj img: ", newMapObj.mapPreviewImg);
 
     const res = await editMapPostAPIMethodWithFile(mapId, newMapObj);
     console.log("res: ", res);
@@ -1378,16 +1398,14 @@ const Map = ({
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
           <i
-            className={`${
-              undoStack.current.length === 0 ? "disabled_undo" : "undo"
-            } bx bx-undo`}
+            className={`${undoStack.current.length === 0 ? "disabled_undo" : "undo"
+              } bx bx-undo`}
             onClick={handleUndo}
           />
           <div className="vertical_line_container">|</div>
           <i
-            className={`${
-              redoStack.current.length === 0 ? "disabled_redo" : "redo"
-            } bx bx-redo`}
+            className={`${redoStack.current.length === 0 ? "disabled_redo" : "redo"
+              } bx bx-redo`}
             onClick={handleRedo}
           />
         </div>

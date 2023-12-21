@@ -161,7 +161,8 @@ const editMap = async (req, res) => {
   try {
     const { mapId } = req.params;
     if (req.files !== undefined) {
-      console.log("editmap called");
+      console.log("backend reqbodymappreview: ", req.files);
+      console.log("Req.body: ", req.body);
 
       const {
         map_name,
@@ -224,7 +225,31 @@ const editMap = async (req, res) => {
       // return res.status(201).json({ success: true, message: "Map created successfully!" });
       return res.status(201).json(updatedMap);
     } else {
-      console.log("REQ.BODY: ", req.body);
+      console.log("ELSELELELELELE");
+      // const randomString = (new Date().getTime() + Math.random())
+      //   .toString(36)
+      //   .substring(2);
+
+      // const fileBuffer = req.files["file"][0].buffer;
+      // const fileName = randomString + req.files["file"][0].originalname;
+      // const storageRef = bucket.file(fileName);
+      // await storageRef.createWriteStream().end(fileBuffer);
+
+      // const [fileUrl] = await storageRef.getSignedUrl({
+      //   action: "read",
+      //   expires: "03-09-2025", // Replace with an expiration date
+      // });
+
+      // const imgFileBuffer = req.files["mapPreviewImg"][0].buffer;
+      // const imgFileName =
+      //   randomString + req.files["mapPreviewImg"][0].originalname;
+      // const imgStorageRef = bucket.file(imgFileName);
+      // await imgStorageRef.createWriteStream().end(imgFileBuffer);
+
+      // const [mapPreviewImgUrl] = await imgStorageRef.getSignedUrl({
+      //   action: "read",
+      //   expires: "03-09-2025", // Replace with an expiration date
+      // });
       const {
         map_name,
         topic,
@@ -254,6 +279,7 @@ const editMap = async (req, res) => {
         },
         { new: true }
       );
+      console.log("UPDATED MAP: ", updatedMap);
 
       // Respond with success message
       // return res.status(201).json({ success: true, message: "Map created successfully!" });
