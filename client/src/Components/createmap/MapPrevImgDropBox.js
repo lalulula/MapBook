@@ -47,7 +47,7 @@ function MapPrevImgDropBox({
       setSelectedFile(file);
       setMapImage(file);
       try {
-        console.log("Selected image file:", file.name);
+        console.log("Selected image file:", file);
       } catch (error) {
         console.error("Error processing the image file:", error);
       }

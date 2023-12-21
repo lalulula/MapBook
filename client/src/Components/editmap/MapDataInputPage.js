@@ -16,6 +16,8 @@ import CustomSwitch from "../widgets/CustomSwitch";
 import "./createMap.css";
 import { useEffect, useState } from "react";
 import MapPrevImgDropBox from "./MapPrevImgDropBox";
+import { getMapAPI } from "../../api/map";
+
 const MapDataInputPage = ({
   options,
   setOptions,
@@ -44,6 +46,12 @@ const MapDataInputPage = ({
   useEffect(() => {
     console.log(showHoverData);
   }, [showHoverData]);
+
+  useEffect(() => {
+    getMapAPI(mapId).then((m) => {
+      setMapImage(m.mapPreviewImg);
+    });
+  }, []);
 
   const setFixDataToTrue = () => {
     setFixData(true);
@@ -134,7 +142,7 @@ const MapDataInputPage = ({
         setThemeData(selectedMapFile.mapbook_themedata);
         setOptions({
           ...options,
-          name:selectedMapFile.mapbook_mapname,
+          name: selectedMapFile.mapbook_mapname,
           description: selectedMapFile.mapbook_description,
           template: selectedMapFile.mapbook_template,
           topic: selectedMapFile.mapbook_topic,
@@ -145,7 +153,7 @@ const MapDataInputPage = ({
         setHeatRange(selectedMapFile.mapbook_heatrange);
         setOptions({
           ...options,
-          name:selectedMapFile.mapbook_mapname,
+          name: selectedMapFile.mapbook_mapname,
           description: selectedMapFile.mapbook_description,
           template: selectedMapFile.mapbook_template,
           topic: selectedMapFile.mapbook_topic,
@@ -161,7 +169,7 @@ const MapDataInputPage = ({
         // const newOption = { ...options, circleHeatMapData: selectedMapFile.mapbook_circleheatmapdata }
         setOptions({
           ...options,
-          name:selectedMapFile.mapbook_mapname,
+          name: selectedMapFile.mapbook_mapname,
           description: selectedMapFile.mapbook_description,
           template: selectedMapFile.mapbook_template,
           topic: selectedMapFile.mapbook_topic,
@@ -177,7 +185,7 @@ const MapDataInputPage = ({
         setPieBarData(selectedMapFile.mapbook_datanames);
         setOptions({
           ...options,
-          name:selectedMapFile.mapbook_mapname,
+          name: selectedMapFile.mapbook_mapname,
           description: selectedMapFile.mapbook_description,
           template: selectedMapFile.mapbook_template,
           topic: selectedMapFile.mapbook_topic,
@@ -187,7 +195,7 @@ const MapDataInputPage = ({
         setPieBarData(selectedMapFile.mapbook_datanames);
         setOptions({
           ...options,
-          name:selectedMapFile.mapbook_mapname,
+          name: selectedMapFile.mapbook_mapname,
           description: selectedMapFile.mapbook_description,
           template: selectedMapFile.mapbook_template,
           topic: selectedMapFile.mapbook_topic,

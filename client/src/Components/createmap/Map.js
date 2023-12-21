@@ -1306,6 +1306,7 @@ const Map = ({
     if (mapImage == null) {
       mapImage = canvas.toDataURL();
     }
+    //if mapimage is not null its a File type
 
     const newMapObj = {
       map_name: options.name,
@@ -1317,6 +1318,7 @@ const Map = ({
       file: mapData,
       view_count: 1,
     };
+
     const res = await createMapAPIMethod(newMapObj);
     console.log("res: ", res);
     if (res.ok) {
