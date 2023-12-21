@@ -32,8 +32,16 @@ const Heat = ({
     console.log("Heat map selectedColors: ", selectedColors);
   }, []);
 
+  useEffect(() => {
+    console.log("heat ranges: ", heatRange);
+    console.log(selectedMapFile["mapbook_heatrange"]["from"])
+    console.log(selectedMapFile["mapbook_heatrange"]["to"])
+
+  }, [heatRange]);
+
   const handleRangeChange = (e) => {
     const { name, value } = e.target;
+    
     setHeatRange({
       ...heatRange,
       [name]: value,

@@ -156,8 +156,8 @@ const Map = ({
       redrawThematicData();
       redrawHeatData();
       redrawCircleData();
-      redrawPieData();
-      redrawBarData();
+      // redrawPieData();
+      // redrawBarData();
     }
   };
 
