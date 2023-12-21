@@ -19,18 +19,11 @@ const CircleDataInput = ({
   handleRerender,
   feature,
 }) => {
-
-  useEffect( () =>  {
-    console.log("Circle feature: ", feature)
-    console.log(feature[0].properties.mapbook_data)
-    console.log("options.circleHeatMapData: ", options.circleHeatMapData)
-  }, [] );
+  useEffect(() => {}, []);
 
   const handleCircleDataSubmit = () => {
-    console.log("ONRENDER");
     handleRerender();
   };
-  const isAnyDataNameMissing = options.circleHeatMapData === "";
 
   return (
     <Modal open={showModalCircle} onClose={() => setShowModalCircle(false)}>
@@ -48,11 +41,14 @@ const CircleDataInput = ({
                     <Input
                       sx={{ marginBottom: "1rem" }}
                       onChange={(e) => setInputData(e.target.value)}
-                      // placeholder={options.circleHeatMapData}
-                      placeholder={feature[0].properties.mapbook_data ? feature[0].properties.mapbook_data[options.circleHeatMapData] : "Enter data value"}
-
-                      slotProps={{ input: { type:"number",step:"0.01" } }}
-
+                      placeholder={
+                        feature[0].properties.mapbook_data
+                          ? feature[0].properties.mapbook_data[
+                              options.circleHeatMapData
+                            ]
+                          : "Enter data value"
+                      }
+                      slotProps={{ input: { type: "number", step: "0.01" } }}
                       required
                     />
                   </FormControl>

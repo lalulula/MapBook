@@ -48,17 +48,12 @@ const Map = ({
   const mapFileData = useRef(selectedMapFile);
   const mapRef = useRef();
   const fixDataRef = useRef(fixData);
-  const [currentMapImg, setCurrentMapImg] = useState(null);
 
   const [regionName, setRegionName] = useState("");
 
-  useEffect(() => {
-    console.log(template);
-  }, [template]);
+  useEffect(() => {}, [template]);
 
   useEffect(() => {
-    console.log("fixDataRef.current: ", fixDataRef.current);
-    console.log("fixData: ", fixData);
     if (fixDataRef.current) {
       if (!fixData) {
         resetMap();
@@ -82,16 +77,7 @@ const Map = ({
       mapbook_heat_selectedcolors: selectedColors, // heat color
       mapbook_themedata: themeData, //Color + data name
     };
-
-    // console.log("dataname changed:", mapFileData.current)
-  }, [
-    options,
-    pieBarData,
-    themeData,
-    heatRange,
-    selectedColors,
-    // mapFileData.current,
-  ]);
+  }, [options, pieBarData, themeData, heatRange, selectedColors]);
 
   const MAPBOX_TOKEN =
     "pk.eyJ1IjoieXVuYWhraW0iLCJhIjoiY2xtNTgybXd2MHdtMjNybnh6bXYweGNweiJ9.cfBakJXxub4ejba076E2Cw";
@@ -105,7 +91,6 @@ const Map = ({
   const [showModalHeat, setShowModalHeat] = useState(false);
   const [feature, setFeature] = useState(null);
   const [inputData, setInputData] = useState(null);
-  // const [hoverData, setHoverData] = useState("Out of range");
   const undoStack = useRef([]);
   const redoStack = useRef([]);
   const templateHoverType = useRef([]);
@@ -117,17 +102,13 @@ const Map = ({
   const barChartData = useRef([]);
   const navigate = useNavigate();
   const [showErrorMessage, setShowErrorMessage] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const [isCanvasLoaded, setIsCanvasLoaded] = useState(true);
   const [startDataEditModal, setStartDataEditModal] = useState(false);
 
   const handleRerender = () => {
     setRerenderFlag(!rerenderFlag);
   };
-  useEffect(() => {
-    console.log(undoStack.current.length === 0);
-    console.log(redoStack.current.length === 0);
-  }, [undoStack, redoStack]);
+  useEffect(() => {}, [undoStack, redoStack]);
   const resetMap = () => {
     undoStack.current = [];
     redoStack.current = [];
@@ -156,23 +137,13 @@ const Map = ({
       redrawThematicData();
       redrawHeatData();
       redrawCircleData();
-      // redrawPieData();
-      // redrawBarData();
     }
-  };
-
-  const handleThematicMapLayer = (map, data) => {
-    console.log("handleThematicMapLayer: ", data);
   };
 
   useEffect(() => {
     templateHoverType.current = template;
-    // console.log("isMapbookData: Map.js:", isMapbookData)
     if (!isMapbookData) {
-      //  pieChartData.current = [];
-      //  barChartData.current = [];
       resetMap();
-      console.log("resetMap called:", selectedMapFile);
       setFixData(false);
     }
   }, [template]);
@@ -181,21 +152,15 @@ const Map = ({
     if (fixDataRef.current) {
       // setShowPopup(false);
       setSelectedMapFile((prevMapFile) => {
-        // console.log(prevMapFile);
         if (prevMapFile["mapbook_template"] === "Bar Chart") {
-          // setTemplate("Bar Chart");
           setShowModalBar(!showModalBar);
         } else if (prevMapFile["mapbook_template"] === "Pie Chart") {
-          // setTemplate("Pie Chart");
           setShowModalPie(!showModalPie);
         } else if (prevMapFile["mapbook_template"] === "Circle Map") {
-          // setTemplate("Circle Map");
           setShowModalCircle(!showModalCircle);
         } else if (prevMapFile["mapbook_template"] === "Thematic Map") {
-          // setTemplate("Thematic Map");
           setShowModalThematic(!showModalThematic);
         } else if (prevMapFile["mapbook_template"] === "Heat Map") {
-          // setTemplate("Heat Map");
           setShowModalHeat(!showModalHeat);
         }
 
@@ -253,7 +218,6 @@ const Map = ({
   // THEMATIC
   const redrawThematicData = () => {
     if (templateHoverType.current === "Thematic Map") {
-      //////// HANEUL
       if (mapRef.current.getLayer("counties-thematic")) {
         mapRef.current.removeLayer("counties-thematic");
       }
@@ -266,7 +230,6 @@ const Map = ({
         data: mapFileData.current,
       });
 
-      ////// HANEUL
       mapRef.current.addLayer(
         {
           id: `counties-thematic`,
@@ -290,7 +253,6 @@ const Map = ({
       );
       var namesDataAdded = [];
       featureDataAdded.forEach((element) => {
-        console.log(element["properties"].mapbook_data.length);
         if (
           Object.keys(element["properties"].mapbook_data).length <
           themeData.length
@@ -300,13 +262,11 @@ const Map = ({
           namesDataAdded.push(element["properties"].name);
         }
       });
-      console.log("themeData", themeData);
 
       let dataNames = [];
       themeData.forEach((data) => {
         dataNames.push(data.dataName);
       });
-      console.log("dataNames", dataNames);
 
       let expMaximumValue = ["max"];
       let values = [];
@@ -326,9 +286,6 @@ const Map = ({
         colors.push(expColor);
         expMaximumValue.push(expValue);
       });
-      // console.log("values", values);
-      // console.log("colors", colors);
-      // console.log("expMaximumValue", expMaximumValue);
 
       let expGetMaximumColor = ["case"];
       for (let i = 0; i < values.length; i++) {
@@ -337,11 +294,6 @@ const Map = ({
         expGetMaximumColor.push(mapFileData.current.mapbook_themedata[i].color);
       }
       expGetMaximumColor.push("#000000");
-
-      // console.log("expGetMaximumColor", expGetMaximumColor);
-
-      // console.log("mapFileData.current", mapFileData.current);
-      // console.log("mapRef.getSource(): ", mapRef.current.getSource("counties"));
 
       mapRef.current.setLayoutProperty(
         "counties-thematic",
@@ -400,26 +352,19 @@ const Map = ({
         },
       });
 
-      console.log("Calling HEAT AFTER CLICK");
-
       const featureDataAdded = mapFileData.current["features"].filter(
         (f) => f["properties"].mapbook_data != null
       );
       var namesDataAdded = [];
       featureDataAdded.forEach((element) => {
-        console.log("featureDataAdded", element);
         namesDataAdded.push(element["properties"].name);
       });
 
       const expValue = ["to-number", ["get", "value", ["get", "mapbook_data"]]];
 
-      console.log("mapFileData.current: ", mapFileData.current);
-
       var heatRangeFrom = Number(mapFileData.current.mapbook_heatrange.from);
       var heatRangeTo = Number(mapFileData.current.mapbook_heatrange.to);
       var range = (heatRangeTo - heatRangeFrom) / 5;
-      // console.log(heatRangeFrom, heatRangeTo, range)
-      // console.log(typeof(heatRangeFrom), typeof(heatRangeTo), typeof(range), typeof(heatRangeFrom + range))
 
       let expHeatColorByValue = ["case"];
       for (var i = 0; i < 5; i++) {
@@ -434,8 +379,6 @@ const Map = ({
         heatRangeFrom = heatRangeFrom + range;
       }
       expHeatColorByValue.push("#000000");
-
-      // console.log("heatData", inputData, "namesdata", namesDataAdded);
 
       mapRef.current.setLayoutProperty(
         "counties-heat",
@@ -464,8 +407,8 @@ const Map = ({
 
     for (var i = 0, l = vertices.length; i < l; i++) {
       var addX = vertices[i][0];
-      var addY = vertices[i == vertices.length - 1 ? 0 : i + 1][1];
-      var subX = vertices[i == vertices.length - 1 ? 0 : i + 1][0];
+      var addY = vertices[i === vertices.length - 1 ? 0 : i + 1][1];
+      var subX = vertices[i === vertices.length - 1 ? 0 : i + 1][0];
       var subY = vertices[i][1];
 
       total += addX * addY * 0.5;
@@ -488,15 +431,11 @@ const Map = ({
         mapRef.current.removeLayer("unclustered-point");
       }
       if (mapRef.current.getSource("circles")) {
-        console.log("circle source remove");
         mapRef.current.removeSource("circles");
       }
 
-      console.log("mapfile.current: ", mapFileData.current);
-
       let dataName = mapFileData.current["mapbook_circleheatmapdata"];
 
-      console.log(dataName);
       const expValue = [
         "to-number",
         ["get", dataName, ["get", "mapbook_data"]],
@@ -515,7 +454,6 @@ const Map = ({
       var JsonBasedOnPoint = structuredClone(mapFileData.current);
       var newGeometry;
       for (var i = 0; i < mapFileData.current["features"].length; i++) {
-        // console.log(mapFileData.current["features"][i])
         if (mapFileData.current["features"][i].geometry.type === "Polygon") {
           newGeometry = {
             type: "Point",
@@ -550,9 +488,6 @@ const Map = ({
       mapRef.current.addSource("circles", {
         type: "geojson",
         data: JsonBasedOnPoint,
-        // cluster: true,
-        // clusterMaxZoom: 14, // Max zoom to cluster points on
-        // clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
       });
 
       mapRef.current.addLayer({
@@ -607,11 +542,6 @@ const Map = ({
         30,
         40,
       ]);
-
-      console.log(
-        "mapRef.current.getPaintProperty:",
-        mapRef.current.getPaintProperty("clusters", "circle-color")
-      );
     } else {
       if (mapRef.current.getLayer("clusters")) {
         mapRef.current.setLayoutProperty("clusters", "visibility", "none");
@@ -652,19 +582,9 @@ const Map = ({
             },
           ],
         };
-        console.log("tempPieChartData: ", tempPieChartData);
+
         var keys = Object.keys(element["properties"].mapbook_data);
         keys.forEach((name) => {
-          console.log("name: ", name);
-          console.log(
-            'element["properties"].mapbook_data',
-            element["properties"].mapbook_data
-          );
-
-          console.log(
-            'element["properties"].mapbook_data.name',
-            element["properties"].mapbook_data[name]
-          );
           tempPieChartData.labels.push(name);
           tempPieChartData.datasets[0].data.push(
             element["properties"].mapbook_data[name].value
@@ -709,13 +629,12 @@ const Map = ({
       // generate image object for region which data exist
       try {
         namesDataAdded.forEach((name) => {
-          console.log("name:", name);
           // generate image
-          // image = generateImage(data);
+
           const canvasSave = document.getElementById(name + "pie");
-          console.log("canvasSave:", canvasSave);
+
           var context = canvasSave.getContext("2d");
-          console.log("context", context);
+
           var imgData = context.getImageData(
             0,
             0,
@@ -778,7 +697,7 @@ const Map = ({
           labels: [""],
           datasets: [],
         };
-        console.log("tempBarChartData: ", tempBarChartData);
+
         var keys = Object.keys(element["properties"].mapbook_data);
         keys.forEach((name) => {
           var tempDataset = { data: [] };
@@ -800,9 +719,6 @@ const Map = ({
       mapRef.current.addSource("bar", {
         type: "geojson",
         data: mapFileData.current,
-        // cluster: true,
-        // clusterMaxZoom: 14, // Max zoom to cluster points on
-        // clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
       });
 
       mapRef.current.addLayer({
@@ -820,16 +736,11 @@ const Map = ({
         ...namesDataAdded,
       ]);
 
-      /// Haneul
       var expImageSelect = ["case"];
       try {
         // generate image object for region which data exist
         namesDataAdded.forEach((name) => {
-          console.log("name:", name);
-          // generate image
-          // image = generateImage(data);
           const canvasSave = document.getElementById(name + "bar");
-          console.log("canvasSave:", canvasSave);
 
           var context = canvasSave.getContext("2d");
           var imgData = context.getImageData(
@@ -873,7 +784,6 @@ const Map = ({
     e.preventDefault();
 
     // for undo/redo
-    console.log("before calling handleChangeState: ", mapFileData.current);
     handleChangeState();
 
     var tempArr = mapFileData.current["features"];
@@ -888,14 +798,6 @@ const Map = ({
     } else {
       feature[0]["properties"]["mapbook_data"] = inputData;
     }
-
-    // if (showModalPie) {
-    //   feature[0]["properties"]["mapbook_data"] = {
-    //     [mapFileData.current["mapbook_datanames"]]: inputData,
-    //   };
-    // } else {
-    //   feature[0]["properties"]["mapbook_data"] = inputData;
-    // }
 
     for (var i = 0; i < tempArr.length; i++) {
       if (tempArr[i]["properties"].name === feature[0]["properties"].name) {
@@ -914,7 +816,6 @@ const Map = ({
 
   const handleUndo = () => {
     if (undoStack.current.length !== 0) {
-      console.log("undo Clicked");
       // pop {a} from undo stack
       const popedState = undoStack.current.pop();
 
@@ -924,9 +825,6 @@ const Map = ({
       // change current state to {a}
       // setSelectedMapFile(popedState => (popedState))
       mapFileData.current = popedState;
-
-      console.log("popedState: ", popedState);
-      console.log("afterUndo: ", mapFileData.current);
 
       setSelectedMapFile(mapFileData.current);
       redrawHeatData();
@@ -939,7 +837,6 @@ const Map = ({
 
   const handleRedo = () => {
     if (redoStack.current.length !== 0) {
-      console.log("redo Clicked");
       // pop {a} from redo stack
       const popedState = redoStack.current.pop();
       // push current state into undo stack
@@ -948,9 +845,6 @@ const Map = ({
       // change current state to {a}
       // setSelectedMapFile(popedState)
       mapFileData.current = popedState;
-
-      console.log("popedState: ", popedState);
-      console.log("afterRedo: ", mapFileData.current);
 
       setSelectedMapFile(mapFileData.current);
 
@@ -966,7 +860,6 @@ const Map = ({
     // push the state which is right before current change into undo stack
     undoStack.current.push(structuredClone(mapFileData.current));
 
-    console.log("undoStack: ", undoStack);
     // clear redo stack
     redoStack.current = [];
   };
@@ -1008,17 +901,13 @@ const Map = ({
         });
       }
     });
-    console.log("totalX: ", totalX);
-    console.log("totalY: ", totalY);
+
     const avgX = totalX / count;
     const avgY = totalY / count;
     return [avgX, avgY];
   }
 
   useEffect(() => {
-    console.log("selectedMapFile: ", mapFileData.current);
-    // console.log("onhover: useEffect:", templateHoverType.current);
-
     // TODO: make lowercase name
     // Name NAME -> name
     if (mapFileData.current != null) {
@@ -1029,7 +918,7 @@ const Map = ({
               mapFileData.current["features"][i].properties.Name;
           }
         } else if (mapFileData.current["features"][0].properties.NAME != null) {
-          for (var i = 0; i < mapFileData.current["features"].length; i++) {
+          for (i = 0; i < mapFileData.current["features"].length; i++) {
             mapFileData.current["features"][i].properties.name =
               mapFileData.current["features"][i].properties.NAME;
           }
@@ -1065,8 +954,6 @@ const Map = ({
       });
 
       map.on("load", () => {
-        const points = turf.featureCollection([]);
-        console.log("ON LOAD selectedMapFile: ", mapFileData.current);
         map.addSource("counties", {
           type: "geojson",
           data: mapFileData.current,
@@ -1102,7 +989,6 @@ const Map = ({
               (f) => f["properties"].name === names[0]
             );
 
-            console.log("newSelectedFeature: ", newSelectedFeature);
             setFeature(newSelectedFeature);
 
             setRegionName(names[0]);
@@ -1110,9 +996,7 @@ const Map = ({
             handleClickRegion();
 
             //ADDED
-            console.log("mapfiledata.current: ", mapFileData.current.features);
             map.getSource("counties").setData(mapFileData.current.features);
-            // map.setPaintProperty("counties", "fill-color");
           } else {
             setFeature([]);
             map.setFilter("counties-highlighted", ["in", "name", ...names]);
@@ -1137,14 +1021,14 @@ const Map = ({
               return typeof value === "object" && value !== null;
             };
             const renderObject = (obj) => {
-              console.log("calling render");
               return `<span>${Object.keys(obj)
                 .map((nestedKey) => {
                   const value = obj[nestedKey];
-                  return ` ${nestedKey.toLowerCase() === "color"
-                    ? `<font color="${value}">(${value})</font>`
-                    : value
-                    }`;
+                  return ` ${
+                    nestedKey.toLowerCase() === "color"
+                      ? `<font color="${value}">(${value})</font>`
+                      : value
+                  }`;
                 })
                 .join("<br/>")}</span>`;
             };
@@ -1153,8 +1037,9 @@ const Map = ({
               setHoverData(`No data for ${regions[0]["properties"].name}`);
             } else {
               const formatDataByKey = (key, value) => {
-                return `${key}  ${isObject(value) ? renderObject(value) : value
-                  }`;
+                return `${key}  ${
+                  isObject(value) ? renderObject(value) : value
+                }`;
               };
 
               const formatColorKey = (key, value) => {
@@ -1198,38 +1083,12 @@ const Map = ({
               } else if (templateHoverType.current === "Heat Map") {
                 const heatDataName =
                   mapFileData.current.mapbook_circleheatmapdata;
-                var from = Number(
-                  mapFileData.current["mapbook_heatrange"]["from"]
-                );
-                var to = Number(mapFileData.current["mapbook_heatrange"]["to"]);
-
-                const width = (to - from) / 5;
-                const ranges = [
-                  from,
-                  from + width,
-                  from + width * 2,
-                  from + width * 3,
-                  from + width * 4,
-                  to,
-                ];
-
-                // var heatRangeColorText = "</br>";
-
-                // for (let i = 0; i < 5; i++) {
-                //   heatRangeColorText =
-                //     heatRangeColorText +
-                //     `<font color="${
-                //       mapFileData.current["mapbook_heat_selectedcolors"][i]
-                //     }">${ranges[i].toFixed(2)} to ${(ranges[i + 1] - 1).toFixed(
-                //       2
-                //     )}</font></br>`;
-                // }
 
                 setHoverData(
                   regions[0]["properties"].name +
-                  "\n" +
-                  heatDataName +
-                  formattedData
+                    "\n" +
+                    heatDataName +
+                    formattedData
                 );
               } else if (templateHoverType.current === "Thematic Map") {
                 setHoverData(
@@ -1241,10 +1100,10 @@ const Map = ({
 
                 setHoverData(
                   regions[0]["properties"].name +
-                  "\n" +
-                  circleDataName +
-                  "<br/><br/>" +
-                  formattedData
+                    "\n" +
+                    circleDataName +
+                    "<br/><br/>" +
+                    formattedData
                 );
               }
             }
@@ -1282,26 +1141,9 @@ const Map = ({
   // Convert data to GEOJSON //
   function saveGeoJSONToFile(geoJSONObject, filename) {
     const geoJSONString = JSON.stringify(geoJSONObject);
-    // console.log("geoJSONString: ", geoJSONString)
     const newGeoJson = new File([geoJSONString], filename, {
       type: "application/json",
     });
-    return newGeoJson;
-  }
-
-  function downloadGeoJSON(geoJSONObject, filename) {
-    const newGeoJson = saveGeoJSONToFile(geoJSONObject, filename);
-    // console.log(newGeoJson)
-    // Create a download link
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(newGeoJson);
-    link.download = filename;
-    // Append the link to the body -> trigger click event to start the download
-    document.body.appendChild(link);
-    link.click();
-    // RM link from DOM
-    document.body.removeChild(link);
-    // console.log(`GeoJSON saved as ${filename}`);
     return newGeoJson;
   }
 
@@ -1312,11 +1154,13 @@ const Map = ({
       const blob = await response.blob();
 
       // Create a File object
-      const file = new File([blob], fileName, { type: response.headers.get('content-type') });
+      const file = new File([blob], fileName, {
+        type: response.headers.get("content-type"),
+      });
 
       return file;
     } catch (error) {
-      console.error('Error converting image URL to File:', error);
+      console.error("Error converting image URL to File:", error);
       return null;
     }
   }
@@ -1350,9 +1194,6 @@ const Map = ({
       file: mapData,
     };
 
-    console.log("newMapObj", newMapObj);
-    console.log("newmapobj img: ", newMapObj.mapPreviewImg);
-
     const res = await editMapPostAPIMethodWithFile(mapId, newMapObj);
 
     if (res.ok) {
@@ -1368,8 +1209,6 @@ const Map = ({
 
   // Click Edit Map Btn
   const handleEditMap = async () => {
-    // console.log("mapId: ", mapId);
-
     const geoJSONObject = mapFileData.current;
     const mapFile = saveGeoJSONToFile(
       geoJSONObject,
@@ -1404,14 +1243,16 @@ const Map = ({
       <div className="map_toolbar_container">
         <div className="map_undo_redo_container">
           <i
-            className={`${undoStack.current.length === 0 ? "disabled_undo" : "undo"
-              } bx bx-undo`}
+            className={`${
+              undoStack.current.length === 0 ? "disabled_undo" : "undo"
+            } bx bx-undo`}
             onClick={handleUndo}
           />
           <div className="vertical_line_container">|</div>
           <i
-            className={`${redoStack.current.length === 0 ? "disabled_redo" : "redo"
-              } bx bx-redo`}
+            className={`${
+              redoStack.current.length === 0 ? "disabled_redo" : "redo"
+            } bx bx-redo`}
             onClick={handleRedo}
           />
         </div>

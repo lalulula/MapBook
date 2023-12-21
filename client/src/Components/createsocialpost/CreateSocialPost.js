@@ -77,23 +77,20 @@ const CreateSocialPost = () => {
       ...uploadedImages.slice(0, index),
       ...uploadedImages.slice(index + 1),
     ];
-    console.log("NEWUPLAODED IMAGES: ", newUploadedImages);
+
     setUploadedImages(newUploadedImages);
-    setOptions({ ...options, post_images: newUploadedImages })
+    setOptions({ ...options, post_images: newUploadedImages });
   };
 
   const handleSocialPostCreate = async () => {
     setClickedPost(true);
     const newPost = { ...options, post_owner: userId };
-    console.log("NEWPSOT: ", newPost);
     const res = await createSocialPostAPIMethod(newPost);
     if (res.ok) {
-      // const responseMsg = await res.json;
       navigate("/socialpage");
     } else {
       setShowErrorMessage(true);
       setClickedPost(false);
-      // alert(`Error: ${res.status} - ${res.statusText}`);
     }
   };
 
@@ -271,7 +268,7 @@ const CreateSocialPost = () => {
               <button
                 onClick={handleSocialPostCreate}
                 className="createsocialpost_submit"
-              /* disabled={options.title.trim() === ''} */
+                /* disabled={options.title.trim() === ''} */
               >
                 Post
               </button>
