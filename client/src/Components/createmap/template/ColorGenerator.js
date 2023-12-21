@@ -50,6 +50,7 @@ const ColorGenerator = ({ selectedColors, setSelectedColors, fixData }) => {
           className="createMap_color_picker"
           value={selectedColors.length === 0 ? baseColor : selectedColors[0]}
           onChange={handleBaseColorChange}
+          disabled
         />
       ) : (
         <input

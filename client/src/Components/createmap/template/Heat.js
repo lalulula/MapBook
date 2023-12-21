@@ -128,7 +128,7 @@ const Heat = ({
         <ColorGenerator
           selectedColors={selectedColors}
           setSelectedColors={setSelectedColors}
-          fixData
+          fixData={fixData}
         />
       </div>
 
