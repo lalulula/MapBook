@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "./header.css";
 import "intersection-observer";
@@ -25,7 +25,6 @@ const Header = () => {
     } else {
       setAdmin(false);
     }
-    // console.log(isCreateMapPage);
   }, [user]);
 
   const openModal = () => {
@@ -67,10 +66,10 @@ const Header = () => {
                     style={
                       isCreateMapPage
                         ? {
-                          cursor: "default",
-                          transform: "none",
-                          color: "#6a6a6abf",
-                        }
+                            cursor: "default",
+                            transform: "none",
+                            color: "#6a6a6abf",
+                          }
                         : {}
                     }
                   >
@@ -82,10 +81,10 @@ const Header = () => {
                     style={
                       isCreateMapPage
                         ? {
-                          cursor: "default",
-                          transform: "none",
-                          color: "#6a6a6abf",
-                        }
+                            cursor: "default",
+                            transform: "none",
+                            color: "#6a6a6abf",
+                          }
                         : {}
                     }
                   >
@@ -157,10 +156,10 @@ const Header = () => {
                     style={
                       isCreateMapPage
                         ? {
-                          cursor: "default",
-                          transform: "none",
-                          color: "#6a6a6abf",
-                        }
+                            cursor: "default",
+                            transform: "none",
+                            color: "#6a6a6abf",
+                          }
                         : {}
                     }
                   >
@@ -210,10 +209,10 @@ const Header = () => {
                       style={
                         isCreateMapPage
                           ? {
-                            cursor: "default",
-                            transform: "none",
-                            color: "#6a6a6abf",
-                          }
+                              cursor: "default",
+                              transform: "none",
+                              color: "#6a6a6abf",
+                            }
                           : {}
                       }
                     >
@@ -225,10 +224,10 @@ const Header = () => {
                       style={
                         isCreateMapPage
                           ? {
-                            cursor: "default",
-                            transform: "none",
-                            color: "#6a6a6abf",
-                          }
+                              cursor: "default",
+                              transform: "none",
+                              color: "#6a6a6abf",
+                            }
                           : {}
                       }
                     >
