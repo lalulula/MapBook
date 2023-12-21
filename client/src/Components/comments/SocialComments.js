@@ -134,9 +134,9 @@ const SocialComments = () => {
 
   const refresh = async () => {
     const arr = comments.filter((c) => postComments.includes(c._id));
-    console.log("comments: ", comments);
-    console.log("postComments: ", postComments);
-    console.log("refresh: arr: ", arr);
+    // console.log("comments: ", comments);
+    // console.log("postComments: ", postComments);
+    // console.log("refresh: arr: ", arr);
     for (let i = 0; i < arr.length; i++) {
       try {
         if (arr[i]["username"] == null) {
@@ -265,9 +265,11 @@ const SocialComments = () => {
                           {comment.social_comment_owner === currentUserId && (
                             <div
                               className="edit_comment_btn"
-                              onClick={() => handleClickEditComment(comment._id)}
+                              onClick={() =>
+                                handleClickEditComment(comment._id)
+                              }
                             >
-                              <EditIcon style={{ fontSize: '17px' }} />
+                              <EditIcon style={{ fontSize: "17px" }} />
                               Edit comment
                             </div>
                           )}
@@ -278,22 +280,25 @@ const SocialComments = () => {
                                 handleClickDeleteComment(comment._id)
                               }
                             >
-                              <DeleteIcon style={{ fontSize: '17px' }} />
+                              <DeleteIcon style={{ fontSize: "17px" }} />
                               Delete comment
                             </div>
                           )}
                           {isAuth && (
                             <div
                               className="reply_comment_btn"
-                              onClick={() => handleClickReplyComment(comment._id)}
+                              onClick={() =>
+                                handleClickReplyComment(comment._id)
+                              }
                             >
-                              <ChatBubbleOutlineIcon style={{ fontSize: '20px' }} />
+                              <ChatBubbleOutlineIcon
+                                style={{ fontSize: "20px" }}
+                              />
                               <p>Reply</p>
                             </div>
                           )}
                         </div>
                       </div>
-
                     </div>
                   </div>
                 ) : (
@@ -341,9 +346,11 @@ const SocialComments = () => {
                           {comment.social_comment_owner === currentUserId && (
                             <div
                               className="edit_comment_btn"
-                              onClick={() => handleClickEditComment(comment._id)}
+                              onClick={() =>
+                                handleClickEditComment(comment._id)
+                              }
                             >
-                              <EditIcon style={{ fontSize: '17px' }} />
+                              <EditIcon style={{ fontSize: "17px" }} />
                               Edit comment
                             </div>
                           )}
@@ -354,16 +361,20 @@ const SocialComments = () => {
                                 handleClickDeleteComment(comment._id)
                               }
                             >
-                              <DeleteIcon style={{ fontSize: '17px' }} />
+                              <DeleteIcon style={{ fontSize: "17px" }} />
                               Delete comment
                             </div>
                           )}
                           {isAuth && (
                             <div
                               className="reply_comment_btn"
-                              onClick={() => handleClickReplyComment(comment._id)}
+                              onClick={() =>
+                                handleClickReplyComment(comment._id)
+                              }
                             >
-                              <ChatBubbleOutlineIcon style={{ fontSize: '20px' }} />
+                              <ChatBubbleOutlineIcon
+                                style={{ fontSize: "20px" }}
+                              />
                               <p>Reply</p>
                             </div>
                           )}
@@ -402,7 +413,7 @@ const SocialComments = () => {
           </div>
         )}
       </div>
-    </div >
+    </div>
   );
 };
 
