@@ -3,9 +3,7 @@ import React, { useState, useEffect } from "react";
 const ColorGenerator = ({ selectedColors, setSelectedColors, fixData }) => {
   const [baseColor, setBaseColor] = useState("#b09289");
   const [colorArray, setColorArray] = useState([]);
-  useEffect(() => {
-    console.log(selectedColors);
-  }, [selectedColors]);
+  useEffect(() => {}, [selectedColors]);
   const generateGradientColors = (baseColor) => {
     const numSteps = 5; // Adjust the number of steps in the gradient
     const colorArray = [];

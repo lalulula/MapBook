@@ -3,21 +3,16 @@ import { useEffect } from "react";
 
 import Input from "@mui/joy/Input";
 
-const PieBar = ({ pieBarData, setPieBarData,
-  fixData,
-  setFixData,
-  }) => {
+const PieBar = ({ pieBarData, setPieBarData, fixData, setFixData }) => {
   const [selectedDataIndexes, setSelectedDataIndexes] = useState([]);
-  
+
   useEffect(() => {
-    if(fixData){
+    if (fixData) {
       // check that data is duplicated or not
-      console.log("pieBarData:", pieBarData)
-      for(var i = 0; i < pieBarData.length; i++){
-        for(var j = i+1; j < pieBarData.length; j++){
-          if(pieBarData[i].dataName == pieBarData[j].dataName){
+      for (var i = 0; i < pieBarData.length; i++) {
+        for (var j = i + 1; j < pieBarData.length; j++) {
+          if (pieBarData[i].dataName === pieBarData[j].dataName) {
             setFixData(false);
-            console.log("DataName duplicated! Cannot fix Data")
             break;
           }
         }
@@ -53,17 +48,18 @@ const PieBar = ({ pieBarData, setPieBarData,
   return (
     <div>
       <div className="data_container">
-        {fixData?  
-          pieBarData.map((data, index) => ( 
-            <div className="" key={index}>
-              <div className="data_input_container">
-
+        {fixData
+          ? pieBarData.map((data, index) => (
+              <div className="" key={index}>
+                <div className="data_input_container">
                   <Input
                     placeholder="Data Name"
                     required
                     name={`data_name_${index}`}
                     value={data.dataName}
-                    onChange={(e) => handlePieBarDataInput(index, e.target.value)}
+                    onChange={(e) =>
+                      handlePieBarDataInput(index, e.target.value)
+                    }
                     disabled
                   />
                   <input
@@ -79,19 +75,20 @@ const PieBar = ({ pieBarData, setPieBarData,
                     }}
                     disabled
                   />
+                </div>
               </div>
-            </div>
-          )) : 
-          pieBarData.map((data, index) => ( 
-            <div className="" key={index}>
-              <div className="data_input_container">
-
+            ))
+          : pieBarData.map((data, index) => (
+              <div className="" key={index}>
+                <div className="data_input_container">
                   <Input
                     placeholder="Data Name"
                     required
                     name={`data_name_${index}`}
                     value={data.dataName}
-                    onChange={(e) => handlePieBarDataInput(index, e.target.value)}
+                    onChange={(e) =>
+                      handlePieBarDataInput(index, e.target.value)
+                    }
                   />
                   <input
                     className="createMap_color_picker"
@@ -109,22 +106,22 @@ const PieBar = ({ pieBarData, setPieBarData,
                     className="createmap_remove_data_btn bi bi-x-lg"
                     onClick={() => handleRemovePieBarData(index)}
                   />
-                
+                </div>
               </div>
-            </div>
-          )) 
-
-      }
+            ))}
       </div>
-      {fixData?
-      <></>
-      :
-      <div style={{ textAlign: "center" }}>
-        <span onClick={handleAddPieBarData} className="createmap_add_data_btn">
-          Add Data
-        </span>
-      </div>
-      }
+      {fixData ? (
+        <></>
+      ) : (
+        <div style={{ textAlign: "center" }}>
+          <span
+            onClick={handleAddPieBarData}
+            className="createmap_add_data_btn"
+          >
+            Add Data
+          </span>
+        </div>
+      )}
     </div>
   );
 };

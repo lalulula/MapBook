@@ -19,17 +19,11 @@ const CircleDataInput = ({
   handleRerender,
   feature,
 }) => {
-  useEffect(() => {
-    console.log("Circle feature: ", feature);
-    console.log(feature[0].properties.mapbook_data);
-    // console.log("options.circleHeatMapData: ", options.circleHeatMapData);
-  }, []);
+  useEffect(() => {}, []);
 
   const handleCircleDataSubmit = () => {
-    console.log("ONRENDER");
     handleRerender();
   };
-  const isAnyDataNameMissing = options.circleHeatMapData === "";
 
   return (
     <Modal open={showModalCircle} onClose={() => setShowModalCircle(false)}>
@@ -57,7 +51,7 @@ const CircleDataInput = ({
                       }
                       // type="number"
                       // step="0.01"
-                      slotProps={{ input: { type:"number",step:"0.01" } }}
+                      slotProps={{ input: { type: "number", step: "0.01" } }}
                       required
                     />
                   </FormControl>

@@ -1,18 +1,15 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import MapDataInputPage from "./MapDataInputPage";
 import { useState } from "react";
 import "./createMap.css";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Popup from "reactjs-popup";
 import ImportFilePage from "./ImportFilePage";
 import { useSelector } from "react-redux";
 
-
 const CreateMap = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const mapInfo = { ...location.state };
-
 
   const [options, setOptions] = useState({
     name: "",
@@ -37,9 +34,8 @@ const CreateMap = () => {
   const [selectedMapFile, setSelectedMapFile] = useState(DEFAULT_GEOJSON);
   // const [selectedMapFile, setSelectedMapFile] = useState(null);
 
-
   useEffect(() => {
-    console.log("mapInfo: ", mapInfo.mapFile)
+    // console.log("mapInfo: ", mapInfo.mapFile);
     // mapInfo
     if (mapInfo.mapFile) {
       setIsMapbookData(true);
@@ -48,7 +44,6 @@ const CreateMap = () => {
     }
     window.userState = currentUser;
   }, []);
-
 
   useEffect(() => {
     // console.log("useEffect: selectedMapFile: ", selectedMapFile);
@@ -71,12 +66,9 @@ const CreateMap = () => {
     }
   }, [options, pieBarData, heatRange, selectedColors, themeData]);
 
-
   const closeImportDataPopup = () => {
     setImportDataOpen(false);
   };
-
-
 
   useEffect(() => {
     // console.log("isMapbookData: CreateMap.js: ", isMapbookData)
@@ -120,7 +112,6 @@ const CreateMap = () => {
             setShowMapEdit={setShowMapEdit}
             isMapbookData={isMapbookData}
             setIsMapbookData={setIsMapbookData}
-
           />
         </div>
       )}

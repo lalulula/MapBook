@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Button from "@mui/joy/Button";
 import FormControl from "@mui/joy/FormControl";
 import Input from "@mui/joy/Input";
@@ -16,11 +16,6 @@ const ThematicDataInput = ({
   regionName,
   feature,
 }) => {
-  // useEffect( () =>  {
-  //   console.log("ThematicDataInput feature: ", feature)
-  //   console.log(feature[0].properties.mapbook_data)
-  // }, [] );
-
   const isAnyDataMissing =
     selectedMapFile["mapbook_themedata"].some((data) => !data.dataName) ||
     selectedMapFile["mapbook_themedata"].length === 0;
@@ -48,24 +43,20 @@ const ThematicDataInput = ({
                           onChange={(e) =>
                             handleThematicData(data, e.target.value)
                           }
-                          // placeholder="Enter data value"
-                          // placeholder={
-                          //   feature[0].properties.mapbook_data
-                          //     ? feature[0].properties.mapbook_data[
-                          //         data["dataName"]
-                          //       ].value
-                          //     : "Enter data value"
-                          // }
                           placeholder={
-                            !feature[0].properties.mapbook_data ? 
-                            "Enter data value" : 
-                            !feature[0].properties.mapbook_data[data["dataName"]] ? 
-                            "Enter data value" :
-                            feature[0].properties.mapbook_data[data["dataName"]].value
+                            !feature[0].properties.mapbook_data
+                              ? "Enter data value"
+                              : !feature[0].properties.mapbook_data[
+                                  data["dataName"]
+                                ]
+                              ? "Enter data value"
+                              : feature[0].properties.mapbook_data[
+                                  data["dataName"]
+                                ].value
                           }
-                          // type="number"
-                          // step="0.01"
-                          slotProps={{ input: { type:"number",step:"0.01" } }}
+                          slotProps={{
+                            input: { type: "number", step: "0.01" },
+                          }}
                           required
                         />
                       </FormControl>

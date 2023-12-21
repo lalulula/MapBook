@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Button from "@mui/joy/Button";
 import FormControl from "@mui/joy/FormControl";
 import Input from "@mui/joy/Input";
@@ -18,10 +18,7 @@ const PieBarDataInput = ({
   regionName,
   feature,
 }) => {
-  useEffect(() => {
-    console.log("PieBar feature: ", feature);
-    console.log(feature[0].properties.mapbook_data);
-  }, []);
+  useEffect(() => {}, []);
 
   const isAnyDataNameMissing =
     selectedMapFile["mapbook_datanames"].some((dataname) => !dataname) ||
@@ -47,8 +44,13 @@ const PieBarDataInput = ({
               ) : (
                 selectedMapFile["mapbook_datanames"].map((data, index) => (
                   <div key={index} className="map_datainput_element">
-                    {console.log("data: ", data["dataName"])}
-                    {feature[0].properties.mapbook_data ? console.log("mapbook_data: ", feature[0].properties.mapbook_data[data["dataName"]]) : console.log("still null")}
+                    {/* {console.log("data: ", data["dataName"])} */}
+                    {/* {feature[0].properties.mapbook_data
+                      ? console.log(
+                          "mapbook_data: ",
+                          feature[0].properties.mapbook_data[data["dataName"]]
+                        )
+                      : console.log("still null")} */}
                     <FormControl>
                       <h3 style={{ marginBottom: "1rem" }}>
                         {data["dataName"]}
@@ -61,20 +63,26 @@ const PieBarDataInput = ({
                           }
                           // placeholder="Enter data value"
                           placeholder={
-                            !feature[0].properties.mapbook_data ? 
-                            "Enter data value" : 
-                            !feature[0].properties.mapbook_data[data["dataName"]] ? 
-                            "Enter data value" :
-                            feature[0].properties.mapbook_data[data["dataName"]].value
+                            !feature[0].properties.mapbook_data
+                              ? "Enter data value"
+                              : !feature[0].properties.mapbook_data[
+                                  data["dataName"]
+                                ]
+                              ? "Enter data value"
+                              : feature[0].properties.mapbook_data[
+                                  data["dataName"]
+                                ].value
                           }
                           // value={
-                          //   !feature[0].properties.mapbook_data ? 
-                          //   null : 
-                          //   !feature[0].properties.mapbook_data[data["dataName"]] ? 
+                          //   !feature[0].properties.mapbook_data ?
+                          //   null :
+                          //   !feature[0].properties.mapbook_data[data["dataName"]] ?
                           //   null :
                           //   feature[0].properties.mapbook_data[data["dataName"]].value
                           // }
-                          slotProps={{ input: { type:"number",step:"0.01" } }}
+                          slotProps={{
+                            input: { type: "number", step: "0.01" },
+                          }}
                           required
                         />
                       </FormControl>

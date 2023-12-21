@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import JSZip from "jszip";
 import * as shapefile from "shapefile";
 import { useSelector } from "react-redux";
 import { FileInput, Label } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 
-function ImportFilePage({ setSelectedMapFile, setImportDataOpen, isMapbookData, setIsMapbookData }) {
+function ImportFilePage({
+  setSelectedMapFile,
+  setImportDataOpen,
+  isMapbookData,
+  setIsMapbookData,
+}) {
   const [backgroundColor, setBackgroundColor] = useState("fff");
   const [textColor, setTextColor] = useState("rgba(128, 128, 128)");
   const [createTextColor, setCreateTextColor] = useState("rgba(128, 128, 128)");
@@ -15,7 +20,7 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen, isMapbookData, 
   const navigate = useNavigate();
   const processFile = async (file) => {
     try {
-      console.log(file);
+      // console.log(file);
       const texts = await file.text();
       let parsedData;
 
@@ -80,18 +85,17 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen, isMapbookData, 
       }
       // Check if the "template" key exists at the top level
       if ("mapbook_template" in parsedData) {
-        console.log(
-          'The "mapbook_template" key exists with value:',
-          parsedData.mapbook_template
-        );
+        // console.log(
+        //   'The "mapbook_template" key exists with value:',
+        //   parsedData.mapbook_template
+        // );
         setSelectedMapFile(parsedData);
         setIsMapbookData(true);
         // console.log("isMapbookData: ", isMapbookData);
-
       } else {
-        console.log(
-          'The "mapbook_template" key does not exist at the top level.'
-        );
+        // console.log(
+        //   'The "mapbook_template" key does not exist at the top level.'
+        // );
         const newGeojsonData = {
           ...parsedData,
           mapbook_mapname: "",
@@ -239,7 +243,7 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen, isMapbookData, 
           style={{ display: "none" }}
           onChange={handleFileChange}
           accept=".shp, .json, .geojson, .kml, .zip"
-        // className="importfilepage_fileInput"
+          // className="importfilepage_fileInput"
         />
       </Label>
       {selectedFile && (
@@ -252,7 +256,7 @@ function ImportFilePage({ setSelectedMapFile, setImportDataOpen, isMapbookData, 
             fontSize: "15px",
             textAlign: "center",
           }}
-        // className="importfilepage_container"
+          // className="importfilepage_container"
         >
           Selected File :{" "}
           <span

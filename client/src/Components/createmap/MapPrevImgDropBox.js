@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FileInput, Label } from "flowbite-react";
 
 function MapPrevImgDropBox({
@@ -22,9 +22,8 @@ function MapPrevImgDropBox({
     const file = files[0];
     if (isValidImageType(file)) {
       setSelectedFile(file);
-      console.log(files);
     } else {
-      console.log("Invalid file type. Please select an image file (jpg, png).");
+      // console.log("Invalid file type. Please select an image file (jpg, png).");
     }
   };
   const handleDragEnter = (e) => {
@@ -46,13 +45,13 @@ function MapPrevImgDropBox({
     if (isValidImageType(file)) {
       setSelectedFile(file);
       setMapImage(file);
-      try {
-        console.log("Selected image file:", file);
-      } catch (error) {
-        console.error("Error processing the image file:", error);
-      }
+      // try {
+      //   console.log("Selected image file:", file);
+      // } catch (error) {
+      //   console.error("Error processing the image file:", error);
+      // }
     } else {
-      console.log("Invalid file type. Please select an image file (jpg, png).");
+      // console.log("Invalid file type. Please select an image file (jpg, png).");
     }
   };
 
