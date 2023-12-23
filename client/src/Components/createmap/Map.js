@@ -228,6 +228,7 @@ const Map = ({
   };
   // THEMATIC
   const redrawThematicData = () => {
+    // setIsCanvasLoaded(false);
     if (templateHoverType.current === "Thematic Map") {
       //////// HANEUL
       if (mapRef.current.getLayer("counties-thematic")) {
@@ -235,6 +236,20 @@ const Map = ({
       }
       if (mapRef.current.getSource("thematic")) {
         mapRef.current.removeSource("thematic");
+      }
+
+      if (mapRef.current.getLayer("counties-bar")) {
+        mapRef.current.removeLayer("counties-bar");
+      }
+      if (mapRef.current.getSource("bar")) {
+        mapRef.current.removeSource("bar");
+      }
+
+      if (mapRef.current.getLayer("counties-pie")) {
+        mapRef.current.removeLayer("counties-pie");
+      }
+      if (mapRef.current.getSource("pie")) {
+        mapRef.current.removeSource("pie");
       }
 
       mapRef.current.addSource("thematic", {
@@ -260,6 +275,14 @@ const Map = ({
         }
         // "building"
       );
+
+      var currentData = [];
+      themeData.map((data) => currentData.push(Object.values(data)[0]));
+      mapFileData.current["features"].map(
+        (f) => f["properties"].mapbook_data != null ? 
+        Object.keys(f["properties"].mapbook_data).map((k) => !currentData.includes(k) ? delete f["properties"].mapbook_data[k] : k) :
+        f["properties"]
+      )
 
       const featureDataAdded = mapFileData.current["features"].filter(
         (f) => f["properties"].mapbook_data != null
@@ -339,12 +362,27 @@ const Map = ({
   };
   // HEAT
   const redrawHeatData = () => {
+    // setIsCanvasLoaded(false);
     if (templateHoverType.current === "Heat Map") {
       if (mapRef.current.getLayer("counties-heat")) {
         mapRef.current.removeLayer("counties-heat");
       }
       if (mapRef.current.getSource("heat")) {
         mapRef.current.removeSource("heat");
+      }
+
+      if (mapRef.current.getLayer("counties-bar")) {
+        mapRef.current.removeLayer("counties-bar");
+      }
+      if (mapRef.current.getSource("bar")) {
+        mapRef.current.removeSource("bar");
+      }
+
+      if (mapRef.current.getLayer("counties-pie")) {
+        mapRef.current.removeLayer("counties-pie");
+      }
+      if (mapRef.current.getSource("pie")) {
+        mapRef.current.removeSource("pie");
       }
 
       mapRef.current.addSource("heat", {
@@ -446,6 +484,20 @@ const Map = ({
       }
       if (mapRef.current.getSource("circles")) {
         mapRef.current.removeSource("circles");
+      }
+
+      if (mapRef.current.getLayer("counties-bar")) {
+        mapRef.current.removeLayer("counties-bar");
+      }
+      if (mapRef.current.getSource("bar")) {
+        mapRef.current.removeSource("bar");
+      }
+
+      if (mapRef.current.getLayer("counties-pie")) {
+        mapRef.current.removeLayer("counties-pie");
+      }
+      if (mapRef.current.getSource("pie")) {
+        mapRef.current.removeSource("pie");
       }
 
       let dataName = mapFileData.current["mapbook_circleheatmapdata"];
@@ -579,6 +631,21 @@ const Map = ({
         mapRef.current.removeSource("pie");
       }
 
+      if (mapRef.current.getLayer("counties-bar")) {
+        mapRef.current.removeLayer("counties-bar");
+      }
+      if (mapRef.current.getSource("bar")) {
+        mapRef.current.removeSource("bar");
+      }
+
+      var currentData = [];
+      pieBarData.map((data) => currentData.push(Object.values(data)[0]));
+      mapFileData.current["features"].map(
+        (f) => f["properties"].mapbook_data != null ? 
+        Object.keys(f["properties"].mapbook_data).map((k) => !currentData.includes(k) ? delete f["properties"].mapbook_data[k] : k) :
+        f["properties"]
+      )
+
       const featureDataAdded = mapFileData.current["features"].filter(
         (f) => f["properties"].mapbook_data != null
       );
@@ -649,44 +716,46 @@ const Map = ({
       /// Haneul
       var expImageSelect = ["case"];
       // generate image object for region which data exist
-      try {
-        namesDataAdded.forEach((name) => {
-          // generate image
-          // image = generateImage(data);
+      if (pieBarData.length !== 0) {
+        try {
+          namesDataAdded.forEach((name) => {
+            // generate image
+            // image = generateImage(data);
 
-          const canvasSave = document.getElementById(name + "pie");
+            const canvasSave = document.getElementById(name + "pie");
 
-          var context = canvasSave.getContext("2d");
+            var context = canvasSave.getContext("2d");
 
-          var imgData = context.getImageData(
-            0,
-            0,
-            canvasSave.width,
-            canvasSave.height
+            var imgData = context.getImageData(
+              0,
+              0,
+              canvasSave.width,
+              canvasSave.height
+            );
+
+            // add image that we generate
+            if (mapRef.current.hasImage(name)) {
+              mapRef.current.removeImage(name);
+            }
+            mapRef.current.addImage(name, imgData);
+
+            // add expImageSelect on new image
+            expImageSelect.push(["==", ["get", "name"], name]);
+            expImageSelect.push(name);
+          });
+          //set default image (anything is okay)
+          expImageSelect.push("aaa");
+
+          mapRef.current.setLayoutProperty(
+            "counties-pie",
+            "icon-image",
+            expImageSelect
           );
-
-          // add image that we generate
-          if (mapRef.current.hasImage(name)) {
-            mapRef.current.removeImage(name);
-          }
-          mapRef.current.addImage(name, imgData);
-
-          // add expImageSelect on new image
-          expImageSelect.push(["==", ["get", "name"], name]);
-          expImageSelect.push(name);
-        });
-        //set default image (anything is okay)
-        expImageSelect.push("aaa");
-
-        mapRef.current.setLayoutProperty(
-          "counties-pie",
-          "icon-image",
-          expImageSelect
-        );
-        setIsCanvasLoaded(true);
-      } catch (error) {
-        // set isCanvasLoaded false
-        setIsCanvasLoaded(false);
+          setIsCanvasLoaded(true);
+        } catch (error) {
+          // set isCanvasLoaded false
+          setIsCanvasLoaded(false);
+        }
       }
     } else {
       if (mapRef.current.getLayer("counties-pie")) {
@@ -695,7 +764,7 @@ const Map = ({
     }
   };
 
-  // PIE
+  // BAR
   const redrawBarData = async () => {
     if (templateHoverType.current === "Bar Chart") {
       if (mapRef.current.getLayer("counties-bar")) {
@@ -704,6 +773,21 @@ const Map = ({
       if (mapRef.current.getSource("bar")) {
         mapRef.current.removeSource("bar");
       }
+
+      if (mapRef.current.getLayer("counties-pie")) {
+        mapRef.current.removeLayer("counties-pie");
+      }
+      if (mapRef.current.getSource("pie")) {
+        mapRef.current.removeSource("pie");
+      }
+
+      var currentData = [];
+      pieBarData.map((data) => currentData.push(Object.values(data)[0]));
+      mapFileData.current["features"].map(
+        (f) => f["properties"].mapbook_data != null ? 
+        Object.keys(f["properties"].mapbook_data).map((k) => !currentData.includes(k) ? delete f["properties"].mapbook_data[k] : k) :
+        f["properties"]
+      )
 
       const featureDataAdded = mapFileData.current["features"].filter(
         (f) => f["properties"].mapbook_data != null
